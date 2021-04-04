@@ -2,6 +2,6 @@
 ## Team 04
 
 ### Team Members:
-- Student1 99105559
+- Sogand Salehi 99105559
 - Student2 99100000
 - Student3 99100000
