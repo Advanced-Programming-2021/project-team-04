@@ -4,7 +4,7 @@ public abstract class Card {
     protected String name;
     protected int price;
     protected String description;
-    protected int speed;
+    protected int speed = 1;
     protected int allowedNumber;
     protected String id;
 
@@ -55,4 +55,6 @@ public abstract class Card {
     public void setId(String id) {
         this.id = id;
     }
+
+
 }

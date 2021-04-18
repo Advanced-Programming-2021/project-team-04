@@ -7,6 +7,7 @@ public class MonsterCard extends Card {
     protected MonsterCardTypes monsterCardTypes;
     protected MonsterCardEffectTypes monsterCardEffectTypes;
     protected MonsterCardModeInField monsterCardModeInField;
+    protected boolean canBeRemoved = true;
 
     public MonsterCardEffectTypes getMonsterCardEffectTypes() {
         return monsterCardEffectTypes;
@@ -77,9 +78,9 @@ public class MonsterCard extends Card {
         return super.toString();
     }
     public void changeAttackPower(int amount) {
-
+        this.thisCardAttackPower += amount;
     }
     public void changeDefensePower(int amount) {
-
+        this.thisCardDefensePower += amount;
     }
 }

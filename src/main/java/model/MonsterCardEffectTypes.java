@@ -1,5 +1,5 @@
 package model;
 
 public enum MonsterCardEffectTypes {
-    NORMAL, CONTINUOUS, FLIP, JARAQE, QUICK_PLAY, MASHEI, RITUAL
+    NORMAL, CONTINUOUS, FLIP, IGNITION, QUICK_PLAY, TRIGGER, RITUAL
 }
