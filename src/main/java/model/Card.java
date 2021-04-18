@@ -8,8 +8,6 @@ public abstract class Card {
     protected int allowedNumber;
     protected String id;
 
-    public Card() {
-    }
     public boolean isValid() {
         return true;
     }
@@ -32,10 +30,6 @@ public abstract class Card {
 
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public int getSpeed() {

@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class Field {
     private ArrayList<Card> graveyard;
     private ArrayList<Card> Deck;
-    private ArrayList<Card> trapAndSpell;
-    private ArrayList<Card> MonsterCards;
+    private ArrayList<SpellAndTrapCard> trapAndSpell;
+    private ArrayList<MonsterCard> MonsterCards;
     private ArrayList<Card> hand;
     private Card fieldZone;
 
@@ -29,19 +29,19 @@ public class Field {
         Deck = deck;
     }
 
-    public ArrayList<Card> getTrapAndSpell() {
+    public ArrayList<SpellAndTrapCard> getTrapAndSpell() {
         return trapAndSpell;
     }
 
-    public void setTrapAndSpell(ArrayList<Card> trapAndSpell) {
+    public void setTrapAndSpell(ArrayList<SpellAndTrapCard> trapAndSpell) {
         this.trapAndSpell = trapAndSpell;
     }
 
-    public ArrayList<Card> getMonsterCards() {
+    public ArrayList<MonsterCard> getMonsterCards() {
         return MonsterCards;
     }
 
-    public void setMonsterCards(ArrayList<Card> monsterCards) {
+    public void setMonsterCards(ArrayList<MonsterCard> monsterCards) {
         MonsterCards = monsterCards;
     }
 

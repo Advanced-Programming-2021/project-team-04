@@ -3,7 +3,6 @@ package controller;
 public class DeckController {
     private static DeckController singleInstance = null;
     private DeckController() {
-        System.out.println("mio");
     }
     public void run() {
 

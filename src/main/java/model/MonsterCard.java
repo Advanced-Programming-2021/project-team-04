@@ -7,9 +7,6 @@ public class MonsterCard extends Card {
     protected MonsterCardTypes monsterCardTypes;
     protected MonsterCardEffectTypes monsterCardEffectTypes;
     protected MonsterCardModeInField monsterCardModeInField;
-    public MonsterCard() {
-
-    }
 
     public MonsterCardEffectTypes getMonsterCardEffectTypes() {
         return monsterCardEffectTypes;
