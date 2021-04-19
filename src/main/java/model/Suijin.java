@@ -1,10 +1,13 @@
 package model;
 
+import controller.DuelController;
+
 public class Suijin extends MonsterCard {
     private boolean canBeUsed = true;
+
     public Suijin() {
+        super();
         setName("Suijin");
-        setId("LCJW-EN226");
         setLevel(7);
         setMonsterCardTypes(MonsterCardTypes.AQUA);
         setMonsterCardEffectTypes(MonsterCardEffectTypes.TRIGGER);
@@ -16,10 +19,12 @@ public class Suijin extends MonsterCard {
 
     }
 
-    public void specialMethod(MonsterCard monsterCard) {
-        if (canBeUsed) {
-            monsterCard.setThisCardAttackPower(0);
-            canBeUsed = false;
-        }
+    public void specialMethod() {
+        MonsterCard monsterCard = DuelController.getInstance().getMonsterAttacking();
+        if (this.isAttacked)
+            if (this.canBeUsed) {
+                monsterCard.setThisCardAttackPower(0);
+                this.canBeUsed = false;
+            }
     }
 }

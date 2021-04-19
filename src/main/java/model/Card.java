@@ -1,12 +1,35 @@
 package model;
 
-public abstract class Card {
+import java.util.ArrayList;
+
+public class Card {
+    protected static ArrayList<Card> allCards = new ArrayList<>();
     protected String name;
     protected int price;
     protected String description;
     protected int speed = 1;
     protected int allowedNumber;
-    protected String id;
+    protected boolean isAttacked = false;
+    protected boolean isAttacking = false;
+    //probably should handle more than this, maybe make an entry set for both cards *or a hashmap idk
+    public Card() {
+        allCards.add(this);
+    }
+    public boolean isAttacking() {
+        return isAttacking;
+    }
+
+    public void setAttacking(boolean attacking) {
+        isAttacking = attacking;
+    }
+
+    public boolean isAttacked() {
+        return isAttacked;
+    }
+
+    public void setAttacked(boolean attacked) {
+        isAttacked = attacked;
+    }
 
     public boolean isValid() {
         return true;
@@ -48,13 +71,8 @@ public abstract class Card {
         this.allowedNumber = allowedNumber;
     }
 
-    public String getId() {
-        return id;
-    }
+    public void reset() {
 
-    public void setId(String id) {
-        this.id = id;
     }
-
 
 }

@@ -1,5 +1,7 @@
 package model;
 
+import controller.DuelController;
+
 import java.util.ArrayList;
 
 public class CommandKnight extends MonsterCard {
@@ -23,14 +25,16 @@ public class CommandKnight extends MonsterCard {
                 "controls cannot target this card for an attack.";
     }
 
-    public void specialMethod(ArrayList<MonsterCard> monsterCards) {
+    public void specialMethod() {
+        ArrayList<MonsterCard> monsterCards = DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards();
         if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP) ||
                 this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
             for (MonsterCard monsterCard : monsterCards)
                 monsterCard.changeAttackPower(400);
     }
 
-    public void isRemovable(Account thisPlayer) {
+    public void isRemovable() {
+        Account thisPlayer = DuelController.getInstance().getGame().getCurrentPlayer();
         if (!thisPlayer.getField().getMonsterCards().isEmpty())
             for (MonsterCard monsterCard : thisPlayer.getField().getMonsterCards())
                 if (monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP)

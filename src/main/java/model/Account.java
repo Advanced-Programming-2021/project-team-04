@@ -187,4 +187,7 @@ public class Account {
     private boolean isPlayerDead(){
         return true;
     }
+    public void changeLP(int amount ) {
+        this.LP += amount;
+    }
 }

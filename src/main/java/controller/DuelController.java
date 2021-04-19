@@ -1,6 +1,9 @@
 package controller;
 
+import model.Account;
+import model.CardStatusInField;
 import model.Game;
+import model.MonsterCard;
 
 import java.util.ArrayList;
 
@@ -18,10 +21,19 @@ public class DuelController {
     public void run() {
 
     }
-    private void selectCard(boolean myCard, enum cardStatusInField, int number) {
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    private void selectCard(boolean myCard, CardStatusInField cardStatusInField, int number) {
 
     }
-    private boolean isSelectingCardValid(boolean myCard, enum cardStatusInField, int number) {
+    private boolean isSelectingCardValid(boolean myCard, CardStatusInField cardStatusInField, int number) {
         return true;
     }
     private void deselectCard() {
@@ -102,7 +114,7 @@ public class DuelController {
     private void cheatIncreaseLP() {
 
     }
-    private void void cheatSetWinner() {
+    private void cheatSetWinner() {
 
     }
     private void cheatSeeMyDeck() {
@@ -114,5 +126,20 @@ public class DuelController {
     private void cheatDecreaseLP() {
 
     }
+    public MonsterCard getMonsterAttacking() {
 
+    }
+
+    public MonsterCard forManEaterBug() {
+        // ask the client to choose card
+    }
+    public MonsterCard forScanner() {
+
+    }
+    public MonsterCard forTexChanger() {
+        //remove it from the place u're getting it
+    }
+    public void chooseMonsterMode(MonsterCard monsterCard) {
+
+    }
 }
