@@ -10,7 +10,6 @@ public class CommandKnight extends MonsterCard {
         setLevel(4);
         setMonsterCardTypes(MonsterCardTypes.WARRIOR);
         setMonsterCardEffectTypes(MonsterCardEffectTypes.CONTINUOUS);
-        setId("LDK2-ENJ20");
         setClassAttackPower(1000);
         setClassDefensePower(1000);
         setThisCardAttackPower(1000);
@@ -36,9 +35,8 @@ public class CommandKnight extends MonsterCard {
     public void isRemovable() {
         Account thisPlayer = DuelController.getInstance().getGame().getCurrentPlayer();
         if (!thisPlayer.getField().getMonsterCards().isEmpty())
-            for (MonsterCard monsterCard : thisPlayer.getField().getMonsterCards())
-                if (monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP)
-                        || monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_UP))
+                if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP)
+                        || this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
                     this.canBeRemoved = false;
     }
 }
