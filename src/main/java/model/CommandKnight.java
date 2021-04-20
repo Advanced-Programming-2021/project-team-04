@@ -26,17 +26,25 @@ public class CommandKnight extends MonsterCard {
 
     public void specialMethod() {
         ArrayList<MonsterCard> monsterCards = DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards();
-        if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP) ||
-                this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
-            for (MonsterCard monsterCard : monsterCards)
-                monsterCard.changeAttackPower(400);
+        if (monsterCards.contains(this))
+            if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP) ||
+                    this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
+                for (MonsterCard monsterCard : monsterCards)
+                    monsterCard.changeAttackPower(400);
     }
 
-    public void isRemovable() {
+    private void isRemovable() {
         Account thisPlayer = DuelController.getInstance().getGame().getCurrentPlayer();
-        if (!thisPlayer.getField().getMonsterCards().isEmpty())
-                if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP)
-                        || this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
-                    this.canBeRemoved = false;
+        if (!thisPlayer.getField().getMonsterCards().isEmpty()) {
+            if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP)
+                    || this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
+                this.canBeRemoved = false;
+        }
+        else this.canBeRemoved = true;
+    }
+    @Override
+    public boolean isCanBeRemoved() {
+        isRemovable();
+        return canBeRemoved;
     }
 }

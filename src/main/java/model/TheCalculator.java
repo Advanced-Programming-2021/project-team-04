@@ -4,6 +4,7 @@ import controller.DuelController;
 
 public class TheCalculator extends MonsterCard {
     public TheCalculator() {
+        super();
         setName("The Calculator");
         setLevel(2);
         setClassAttackPower(0);
@@ -19,7 +20,7 @@ public class TheCalculator extends MonsterCard {
     }
     public void specialMethod() {
         int count = 0;
-        Account player = DuelController.getInstance().getGame().getCurrentPlayer();
+        Account player = this.getOwner();
         for (MonsterCard monsterCard : player.getField().getMonsterCards())
             if (monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP)
             || monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_UP))

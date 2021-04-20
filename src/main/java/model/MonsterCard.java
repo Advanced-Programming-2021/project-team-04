@@ -10,6 +10,7 @@ public class MonsterCard extends Card {
     protected boolean canBeRemoved = true;
     public MonsterCard() {
         super();
+        this.isMonster = true;
     }
     public MonsterCardEffectTypes getMonsterCardEffectTypes() {
         return monsterCardEffectTypes;
@@ -17,6 +18,14 @@ public class MonsterCard extends Card {
 
     public void setMonsterCardEffectTypes(MonsterCardEffectTypes monsterCardEffectTypes) {
         this.monsterCardEffectTypes = monsterCardEffectTypes;
+    }
+
+    public boolean isCanBeRemoved() {
+        return canBeRemoved;
+    }
+
+    public void setCanBeRemoved(boolean canBeRemoved) {
+        this.canBeRemoved = canBeRemoved;
     }
 
     public MonsterCardModeInField getMonsterCardModeInField() {

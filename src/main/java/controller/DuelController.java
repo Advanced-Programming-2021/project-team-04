@@ -1,9 +1,6 @@
 package controller;
 
-import model.Account;
-import model.CardStatusInField;
-import model.Game;
-import model.MonsterCard;
+import model.*;
 
 import java.util.ArrayList;
 
@@ -141,5 +138,13 @@ public class DuelController {
     }
     public void chooseMonsterMode(MonsterCard monsterCard) {
 
+    }
+    public SpellAndTrapCard chosenTrapCard() {
+
+    }
+    public MonsterCard selectFromGraveYard() {//for herald of creation
+    }
+    public MonsterCard selectToRemove() {
+        //for herald of creation
     }
 }

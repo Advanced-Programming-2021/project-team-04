@@ -1,10 +1,12 @@
 package model;
 
+import controller.DuelController;
+
 public class YomiShip extends MonsterCard {
     public YomiShip() {
+        super();
         setName("Yomi Ship");
         setLevel(3);
-        setId("SBAD-EN024");
         setClassAttackPower(800);
         setClassDefensePower(1400);
         setThisCardAttackPower(800);
@@ -20,8 +22,12 @@ public class YomiShip extends MonsterCard {
                 "and sent to the GY: Destroy the monster that destroyed this card.";
     }
 
-    public void specialMethod (MonsterCard monsterCard, Account opponent) {
-        opponent.getField().addCardToGraveyard(monsterCard);
-        opponent.getField().removeCardFromHand(monsterCard);
+    public void specialMethod () {
+        MonsterCard monsterCard = DuelController.getInstance().getMonsterAttacking();
+        Account opponent = DuelController.getInstance().getGame().getTheOtherPlayer();
+        if (this.isAttacked) {
+            opponent.getField().addCardToGraveyard(monsterCard);
+            opponent.getField().removeCardFromHand(monsterCard);
+        }
     }
 }

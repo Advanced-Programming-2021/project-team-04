@@ -11,7 +11,9 @@ public class Card {
     protected int allowedNumber;
     protected boolean isAttacked = false;
     protected boolean isAttacking = false;
+    protected boolean isMonster = false;
     //probably should handle more than this, maybe make an entry set for both cards *or a hashmap idk
+    protected Account Owner;
     public Card() {
         allCards.add(this);
     }
@@ -29,6 +31,22 @@ public class Card {
 
     public void setAttacked(boolean attacked) {
         isAttacked = attacked;
+    }
+
+    public static ArrayList<Card> getAllCards() {
+        return allCards;
+    }
+
+    public static void setAllCards(ArrayList<Card> allCards) {
+        Card.allCards = allCards;
+    }
+
+    public Account getOwner() {
+        return Owner;
+    }
+
+    public void setOwner(Account owner) {
+        Owner = owner;
     }
 
     public boolean isValid() {
