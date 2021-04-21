@@ -2,8 +2,6 @@ package controller;
 
 import model.Account;
 import view.Output;
-
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -22,7 +20,7 @@ private static ScoreboardController singleInstance = null;
         sortedAccounts();
         String sorted = "";
         int count = 0;
-        int previousScore = 0;
+        int previousScore = -1;
         for (Account account : Account.getAllAccounts()) {
             if (previousScore != account.getScore()) count++;
             previousScore = account.getScore();
