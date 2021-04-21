@@ -3,6 +3,7 @@ package controller;
 public class DeckController {
     private static DeckController singleInstance = null;
     private DeckController() {
+        getInstance();
     }
     public void run() {
 

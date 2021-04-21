@@ -6,11 +6,13 @@ public class Account {
     private static ArrayList<Account> allAccounts;
     private static ArrayList<String> allUsernames;
     private static ArrayList<String> allNicknames;
+
     static {
         allAccounts = new ArrayList<>();
         allNicknames = new ArrayList<>();
         allUsernames = new ArrayList<>();
     }
+
     private ArrayList<Deck> allDecks = new ArrayList<Deck>();
     private ArrayList<Card> unusedCards = new ArrayList<Card>();
     private Deck activeDeck;
@@ -140,54 +142,97 @@ public class Account {
     }
 
     private Deck getDeckByName(String deckName) {
-
+        for (Deck deck : getAllDecks())
+            if (deck.getDeckName().equals(deckName))
+                return deck;
+        return null;
     }
+
     private Card getCardByName(String cardName) {
-
+        for (Card card : getUnusedCards()) //TODO should we make an arraylist of all cards or is unused cards valid?
+            if (card.getName().equals(cardName))
+                return card;
+        return null;
     }
-    private void addDeck (Deck deck) {
 
+    private void addDeck(Deck deck) {
+        this.getAllDecks().add(deck);
     }
+
     private void deleteDeck(Deck deck) {
-
+        this.getAllDecks().remove(deck);
     }
+
     private void addCard(Card card) {
+        this.getUnusedCards().add(card);
+    }
+
+    private boolean hasDeck(String deck) {
+        for (Deck thisDeck : allDecks)
+            if (thisDeck.getDeckName().equals(deck))
+                return true;
+        return false;
+    }
+
+    private boolean hasCard(String card) {
+        for (Card thisCard : unusedCards)
+            if (thisCard.getName().equals(card))
+                return true;
+        return false;
+    }
+
+    private void activateDeck(String deckName) {
+        for (Deck thisDeck : allDecks)
+            if (thisDeck.getDeckName().equals(deckName))
+                activeDeck = thisDeck;
+    }
+
+    private void printAllDecks() { //TODO
 
     }
-    private boolean hasDeck (String deck) {
-        return true;
-    }
-    private boolean hasCard (String card) {
-        return true;
-    }
-    private void activateDeck (String deckName) {
 
-    }
-    private void printAllDecks() {
-
-    }
     private boolean hasEnoughMoney(int price) {
-        return true;
+        return this.money >= price;
     }
+
     private boolean hasActiveDeck() {
+        return activeDeck != null;
+    }
+
+    private boolean hasEnoughCardInHand(int amount) { //TODO check while writing the code
         return true;
     }
-    private boolean hasEnoughCardInHand(int amount) {
-        return true;
+
+    private void deleteField() {
+        field = null;
     }
-    private void deleteField(){
+
+    private void reset() {
 
     }
-    private void reset(){
 
-    }
     private void reduceLP(int amount) {
-
+        LP -= amount;
     }
-    private boolean isPlayerDead(){
+
+    private boolean isPlayerDead() {
         return true;
     }
-    public void changeLP(int amount ) {
+
+    public void changeLP(int amount) {
         this.LP += amount;
+    }
+    public static Account getAccountByUsername(String username) {
+        for (Account account : allAccounts)
+            if (account.getUsername().equals(username))
+                return account;
+        return null;
+    }
+
+    public static Account getAccountByNickname (String nickName) {
+        for (Account account : allAccounts)
+            if (account.getNickname().equals(nickName))
+                return account;
+        return null;
     }
 }

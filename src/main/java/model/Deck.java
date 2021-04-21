@@ -3,9 +3,20 @@ package model;
 import java.util.ArrayList;
 
 public class Deck {
-    private ArrayList<Card> mainDeck, sideDeck;
+    private ArrayList<Card> mainDeck = new ArrayList<>();
+    private ArrayList<Card> sideDeck = new ArrayList<>();
+    private String deckName;
     private boolean isMainDeckValid;
     private boolean isMainDeckFull, isSideDeckFull;
+
+    public String getDeckName() {
+        return deckName;
+    }
+
+    public void setDeckName(String deckName) {
+        this.deckName = deckName;
+    }
+
     private boolean hasCard(String cardName) {
         return true;
     }
@@ -53,10 +64,13 @@ public class Deck {
         isSideDeckFull = sideDeckFull;
     }
     private void addCardToDeck(Card card, boolean isMainDeck) {
-
+        if (isMainDeck) mainDeck.add(card);
+        else sideDeck.add(card);
     }
     private void removeCardFromDeck(Card card, boolean isMainDeck) {
-
+        if (isMainDeck) // in the controller, check the errors
+            mainDeck.remove(card);
+        else sideDeck.remove(card);
     }
 
     @Override

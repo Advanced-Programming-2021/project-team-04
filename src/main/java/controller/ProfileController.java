@@ -3,7 +3,7 @@ package controller;
 public class ProfileController {
     private static ProfileController singleInstance = null;
     private ProfileController() {
-
+        getInstance();
     }
     public static ProfileController getInstance() {
         if (singleInstance == null)

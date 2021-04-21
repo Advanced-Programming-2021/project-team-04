@@ -7,7 +7,7 @@ import java.util.TreeSet;
 public class ShopController {
     private static ShopController singleInstance = null;
     private ShopController() {
-
+        getInstance();
     }
     public static ShopController getInstance() {
         if (singleInstance == null)
@@ -33,6 +33,7 @@ public class ShopController {
     private void buyCard(String cardName) {
 
     }
-    private Card createCard(String cardName) {
+    private void createCard(String cardName) {
+        //TODO is this the 240 khati switch case?
     }
 }
