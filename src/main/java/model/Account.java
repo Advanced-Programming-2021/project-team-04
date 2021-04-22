@@ -141,14 +141,14 @@ public class Account {
         return field;
     }
 
-    private Deck getDeckByName(String deckName) {
+    public Deck getDeckByName(String deckName) {
         for (Deck deck : getAllDecks())
             if (deck.getDeckName().equals(deckName))
                 return deck;
         return null;
     }
 
-    private Card getCardByName(String cardName) {
+    public Card getCardByName(String cardName) {
         for (Card card : getUnusedCards()) //TODO should we make an arraylist of all cards or is unused cards valid?
             if (card.getName().equals(cardName))
                 return card;
@@ -235,4 +235,5 @@ public class Account {
                 return account;
         return null;
     }
+
 }

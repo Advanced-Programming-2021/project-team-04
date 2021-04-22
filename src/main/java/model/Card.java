@@ -92,5 +92,10 @@ public class Card {
     public void reset() {
 
     }
-
+    public static Card getCardByName(String name) {
+        for (Card card : allCards)
+            if (card.getName().equals(name))
+                return card;
+        return null;
+    }
 }

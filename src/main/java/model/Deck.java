@@ -8,7 +8,9 @@ public class Deck {
     private String deckName;
     private boolean isMainDeckValid;
     private boolean isMainDeckFull, isSideDeckFull;
-
+    public Deck(String deckName) {
+        setDeckName(deckName);
+    }
     public String getDeckName() {
         return deckName;
     }
@@ -17,11 +19,23 @@ public class Deck {
         this.deckName = deckName;
     }
 
-    private boolean hasCard(String cardName) {
+    public boolean mainDeckHasCard(String cardName) { //TODO
+        if ()
         return true;
     }
-    private boolean isAddingCardValid(Card card) {
-        return false;
+    public boolean sideDeckHasCard(String cardName) { //TODO
+        if (sideDeck.contains(Card.getCardByName(cardName)))
+    }
+    public boolean isAddingCardValid(String cardName) {
+        int count = 0;
+        for (Card thisCard : getMainDeck())
+            if (thisCard.getName().equals(cardName))
+                count++;
+        for (Card thisCard : getSideDeck())
+            if (thisCard.getName().equals(cardName))
+                count++;
+        if (count == 3) return false;
+        return true;
     }
 
     public ArrayList<Card> getMainDeck() {
@@ -49,6 +63,7 @@ public class Deck {
     }
 
     public boolean isMainDeckFull() {
+        isMainDeckFull = mainDeck.size() == 60;
         return isMainDeckFull;
     }
 
@@ -57,16 +72,19 @@ public class Deck {
     }
 
     public boolean isSideDeckFull() {
+        isSideDeckFull = sideDeck.size() == 15;
         return isSideDeckFull;
     }
 
     public void setSideDeckFull(boolean sideDeckFull) {
         isSideDeckFull = sideDeckFull;
     }
+
     private void addCardToDeck(Card card, boolean isMainDeck) {
         if (isMainDeck) mainDeck.add(card);
         else sideDeck.add(card);
     }
+
     private void removeCardFromDeck(Card card, boolean isMainDeck) {
         if (isMainDeck) // in the controller, check the errors
             mainDeck.remove(card);
