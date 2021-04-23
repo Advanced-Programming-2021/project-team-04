@@ -17,11 +17,18 @@ public class ManEaterBug extends MonsterCard {
         setPrice(600);
         setDescription();
     }
+
     private void setDescription() {
         this.description = "FLIP: Target 1 monster on the field; destroy that target.";
     }
-    @Override
+
+
     public void setMonsterCardModeInField(MonsterCardModeInField monsterCardModeInField) {
-        if (this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_DOWN))
+        if (this.monsterCardModeInField == MonsterCardModeInField.DEFENSE_FACE_DOWN &&
+                (monsterCardModeInField == MonsterCardModeInField.ATTACK_FACE_UP ||
+                        monsterCardModeInField == MonsterCardModeInField.DEFENSE_FACE_UP)) {
+            //TODO: call method in game controller to kill someone
+        }
+        this.monsterCardModeInField = monsterCardModeInField;
     }
-    }
+}
