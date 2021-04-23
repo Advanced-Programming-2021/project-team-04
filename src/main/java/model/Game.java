@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class Game {
@@ -15,6 +16,7 @@ public class Game {
     private ArrayList<Account> roundWinners;
     private Card lastSetCard;
     private ArrayList<Card> cardsWhichAttacked;
+
     public Game(Account firstPlayer, Account secondPlayer, int rounds) {
         setCurrentPlayer(firstPlayer);
         setRounds(rounds);
@@ -121,92 +123,118 @@ public class Game {
     private void initializeGame() {
 
     }
-    private void shuffleDeck(){
 
+    public void shuffleDeck() {
+        Collections.shuffle(currentPlayer.getActiveDeck().getMainDeck());
+        Collections.shuffle(theOtherPlayer.getActiveDeck().getMainDeck());
     }
+
     public void addDecks() {
 
     }
-    private void rockPaperScissor() {
 
-    }
-    public boolean isRoundFinished(){
+
+    public boolean isRoundFinished() {
         return true;
     }
+
     public void setRoundFinished(boolean roundFinished) {
 
     }
+
     public boolean getIsRoundFinished() {
         return true;
     }
+
     public void changeTurn() {
 
     }
+
     public boolean isRoundValid(int round) {
         return true;
     }
+
     public boolean hasSelectedCard() {
         return false;
     }
+
     public void handleEndingWithOneRound() {
 
     }
+
     public void handleEndingWithThreeRound() {
 
     }
+
     public void drawCard() {
 
     }
+
     public void switchTurn() {
 
     }
+
     public void switchMonsterMode() {
 
     }
+
     public void activateSpell() {
 
     }
+
     public boolean canBeSummoned() {
         return false;
     }
-    public void addToCardsWhosePositionHasChanged(){
+
+    public void addToCardsWhosePositionHasChanged() {
 
     }
+
     public void initializeCardsWhosePositionHasChanged() {
 
     }
+
     public void setPosition(boolean isAttack) {
 
     }
+
     public void setLastCard(Card card) {
 
     }
-    public boolean isCardSetLast(){
+
+    public boolean isCardSetLast() {
         return false;
     }
+
     public void addToCardsWhichAttacked() {
 
     }
+
     public void initializeCardsWhichAttacked() {
 
     }
+
     public void attackCard(Card cardToBeAttackedTo) {
 
     }
+
     public void directAttack() {
 
     }
+
     public void ritualSummon() {
 
     }
+
     public void showSelectedCard() {
 
     }
+
     public boolean isGameFinished() {
         return true;
     }
+
     public void finishGame() {
 
     }
-
 }

@@ -18,6 +18,9 @@ public class DuelController {
     public void run() {
 
     }
+    public void rockPaperScissor() {
+        //TODO کلا هندل اینطوری باشه که هی از ویو دستور بگیره مقایسه کنه تا نهایتا 3 دور - اگه دو دور بود بس کنه
+    }
 
     public Game getGame() {
         return game;

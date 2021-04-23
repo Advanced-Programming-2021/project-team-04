@@ -17,6 +17,14 @@ public class SpellAndTrapCard extends Card {
 
     }
 
+    public SpellAndTrapTypes getType() {
+        return type;
+    }
+
+    public void setType(SpellAndTrapTypes type) {
+        this.type = type;
+    }
+
     public static ArrayList<SpellAndTrapCard> getSpellAndTrapCards() {
         return spellAndTrapCards;
     }
