@@ -3,7 +3,6 @@ package model;
 import controller.DuelController;
 
 public class ManEaterBug extends MonsterCard {
-    private boolean hasDestroyedACard = false;
 
     public ManEaterBug() {
         super();
@@ -21,14 +20,9 @@ public class ManEaterBug extends MonsterCard {
     private void setDescription() {
         this.description = "FLIP: Target 1 monster on the field; destroy that target.";
     }
+    @Override
+    public void setMonsterCardModeInField(MonsterCardModeInField monsterCardModeInField) {
+        if (this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_DOWN))
 
-    public void specialMethod () {
-        if (!hasDestroyedACard) {
-            MonsterCard monsterCard = DuelController.getInstance().forManEaterBug();
-            Field field = DuelController.getInstance().getGame().getTheOtherPlayer().getField();
-            field.getMonsterCards().remove(monsterCard);
-            field.addCardToGraveyard(monsterCard);
-            hasDestroyedACard = true;
-        }
     }
-}
+    }

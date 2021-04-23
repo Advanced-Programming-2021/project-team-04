@@ -8,9 +8,7 @@ import java.util.Comparator;
 public class ScoreboardController {
 
 private static ScoreboardController singleInstance = null;
-    private ScoreboardController() {
-        getInstance();
-    }
+
     public static ScoreboardController getInstance() {
         if (singleInstance == null)
             singleInstance = new ScoreboardController();
@@ -20,11 +18,18 @@ private static ScoreboardController singleInstance = null;
         sortedAccounts();
         String sorted = "";
         int count = 0;
+        int countForEquals = 0;
         int previousScore = -1;
         for (Account account : Account.getAllAccounts()) {
-            if (previousScore != account.getScore()) count++;
+            count++;
+            if (previousScore != account.getScore()) {
+                countForEquals = count;
+                sorted += count + "- " + account.getNickname() + ": " + account.getScore() + "\n";
+            }
+            else{
+                sorted += countForEquals + "- " + account.getNickname() + ": " + account.getScore() + "\n";
+            }
             previousScore = account.getScore();
-            sorted += count + "- " + account.getNickname() + ": " + account.getScore() + "\n";
         }
         Output.getForNow();
     }

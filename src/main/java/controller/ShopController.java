@@ -6,21 +6,18 @@ import java.util.TreeSet;
 
 public class ShopController {
     private static ShopController singleInstance = null;
-    private ShopController() {
-        getInstance();
+    private static TreeSet<Card> allCards;
+    static {
+        allCards = new TreeSet<>();
     }
     public static ShopController getInstance() {
         if (singleInstance == null)
             singleInstance = new ShopController();
         return singleInstance;
     }
-    public void run() {
 
-    }
-    static {
 
-    }
-    private static TreeSet<Card> allCards;
+
     private void showCard(String name) {
 
     }

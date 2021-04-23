@@ -1,13 +1,12 @@
 package controller;
 
 import model.Account;
+import model.Game;
+import view.Output;
 
 public class MainController {
     private Account loggedIn;
     private static MainController singleInstance = null;
-    private MainController() {
-        getInstance();
-    }
 
     public Account getLoggedIn() {
         return loggedIn;
@@ -23,15 +22,28 @@ public class MainController {
             singleInstance = new MainController();
         return singleInstance;
     }
-    public void run() {
 
-    }
     private void newDuel(String username, int rounds) {
-
+        if (errorForNewGame(username, rounds))
+            new Game(loggedIn, Account.getAccountByUsername(username), rounds);
     }
+
+    private boolean errorForNewGame(String username, int rounds) {
+        if (!Account.getAllAccounts().contains(Account.getAccountByUsername(username))) {
+            Output.getForNow();
+            return false;
+        }
+        else if (rounds != 1 || rounds != 3) {
+            Output.getForNow();
+            return false;
+        }
+        return true;
+    }
+
     private void cheatIncreaseMoney(int amount) {
         loggedIn.setMoney(loggedIn.getMoney() + amount);
     }
+
     private void cheatIncreaseScore(int amount) {
         loggedIn.setScore(loggedIn.getScore() + amount);
     }

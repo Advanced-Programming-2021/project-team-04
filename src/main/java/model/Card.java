@@ -11,7 +11,7 @@ public class Card {
     protected int allowedNumber;
     protected boolean isAttacked = false;
     protected boolean isAttacking = false;
-    protected boolean isMonster = false;
+    public boolean isMonster = false;
     //probably should handle more than this, maybe make an entry set for both cards *or a hashmap idk
     protected Account Owner;
     public Card() {

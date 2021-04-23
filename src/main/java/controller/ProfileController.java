@@ -1,22 +1,17 @@
 package controller;
 
-import com.sun.tools.javac.Main;
 import model.Account;
 import view.Output;
 
 public class ProfileController {
     private static ProfileController singleInstance = null;
-    private ProfileController() {
-        getInstance();
-    }
+
     public static ProfileController getInstance() {
         if (singleInstance == null)
             singleInstance = new ProfileController();
         return singleInstance;
     }
-    public void run() {
 
-    }
     private void changeNickname(String name) {
         if (isChangingNicknameValid(name)) {
             MainController.getInstance().getLoggedIn().setNickname(name);

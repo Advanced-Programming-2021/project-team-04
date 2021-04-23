@@ -8,9 +8,11 @@ public class Deck {
     private String deckName;
     private boolean isMainDeckValid;
     private boolean isMainDeckFull, isSideDeckFull;
+
     public Deck(String deckName) {
         setDeckName(deckName);
     }
+
     public String getDeckName() {
         return deckName;
     }
@@ -19,13 +21,14 @@ public class Deck {
         this.deckName = deckName;
     }
 
-    public boolean mainDeckHasCard(String cardName) { //TODO
-        if ()
-        return true;
+    public boolean mainDeckHasCard(String cardName) { //TODO still doubt
+        return mainDeck.contains(Card.getCardByName(cardName));
     }
-    public boolean sideDeckHasCard(String cardName) { //TODO
-        if (sideDeck.contains(Card.getCardByName(cardName)))
+
+    public boolean sideDeckHasCard(String cardName) { //TODO still doubt
+        return sideDeck.contains(Card.getCardByName(cardName));
     }
+
     public boolean isAddingCardValid(String cardName) {
         int count = 0;
         for (Card thisCard : getMainDeck())
@@ -55,6 +58,7 @@ public class Deck {
     }
 
     public boolean isMainDeckValid() {
+        isMainDeckValid = mainDeck.size() >= 40;
         return isMainDeckValid;
     }
 
