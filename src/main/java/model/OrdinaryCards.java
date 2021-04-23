@@ -1,8 +1,8 @@
 package model;
 
-public class ordinaryCards extends MonsterCard {
-    public ordinaryCards (String name, String Id, int level, int classAttackPower, int classDefensePower,
-                   MonsterCardEffectTypes monsterCardEffectType, MonsterCardTypes monsterCardType, String description, int price) {
+public class OrdinaryCards extends MonsterCard {
+    public OrdinaryCards (String name, int level, int classAttackPower, int classDefensePower,
+                          MonsterCardEffectTypes monsterCardEffectType, MonsterCardTypes monsterCardType, String description, int price) {
         super();
         setName(name);
         setLevel(level);
@@ -20,7 +20,5 @@ public class ordinaryCards extends MonsterCard {
     private void setDescription(String description) {
         this.description = description;
     }
-    public void specialMethod() {
 
-    }
 }

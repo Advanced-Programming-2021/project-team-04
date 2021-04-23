@@ -23,6 +23,5 @@ public class ManEaterBug extends MonsterCard {
     @Override
     public void setMonsterCardModeInField(MonsterCardModeInField monsterCardModeInField) {
         if (this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_DOWN))
-
     }
     }

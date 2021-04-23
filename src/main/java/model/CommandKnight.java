@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class CommandKnight extends MonsterCard {
     public CommandKnight() {
+        super();
         setName("Command Knight");
         setLevel(4);
         setMonsterCardTypes(MonsterCardTypes.WARRIOR);
@@ -26,7 +27,6 @@ public class CommandKnight extends MonsterCard {
 
     public void specialMethod() {
         ArrayList<MonsterCard> monsterCards = DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards();
-        if (monsterCards.contains(this))
             if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP) ||
                     this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
                 for (MonsterCard monsterCard : monsterCards)

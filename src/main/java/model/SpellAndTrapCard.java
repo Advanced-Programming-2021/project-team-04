@@ -6,7 +6,8 @@ public class SpellAndTrapCard extends Card {
     protected static ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
     protected boolean isActive;
     protected boolean canBeActivated = true;
-
+    protected boolean isSpell;
+    protected SpellAndTrapTypes type;
     public SpellAndTrapCard() {
         super();
         spellAndTrapCards.add(this);
@@ -22,6 +23,14 @@ public class SpellAndTrapCard extends Card {
 
     public static void setSpellAndTrapCards(ArrayList<SpellAndTrapCard> spellAndTrapCards) {
         SpellAndTrapCard.spellAndTrapCards = spellAndTrapCards;
+    }
+
+    public boolean isSpell() {
+        return isSpell;
+    }
+
+    public void setSpell(boolean spell) {
+        isSpell = spell;
     }
 
     public boolean isActive() {
@@ -43,11 +52,9 @@ public class SpellAndTrapCard extends Card {
     public boolean canBeUsed(Game game) {
         return false;
     }
+
     public void activate() {
 
     }
-    @Override
-    public String toString() {
-        return "SpellAndTrapCard{}";
-    }
+
 }

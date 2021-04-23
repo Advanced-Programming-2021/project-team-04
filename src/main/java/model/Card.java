@@ -12,11 +12,30 @@ public class Card {
     protected boolean isAttacked = false;
     protected boolean isAttacking = false;
     public boolean isMonster = false;
-    //probably should handle more than this, maybe make an entry set for both cards *or a hashmap idk
+    //TODO probably should handle more than this, maybe make an entry set for both cards *or a hashmap idk
     protected Account Owner;
+    protected boolean hasBeenUsed = false;
+
     public Card() {
         allCards.add(this);
     }
+
+    public boolean isMonster() {
+        return isMonster;
+    }
+
+    public void setMonster(boolean monster) {
+        isMonster = monster;
+    }
+
+    public boolean isHasBeenUsed() {
+        return hasBeenUsed;
+    }
+
+    public void setHasBeenUsed(boolean hasBeenUsed) {
+        this.hasBeenUsed = hasBeenUsed;
+    }
+
     public boolean isAttacking() {
         return isAttacking;
     }
@@ -47,10 +66,6 @@ public class Card {
 
     public void setOwner(Account owner) {
         Owner = owner;
-    }
-
-    public boolean isValid() {
-        return true;
     }
 
     public String getName() {
@@ -89,9 +104,6 @@ public class Card {
         this.allowedNumber = allowedNumber;
     }
 
-    public void reset() {
-
-    }
     public static Card getCardByName(String name) {
         for (Card card : allCards)
             if (card.getName().equals(name))

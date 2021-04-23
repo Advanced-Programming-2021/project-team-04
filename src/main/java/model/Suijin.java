@@ -21,9 +21,7 @@ public class Suijin extends MonsterCard {
 
     public void specialMethod() {
         MonsterCard monsterCard = DuelController.getInstance().getMonsterAttacking();
-            if (this.canBeUsed) {
                 monsterCard.setThisCardAttackPower(0);
-                this.canBeUsed = false;
-            }
+                this.hasBeenUsed = true;
     }
 }

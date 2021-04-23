@@ -14,10 +14,10 @@ public class Account {
     }
 
     private ArrayList<Deck> allDecks = new ArrayList<Deck>();
-    private ArrayList<Card> unusedCards = new ArrayList<Card>();
+    private ArrayList<Card> allCards = new ArrayList<Card>();
     private Deck activeDeck;
     private String username, password, nickname;
-    private int score, money;
+    private int score, money = 100000;
     private Field field;
     private int LP;
     private int countOfRoundsWon;
@@ -53,8 +53,8 @@ public class Account {
         this.allDecks = allDecks;
     }
 
-    public void setUnusedCards(ArrayList<Card> unusedCards) {
-        this.unusedCards = unusedCards;
+    public void setAllCards(ArrayList<Card> allCards) {
+        this.allCards = allCards;
     }
 
     public void setActiveDeck(Deck activeDeck) {
@@ -109,8 +109,8 @@ public class Account {
         return allDecks;
     }
 
-    public ArrayList<Card> getUnusedCards() {
-        return unusedCards;
+    public ArrayList<Card> getAllCards() {
+        return allCards;
     }
 
     public Deck getActiveDeck() {
@@ -149,33 +149,33 @@ public class Account {
     }
 
     public Card getCardByName(String cardName) {
-        for (Card card : getUnusedCards()) //TODO should we make an arraylist of all cards or is unused cards valid?
+        for (Card card : allCards)
             if (card.getName().equals(cardName))
                 return card;
         return null;
     }
 
-    private void addDeck(Deck deck) {
+    public void addDeck(Deck deck) {
         this.getAllDecks().add(deck);
     }
 
-    private void deleteDeck(Deck deck) {
+    public void deleteDeck(Deck deck) {
         this.getAllDecks().remove(deck);
     }
 
-    private void addCard(Card card) {
-        this.getUnusedCards().add(card);
+    public void addCard(Card card) {
+        this.getAllCards().add(card);
     }
 
-    private boolean hasDeck(String deck) {
+    public boolean hasDeck(String deck) {
         for (Deck thisDeck : allDecks)
             if (thisDeck.getDeckName().equals(deck))
                 return true;
         return false;
     }
 
-    private boolean hasCard(String card) {
-        for (Card thisCard : unusedCards)
+    public boolean hasCard(String card) {
+        for (Card thisCard : allCards)
             if (thisCard.getName().equals(card))
                 return true;
         return false;
@@ -187,9 +187,7 @@ public class Account {
                 activeDeck = thisDeck;
     }
 
-    private void printAllDecks() { //TODO
 
-    }
 
     private boolean hasEnoughMoney(int price) {
         return this.money >= price;
@@ -208,15 +206,14 @@ public class Account {
     }
 
     private void reset() {
-
+        setLP(8000);
+        deleteField();
+        //TODO not sure if it's all but duh
     }
 
-    private void reduceLP(int amount) {
-        LP -= amount;
-    }
 
-    private boolean isPlayerDead() {
-        return true;
+    private boolean isPlayerDead() { //TODO this is not enough for game
+        return LP == 0;
     }
 
     public void changeLP(int amount) {

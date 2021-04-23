@@ -19,46 +19,30 @@ public class DeckController {
         return singleInstance;
     }
 
-    private void createDeck(String deckName) {
+    public void createDeck(String deckName) {
         if (errorForCreation(deckName)) {
             Deck thisDeck = new Deck(deckName);
-            MainController.getInstance().getLoggedIn().getAllDecks().add(thisDeck);
+            MainController.getInstance().getLoggedIn().addDeck(thisDeck);
             Output.getForNow();
         }
     }
 
-    private boolean errorForCreation(String deckName) {
-        if (MainController.getInstance().getLoggedIn().getDeckByName(deckName) != null) { //TODO just for this user?
-            Output.getForNow();
-            return false;
-        }
-        return true;
-    }
-
-    private void deleteDeck(String deckName) {
+    public void deleteDeck(String deckName) {
         if (errorForDeletingOrActivating(deckName)) {
             Output.getForNow();
             if (thisPlayer.getDeckByName(deckName).equals(thisPlayer.getActiveDeck())) thisPlayer.setActiveDeck(null);
-            thisPlayer.getAllDecks().remove(thisPlayer.getDeckByName(deckName));
+            thisPlayer.deleteDeck(thisPlayer.getDeckByName(deckName));
         }
     }
 
-    private void activateDeck(String deckName) {
+    public void activateDeck(String deckName) {
         if (errorForDeletingOrActivating(deckName)) {
             thisPlayer.setActiveDeck(thisPlayer.getDeckByName(deckName));
             Output.getForNow();
         }
     }
 
-    private boolean errorForDeletingOrActivating(String deckName) {
-        if (thisPlayer.getDeckByName(deckName) == null) {
-            Output.getForNow();
-            return false;
-        }
-        return true;
-    }
-
-    private void addCardToDeck(String deckName, String cardName, boolean isMainDeck) {
+    public void addCardToDeck(String deckName, String cardName, boolean isMainDeck) {
         if (errorForAddingCard(deckName, cardName, isMainDeck)) {
             Card card = thisPlayer.getCardByName(cardName);
             if (isMainDeck) {
@@ -71,27 +55,7 @@ public class DeckController {
         }
     }
 
-    private boolean errorForAddingCard(String deckName, String cardName, boolean isMainDeck) {
-        if (!thisPlayer.getUnusedCards().contains(thisPlayer.getCardByName(cardName))) {
-            Output.getForNow();
-            return false;
-        } else if (!thisPlayer.getAllDecks().contains(thisPlayer.getDeckByName(deckName))) {
-            Output.getForNow();
-            return false;
-        } else if (isMainDeck && thisPlayer.getDeckByName(deckName).isMainDeckFull()) {
-            Output.getForNow();
-            return false;
-        } else if (!isMainDeck && thisPlayer.getDeckByName(deckName).isSideDeckFull()) {
-            Output.getForNow();
-            return false;
-        } else if (!thisPlayer.getDeckByName(deckName).isAddingCardValid(cardName)) {
-            Output.getForNow();
-            return false;
-        }
-        return true;
-    }
-
-    private void removeCardFromDeck(String deckName, String cardName, boolean isMainDeck) {
+    public void removeCardFromDeck(String deckName, String cardName, boolean isMainDeck) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorsForRemoving(deckName, cardName, isMainDeck)) {
             if (isMainDeck) thisPlayer.getDeckByName(deckName).getMainDeck().remove(Card.getCardByName(cardName));
@@ -100,21 +64,7 @@ public class DeckController {
         }
     }
 
-    private boolean errorsForRemoving(String deckName, String cardName, boolean isMainDeck) {
-        if (!thisPlayer.getAllDecks().contains(thisPlayer.getDeckByName(deckName))) {
-            Output.getForNow();
-            return false;
-        } else if (isMainDeck && !thisPlayer.getDeckByName(deckName).mainDeckHasCard(cardName)) {
-            Output.getForNow();
-            return false;
-        } else if (!isMainDeck && !thisPlayer.getDeckByName(deckName).sideDeckHasCard(cardName)) {
-            Output.getForNow();
-            return false;
-        }
-        return true;
-    }
-
-    private void printAllDecks() {
+    public void printAllDecks() {
         String toPrint = "Decks:\nActive deck:\n";
         String isValid = "invalid";
         if (thisPlayer.getActiveDeck() != null) {
@@ -137,7 +87,7 @@ public class DeckController {
     }
 
     private void sortedDecks() {
-        Collections.sort(thisPlayer.getAllDecks(), new Comparator<Deck>() {
+        thisPlayer.getAllDecks().sort(new Comparator<Deck>() {
             @Override
             public int compare(Deck o1, Deck o2) {
                 return o1.getDeckName().compareTo(o2.getDeckName());
@@ -145,7 +95,7 @@ public class DeckController {
         });
     }
 
-    private void printDeck(String deckName, boolean isMain) {
+    public void printDeck(String deckName, boolean isMain) {
         if (errorForDeletingOrActivating(deckName)) {
             ArrayList<Card> monsterCards = new ArrayList<>();
             ArrayList<Card> spellAndTrap = new ArrayList<>();
@@ -168,14 +118,14 @@ public class DeckController {
         }
     }
 
-    private void sortedCards(String deckName) {
-        Collections.sort(thisPlayer.getDeckByName(deckName).getMainDeck(), new Comparator<Card>() {
+    public void sortedCards(String deckName) {
+        thisPlayer.getDeckByName(deckName).getMainDeck().sort(new Comparator<Card>() {
             @Override
             public int compare(Card o1, Card o2) {
                 return o1.getName().compareTo(o2.getName());
             }
         });
-        Collections.sort(thisPlayer.getDeckByName(deckName).getSideDeck(), new Comparator<Card>() {
+        thisPlayer.getDeckByName(deckName).getSideDeck().sort(new Comparator<Card>() {
             @Override
             public int compare(Card o1, Card o2) {
                 return o1.getName().compareTo(o2.getName());
@@ -186,18 +136,67 @@ public class DeckController {
     public void printAllCards() {
         String toPrint = "";
         sortAllCards();
-        for (Card card : thisPlayer.getUnusedCards())
+        for (Card card : thisPlayer.getAllCards())
             toPrint += card.getName() + ":" + card.getDescription() + "\n";
         toPrint = toPrint.substring(0, toPrint.length() - 2);
         Output.getForNow();
     }
 
     private void sortAllCards() {
-        Collections.sort(thisPlayer.getUnusedCards(), new Comparator<Card>() {
+        Collections.sort(thisPlayer.getAllCards(), new Comparator<Card>() {
             @Override
             public int compare(Card o1, Card o2) {
                 return o1.getName().compareTo(o2.getName());
             }
         });
+    }
+    private boolean errorForCreation(String deckName) {
+        if (MainController.getInstance().getLoggedIn().getDeckByName(deckName) != null) { //TODO just for this user?
+            Output.getForNow();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean errorForDeletingOrActivating(String deckName) {
+        if (thisPlayer.getDeckByName(deckName) == null) {
+            Output.getForNow();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean errorForAddingCard(String deckName, String cardName, boolean isMainDeck) {
+        if (!thisPlayer.hasCard(cardName)) {
+            Output.getForNow();
+            return false;
+        } else if (!thisPlayer.hasDeck(deckName)) {
+            Output.getForNow();
+            return false;
+        } else if (isMainDeck && thisPlayer.getDeckByName(deckName).isMainDeckFull()) {
+            Output.getForNow();
+            return false;
+        } else if (!isMainDeck && thisPlayer.getDeckByName(deckName).isSideDeckFull()) {
+            Output.getForNow();
+            return false;
+        } else if (!thisPlayer.getDeckByName(deckName).isAddingCardValid(cardName)) {
+            Output.getForNow();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean errorsForRemoving(String deckName, String cardName, boolean isMainDeck) {
+        if (!thisPlayer.getAllDecks().contains(thisPlayer.getDeckByName(deckName))) {
+            Output.getForNow();
+            return false;
+        } else if (isMainDeck && !thisPlayer.getDeckByName(deckName).mainDeckHasCard(cardName)) {
+            Output.getForNow();
+            return false;
+        } else if (!isMainDeck && !thisPlayer.getDeckByName(deckName).sideDeckHasCard(cardName)) {
+            Output.getForNow();
+            return false;
+        }
+        return true;
     }
 }

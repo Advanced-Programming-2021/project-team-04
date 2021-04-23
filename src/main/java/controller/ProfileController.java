@@ -12,20 +12,14 @@ public class ProfileController {
         return singleInstance;
     }
 
-    private void changeNickname(String name) {
+    public void changeNickname(String name) {
         if (isChangingNicknameValid(name)) {
             MainController.getInstance().getLoggedIn().setNickname(name);
             Output.getForNow();
         }
     }
-    private boolean isChangingNicknameValid(String nickname) {
-        if (Account.getAllNicknames().contains(nickname)) {
-            Output.getForNow();
-            return false;
-        }
-        return true;
-    }
-    private void changePassword(String oldPassword, String newPassword) {
+
+    public void changePassword(String oldPassword, String newPassword) {
         if (isChangingPasswordValid(oldPassword, newPassword)) {
             MainController.getInstance().getLoggedIn().setPassword(newPassword);
             Output.getForNow();
@@ -38,6 +32,14 @@ public class ProfileController {
             return false;
         }
         else if (oldPassword.equals(newPassword)) {
+            Output.getForNow();
+            return false;
+        }
+        return true;
+
+    }
+    private boolean isChangingNicknameValid(String nickname) {
+        if (Account.getAllNicknames().contains(nickname)) {
             Output.getForNow();
             return false;
         }

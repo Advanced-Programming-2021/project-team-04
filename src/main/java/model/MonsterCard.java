@@ -8,11 +8,21 @@ public class MonsterCard extends Card {
     protected MonsterCardEffectTypes monsterCardEffectTypes;
     protected MonsterCardModeInField monsterCardModeInField;
     protected boolean canBeRemoved = true;
-    protected boolean canBeUsed = true;
+    protected boolean canAttack = true;
+
     public MonsterCard() {
         super();
         this.isMonster = true;
     }
+
+    public boolean isCanAttack() {
+        return canAttack;
+    }
+
+    public void setCanAttack(boolean canAttack) {
+        this.canAttack = canAttack;
+    }
+
     public MonsterCardEffectTypes getMonsterCardEffectTypes() {
         return monsterCardEffectTypes;
     }
@@ -85,14 +95,19 @@ public class MonsterCard extends Card {
         this.thisCardDefensePower = thisCardDefensePower;
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
     public void changeAttackPower(int amount) {
         this.thisCardAttackPower += amount;
     }
+
     public void changeDefensePower(int amount) {
         this.thisCardDefensePower += amount;
+    }
+
+    public void reset() {
+        this.thisCardDefensePower = classDefensePower;
+        this.thisCardAttackPower = classAttackPower;
+        this.hasBeenUsed = false;
+        this.canBeRemoved = true;
+        //TODO is it enough?
     }
 }

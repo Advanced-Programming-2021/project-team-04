@@ -37,7 +37,8 @@ public class Deck {
         for (Card thisCard : getSideDeck())
             if (thisCard.getName().equals(cardName))
                 count++;
-        if (count == 3) return false;
+        if (count == 3 || Card.getCardByName(cardName).getAllowedNumber() == count)
+            return false;
         return true;
     }
 

@@ -23,9 +23,11 @@ public class MainController {
         return singleInstance;
     }
 
-    private void newDuel(String username, int rounds) {
-        if (errorForNewGame(username, rounds))
+    public void newDuel(String username, int rounds) {
+        if (errorForNewGame(username, rounds)) {
             new Game(loggedIn, Account.getAccountByUsername(username), rounds);
+            Output.getForNow();
+        }
     }
 
     private boolean errorForNewGame(String username, int rounds) {
@@ -33,18 +35,18 @@ public class MainController {
             Output.getForNow();
             return false;
         }
-        else if (rounds != 1 || rounds != 3) {
+        else if (rounds != 1 && rounds != 3) {
             Output.getForNow();
             return false;
         }
         return true;
     }
 
-    private void cheatIncreaseMoney(int amount) {
+    public void cheatIncreaseMoney(int amount) {
         loggedIn.setMoney(loggedIn.getMoney() + amount);
     }
 
-    private void cheatIncreaseScore(int amount) {
+    public void cheatIncreaseScore(int amount) {
         loggedIn.setScore(loggedIn.getScore() + amount);
     }
 }

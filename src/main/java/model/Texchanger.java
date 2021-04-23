@@ -3,9 +3,8 @@ package model;
 import controller.DuelController;
 
 public class Texchanger extends MonsterCard {
-    private boolean hasBeenUsed = false;
-
     public Texchanger() {
+        super();
         setName("Texchanger");
         setLevel(1);
         setClassAttackPower(100);
@@ -24,13 +23,10 @@ public class Texchanger extends MonsterCard {
     }
 
     public void specialMethod() {
-        if (isAttacked)
-            if (!hasBeenUsed) {
-                hasBeenUsed = false;
-                MonsterCard monsterCard = DuelController.getInstance().forTexChanger();
-                Field field = DuelController.getInstance().getGame().getCurrentPlayer().getField();
-                DuelController.getInstance().chooseMonsterMode(monsterCard);
-                field.getMonsterCards().add(monsterCard);
-            }
+            this.hasBeenUsed = true;
+            MonsterCard monsterCard = DuelController.getInstance().forTexChanger();
+            Field field = DuelController.getInstance().getGame().getCurrentPlayer().getField();
+            DuelController.getInstance().chooseMonsterMode(monsterCard);
+            field.getMonsterCards().add(monsterCard);
     }
 }

@@ -35,7 +35,7 @@ private static ScoreboardController singleInstance = null;
     }
 
     private void sortedAccounts() {
-        Collections.sort(Account.getAllAccounts(), new Comparator<Account>() {
+        Account.getAllAccounts().sort(new Comparator<Account>() {
             @Override
             public int compare(Account o1, Account o2) {
                 int compared = -Integer.compare(o1.getScore(), o2.getScore());

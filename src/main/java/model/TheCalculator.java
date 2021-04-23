@@ -1,7 +1,5 @@
 package model;
 
-import controller.DuelController;
-
 public class TheCalculator extends MonsterCard {
     public TheCalculator() {
         super();
@@ -18,13 +16,16 @@ public class TheCalculator extends MonsterCard {
     private void setDescription() {
         this.description = "The ATK of this card is the combined Levels of all face-up monsters you control x 300.";
     }
-    public void specialMethod() {
-        int count = 0;
+
+    @Override
+    public int getThisCardAttackPower() {
+        int amount = 0;
         Account player = this.getOwner();
         for (MonsterCard monsterCard : player.getField().getMonsterCards())
             if (monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP)
             || monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_UP))
-               count++;
-        setThisCardAttackPower(count * 300);
+               amount += monsterCard.getLevel();
+        setThisCardAttackPower(amount * 300);
+        return thisCardAttackPower;
     }
 }

@@ -11,6 +11,7 @@ public class Field {
     private Card fieldZone;
 
     public Field() {
+
     }
 
     public ArrayList<Card> getGraveyard() {
@@ -60,54 +61,71 @@ public class Field {
     public void setFieldZone(Card fieldZone) {
         this.fieldZone = fieldZone;
     }
-    public void shuffleDeck(){
+
+    public void shuffleDeck() {
 
     }
+
     public void addDeck() {
 
     }
+
     public boolean fieldHasEnoughCards(Enum cardStatusInField, int number) {
         return false;
     }
-    public void finalField(){
+
+    public void finalField() {
 
     }
+
     public void removeCardFromHand(Card card) {
 
     }
+
     public void addCardToGraveyard(Card card) {
 
     }
+
     public void removeCardFromGraveyard(Card card) {
 
     }
+
     public void addCardToMonsterZone(Card card) {
 
     }
+
     public void addCardToSpellZone(Card card) {
 
     }
+
     public void setCardToFieldZone(Card card) {
 
     }
+
     public boolean isMonsterZoneFull() {
         return false;
     }
+
     public boolean isSpellZoneFull() {
         return false;
     }
+
     public boolean isCardInHand(Card card) {
         return true;
     }
+
     public boolean isCardInMosterZone(Card card) {
         return true;
     }
+
     public boolean hasQuickSpellOrTrap() {
         return false;
     }
+
     public boolean isTributesLevelSumValid(int sum, int n, ArrayList<MonsterCard> monsterCards) {
         return false;
     }
+
     public void showGraveyard() {
 
     }
