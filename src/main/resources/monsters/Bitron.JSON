@@ -1,0 +1,11 @@
+{
+    "name": "Bitron",
+    "level": 2,
+    "attribute": "EARTH",
+    "monsterType": "Cyberse",
+    "cardType": "Normal",
+    "classAttackPower": 200,
+    "classDefensePower": 2000,
+    "price": 1000,
+    "description": "A new species found in electronic space. There's not much information on it."
+}

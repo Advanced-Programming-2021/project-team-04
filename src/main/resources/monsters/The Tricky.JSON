@@ -1,0 +1,11 @@
+{
+    "name": "The Tricky",
+    "level": 5,
+    "attribute": "WIND",
+    "monsterType": "Spellcaster",
+    "cardType": "Effect",
+    "classAttackPower": 2000,
+    "classDefensePower": 1200,
+    "price": 4300,
+    "description": "You can Special Summon this card (from your hand) by discarding 1 card."
+}
