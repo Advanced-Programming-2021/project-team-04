@@ -1,0 +1,8 @@
+{
+    "name": "Black Pendant",
+    "isSpell": true,
+    "property": "Equip",
+    "isLimited":false,
+    "price": 4300,
+    "description": "The equipped monster gains 500 ATK. When this card is sent from the field to the Graveyard: Inflict 500 damage to your opponent."
+}

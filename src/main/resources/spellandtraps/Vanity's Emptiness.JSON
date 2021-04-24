@@ -1,0 +1,8 @@
+{
+    "name": "Vanity's Emptiness",
+    "isSpell": false,
+    "property": "Continuous",
+    "isLimited": true,
+    "price": 3500,
+    "description": "Neither player can Special Summon monsters. If a card is sent from the Deck or the field to your Graveyard: Destroy this card."
+}
