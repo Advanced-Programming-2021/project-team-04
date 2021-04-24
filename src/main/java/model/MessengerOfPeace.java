@@ -17,9 +17,14 @@ public class MessengerOfPeace extends SpellAndTrapCard{
                 " Once per turn, during your Standby Phase, pay 100 LP or destroy this card.";
     }
 
-    public void deactivateCards(ArrayList<MonsterCard> cards) {
+    public ArrayList<MonsterCard> deactivateCards(ArrayList<MonsterCard> cards) {
+        ArrayList<MonsterCard> deactivatedCards = new ArrayList();
         for (MonsterCard monsterCard : cards)
-            if (monsterCard.classAttackPower >= 1500)
+            if (monsterCard.classAttackPower >= 1500 && monsterCard.canAttack)
+            {
                 monsterCard.canAttack = false;
+                deactivatedCards.add(monsterCard);
+            }
+        return deactivatedCards;
     }
 }

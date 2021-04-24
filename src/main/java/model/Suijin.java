@@ -18,7 +18,7 @@ public class Suijin extends MonsterCard {
         setPrice(8700);
 
     }
-
+    //TODO SET description
     public void specialMethod() {
         MonsterCard monsterCard = DuelController.getInstance().getMonsterAttacking();
                 monsterCard.setThisCardAttackPower(0);

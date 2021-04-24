@@ -1,7 +1,5 @@
 package model;
 
-import controller.DuelController;
-
 public class ManEaterBug extends MonsterCard {
 
     public ManEaterBug() {

@@ -15,10 +15,7 @@ public class Scanner extends MonsterCard {
     }
     public void specialMethod() {
         MonsterCard monsterCard = DuelController.getInstance().forScanner();
-        setThisCardAttackPower(monsterCard.classAttackPower);
-        setThisCardDefensePower(monsterCard.classDefensePower);
-        setName(monsterCard.name);
-        setLevel(monsterCard.level);
+        //TODO
     }
     public void reset() {
         setName("Scanner");
