@@ -15,18 +15,28 @@ public class ImportAndExport {
             singleInstance = new ImportAndExport();
         return singleInstance;
     }
-    public MonsterCard readMonsterCard(String address) throws FileNotFoundException {
-        FileReader fileReader = new FileReader(address);
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        return gson.fromJson(bufferedReader, MonsterCard.class);
+    public MonsterCard readMonsterCard(String address) {
+        try {
+            FileReader fileReader = new FileReader(address);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            return gson.fromJson(bufferedReader, MonsterCard.class);
+        }
+        catch (Exception FileNotFoundException) {
+            return null;
+        }
     }
-    public SpellAndTrapCard readSpellAndTrapCard(String address) throws FileNotFoundException {
-        FileReader fileReader = new FileReader(address);
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        return gson.fromJson(bufferedReader, SpellAndTrapCard.class);
+    public SpellAndTrapCard readSpellAndTrapCard(String address) {
+        try {
+            FileReader fileReader = new FileReader(address);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            return gson.fromJson(bufferedReader, SpellAndTrapCard.class);
+        }
+        catch (Exception FileNotFoundException) {
+            return null;
+        }
     }
 }
