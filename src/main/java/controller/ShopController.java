@@ -82,7 +82,13 @@ public class ShopController {
                     break;
                 }
                 default: {
-
+                    MonsterCard monsterCard = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/" + cardName + ".JSON");
+                    if (monsterCard != null)
+                        thisPlayer.addCard(monsterCard);
+                    else {
+                        SpellAndTrapCard spellAndTrapCard = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/monsters/" + cardName + ".JSON");
+                        thisPlayer.addCard(spellAndTrapCard);
+                    }
                 }
             }
         }
