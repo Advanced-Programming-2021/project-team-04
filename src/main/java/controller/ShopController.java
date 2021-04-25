@@ -2,6 +2,7 @@ package controller;
 
 import model.*;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,10 +14,10 @@ public class ShopController {
     static {
         allCards = new ArrayList<>();
     }
-    public ShopController() {
+    public ShopController() throws FileNotFoundException {
         createCardForShop();
     }
-    public static ShopController getInstance() {
+    public static ShopController getInstance() throws FileNotFoundException {
         if (singleInstance == null)
             singleInstance = new ShopController();
         return singleInstance;
@@ -34,7 +35,7 @@ public class ShopController {
     public void buyCard(String cardName) {
 
     }
-    public void createCardForShop() {
+    public void createCardForShop() throws FileNotFoundException {
         ChangeOfHeart changeOfHeart = new ChangeOfHeart();
         allCards.add(changeOfHeart);
         CommandKnight commandKnight = new CommandKnight();
@@ -49,6 +50,19 @@ public class ShopController {
         allCards.add(texchanger);
         TheCalculator calculator = new TheCalculator();
         allCards.add(calculator);
+        MonsterCard alexandriteDragon = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Alexandrite Dragon.JSON");
+        allCards.add(alexandriteDragon);
+        MonsterCard axeRaider = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Axe Raider.JSON");
+        allCards.add(axeRaider);
+        MonsterCard babyDragon = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Baby dragon.JSON");
+        allCards.add(babyDragon);
+        MonsterCard battleOX = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Battle OX.JSON");
+        allCards.add(battleOX);
+        MonsterCard battleWarrior = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Battle warrior.JSON");
+        allCards.add(battleWarrior);
+        MonsterCard beastKingBarbaros = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Beast King Barbaros.JSON");
+        allCards.add(beastKingBarbaros);
+
     }
     private void sort() {
         Collections.sort(allCards, new Comparator<Card>() {
