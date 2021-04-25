@@ -7,7 +7,7 @@ public class MessengerOfPeace extends SpellAndTrapCard{
         super();
         setName("Messenger of peace");
         isSpell = true;
-        type = SpellAndTrapTypes.CONTINUOUS;
+        property = SpellAndTrapTypes.CONTINUOUS;
         setAllowedNumber(3);
         setPrice(4000);
         setDescription();

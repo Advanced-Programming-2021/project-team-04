@@ -9,7 +9,7 @@ public class ChangeOfHeart extends SpellAndTrapCard {
         super();
         setName("Change of Heart");
         isSpell = true;
-        type = SpellAndTrapTypes.NORMAL;
+        property = SpellAndTrapTypes.NORMAL;
         setDescription();
         setAllowedNumber(1);
         setPrice(2500);

@@ -11,8 +11,7 @@ public class Texchanger extends MonsterCard {
         setClassDefensePower(100);
         setThisCardAttackPower(100);
         setThisCardDefensePower(100);
-        setMonsterCardEffectTypes(MonsterCardEffectTypes.CONTINUOUS);
-        setMonsterCardTypes(MonsterCardTypes.CYBERSE);
+        setMonsterType("Cyberse");
         setPrice(200);
         setDescription();
     }

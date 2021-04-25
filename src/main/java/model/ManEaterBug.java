@@ -6,8 +6,7 @@ public class ManEaterBug extends MonsterCard {
         super();
         setName("Man-Eater Bug");
         setLevel(2);
-        setMonsterCardTypes(MonsterCardTypes.INSECT);
-        setMonsterCardEffectTypes(MonsterCardEffectTypes.FLIP);
+        setMonsterType("Insect");
         setClassAttackPower(450);
         setClassDefensePower(600);
         setThisCardAttackPower(450);

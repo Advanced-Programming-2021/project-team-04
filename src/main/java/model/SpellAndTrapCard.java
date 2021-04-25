@@ -7,7 +7,9 @@ public class SpellAndTrapCard extends Card {
     protected boolean isActive;
     protected boolean canBeActivated = true;
     protected boolean isSpell;
-    protected SpellAndTrapTypes type;
+    protected String property;
+    protected boolean isLimited;
+
     public SpellAndTrapCard() {
         super();
         spellAndTrapCards.add(this);
@@ -17,12 +19,12 @@ public class SpellAndTrapCard extends Card {
 
     }
 
-    public SpellAndTrapTypes getType() {
-        return type;
+    public String getProperty() {
+        return property;
     }
 
-    public void setType(SpellAndTrapTypes type) {
-        this.type = type;
+    public void setProperty(String property) {
+        this.property = property;
     }
 
     public static ArrayList<SpellAndTrapCard> getSpellAndTrapCards() {

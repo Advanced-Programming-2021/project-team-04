@@ -8,8 +8,7 @@ public class TheCalculator extends MonsterCard {
         setClassAttackPower(0);
         setClassDefensePower(0);
         setThisCardDefensePower(0);
-        setMonsterCardEffectTypes(MonsterCardEffectTypes.CONTINUOUS);
-        setMonsterCardTypes(MonsterCardTypes.THUNDER);
+        setMonsterType("Thunder");
         setPrice(8000);
         setDescription();
     }

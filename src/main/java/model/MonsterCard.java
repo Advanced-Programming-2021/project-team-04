@@ -4,8 +4,7 @@ public class MonsterCard extends Card {
     protected int classAttackPower, classDefensePower;
     protected int thisCardAttackPower, thisCardDefensePower;
     protected int level;
-    protected MonsterCardTypes monsterCardTypes;
-    protected MonsterCardEffectTypes monsterCardEffectTypes;
+    protected String monsterType;
     protected MonsterCardModeInField monsterCardModeInField;
     protected boolean canBeRemoved = true;
     protected boolean canAttack = true;
@@ -21,14 +20,6 @@ public class MonsterCard extends Card {
 
     public void setCanAttack(boolean canAttack) {
         this.canAttack = canAttack;
-    }
-
-    public MonsterCardEffectTypes getMonsterCardEffectTypes() {
-        return monsterCardEffectTypes;
-    }
-
-    public void setMonsterCardEffectTypes(MonsterCardEffectTypes monsterCardEffectTypes) {
-        this.monsterCardEffectTypes = monsterCardEffectTypes;
     }
 
     public boolean isCanBeRemoved() {
@@ -55,12 +46,12 @@ public class MonsterCard extends Card {
         this.level = level;
     }
 
-    public MonsterCardTypes getMonsterCardTypes() {
-        return monsterCardTypes;
+    public String getMonsterType() {
+        return monsterType;
     }
 
-    public void setMonsterCardTypes(MonsterCardTypes monsterCardTypes) {
-        this.monsterCardTypes = monsterCardTypes;
+    public void setMonsterType(String monsterType) {
+        this.monsterType = monsterType;
     }
 
     public int getClassAttackPower() {

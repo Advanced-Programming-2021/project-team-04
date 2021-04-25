@@ -9,8 +9,7 @@ public class CommandKnight extends MonsterCard {
         super();
         setName("Command Knight");
         setLevel(4);
-        setMonsterCardTypes(MonsterCardTypes.WARRIOR);
-        setMonsterCardEffectTypes(MonsterCardEffectTypes.CONTINUOUS);
+        setMonsterType("Warrior");
         setClassAttackPower(1000);
         setClassDefensePower(1000);
         setThisCardAttackPower(1000);

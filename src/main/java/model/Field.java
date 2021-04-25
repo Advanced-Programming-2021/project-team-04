@@ -109,7 +109,7 @@ public class Field {
 
     public boolean hasQuickSpellOrTrap() {
         for (SpellAndTrapCard card : trapAndSpell)
-            if (card.getType().equals(SpellAndTrapTypes.QUICK_PLAY))
+            if (card.getProperty().equals(SpellAndTrapTypes.QUICK_PLAY))
                 return true;
         return false;
     }

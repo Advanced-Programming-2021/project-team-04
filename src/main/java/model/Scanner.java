@@ -20,8 +20,7 @@ public class Scanner extends MonsterCard {
     public void reset() {
         setName("Scanner");
         setLevel(1);
-        setMonsterCardEffectTypes(MonsterCardEffectTypes.TRIGGER);
-        setMonsterCardTypes(MonsterCardTypes.MACHINE);
+        setMonsterType("Machine");
         setPrice(8000);
         setClassAttackPower(0);
         setClassDefensePower(0);
