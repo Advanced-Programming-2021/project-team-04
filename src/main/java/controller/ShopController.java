@@ -1,9 +1,8 @@
 package controller;
 
-import model.Card;
-import model.MonsterCardEffectTypes;
-import model.MonsterCardTypes;
+import model.*;
 
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,26 +13,42 @@ public class ShopController {
     static {
         allCards = new ArrayList<>();
     }
+    public ShopController() {
+        createCardForShop();
+    }
     public static ShopController getInstance() {
         if (singleInstance == null)
             singleInstance = new ShopController();
         return singleInstance;
     }
 
-    private void showCard(String name) {
+    public void showCard(String name) {
 
     }
-    private void showAllCards() {
+    public void showAllCards() {
 
     }
-    private boolean isCardNameValid(String name) {
+    public boolean isCardNameValid(String name) {
         return true;
     }
-    private void buyCard(String cardName) {
+    public void buyCard(String cardName) {
 
     }
-    private void createCardForShop() {
-        //TODO JSON
+    public void createCardForShop() {
+        ChangeOfHeart changeOfHeart = new ChangeOfHeart();
+        allCards.add(changeOfHeart);
+        CommandKnight commandKnight = new CommandKnight();
+        allCards.add(commandKnight);
+        ManEaterBug manEaterBug = new ManEaterBug();
+        allCards.add(manEaterBug);
+        MessengerOfPeace messengerOfPeace = new MessengerOfPeace();
+        allCards.add(messengerOfPeace);
+        Suijin suijin = new Suijin();
+        allCards.add(suijin);
+        Texchanger texchanger = new Texchanger();
+        allCards.add(texchanger);
+        TheCalculator calculator = new TheCalculator();
+        allCards.add(calculator);
     }
     private void sort() {
         Collections.sort(allCards, new Comparator<Card>() {
