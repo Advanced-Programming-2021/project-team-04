@@ -49,15 +49,15 @@ public class ShopController {
     public void buyCard(String cardName) {
         if (isCardNameValid(cardName)) {
             switch (cardName) {
-                case "Change of heart": {
+                case "Change of Heart": {
                     thisPlayer.addCard(new ChangeOfHeart());
                     break;
                 }
-                case "Command knight": {
+                case "Command Knight": {
                     thisPlayer.addCard(new CommandKnight());
                     break;
                 }
-                case "Man-eater bug": {
+                case "Man-Eater Bug": {
                     thisPlayer.addCard(new ManEaterBug());
                     break;
                 }
@@ -77,7 +77,7 @@ public class ShopController {
                     thisPlayer.addCard(new Texchanger());
                     break;
                 }
-                case "The calculator": {
+                case "The Calculator": {
                     thisPlayer.addCard(new TheCalculator());
                     break;
                 }
