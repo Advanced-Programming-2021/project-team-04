@@ -4,6 +4,8 @@ import model.Phases;
 
 public class DuelView {
     private static DuelView singleInstance = null;
+    public boolean isRPSDone = false;
+    private Phases currentPhase;
     private DuelView() {
 
     }
@@ -12,10 +14,17 @@ public class DuelView {
             singleInstance = new DuelView();
         return singleInstance;
     }
-    public void run() {
+    public void runForGame() {
 
     }
-    private Phases currentPhase;
+    public void runForRPS() {
+
+    }
+
+    public int getTribute() {
+        return 0;
+    }
+
     private void drawPhase() {
 
     }

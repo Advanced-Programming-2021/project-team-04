@@ -11,7 +11,6 @@ public class Card {
     protected int allowedNumber;
     protected boolean isAttacked = false;
     protected boolean isAttacking = false;
-    public boolean isMonster = false;
     //TODO probably should handle more than this, maybe make an entry set for both cards *or a hashmap idk
     protected Account Owner;
     protected boolean hasBeenUsed = false;
@@ -20,13 +19,6 @@ public class Card {
         allCards.add(this);
     }
 
-    public boolean isMonster() {
-        return isMonster;
-    }
-
-    public void setMonster(boolean monster) {
-        isMonster = monster;
-    }
 
     public boolean isHasBeenUsed() {
         return hasBeenUsed;

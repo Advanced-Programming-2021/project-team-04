@@ -17,16 +17,32 @@ public class Account {
     private ArrayList<Card> allCards = new ArrayList<Card>();
     private Deck activeDeck;
     private String username, password, nickname;
-    private int score, money = 100000;
+    private int score, money = 100000, countForRPS;
     private Field field;
     private int LP;
-    private int countOfRoundsWon;
-
+    private int countOfRoundsWon; //TODO should reset this
+    private boolean canDraw = true; //TODO should reset this
     public Account(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         allAccounts.add(this);
+    }
+
+    public boolean canDraw() {
+        return canDraw;
+    }
+
+    public void setCanDraw(boolean canDraw) {
+        this.canDraw = canDraw;
+    }
+
+    public int getCountForRPS() {
+        return countForRPS;
+    }
+
+    public void setCountForRPS(int countForRPS) {
+        this.countForRPS = countForRPS;
     }
 
     public void setCountOfRoundsWon(int countOfRoundsWon) {

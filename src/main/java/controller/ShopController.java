@@ -12,7 +12,7 @@ import java.util.Comparator;
 public class ShopController {
     private static ShopController singleInstance = null;
     private static ArrayList<Card> allCards;
-    private Account thisPlayer = MainController.getInstance().getLoggedIn();
+    private final Account thisPlayer = MainController.getInstance().getLoggedIn();
 
     static {
         allCards = new ArrayList<>();

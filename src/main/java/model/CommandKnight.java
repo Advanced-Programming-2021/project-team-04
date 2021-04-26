@@ -42,7 +42,7 @@ public class CommandKnight extends MonsterCard {
         else this.canBeRemoved = true;
     }
     @Override
-    public boolean isCanBeRemoved() {
+    public boolean canBeRemoved() {
         isRemovable();
         return canBeRemoved;
     }

@@ -4,6 +4,8 @@ import model.Account;
 import model.Game;
 import view.Output;
 
+import javax.swing.text.View;
+
 public class MainController {
     private Account loggedIn;
     private static MainController singleInstance = null;
@@ -27,6 +29,7 @@ public class MainController {
         if (errorForNewGame(username, rounds)) {
             new Game(loggedIn, Account.getAccountByUsername(username), rounds);
             Output.getForNow();
+            view.MainView.getInstance().run();
         }
     }
 

@@ -9,6 +9,7 @@ public class Game {
     private Account currentPlayer, theOtherPlayer;
     private int rounds;
     private int currentRound;
+    private Phases currentPhase;
     private gameRounds totalRounds;
     private Card selectedCard;
     private boolean hasSummonedInThisTurn;
@@ -22,6 +23,14 @@ public class Game {
         setRounds(rounds);
         setTheOtherPlayer(secondPlayer);
         initializeGame();
+    }
+
+    public Phases getCurrentPhase() {
+        return currentPhase;
+    }
+
+    public void setCurrentPhase(Phases currentPhase) {
+        this.currentPhase = currentPhase;
     }
 
     public gameRounds getTotalRounds() {
@@ -121,7 +130,11 @@ public class Game {
     }
 
     private void initializeGame() {
-
+        shuffleDeck();
+        for (int i = 0; i < 5; i++) {
+            currentPlayer.getField().getHand().add(currentPlayer.getField().getDeckZone().get(i));
+            theOtherPlayer.getField().getHand().add(theOtherPlayer.getField().getDeckZone().get(i));
+        }
     }
 
     public void shuffleDeck() {
@@ -147,7 +160,10 @@ public class Game {
     }
 
     public void changeTurn() {
-
+        Account temp = currentPlayer;
+        currentPlayer = theOtherPlayer;
+        theOtherPlayer = temp;
+        hasSummonedInThisTurn = false;
     }
 
     public boolean isRoundValid(int round) {
