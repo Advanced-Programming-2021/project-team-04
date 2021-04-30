@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class SpellAndTrapCard extends Card {
     protected static ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
-    protected boolean isActive;
+    protected boolean isActive = false;
     protected boolean canBeActivated = true;
     protected boolean isSpell;
     protected String property;

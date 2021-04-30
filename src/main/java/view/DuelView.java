@@ -37,6 +37,12 @@ public class DuelView {
         return input.toLowerCase();
     }
 
+    public void chooseStarter(String winnerUsername) {
+        Output.getForNow();
+        String username = Input.getInputMessage();
+        DuelController.getInstance().chooseStarter(username);
+    }
+
     public int getTribute() {
         return 0;
     }
