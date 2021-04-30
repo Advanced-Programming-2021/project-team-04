@@ -27,7 +27,30 @@ public class DuelController {
     }
 
     public void rockPaperScissor(String thisPlayer, String theOtherPlayer) {
-        //TODO کلا هندل اینطوری باشه که هی از ویو دستور بگیره مقایسه کنه تا نهایتا 3 دور - اگه دو دور بود بس کنه
+        if (thisPlayer.equals(theOtherPlayer)) return;
+        if (thisPlayer.matches("rock") && theOtherPlayer.matches("scissors"))
+            game.getCurrentPlayer().increaseCountForRPS();
+        else if (thisPlayer.matches("rock") && theOtherPlayer.matches("paper"))
+            game.getTheOtherPlayer().increaseCountForRPS();
+        else if (thisPlayer.matches("scissors") && theOtherPlayer.matches("paper"))
+            game.getCurrentPlayer().increaseCountForRPS();
+        else if (thisPlayer.matches("scissors") && theOtherPlayer.matches("rock"))
+            game.getTheOtherPlayer().increaseCountForRPS();
+        else if (thisPlayer.matches("paper") && theOtherPlayer.matches("rock"))
+            game.getCurrentPlayer().increaseCountForRPS();
+        else if (thisPlayer.matches("paper") && theOtherPlayer.matches("scissors"))
+            game.getTheOtherPlayer().increaseCountForRPS();
+        if ((game.getCurrentPlayer().getCountForRPS() == 2 && game.getTheOtherPlayer().getCountForRPS() == 0) ||
+                game.getCurrentPlayer().getCountForRPS() == 3) {
+            //TODO what the fuck do we do now
+            DuelView.getInstance().isRPSDone = true;
+            return;
+        }
+        if ((game.getCurrentPlayer().getCountForRPS() == 0 && game.getTheOtherPlayer().getCountForRPS() == 2) ||
+                game.getTheOtherPlayer().getCountForRPS() == 3) {
+            DuelView.getInstance().isRPSDone = true;
+            return;
+        }
     }
 
     public Game getGame() {
@@ -117,32 +140,31 @@ public class DuelController {
                 number > thisPlayer.getField().getHand().size()) {
             Output.getForNow();
             return false;
-        }
-        else if (cardStatusInField.equals(CardStatusInField.MONSTER_FIELD) &&
-                convertedNumber + 1 > thisPlayer.getField().getMonsterCards().size())  {
+        } else if (cardStatusInField.equals(CardStatusInField.MONSTER_FIELD) &&
+                convertedNumber + 1 > thisPlayer.getField().getMonsterCards().size()) {
             Output.getForNow();
             return false;
-        }
-        else if (cardStatusInField.equals(CardStatusInField.SPELL_FIELD) &&
-        convertedNumber + 1 > thisPlayer.getField().getTrapAndSpell().size()) {
+        } else if (cardStatusInField.equals(CardStatusInField.SPELL_FIELD) &&
+                convertedNumber + 1 > thisPlayer.getField().getTrapAndSpell().size()) {
             Output.getForNow();
             return false;
-        }
-        else if (cardStatusInField.equals(CardStatusInField.FIELD_ZONE) &&
-               thisPlayer.getField().getFieldZone() == null) {
+        } else if (cardStatusInField.equals(CardStatusInField.FIELD_ZONE) &&
+                thisPlayer.getField().getFieldZone() == null) {
             Output.getForNow();
             return false;
         }
         return true;
     }
-    private int handleMyCardNumber (int number) {
+
+    private int handleMyCardNumber(int number) {
         if (number == 1) return 2;
         if (number == 2) return 3;
         if (number == 3) return 1;
         if (number == 4) return 4;
         return 0;
     }
-    private int handleOpponentsCardNumber (int number) {
+
+    private int handleOpponentsCardNumber(int number) {
         if (number == 1) return 2;
         if (number == 2) return 1;
         if (number == 3) return 3;
@@ -170,6 +192,7 @@ public class DuelController {
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         game.getCurrentPlayer().getField().getMonsterCards().add(monsterCard);
     }
+
     private void summonWithTribute() {
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         if (monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) {
@@ -178,8 +201,7 @@ public class DuelController {
             if (isTributeValid(convertedNumber)) {
                 moveOneCardToGY(convertedNumber);
             }
-        }
-        else if (monsterCard.getLevel() == 7 || monsterCard.getLevel() == 8) {
+        } else if (monsterCard.getLevel() == 7 || monsterCard.getLevel() == 8) {
             int firstNumber = DuelView.getInstance().getTribute();
             int secondNumber = DuelView.getInstance().getTribute();
             int firstConvertedNumber = handleMyCardNumber(firstNumber);
@@ -213,16 +235,15 @@ public class DuelController {
         }
         return true;
     }
+
     private boolean isSummonValid() {
         if (game.getSelectedCard() == null) {
             Output.getForNow();
             return false;
-        }
-        else if (!game.getCurrentPlayer().getField().getHand().contains(game.getSelectedCard())) {
+        } else if (!game.getCurrentPlayer().getField().getHand().contains(game.getSelectedCard())) {
             Output.getForNow();
             return false;
-        }
-        else if (!(game.getSelectedCard() instanceof MonsterCard)) {
+        } else if (!(game.getSelectedCard() instanceof MonsterCard)) {
             Output.getForNow();
             return false;
         }
@@ -230,21 +251,17 @@ public class DuelController {
         if (monsterCard.getCardType().equals("Ritual")) {
             Output.getForNow();
             return false;
-        }
-        else if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
+        } else if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
             Output.getForNow();
             return false;
-        }
-        else if (game.isHasSummonedInThisTurn()) {
+        } else if (game.isHasSummonedInThisTurn()) {
             Output.getForNow();
             return false;
-        }
-        else if ((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) &&
-        game.getCurrentPlayer().getField().getMonsterCards().isEmpty()) {
+        } else if ((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) &&
+                game.getCurrentPlayer().getField().getMonsterCards().isEmpty()) {
             Output.getForNow();
             return false;
-        }
-        else if ((monsterCard.getLevel() >=7 ) &&
+        } else if ((monsterCard.getLevel() >= 7) &&
                 game.getCurrentPlayer().getField().getMonsterCards().size() < 2) {
             Output.getForNow();
             return false;

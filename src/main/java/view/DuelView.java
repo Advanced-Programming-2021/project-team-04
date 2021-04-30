@@ -1,11 +1,11 @@
 package view;
 
+import controller.DuelController;
 import model.Phases;
 
 public class DuelView {
     private static DuelView singleInstance = null;
     public boolean isRPSDone = false;
-    private Phases currentPhase;
     private DuelView() {
 
     }
@@ -15,10 +15,26 @@ public class DuelView {
         return singleInstance;
     }
     public void runForGame() {
-
+        runForRPS();
+        //TODO call the other methods here
     }
     public void runForRPS() {
+        while(!isRPSDone) {
+            String firstPlayersChoice = getRPSInput();
+            String secondPlayersChoice = getRPSInput();
+            DuelController.getInstance().rockPaperScissor(firstPlayersChoice, secondPlayersChoice);
+        }
+    }
 
+    private String getRPSInput() {
+        Output.getForNow(); //maybe it could get the users name as input to say who should enter
+        String input = Input.getInputMessage();
+        while (!(input.matches("[Rr]ock") || input.matches("[Pp]aper") ||
+                input.matches("[Ss]cissors"))) {
+            Output.getForNow();
+            input = Input.getInputMessage();
+        }
+        return input.toLowerCase();
     }
 
     public int getTribute() {
