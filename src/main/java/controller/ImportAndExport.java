@@ -5,7 +5,6 @@ import model.MonsterCard;
 import model.SpellAndTrapCard;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 
 public class ImportAndExport {
@@ -39,4 +38,5 @@ public class ImportAndExport {
             return null;
         }
     }
+
 }

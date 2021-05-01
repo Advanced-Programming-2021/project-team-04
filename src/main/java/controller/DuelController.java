@@ -629,6 +629,10 @@ public class DuelController {
         game.getTheOtherPlayer().changeLP(-amount);
     }
 
+    public void surrender() {
+        game.finishGame();
+    }
+
     public MonsterCard getMonsterAttacking() {
 
     }
