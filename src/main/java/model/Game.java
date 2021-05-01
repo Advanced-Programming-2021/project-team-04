@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 public class Game {
     private HashMap<Account, Integer> maxLifePoint;
-    private Account currentPlayer, theOtherPlayer;
+    private Account currentPlayer, theOtherPlayer, winnerOfRPS;
     private int rounds;
     private int currentRound;
     private Phases currentPhase;
@@ -23,6 +23,14 @@ public class Game {
         setRounds(rounds);
         setTheOtherPlayer(secondPlayer);
         initializeGame();
+    }
+
+    public Account getWinnerOfRPS() {
+        return winnerOfRPS;
+    }
+
+    public void setWinnerOfRPS(Account winnerOfRPS) {
+        this.winnerOfRPS = winnerOfRPS;
     }
 
     public Phases getCurrentPhase() {

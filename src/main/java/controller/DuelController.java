@@ -26,8 +26,8 @@ public class DuelController {
 
     }
 
-    public void rockPaperScissor(String thisPlayer, String theOtherPlayer) {
-        //TODO کلا هندل اینطوری باشه که هی از ویو دستور بگیره مقایسه کنه تا نهایتا 3 دور - اگه دو دور بود بس کنه
+    public void rockPaperScissor(String thisPlayerRPS, String theOtherPlayerRPS) {
+
     }
 
     public Game getGame() {
@@ -268,13 +268,7 @@ public class DuelController {
         return true;
     }
 
-    private void flipSummon() {
 
-    }
-
-    private boolean isFlipSummonValid() {
-        return true;
-    }
 
     private void attack(int opponentMonsterPositionNumber) {
 
