@@ -22,10 +22,12 @@ public class Texchanger extends MonsterCard {
     }
 
     public void specialMethod() {
-            this.hasBeenUsed = true;
+        if (!this.hasBeenUsed) {
             MonsterCard monsterCard = DuelController.getInstance().forTexChanger();
+            if (monsterCard == null) return;
             Field field = DuelController.getInstance().getGame().getCurrentPlayer().getField();
             DuelController.getInstance().chooseMonsterMode(monsterCard);
             field.getMonsterCards().add(monsterCard);
+        }
     }
 }

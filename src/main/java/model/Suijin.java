@@ -4,6 +4,7 @@ import controller.DuelController;
 
 public class Suijin extends MonsterCard {
 
+    private boolean hasBeenUsedInGeneral = false;
 
     public Suijin() {
         super();
@@ -23,9 +24,10 @@ public class Suijin extends MonsterCard {
                 " make that target's ATK 0 during damage calculation only (this is a Quick Effect). " +
                 "This effect can only be used once while this card is face-up on the field.";
     }
-    public void specialMethod() {
-        MonsterCard monsterCard = DuelController.getInstance().getMonsterAttacking();
-                monsterCard.setThisCardAttackPower(0);
-                this.hasBeenUsed = true;
+    public void specialMethod(MonsterCard monsterCard) {
+        if (!this.hasBeenUsedInGeneral) {
+            monsterCard.setThisCardAttackPower(0);
+            this.hasBeenUsedInGeneral = true;
+        }
     }
 }
