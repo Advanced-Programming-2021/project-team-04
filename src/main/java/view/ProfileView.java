@@ -1,6 +1,6 @@
 package view;
 
-public class ProfileView {
+public class ProfileView extends Menu {
     private static ProfileView singleInstance = null;
     private ProfileView() {
 
@@ -10,9 +10,17 @@ public class ProfileView {
             singleInstance = new ProfileView();
         return singleInstance;
     }
+
+    @Override
     public void run() {
 
     }
+
+    @Override
+    public void showCurrentMenu() {
+        Output.getInstance().printProfileMenuName();
+    }
+
     private void changeNickname(String input) {
 
     }

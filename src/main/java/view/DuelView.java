@@ -3,7 +3,7 @@ package view;
 import controller.DuelController;
 import model.Phases;
 
-public class DuelView {
+public class DuelView extends Menu {
     private static DuelView singleInstance = null;
     public boolean isRPSDone = false;
     private DuelView() {
@@ -25,16 +25,27 @@ public class DuelView {
             DuelController.getInstance().rockPaperScissor(firstPlayersChoice, secondPlayersChoice);
         }
     }
+    
+
+    public boolean wantsToActivate(String cardName) {
+        Output.getForNow();
+        String response = Input.getInputMessage();
+        while (true) {
+            if (response.matches("[Yy]")) return true;
+            if (response.matches("[Nn]")) return false;
+            Output.getForNow();
+        }
+    }
 
     private String getRPSInput() {
         Output.getForNow(); //maybe it could get the users name as input to say who should enter
-        String input = Input.getInputMessage();
-        while (!(input.matches("[Rr]ock") || input.matches("[Pp]aper") ||
-                input.matches("[Ss]cissors"))) {
+        String input = Input.getInputMessage().toLowerCase();
+        while (!(input.matches("rock") || input.matches("paper") ||
+                input.matches("scissors"))) {
             Output.getForNow();
             input = Input.getInputMessage();
         }
-        return input.toLowerCase();
+        return input;
     }
 
     public void chooseStarter(String winnerUsername) {
@@ -138,4 +149,13 @@ public class DuelView {
 
     }
 
+    @Override
+    public void run() {
+
+    }
+
+    @Override
+    public void showCurrentMenu() {
+        Output.getInstance().printDuelMenuName();
+    }
 }

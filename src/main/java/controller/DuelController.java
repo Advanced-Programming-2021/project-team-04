@@ -374,47 +374,51 @@ public class DuelController {
         if (!isAttackValid(opponentMonsterPositionNumber)) return;
         MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber);
         MonsterCard attacker = (MonsterCard) game.getSelectedCard();
+        if (attacked.getName().equals("Suijin") &&
+        DuelView.getInstance().wantsToActivate("Suijin")) {
+            ((Suijin) attacked).specialMethod(attacker);
+        }
         if (attacked.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP)
             attackInAttack(attacked, attacker);
         else attackInDefense(attacked, attacker);
         attacker.setHasAttacked(true);
         game.setSelectedCard(null);
+
     }
 
     private void attackInDefense(MonsterCard attacked, MonsterCard attacker) {
         if (attacked.getThisCardDefensePower() < attacker.getThisCardAttackPower()) {
-            game.getTheOtherPlayer().getField().getMonsterCards().remove(attacked);
-            game.getTheOtherPlayer().getField().getGraveyard().add(attacked);
+            moveToGraveyard(attacked, attacker);
             Output.getForNow(); //TODO get the card and check the shit
             return;
         }
         if (attacked.getThisCardDefensePower() == attacker.getThisCardAttackPower()) {
+            attacked.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
             Output.getForNow();
             return;
         }
         game.getCurrentPlayer().changeLP(attacker.getThisCardAttackPower() - attacked.getThisCardDefensePower());
+        attacked.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
         Output.getForNow();
     }
 
     private void attackInAttack(MonsterCard attacked, MonsterCard attacker) {
         if (attacked.getThisCardAttackPower() < attacker.getThisCardAttackPower()) {
-            game.getTheOtherPlayer().changeLP(attacked.getThisCardAttackPower() - attacker.getThisCardAttackPower());
-            game.getTheOtherPlayer().getField().getMonsterCards().remove(attacked);
-            game.getTheOtherPlayer().getField().getGraveyard().add(attacked);
+            moveToGraveyard(attacked, attacker);
             Output.getForNow();
+            if (!attacked.getName().equals("Exploder Dragon"))
+                game.getTheOtherPlayer().changeLP(attacked.getThisCardAttackPower() - attacker.getThisCardAttackPower());
             return;
         }
         if (attacked.getThisCardAttackPower() == attacker.getThisCardAttackPower()) {
-            game.getCurrentPlayer().getField().getMonsterCards().remove(attacker);
-            game.getCurrentPlayer().getField().getGraveyard().add(attacker);
-            game.getTheOtherPlayer().getField().getMonsterCards().remove(attacked);
-            game.getTheOtherPlayer().getField().getGraveyard().add(attacked);
+            moveToGraveyard(attacker, attacked);
+            moveToGraveyard(attacked, attacker);
             Output.getForNow();
             return;
         }
-        game.getCurrentPlayer().changeLP(attacker.getThisCardAttackPower() - attacked.getThisCardAttackPower());
-        game.getCurrentPlayer().getField().getMonsterCards().remove(attacker);
-        game.getCurrentPlayer().getField().getGraveyard().add(attacker);
+        if (!attacker.getName().equals("Exploder Dragon"))
+            game.getCurrentPlayer().changeLP(attacker.getThisCardAttackPower() - attacked.getThisCardAttackPower());
+        moveToGraveyard(attacker, attacked);
         Output.getForNow();
     }
 
@@ -638,6 +642,15 @@ public class DuelController {
         game.finishGame();
     }
 
+    private void moveToGraveyard(MonsterCard toBeRemoved, MonsterCard remover) {
+        toBeRemoved.getOwner().getField().getGraveyard().add(toBeRemoved);
+        toBeRemoved.getOwner().getField().getMonsterCards().remove(toBeRemoved);
+        if (toBeRemoved.getName().equals("Exploder Dragon") || toBeRemoved.getName().equals("Yomi Ship")) {
+            toBeRemoved.getOwner().getField().getGraveyard().add(remover);
+            toBeRemoved.getOwner().getField().getMonsterCards().remove(remover);
+        }
+    }
+
     public MonsterCard getMonsterAttacking() {
 
     }
@@ -651,7 +664,8 @@ public class DuelController {
     }
 
     public MonsterCard forTexChanger() {
-        //remove it from the place u're getting it
+        if (!DuelView.getInstance().wantsToActivate("Texchanger")) return null;
+        //TODO
     }
 
     public void chooseMonsterMode(MonsterCard monsterCard) {

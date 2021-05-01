@@ -1,5 +1,5 @@
 package view;
-public class MainView {
+public class MainView extends Menu {
     private static MainView singleInstance = null;
     private MainView() {
 
@@ -9,9 +9,17 @@ public class MainView {
             singleInstance = new MainView();
         return singleInstance;
     }
+
+    @Override
     public void run() {
 
     }
+
+    @Override
+    public void showCurrentMenu() {
+        Output.getInstance().printMainMenuName();
+    }
+
     private void enterMenu(String input) {
 
     }

@@ -1,7 +1,9 @@
 package view;
 
-public class ShopView {
+public class ShopView extends Menu {
+
     private static ShopView singleInstance = null;
+
     private ShopView() {
 
     }
@@ -10,9 +12,17 @@ public class ShopView {
             singleInstance = new ShopView();
         return singleInstance;
     }
+
+    @Override
     public void run() {
 
     }
+
+    @Override
+    public void showCurrentMenu() {
+        Output.getInstance().printShopMenuName();
+    }
+
     private void showAllCards() {
 
     }

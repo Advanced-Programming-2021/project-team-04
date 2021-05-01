@@ -1,6 +1,6 @@
 package view;
 
-public class DeckView {
+public class DeckView extends Menu {
     private static DeckView singleInstance = null;
     private DeckView() {
 
@@ -10,9 +10,17 @@ public class DeckView {
             singleInstance = new DeckView();
         return singleInstance;
     }
+
+    @Override
     public void run() {
 
     }
+
+    @Override
+    public void showCurrentMenu() {
+        Output.getInstance().printDeckMenuName();
+    }
+
     private void createDeck(String input) {
 
     }
@@ -32,9 +40,6 @@ public class DeckView {
 
     }
     private void printDeck(String input) {
-
-    }
-    private void showCurrent() {
 
     }
 }
