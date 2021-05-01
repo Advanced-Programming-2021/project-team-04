@@ -9,6 +9,8 @@ public class MonsterCard extends Card {
     protected MonsterCardModeInField monsterCardModeInField;
     protected boolean canBeRemoved = true;
     protected boolean canAttack = true;
+    protected boolean hasChangedPosition = false;
+    protected boolean hasAttacked = false;
 
     public MonsterCard() {
         super();
@@ -18,8 +20,33 @@ public class MonsterCard extends Card {
         return cardType;
     }
 
+
     public void setCardType(String cardType) {
         this.cardType = cardType;
+    }
+
+    public boolean isHasAttacked() {
+        return hasAttacked;
+    }
+
+    public void setHasAttacked(boolean hasAttacked) {
+        this.hasAttacked = hasAttacked;
+    }
+
+    public boolean isHasChangedPosition() {
+        return hasChangedPosition;
+    }
+
+    public void setHasChangedPosition(boolean hasChangedPosition) {
+        this.hasChangedPosition = hasChangedPosition;
+    }
+
+    public boolean isCanBeRemoved() {
+        return canBeRemoved;
+    }
+
+    public boolean isCanAttack() {
+        return canAttack;
     }
 
     public boolean canAttack() {
@@ -44,6 +71,7 @@ public class MonsterCard extends Card {
 
     public void setMonsterCardModeInField(MonsterCardModeInField monsterCardModeInField) {
         this.monsterCardModeInField = monsterCardModeInField;
+        this.hasChangedPosition = true;
     }
 
     public int getLevel() {
@@ -107,6 +135,8 @@ public class MonsterCard extends Card {
         this.thisCardAttackPower = classAttackPower;
         this.hasBeenUsed = false;
         this.canBeRemoved = true;
+        this.hasChangedPosition = false;
+        this.hasAttacked = false;
         //TODO is it enough?
     }
 }

@@ -45,6 +45,10 @@ public class Account {
         this.countForRPS = countForRPS;
     }
 
+    public void increaseCountForRPS() {
+        this.countForRPS++;
+    }
+
     public void setCountOfRoundsWon(int countOfRoundsWon) {
         this.countOfRoundsWon = countOfRoundsWon;
     }

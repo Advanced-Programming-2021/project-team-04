@@ -26,8 +26,37 @@ public class DuelController {
 
     }
 
-    public void rockPaperScissor(String thisPlayerRPS, String theOtherPlayerRPS) {
+    public void rockPaperScissor(String thisPlayer, String theOtherPlayer) {
+        if (thisPlayer.equals(theOtherPlayer)) return;
+        if (thisPlayer.matches("rock") && theOtherPlayer.matches("scissors"))
+            game.getCurrentPlayer().increaseCountForRPS();
+        else if (thisPlayer.matches("rock") && theOtherPlayer.matches("paper"))
+            game.getTheOtherPlayer().increaseCountForRPS();
+        else if (thisPlayer.matches("scissors") && theOtherPlayer.matches("paper"))
+            game.getCurrentPlayer().increaseCountForRPS();
+        else if (thisPlayer.matches("scissors") && theOtherPlayer.matches("rock"))
+            game.getTheOtherPlayer().increaseCountForRPS();
+        else if (thisPlayer.matches("paper") && theOtherPlayer.matches("rock"))
+            game.getCurrentPlayer().increaseCountForRPS();
+        else if (thisPlayer.matches("paper") && theOtherPlayer.matches("scissors"))
+            game.getTheOtherPlayer().increaseCountForRPS();
+        if ((game.getCurrentPlayer().getCountForRPS() == 2 && game.getTheOtherPlayer().getCountForRPS() == 0) ||
+                game.getCurrentPlayer().getCountForRPS() == 3) {
+            DuelView.getInstance().chooseStarter(game.getCurrentPlayer().getUsername());
+            DuelView.getInstance().isRPSDone = true;
+            return;
+        }
+        if ((game.getCurrentPlayer().getCountForRPS() == 0 && game.getTheOtherPlayer().getCountForRPS() == 2) ||
+                game.getTheOtherPlayer().getCountForRPS() == 3) {
+            DuelView.getInstance().chooseStarter(game.getTheOtherPlayer().getUsername());
+            DuelView.getInstance().isRPSDone = true;
+            return;
+        }
+    }
 
+    public void chooseStarter(String username) {
+        if (game.getCurrentPlayer().getUsername().equals(username)) return;
+        game.changeTurn();
     }
 
     public Game getGame() {
@@ -117,32 +146,31 @@ public class DuelController {
                 number > thisPlayer.getField().getHand().size()) {
             Output.getForNow();
             return false;
-        }
-        else if (cardStatusInField.equals(CardStatusInField.MONSTER_FIELD) &&
-                convertedNumber + 1 > thisPlayer.getField().getMonsterCards().size())  {
+        } else if (cardStatusInField.equals(CardStatusInField.MONSTER_FIELD) &&
+                convertedNumber + 1 > thisPlayer.getField().getMonsterCards().size()) {
             Output.getForNow();
             return false;
-        }
-        else if (cardStatusInField.equals(CardStatusInField.SPELL_FIELD) &&
-        convertedNumber + 1 > thisPlayer.getField().getTrapAndSpell().size()) {
+        } else if (cardStatusInField.equals(CardStatusInField.SPELL_FIELD) &&
+                convertedNumber + 1 > thisPlayer.getField().getTrapAndSpell().size()) {
             Output.getForNow();
             return false;
-        }
-        else if (cardStatusInField.equals(CardStatusInField.FIELD_ZONE) &&
-               thisPlayer.getField().getFieldZone() == null) {
+        } else if (cardStatusInField.equals(CardStatusInField.FIELD_ZONE) &&
+                thisPlayer.getField().getFieldZone() == null) {
             Output.getForNow();
             return false;
         }
         return true;
     }
-    private int handleMyCardNumber (int number) {
+
+    private int handleMyCardNumber(int number) {
         if (number == 1) return 2;
         if (number == 2) return 3;
         if (number == 3) return 1;
         if (number == 4) return 4;
         return 0;
     }
-    private int handleOpponentsCardNumber (int number) {
+
+    private int handleOpponentsCardNumber(int number) {
         if (number == 1) return 2;
         if (number == 2) return 1;
         if (number == 3) return 3;
@@ -163,13 +191,16 @@ public class DuelController {
 
     }
 
-    private void summon() {
+    public void summon() {
         //TODO چک کن کارتایی که وضعشون خاصه ritual
         if (!isSummonValid()) return;
         summonWithTribute();
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         game.getCurrentPlayer().getField().getMonsterCards().add(monsterCard);
+        monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        Output.getForNow();
     }
+
     private void summonWithTribute() {
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         if (monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) {
@@ -178,8 +209,7 @@ public class DuelController {
             if (isTributeValid(convertedNumber)) {
                 moveOneCardToGY(convertedNumber);
             }
-        }
-        else if (monsterCard.getLevel() == 7 || monsterCard.getLevel() == 8) {
+        } else if (monsterCard.getLevel() == 7 || monsterCard.getLevel() == 8) {
             int firstNumber = DuelView.getInstance().getTribute();
             int secondNumber = DuelView.getInstance().getTribute();
             int firstConvertedNumber = handleMyCardNumber(firstNumber);
@@ -213,16 +243,19 @@ public class DuelController {
         }
         return true;
     }
+
     private boolean isSummonValid() {
         if (game.getSelectedCard() == null) {
             Output.getForNow();
             return false;
-        }
-        else if (!game.getCurrentPlayer().getField().getHand().contains(game.getSelectedCard())) {
+        } else if (!game.getCurrentPlayer().getField().getHand().contains(game.getSelectedCard())) {
+            Output.getForNow();
+            return false;
+        } else if (!(game.getSelectedCard() instanceof MonsterCard)) {
             Output.getForNow();
             return false;
         }
-        else if (!(game.getSelectedCard() instanceof MonsterCard)) {
+        if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
             Output.getForNow();
             return false;
         }
@@ -230,21 +263,17 @@ public class DuelController {
         if (monsterCard.getCardType().equals("Ritual")) {
             Output.getForNow();
             return false;
-        }
-        else if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
+        } else if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
             Output.getForNow();
             return false;
-        }
-        else if (game.isHasSummonedInThisTurn()) {
+        } else if (game.isHasSummonedInThisTurn()) {
             Output.getForNow();
             return false;
-        }
-        else if ((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) &&
-        game.getCurrentPlayer().getField().getMonsterCards().isEmpty()) {
+        } else if ((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) &&
+                game.getCurrentPlayer().getField().getMonsterCards().isEmpty()) {
             Output.getForNow();
             return false;
-        }
-        else if ((monsterCard.getLevel() >=7 ) &&
+        } else if ((monsterCard.getLevel() >= 7) &&
                 game.getCurrentPlayer().getField().getMonsterCards().size() < 2) {
             Output.getForNow();
             return false;
@@ -252,45 +281,241 @@ public class DuelController {
         return true;
     }
 
-    private void set() {
-
+    public void set() {
+        if (!isSetValid()) return;
+        if (game.getSelectedCard() instanceof MonsterCard) {
+            MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
+            game.getCurrentPlayer().getField().getMonsterCards().add(selectedCard);
+            selectedCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_DOWN);
+        }
+        Output.getForNow();
     }
 
     private boolean isSetValid() {
+        if (game.getSelectedCard() == null) {
+            Output.getForNow();
+            return false;
+        }
+        if (!game.getCurrentPlayer().getField().getHand().contains(game.getSelectedCard())) {
+            Output.getForNow();
+            return false;
+        }
+        if (game.getSelectedCard() instanceof MonsterCard) {
+            if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
+                Output.getForNow();
+                return false;
+            }
+            if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
+                Output.getForNow();
+                return false;
+            }
+            if (game.isHasSummonedInThisTurn()) {
+                Output.getForNow();
+                return false;
+            }
+        }
         return true;
     }
 
     private void setPosition(boolean isAttack) {
-
+        if (!isSetPositionValid(isAttack)) return;
+        MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
+        if (isAttack) {
+            selectedCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        } else {
+            selectedCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
+        }
+        Output.getForNow();
     }
 
     private boolean isSetPositionValid(boolean isAttack) {
+        if (checkSelectedCard()) return false;
+        if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
+            Output.getForNow();
+            return false;
+        }
+        MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
+        if ((isAttack && selectedCard.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP) ||
+                (!isAttack && (selectedCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_UP ||
+                        selectedCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN))) {
+            Output.getForNow();
+            return false;
+        }
+        if (selectedCard.isHasChangedPosition()) {
+            Output.getForNow();
+            return false;
+        }
         return true;
     }
 
+    private void flipSummon() {
+        if (!isFlipSummonValid()) return;
+        Output.getForNow();
+        MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
+        monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+    }
 
+    private boolean isFlipSummonValid() {
+        if (checkSelectedCard()) return false;
+        if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
+            Output.getForNow();
+            return false;
+        }
+        MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
+        if (!monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN)) {
+            Output.getForNow();
+            return false;
+        }
+        return true;
+    }
 
-    private void attack(int opponentMonsterPositionNumber) {
+    public void attack(int opponentMonsterPositionNumber) {
+        if (!isAttackValid(opponentMonsterPositionNumber)) return;
+        MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber);
+        MonsterCard attacker = (MonsterCard) game.getSelectedCard();
+        if (attacked.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP)
+            attackInAttack(attacked, attacker);
+        else attackInDefense(attacked, attacker);
+        attacker.setHasAttacked(true);
+    }
 
+    private void attackInDefense(MonsterCard attacked, MonsterCard attacker) {
+        if (attacked.getThisCardDefensePower() < attacker.getThisCardAttackPower()) {
+            game.getTheOtherPlayer().getField().getMonsterCards().remove(attacked);
+            game.getTheOtherPlayer().getField().getGraveyard().add(attacked);
+            Output.getForNow(); //TODO get the card and check the shit
+            return;
+        }
+        if (attacked.getThisCardDefensePower() == attacker.getThisCardAttackPower()) {
+            Output.getForNow();
+            return;
+        }
+        game.getCurrentPlayer().changeLP(attacker.getThisCardAttackPower() - attacked.getThisCardDefensePower());
+        Output.getForNow();
+    }
+
+    private void attackInAttack(MonsterCard attacked, MonsterCard attacker) {
+        if (attacked.getThisCardAttackPower() < attacker.getThisCardAttackPower()) {
+            game.getTheOtherPlayer().changeLP(attacked.getThisCardAttackPower() - attacker.getThisCardAttackPower());
+            game.getTheOtherPlayer().getField().getMonsterCards().remove(attacked);
+            game.getTheOtherPlayer().getField().getGraveyard().add(attacked);
+            Output.getForNow();
+            return;
+        }
+        if (attacked.getThisCardAttackPower() == attacker.getThisCardAttackPower()) {
+            game.getCurrentPlayer().getField().getMonsterCards().remove(attacker);
+            game.getCurrentPlayer().getField().getGraveyard().add(attacker);
+            game.getTheOtherPlayer().getField().getMonsterCards().remove(attacked);
+            game.getTheOtherPlayer().getField().getGraveyard().add(attacked);
+            Output.getForNow();
+            return;
+        }
+        game.getCurrentPlayer().changeLP(attacker.getThisCardAttackPower() - attacked.getThisCardAttackPower());
+        game.getCurrentPlayer().getField().getMonsterCards().remove(attacker);
+        game.getCurrentPlayer().getField().getGraveyard().add(attacker);
+        Output.getForNow();
     }
 
     private boolean isAttackValid(int opponentMonsterPositionNumber) {
+        if (checkSelectedCard()) return false;
+        if (game.getCurrentPhase() != Phases.BATTLE_PHASE) {
+            Output.getForNow();
+            return false;
+        }
+        MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
+        if (selectedCard.isHasAttacked()) {
+            Output.getForNow();
+            return false;
+        }
+        if (game.getTheOtherPlayer().getField().getMonsterCards().size() < opponentMonsterPositionNumber) {
+            Output.getForNow();
+            return false;
+        }
         return true;
+    }
+
+    private boolean checkSelectedCard() {
+        if (game.getSelectedCard() == null) {
+            Output.getForNow();
+            return true;
+        }
+        if (!(game.getSelectedCard() instanceof MonsterCard) && !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
+            Output.getForNow();
+            return true;
+        }
+        return false;
     }
 
     private void directAttack() {
-
+        if (!isDirectAttackValid()) return;
+        MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
+        game.getTheOtherPlayer().changeLP(-(selectedCard.getThisCardAttackPower()));
+        selectedCard.setHasAttacked(true);
+        Output.getForNow();
     }
 
     private boolean isDirectAttackValid() {
+        if (checkSelectedCard()) return false;
+        if (game.getCurrentPhase() != Phases.BATTLE_PHASE) {
+            Output.getForNow();
+            return false;
+        }
+        MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
+        if (selectedCard.isHasAttacked()) {
+            Output.getForNow();
+            return false;
+        }
+        if (!game.getTheOtherPlayer().getField().getMonsterCards().isEmpty()) {
+            Output.getForNow();
+            return false;
+        } //TODO check for a spell that prevents this
         return true;
     }
 
-    private void activateSpell() {
-
+    public void activateSpell() {
+        if (!isActivatingSpellValid()) return;
+        SpellAndTrapCard selectedCard = (SpellAndTrapCard) game.getSelectedCard();
+        if (selectedCard.getProperty().equals("Field")) {
+            if (game.getCurrentPlayer().getField().getFieldZone() != null) {
+                game.getCurrentPlayer().getField().getGraveyard().add(game.getCurrentPlayer().getField().getFieldZone());
+            }
+            game.getCurrentPlayer().getField().setFieldZone(selectedCard);
+            selectedCard.setActive(true);
+        } else {
+            game.getCurrentPlayer().getField().getTrapAndSpell().add(selectedCard);
+            selectedCard.setActive(true);
+        }
+        Output.getForNow();
     }
 
     private boolean isActivatingSpellValid() {
+        if (game.getSelectedCard() == null) {
+            Output.getForNow();
+            return false;
+        }
+        if (!(game.getSelectedCard() instanceof SpellAndTrapCard)) {
+            Output.getForNow();
+            return false;
+        }
+        SpellAndTrapCard selectedCard = (SpellAndTrapCard) game.getSelectedCard();
+        if (!selectedCard.isSpell()) {
+            Output.getForNow();
+            return false;
+        }
+        if (game.getCurrentPhase() != Phases.FIRST_MAIN_PHASE && game.getCurrentPhase() != Phases.SECOND_MAIN_PHASE) {
+            Output.getForNow();
+            return false;
+        }
+        if (selectedCard.isActive()) {
+            Output.getForNow();
+            return false;
+        }
+        if (game.getCurrentPlayer().getField().getHand().contains(selectedCard) && !selectedCard.getProperty().equals("Field") &&
+                game.getCurrentPlayer().getField().getTrapAndSpell().size() == 5) {
+            Output.getForNow();
+            return false;
+        }
+        //TODO check specific card requirements
         return true;
     }
 
