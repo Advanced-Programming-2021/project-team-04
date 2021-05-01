@@ -139,4 +139,11 @@ public class MonsterCard extends Card {
         this.hasAttacked = false;
         //TODO is it enough?
     }
+
+    @Override
+    public String toString() {
+        return "Name: " + this.name + "\nLevel: " + this.level + "\nType: " + this.monsterType
+                +"\nATK: " + this.classAttackPower + "\nDEF: " + this.classDefensePower
+                + "\nDescription: " + this.description;
+    }
 }

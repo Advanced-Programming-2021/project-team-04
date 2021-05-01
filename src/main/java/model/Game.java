@@ -242,17 +242,11 @@ public class Game {
 
     }
 
-    public void directAttack() {
-
-    }
 
     public void ritualSummon() {
 
     }
 
-    public void showSelectedCard() {
-
-    }
 
     public boolean isGameFinished() {
         return true;

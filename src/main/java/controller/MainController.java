@@ -4,8 +4,6 @@ import model.Account;
 import model.Game;
 import view.Output;
 
-import javax.swing.text.View;
-
 public class MainController {
     private Account loggedIn;
     private static MainController singleInstance = null;
@@ -37,8 +35,7 @@ public class MainController {
         if (!Account.getAllAccounts().contains(Account.getAccountByUsername(username))) {
             Output.getForNow();
             return false;
-        }
-        else if (rounds != 1 && rounds != 3) {
+        } else if (rounds != 1 && rounds != 3) {
             Output.getForNow();
             return false;
         }

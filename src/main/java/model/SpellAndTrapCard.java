@@ -15,10 +15,6 @@ public class SpellAndTrapCard extends Card {
         spellAndTrapCards.add(this);
     }
 
-    public void set(){
-
-    }
-
     public String getProperty() {
         return property;
     }
@@ -63,8 +59,11 @@ public class SpellAndTrapCard extends Card {
         return false;
     }
 
-    public void activate() {
-
+    @Override
+    public String toString() {
+        String spellAndTrap = "Trap";
+        if (isSpell) spellAndTrap = "Spell";
+        return "Name: " + this.name + "\n" + spellAndTrap + "\nType: " + this.property
+                + "\nDescription: " + this.description;
     }
-
 }

@@ -5,7 +5,6 @@ import view.ChainView;
 import view.DuelView;
 import view.Output;
 
-import javax.swing.text.View;
 import java.util.ArrayList;
 
 public class DuelController {
@@ -198,6 +197,7 @@ public class DuelController {
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         game.getCurrentPlayer().getField().getMonsterCards().add(monsterCard);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        game.setSelectedCard(null);
         Output.getForNow();
     }
 
@@ -281,17 +281,16 @@ public class DuelController {
         return true;
     }
 
-    public void set() {
-        if (!isSetValid()) return;
-        if (game.getSelectedCard() instanceof MonsterCard) {
-            MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
-            game.getCurrentPlayer().getField().getMonsterCards().add(selectedCard);
-            selectedCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_DOWN);
-        }
+    public void setMonster() {
+        if (!isSettingMonsterValid()) return;
+        MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
+        game.getCurrentPlayer().getField().getMonsterCards().add(selectedCard);
+        selectedCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_DOWN);
+        game.setSelectedCard(null);
         Output.getForNow();
     }
 
-    private boolean isSetValid() {
+    private boolean isSettingMonsterValid() {
         if (game.getSelectedCard() == null) {
             Output.getForNow();
             return false;
@@ -325,6 +324,7 @@ public class DuelController {
         } else {
             selectedCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
         }
+        game.setSelectedCard(null);
         Output.getForNow();
     }
 
@@ -351,6 +351,7 @@ public class DuelController {
     private void flipSummon() {
         if (!isFlipSummonValid()) return;
         Output.getForNow();
+        game.setSelectedCard(null);
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
     }
@@ -377,6 +378,7 @@ public class DuelController {
             attackInAttack(attacked, attacker);
         else attackInDefense(attacked, attacker);
         attacker.setHasAttacked(true);
+        game.setSelectedCard(null);
     }
 
     private void attackInDefense(MonsterCard attacked, MonsterCard attacker) {
@@ -439,7 +441,8 @@ public class DuelController {
             Output.getForNow();
             return true;
         }
-        if (!(game.getSelectedCard() instanceof MonsterCard) && !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
+        if (!(game.getSelectedCard() instanceof MonsterCard) &&
+                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
             Output.getForNow();
             return true;
         }
@@ -452,6 +455,7 @@ public class DuelController {
         game.getTheOtherPlayer().changeLP(-(selectedCard.getThisCardAttackPower()));
         selectedCard.setHasAttacked(true);
         Output.getForNow();
+        game.setSelectedCard(null);
     }
 
     private boolean isDirectAttackValid() {
@@ -486,6 +490,7 @@ public class DuelController {
             selectedCard.setActive(true);
         }
         Output.getForNow();
+        game.setSelectedCard(null);
     }
 
     private boolean isActivatingSpellValid() {
@@ -519,14 +524,37 @@ public class DuelController {
         return true;
     }
 
-    private void setSpellOrTrap() {
-
+    public void setSpellAndTrap() {
+        if (!isSettingSpellAndTrapValid()) return;
+        game.getCurrentPlayer().getField().getHand().remove(game.getSelectedCard());
+        game.getCurrentPlayer().getField().getTrapAndSpell().add((SpellAndTrapCard) game.getSelectedCard());
+        game.setSelectedCard(null);
+        Output.getForNow();
     }
 
-    private boolean isSetSpellOrTrapValid() {
+    private boolean isSettingSpellAndTrapValid() {
+        if (game.getSelectedCard() == null) {
+            Output.getForNow();
+            return false;
+        }
+        if (!game.getCurrentPlayer().getField().getHand().contains(game.getSelectedCard())) {
+            Output.getForNow();
+            return false;
+        }
+        if (game.getCurrentPhase() != Phases.FIRST_MAIN_PHASE && game.getCurrentPhase() != Phases.SECOND_MAIN_PHASE) {
+            Output.getForNow();
+            return false;
+        }
+        if (game.getCurrentPlayer().getField().getTrapAndSpell().size() == 5) {
+            Output.getForNow();
+            return false;
+        }
         return true;
     }
-
+    public void set() {
+        if (game.getSelectedCard() instanceof MonsterCard) setMonster();
+        else setSpellAndTrap();
+    }
     private void ritualSummonMenu(String card, ArrayList cards) {
 
     }
@@ -535,40 +563,70 @@ public class DuelController {
 
     }
 
-    private void showGraveyard() {
-
+    public void showGraveyard() {
+        String toPrint = "";
+        if (game.getCurrentPlayer().getField().getGraveyard().isEmpty()) toPrint = "graveyard empty";
+        else {
+            for (Card card : game.getCurrentPlayer().getField().getGraveyard())
+                toPrint += card.getName() + ":" + card.getDescription() + "\n";
+            toPrint = toPrint.substring(0, toPrint.length() - 2);
+        }
+        Output.getForNow();
+    }
+    public void showSelectedCard() {
+        if (!errorsForShowingSelectedCard()) return;
+        Output.getForNow(); //TODO toString
     }
 
-    private void showSelectedCard() {
-
+    private boolean errorsForShowingSelectedCard() {
+        if (game.getSelectedCard() == null) {
+            Output.getForNow();
+            return false;
+        }
+        if (game.getSelectedCard().getOwner().equals(game.getTheOtherPlayer()))
+            if (game.getSelectedCard() instanceof MonsterCard) {
+                MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
+                if (monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN)) {
+                    Output.getForNow();
+                    return false;
+                }
+            }
+            else {
+                SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) game.getSelectedCard();
+                if (!spellAndTrapCard.isActive()) {
+                    Output.getForNow();
+                    return false;
+                }
+            }
+        return true;
     }
 
-    private void cheatShowRivalHand() {
-
+    public void cheatShowRivalHand() {
+        String rivalHand = "";
+        for (Card card : game.getTheOtherPlayer().getField().getHand())
+            rivalHand += card.getName() + "\n";
+        rivalHand = rivalHand.substring(0, rivalHand.length() - 2);
+        Output.getForNow();
     }
 
-    private void cheatTakeMoreCards() {
-
+    public void cheatIncreaseLP(int amount) {
+        game.getCurrentPlayer().changeLP(amount);
     }
 
-    private void cheatIncreaseLP() {
-
+    public void cheatSetWinner() {
+        game.finishGame();
     }
 
-    private void cheatSetWinner() {
-
+    public void cheatSeeMyDeck() {
+        String toPrint = "";
+        for (Card card : game.getCurrentPlayer().getField().getDeckZone())
+            toPrint += card.getName() + "\n";
+        toPrint = toPrint.substring(0, toPrint.length() - 2);
+        Output.getForNow();
     }
 
-    private void cheatSeeMyDeck() {
-
-    }
-
-    private void cheatChooseFromGraveyard() {
-
-    }
-
-    private void cheatDecreaseLP() {
-
+    public void cheatDecreaseLP(int amount) {
+        game.getTheOtherPlayer().changeLP(-amount);
     }
 
     public MonsterCard getMonsterAttacking() {
