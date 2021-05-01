@@ -114,13 +114,13 @@ public class Field {
         return false;
     }
 
-    public boolean isTributesLevelSumValid(int sum, int n, ArrayList<MonsterCard> monsterCards) {
+    public boolean isTributesLevelSumValid(int sum, int n) {
         if (sum > 0 && n == 0)
             return false;
         if (sum == 0)
             return true;
-        return isTributesLevelSumValid(sum, n - 1, monsterCards) ||
-                isTributesLevelSumValid(sum - monsterCards.get(n - 1).getLevel(), n - 1, monsterCards);
+        return isTributesLevelSumValid(sum, n - 1) ||
+                isTributesLevelSumValid(sum - monsterCards.get(n - 1).getLevel(), n - 1);
     }
 
     public String showGraveyard() {
@@ -131,4 +131,22 @@ public class Field {
         return toPrint;
     }
 
+    public ArrayList<MonsterCard> ritualMonsterCards() {
+        ArrayList<MonsterCard> rituals = new ArrayList<>();
+        for (Card card : hand)
+            if (card instanceof MonsterCard) {
+                MonsterCard thisMonster = (MonsterCard) card;
+                if (thisMonster.cardType.equals("Ritual"))
+                    rituals.add(thisMonster);
+            }
+        return rituals;
+    }
+
+    public ArrayList<MonsterCard> ordinaryLowLevelCards() {
+        ArrayList<MonsterCard> thisCards = new ArrayList<>();
+        for (MonsterCard monsterCard : monsterCards)
+            if (monsterCard.getLevel() <= 4 && monsterCard.cardType.equals("Normal"))
+                thisCards.add(monsterCard);
+        return thisCards;
+    }
 }

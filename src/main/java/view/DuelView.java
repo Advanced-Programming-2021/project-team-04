@@ -1,7 +1,10 @@
 package view;
 
 import controller.DuelController;
+import model.MonsterCard;
 import model.Phases;
+
+import java.util.ArrayList;
 
 public class DuelView extends Menu {
     private static DuelView singleInstance = null;
@@ -157,5 +160,27 @@ public class DuelView extends Menu {
     @Override
     public void showCurrentMenu() {
         Output.getInstance().printDuelMenuName();
+    }
+
+    public MonsterCard getRitualCard() {
+    return null;
+    }
+
+    public ArrayList<MonsterCard> getTributes() {
+        return null;
+    }
+
+    public String monsterMode() {
+        return "";
+    }
+
+    public MonsterCard getMonsterCardFromHand() {
+        return null;
+    }
+    public boolean ordinaryOrSpecial() {
+        // ordinary false
+        // special true
+        boolean isSpecial = true;
+        return isSpecial;
     }
 }
