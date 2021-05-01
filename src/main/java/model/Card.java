@@ -13,19 +13,19 @@ public class Card {
     protected boolean isAttacking = false;
     //TODO probably should handle more than this, maybe make an entry set for both cards *or a hashmap idk
     protected Account Owner;
-    protected boolean hasBeenUsed = false;
+    protected boolean hasBeenUsedInThisTurn = false;
 
     public Card() {
         allCards.add(this);
     }
 
 
-    public boolean isHasBeenUsed() {
-        return hasBeenUsed;
+    public boolean isHasBeenUsedInThisTurn() {
+        return hasBeenUsedInThisTurn;
     }
 
-    public void setHasBeenUsed(boolean hasBeenUsed) {
-        this.hasBeenUsed = hasBeenUsed;
+    public void setHasBeenUsedInThisTurn(boolean hasBeenUsedInThisTurn) {
+        this.hasBeenUsedInThisTurn = hasBeenUsedInThisTurn;
     }
 
     public boolean isAttacking() {

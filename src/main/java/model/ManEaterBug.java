@@ -1,5 +1,7 @@
 package model;
 
+import controller.DuelController;
+
 public class ManEaterBug extends MonsterCard {
 
     public ManEaterBug() {
@@ -20,12 +22,12 @@ public class ManEaterBug extends MonsterCard {
     }
 
 
-    public void setMonsterCardModeInField(MonsterCardModeInField monsterCardModeInField) {
+    public void setMonsterCardModeInField(MonsterCardModeInField newMode) {
         if (this.monsterCardModeInField == MonsterCardModeInField.DEFENSE_FACE_DOWN &&
-                (monsterCardModeInField == MonsterCardModeInField.ATTACK_FACE_UP ||
-                        monsterCardModeInField == MonsterCardModeInField.DEFENSE_FACE_UP)) {
-            //TODO: call method in game controller to kill someone
+                (newMode == MonsterCardModeInField.ATTACK_FACE_UP ||
+                        newMode == MonsterCardModeInField.DEFENSE_FACE_UP)) {
+            DuelController.getInstance().forManEaterBug();
         }
-        this.monsterCardModeInField = monsterCardModeInField;
+        this.monsterCardModeInField = newMode;
     }
 }

@@ -41,10 +41,6 @@ public class MonsterCard extends Card {
         this.hasChangedPosition = hasChangedPosition;
     }
 
-    public boolean isCanBeRemoved() {
-        return canBeRemoved;
-    }
-
     public boolean isCanAttack() {
         return canAttack;
     }
@@ -133,7 +129,7 @@ public class MonsterCard extends Card {
     public void reset() {
         this.thisCardDefensePower = classDefensePower;
         this.thisCardAttackPower = classAttackPower;
-        this.hasBeenUsed = false;
+        this.hasBeenUsedInThisTurn = false;
         this.canBeRemoved = true;
         this.hasChangedPosition = false;
         this.hasAttacked = false;

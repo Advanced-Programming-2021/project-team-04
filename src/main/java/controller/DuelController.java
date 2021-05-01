@@ -433,6 +433,10 @@ public class DuelController {
             Output.getForNow();
             return false;
         }
+        if (!selectedCard.canBeRemoved()) {
+            Output.getForNow();
+            return false;
+        }
         return true;
     }
 
@@ -489,6 +493,7 @@ public class DuelController {
             game.getCurrentPlayer().getField().getTrapAndSpell().add(selectedCard);
             selectedCard.setActive(true);
         }
+        //TODO MIRAGE DRAGON
         Output.getForNow();
         game.setSelectedCard(null);
     }

@@ -3,8 +3,7 @@ package model;
 import controller.DuelController;
 
 public class Suijin extends MonsterCard {
-
-
+    private boolean hasBeenUsedInGeneral = false;
     public Suijin() {
         super();
         setName("Suijin");
@@ -24,8 +23,10 @@ public class Suijin extends MonsterCard {
                 "This effect can only be used once while this card is face-up on the field.";
     }
     public void specialMethod() {
-        MonsterCard monsterCard = DuelController.getInstance().getMonsterAttacking();
-                monsterCard.setThisCardAttackPower(0);
-                this.hasBeenUsed = true;
+        if (!this.hasBeenUsedInGeneral) {
+            MonsterCard monsterCard = DuelController.getInstance().getMonsterAttacking();
+            monsterCard.setThisCardAttackPower(0);
+            this.hasBeenUsedInGeneral = true;
+        }
     }
 }
