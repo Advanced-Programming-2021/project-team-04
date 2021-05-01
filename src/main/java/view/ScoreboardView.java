@@ -1,6 +1,6 @@
 package view;
 
-public class ScoreboardView {
+public class ScoreboardView extends Menu {
     private static ScoreboardView singleInstance = null;
     private ScoreboardView() {
 
@@ -10,10 +10,14 @@ public class ScoreboardView {
             singleInstance = new ScoreboardView();
         return singleInstance;
     }
+
+    @Override
     public void run() {
 
     }
-    private void showCurrent() {
 
+    @Override
+    public void showCurrentMenu() {
+        Output.getInstance().printScoreboardMenuName();
     }
 }

@@ -3,7 +3,7 @@ package view;
 import controller.DuelController;
 import model.Phases;
 
-public class DuelView {
+public class DuelView extends Menu {
     private static DuelView singleInstance = null;
     public boolean isRPSDone = false;
     private DuelView() {
@@ -138,4 +138,13 @@ public class DuelView {
 
     }
 
+    @Override
+    public void run() {
+
+    }
+
+    @Override
+    public void showCurrentMenu() {
+        Output.getInstance().printDuelMenuName();
+    }
 }
