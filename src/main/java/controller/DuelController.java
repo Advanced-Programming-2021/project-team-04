@@ -76,7 +76,28 @@ public class DuelController {
 
     private void standbyPhase() {
         Field field = game.getCurrentPlayer().getField();
-        //TODO کارتایی که اثرشون باید اینجا فعال شه مثل کامند نایت
+        Field opponentField = game.getTheOtherPlayer().getField();
+        for (MonsterCard monsterCard : field.getMonsterCards()) {
+            if (monsterCard.getName().equals("Herald of Creation") &&
+                    !monsterCard.isHasBeenUsedInThisTurn() &&
+                    !(monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN))) {
+                heraldOfCreation();
+                monsterCard.setHasBeenUsedInThisTurn(true);
+            }
+            if (monsterCard.getName().equals("Command Knight")) {
+                CommandKnight commandKnight = (CommandKnight) monsterCard;
+                commandKnight.specialMethod();
+                commandKnight.setHasBeenUsedInThisTurn(true);
+            }
+        }
+        for (MonsterCard monsterCard : opponentField.getMonsterCards()) {
+            if (monsterCard.getName().equals("Command Knight")) {
+                CommandKnight commandKnight = (CommandKnight) monsterCard;
+                commandKnight.specialMethod();
+                commandKnight.setHasBeenUsedInThisTurn(true);
+            }
+        }
+
         makeChain(field);
     }
 
@@ -197,6 +218,19 @@ public class DuelController {
                 theTricky();
                 return;
             }
+        if (game.getSelectedCard().getName().equals("Gate Guardian")) {
+            if (DuelView.getInstance().summonGateGaurdian()) {
+                gateGuardian();
+            }
+            return;
+        }
+        if (game.getSelectedCard().getName().equals("Beast King Barbaros")) {
+            int howToSummon = DuelView.getInstance().barbaros();
+            if (howToSummon != 1) {
+                barbaros(howToSummon);
+                return;
+            }
+        }
         if (!isSummonValid()) return;
         summonWithTribute();
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
@@ -206,6 +240,7 @@ public class DuelController {
             terraTigerMethod();
         game.setSelectedCard(null);
         Output.getForNow();
+        game.setHasSummonedInThisTurn(true);
     }
 
     private void summonWithTribute() {
@@ -224,7 +259,6 @@ public class DuelController {
             if (isTributeValid(firstConvertedNumber) && isTributeValid(secondConvertedNumber)) {
                 moveToGraveYard(firstConvertedNumber, secondConvertedNumber);
             }
-
         }
     }
 
@@ -296,6 +330,7 @@ public class DuelController {
         game.getCurrentPlayer().getField().getMonsterCards().add(selectedCard);
         selectedCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_DOWN);
         game.setSelectedCard(null);
+        game.setHasSummonedInThisTurn(true);
         Output.getForNow();
     }
 
@@ -321,8 +356,7 @@ public class DuelController {
             if (game.isHasSummonedInThisTurn()) {
                 Output.getForNow();
                 return false;
-            }
-            else if ((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) &&
+            } else if ((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) &&
                     game.getCurrentPlayer().getField().getMonsterCards().isEmpty()) {
                 Output.getForNow();
                 return false;
@@ -750,16 +784,17 @@ public class DuelController {
 
     }
 
-    public SpellAndTrapCard chosenTrapCard() {
-
+    private void heraldOfCreation() {
+        MonsterCard monsterCard = DuelView.getInstance().getFromGY();
+        if (monsterCard.getLevel() < 7) {
+            Output.getForNow();
+            return;
+        }
+        MonsterCard monsterCardToRemove = DuelView.getInstance().getMonsterCardFromHand();
+        addToGY(monsterCardToRemove);
+        game.getCurrentPlayer().getField().getHand().add(monsterCard);
     }
 
-    public MonsterCard selectFromGraveYard() {//for herald of creation
-    }
-
-    public MonsterCard selectToRemove() {
-        //for herald of creation
-    }
 
     private void terraTigerMethod() {
         if (!DuelView.getInstance().wantsToActivate("Terratiger, the Empowered Warrior")) return;
@@ -769,7 +804,10 @@ public class DuelController {
             monsterCard = DuelView.getInstance().getMonsterCardFromHand();
         }
         specialSummon(monsterCard, MonsterCardModeInField.DEFENSE_FACE_DOWN);
+        game.setSelectedCard(null);
+        game.setHasSummonedInThisTurn(true);
     }
+
     private boolean errorForTerraTiger() {
         if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
             Output.getForNow();
@@ -781,10 +819,54 @@ public class DuelController {
         }
         return true;
     }
+
     private void theTricky() {
         MonsterCard monsterCard = DuelView.getInstance().getMonsterCardFromHand();
         game.getCurrentPlayer().getField().getHand().remove(monsterCard);
         game.getCurrentPlayer().getField().getGraveyard().add(monsterCard);
         specialSummon((MonsterCard) game.getSelectedCard(), MonsterCardModeInField.ATTACK_FACE_UP);
+        game.setSelectedCard(null);
+    }
+
+    private void gateGuardian() {
+        tributeThreeCards();
+        MonsterCard gateGuardian = (MonsterCard) game.getSelectedCard();
+        specialSummon(gateGuardian, MonsterCardModeInField.ATTACK_FACE_UP);
+        game.setSelectedCard(null);
+    }
+
+    private void tributeThreeCards() {
+        int firstTribute = DuelView.getInstance().getTribute();
+        int secondTribute = DuelView.getInstance().getTribute();
+        int thirdTribute = DuelView.getInstance().getTribute();
+        addToGY(game.getCurrentPlayer().getField().getMonsterCards().get(firstTribute));
+        addToGY(game.getCurrentPlayer().getField().getMonsterCards().get(secondTribute));
+        addToGY(game.getCurrentPlayer().getField().getMonsterCards().get(thirdTribute));
+    }
+
+    private void barbaros(int howToSummon) {
+        MonsterCard barbaros = (MonsterCard) game.getSelectedCard();
+       if (howToSummon == 2) {
+           barbaros.setThisCardAttackPower(1900);
+           barbaros.setClassAttackPower(1900);
+       }
+       else {
+           ArrayList<MonsterCard> opponentMonsterCards = game.getTheOtherPlayer().getField().getMonsterCards();
+           ArrayList<SpellAndTrapCard> opponentSpellCards = game.getTheOtherPlayer().getField().getTrapAndSpell();
+           int max = Math.max(opponentMonsterCards.size(), opponentSpellCards.size());
+           tributeThreeCards();
+           game.getTheOtherPlayer().getField().setFieldZone(null);
+           for (int i = 0; i < max; i++) {
+               if (opponentMonsterCards.get(i) != null)
+                   opponentMonsterCards.remove(i);
+               if (opponentSpellCards.get(i) != null)
+                   opponentSpellCards.remove(i);
+           }
+       }
+       game.getCurrentPlayer().getField().getHand().remove(barbaros);
+       game.getCurrentPlayer().getField().getMonsterCards().add(barbaros);
+       barbaros.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+       game.setSelectedCard(null);
+       game.setHasSummonedInThisTurn(true);
     }
 }

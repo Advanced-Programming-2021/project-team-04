@@ -26,6 +26,8 @@ public class CommandKnight extends MonsterCard {
 
     public void specialMethod() {
         ArrayList<MonsterCard> monsterCards = DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards();
+        ArrayList<MonsterCard> opponentMonsterCards = DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards();
+        monsterCards.addAll(opponentMonsterCards);
             if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP) ||
                     this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
                 for (MonsterCard monsterCard : monsterCards)

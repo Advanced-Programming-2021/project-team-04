@@ -177,10 +177,23 @@ public class DuelView extends Menu {
     public MonsterCard getMonsterCardFromHand() {
         return null;
     }
+    public MonsterCard getFromGY() {
+        return null;
+    }
     public boolean ordinaryOrSpecial() {
         // ordinary false
         // special true
         boolean isSpecial = true;
         return isSpecial;
+    }
+
+    public boolean summonGateGaurdian() {
+        return true;
+    }
+    public int barbaros() {
+        // 1 summon with 2 tributes
+        // 2 summon normally
+        // 3 summon with 3 tributes
+        return 0;
     }
 }
