@@ -108,7 +108,6 @@ public class Field {
     }
 
 
-
     public boolean hasQuickSpellOrTrap() {
         for (SpellAndTrapCard card : trapAndSpell)
             if (card.getProperty().equals("")) //TODO
@@ -155,6 +154,13 @@ public class Field {
     public SpellAndTrapCard hasThisCardActivated(String cardName) {
         for (SpellAndTrapCard spellAndTrapCard : trapAndSpell)
             if (spellAndTrapCard.getName().equals(cardName) && spellAndTrapCard.isActive())
+                return spellAndTrapCard;
+        return null;
+    }
+
+    public SpellAndTrapCard hasTrapCard(String cardName) {
+        for (SpellAndTrapCard spellAndTrapCard : trapAndSpell)
+            if (spellAndTrapCard.getName().equals(cardName))
                 return spellAndTrapCard;
         return null;
     }

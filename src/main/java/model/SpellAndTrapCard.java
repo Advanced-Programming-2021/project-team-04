@@ -69,6 +69,7 @@ public class SpellAndTrapCard extends Card {
 
     public void reset() {
         hasBeenUsedInThisTurn = false;
+        isActive = false;
     }
 
 }

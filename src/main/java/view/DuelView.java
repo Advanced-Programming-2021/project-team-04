@@ -192,8 +192,16 @@ public class DuelView extends Menu {
         return null;
     }
 
+    public MonsterCard getMonsterToEquip() {
+        return null;
+    }
+
     public MonsterCard getHijackedCard() {
         return null;
+    }
+
+    public boolean wantsToActivateTrap(String name) {
+        return true;
     }
 
     public boolean ordinaryOrSpecial() {
