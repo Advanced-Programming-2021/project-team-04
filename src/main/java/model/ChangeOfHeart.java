@@ -2,8 +2,8 @@ package model;
 
 public class ChangeOfHeart extends SpellAndTrapCard {
 
-    private Card hijackedCard;
-    private Account originalOwner;
+    private MonsterCard hijackedCard = null;
+    private Account originalOwner = null;
 
     public ChangeOfHeart() {
         super();
@@ -19,16 +19,25 @@ public class ChangeOfHeart extends SpellAndTrapCard {
         description = "Target 1 monster your opponent controls; take control of it until the End Phase.";
     }
 
-    public void setHijackedCard(Card hijackedCard) {
+    public void setHijackedCard(MonsterCard hijackedCard) {
         this.hijackedCard = hijackedCard;
-        originalOwner = hijackedCard.getOwner();
+        this.originalOwner = hijackedCard.getOwner();
+        this.getOwner().getField().getMonsterCards().add(hijackedCard);
+        originalOwner.getField().getMonsterCards().remove(hijackedCard);
         hijackedCard.setOwner(this.getOwner());
     }
 
     public void reset() {
-        hijackedCard.setOwner(originalOwner);
-        hijackedCard = null;
-        originalOwner = null;
-        //TODO: remember that monsters are not the only ones with resets
+        if (isActive) {
+            if (hijackedCard != null) {
+                hijackedCard.setOwner(originalOwner);
+                originalOwner.getField().getMonsterCards().add(hijackedCard);
+                this.getOwner().getField().getMonsterCards().remove(hijackedCard);
+                hijackedCard = null;
+                originalOwner = null;
+            }
+            this.getOwner().getField().getTrapAndSpell().remove(this);
+            this.getOwner().getField().getGraveyard().add(this);
+        }
     }
 }

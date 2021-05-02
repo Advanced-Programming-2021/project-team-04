@@ -3,6 +3,7 @@ package view;
 import controller.DuelController;
 import model.MonsterCard;
 import model.Phases;
+import model.SpellAndTrapCard;
 
 import java.util.ArrayList;
 
@@ -177,9 +178,24 @@ public class DuelView extends Menu {
     public MonsterCard getMonsterCardFromHand() {
         return null;
     }
-    public MonsterCard getFromGY() {
+    public MonsterCard getFromMyGY() {
         return null;
     }
+    public MonsterCard getFromOpponentGY() {
+        return null;
+    }
+    public boolean isMyGraveyard() {
+        return true;
+    }
+
+    public SpellAndTrapCard getFieldSpellFromDeck() {
+        return null;
+    }
+
+    public MonsterCard getHijackedCard() {
+        return null;
+    }
+
     public boolean ordinaryOrSpecial() {
         // ordinary false
         // special true

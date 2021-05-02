@@ -107,6 +107,8 @@ public class Field {
         return monsterCards.contains(card);
     }
 
+
+
     public boolean hasQuickSpellOrTrap() {
         for (SpellAndTrapCard card : trapAndSpell)
             if (card.getProperty().equals("")) //TODO
