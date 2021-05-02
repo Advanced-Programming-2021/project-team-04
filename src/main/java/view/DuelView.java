@@ -1,6 +1,7 @@
 package view;
 
 import controller.DuelController;
+import model.Card;
 import model.MonsterCard;
 import model.Phases;
 import model.SpellAndTrapCard;
@@ -209,6 +210,14 @@ public class DuelView extends Menu {
         // special true
         boolean isSpecial = true;
         return isSpecial;
+    }
+
+    public int numOfSpellCardsToDestroy() {
+        return 0;
+    }
+
+    public Card getCardFromHand() {
+        return null;
     }
 
     public boolean summonGateGuardian() {
