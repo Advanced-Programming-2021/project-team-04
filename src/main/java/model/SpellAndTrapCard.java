@@ -66,4 +66,9 @@ public class SpellAndTrapCard extends Card {
         return "Name: " + this.name + "\n" + spellAndTrap + "\nType: " + this.property
                 + "\nDescription: " + this.description;
     }
+
+    public void reset() {
+        hasBeenUsedInThisTurn = false;
+    }
+
 }

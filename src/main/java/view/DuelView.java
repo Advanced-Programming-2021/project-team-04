@@ -184,7 +184,7 @@ public class DuelView extends Menu {
     public MonsterCard getFromOpponentGY() {
         return null;
     }
-    public boolean isMyGraveyard() {
+    public boolean isMine() {
         return true;
     }
 
@@ -203,7 +203,7 @@ public class DuelView extends Menu {
         return isSpecial;
     }
 
-    public boolean summonGateGaurdian() {
+    public boolean summonGateGuardian() {
         return true;
     }
     public int barbaros() {
@@ -212,4 +212,15 @@ public class DuelView extends Menu {
         // 3 summon with 3 tributes
         return 0;
     }
+    public boolean killMessengerOfPeace() {
+        return true;
+    }
+    public SpellAndTrapCard getFromMyField() {
+        return null;
+    }
+    public SpellAndTrapCard getFromOpponentField() {
+        return null;
+    }
+
+
 }

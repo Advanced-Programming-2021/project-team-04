@@ -151,4 +151,12 @@ public class Field {
                 thisCards.add(monsterCard);
         return thisCards;
     }
+
+    public SpellAndTrapCard hasThisCardActivated(String cardName) {
+        for (SpellAndTrapCard spellAndTrapCard : trapAndSpell)
+            if (spellAndTrapCard.getName().equals(cardName) && spellAndTrapCard.isActive())
+                return spellAndTrapCard;
+        return null;
+    }
+
 }

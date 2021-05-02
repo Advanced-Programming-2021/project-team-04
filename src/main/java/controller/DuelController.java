@@ -77,6 +77,7 @@ public class DuelController {
     private void standbyPhase() {
         Field field = game.getCurrentPlayer().getField();
         Field opponentField = game.getTheOtherPlayer().getField();
+        handleField(field, opponentField);
         for (MonsterCard monsterCard : field.getMonsterCards()) {
             if (monsterCard.getName().equals("Herald of Creation") &&
                     !monsterCard.isHasBeenUsedInThisTurn() &&
@@ -97,8 +98,37 @@ public class DuelController {
                 commandKnight.setHasBeenUsedInThisTurn(true);
             }
         }
-
+        handleMessengerOfPeace();
         makeChain(field);
+    }
+
+    private void handleField(Field field, Field opponentField) {
+        if (field.getFieldZone().getName().equals("Umiiruka") ||
+                opponentField.getFieldZone().getName().equals("Umiiruka")) umiiruka();
+        else if (field.getFieldZone().getName().equals("Forest") ||
+                opponentField.getFieldZone().getName().equals("Forest")) forest();
+        else if (field.getFieldZone().getName().equals("Closed Forest") ||
+        opponentField.getFieldZone().getName().equals("Closed Forest")) closedForest();
+        else if (field.getFieldZone().getName().equals("Yami") ||
+        opponentField.getFieldZone().getName().equals("Yami")) yami();
+    }
+
+    private void handleMessengerOfPeace() {
+        SpellAndTrapCard myMessengerOfPeace = game.getCurrentPlayer().getField().hasThisCardActivated("Messenger of peace");
+        if (myMessengerOfPeace != null) {
+            if (DuelView.getInstance().killMessengerOfPeace())
+                moveSpellToGY(myMessengerOfPeace);
+            else {
+                MessengerOfPeace messengerOfPeace = (MessengerOfPeace) myMessengerOfPeace;
+                messengerOfPeace.deactivateCards();
+                game.getCurrentPlayer().changeLP(-100);
+            }
+        }
+        SpellAndTrapCard opponentMessengerOfPeace = game.getTheOtherPlayer().getField().hasThisCardActivated("Messenger of peace");
+        if (opponentMessengerOfPeace != null) {
+            MessengerOfPeace messengerOfPeace = (MessengerOfPeace) opponentMessengerOfPeace;
+            messengerOfPeace.deactivateCards();
+        }
     }
 
     private void makeChain(Field field) {
@@ -219,7 +249,7 @@ public class DuelController {
                 return;
             }
         if (game.getSelectedCard().getName().equals("Gate Guardian")) {
-            if (DuelView.getInstance().summonGateGaurdian()) {
+            if (DuelView.getInstance().summonGateGuardian()) {
                 gateGuardian();
             }
             return;
@@ -427,6 +457,11 @@ public class DuelController {
         if (!isAttackValid(opponentMonsterPositionNumber)) return;
         MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber);
         MonsterCard attacker = (MonsterCard) game.getSelectedCard();
+        if (game.getTheOtherPlayer().getField().hasThisCardActivated("Magic Cylinder") != null) {
+            magicCylinder(attacker);
+            return;
+        }
+
         if (attacked.getName().equals("Suijin") &&
                 DuelView.getInstance().wantsToActivate("Suijin")) {
             ((Suijin) attacked).specialMethod(attacker);
@@ -540,6 +575,7 @@ public class DuelController {
     public void activateSpell() {
         if (!isActivatingSpellValid()) return;
         SpellAndTrapCard selectedCard = (SpellAndTrapCard) game.getSelectedCard();
+        selfAbsorption();
         if (selectedCard.getProperty().equals("Field")) {
             if (game.getCurrentPlayer().getField().getFieldZone() != null) {
                 game.getCurrentPlayer().getField().getGraveyard().add(game.getCurrentPlayer().getField().getFieldZone());
@@ -553,6 +589,13 @@ public class DuelController {
         //TODO MIRAGE DRAGON
         Output.getForNow();
         game.setSelectedCard(null);
+    }
+
+    private void selfAbsorption() {
+        if (game.getCurrentPlayer().getField().hasThisCardActivated("Spell Absorption") != null)
+            game.getCurrentPlayer().changeLP(500);
+        if (game.getTheOtherPlayer().getField().hasThisCardActivated("Spell Absorption") != null)
+            game.getTheOtherPlayer().changeLP(500);
     }
 
     private boolean isActivatingSpellValid() {
@@ -604,12 +647,137 @@ public class DuelController {
             case "Change of Heart":
                 changeOfHeart((ChangeOfHeart) card);
                 break;
+            case "Harpie's Feather Duster":
+                harpiesFeatherDuster(card);
+                break;
+            case "Dark Hole":
+                darkHole(card);
+                break;
+            case "Messenger of peace":
+                ((MessengerOfPeace) card).deactivateCards();
+                break;
+            case "Mystical space typhoon":
+                mysticalSpaceTyphoon(card);
+                break;
+            case "Yami":
+                yami();
+                break;
+            case "Forest":
+                forest();
+                break;
+            case "Closed Forest":
+                closedForest();
+                break;
+            case "Umiiruka":
+                umiiruka();
+                break;
+            case "Advanced Ritual Art":
+                advancedRitualArt(card);
+                break;
         }
     }
 
     private void moveSpellToGY(SpellAndTrapCard spellAndTrapCard) {
         game.getCurrentPlayer().getField().getTrapAndSpell().remove(spellAndTrapCard);
         game.getCurrentPlayer().getField().getGraveyard().add(spellAndTrapCard);
+    }
+
+    private void magicCylinder(MonsterCard attacker) {
+        decreaseLPWithTrap(attacker.getOwner(), attacker.getClassAttackPower());
+    }
+
+    private void mirrorForce() {
+        int size = game.getTheOtherPlayer().getField().getMonsterCards().size();
+        for (int i = 0; i < size; i++)
+
+    }
+
+    private void decreaseLPWithTrap(Account account, int amount) {
+        if (account.getField().hasThisCardActivated("Ring of defense") == null)
+        account.changeLP(-amount);
+    }
+
+    private void advancedRitualArt(SpellAndTrapCard spellAndTrapCard) {
+        ritualSummon();
+        moveSpellToGY(spellAndTrapCard);
+    }
+
+    private void umiiruka() {
+        ArrayList<MonsterCard> cards = getAllMonsterCards();
+        for (MonsterCard monsterCard : cards)
+            if (monsterCard.equals("Aqua")) {
+                monsterCard.setThisCardAttackPower(monsterCard.getThisCardAttackPower() + 500);
+                monsterCard.setThisCardDefensePower(monsterCard.getThisCardDefensePower() - 400);
+            }
+    }
+
+    private void closedForest() {
+        int amount = game.getCurrentPlayer().getField().getGraveyard().size() * 100;
+        for (MonsterCard monsterCard : game.getCurrentPlayer().getField().getMonsterCards())
+            if (monsterCard.getMonsterType().equals("Beast") ||
+            monsterCard.getMonsterType().equals("Beast-Warrior"))
+                monsterCard.setThisCardAttackPower(monsterCard.getThisCardAttackPower() + amount);
+    }
+
+    private void forest() {
+        ArrayList<MonsterCard> cards = getAllMonsterCards();
+        for (MonsterCard monsterCard : cards)
+            if (monsterCard.getMonsterType().equals("Insect")||
+            monsterCard.getMonsterType().equals("Beast") || monsterCard.getMonsterType().equals("Beast-Warrior")) {
+                monsterCard.setThisCardAttackPower(monsterCard.getThisCardAttackPower() + 200);
+                monsterCard.setThisCardDefensePower(monsterCard.getThisCardDefensePower() + 200);
+            }
+    }
+
+    private void yami() {
+        ArrayList<MonsterCard> cards = getAllMonsterCards();
+        for (MonsterCard monsterCard : cards) {
+            if (monsterCard.getMonsterType().equals("Fiend") ||
+            monsterCard.getMonsterType().equals("Spellcaster")) {
+                monsterCard.setThisCardAttackPower(monsterCard.getThisCardAttackPower() + 200);
+                monsterCard.setThisCardDefensePower(monsterCard.getThisCardDefensePower() + 200);
+            }
+            if (monsterCard.getMonsterType().equals("Fairy")) {
+                monsterCard.setThisCardAttackPower(monsterCard.getThisCardAttackPower() - 200);
+                monsterCard.setThisCardDefensePower(monsterCard.getThisCardDefensePower() - 200);
+            }
+        }
+    }
+
+    private ArrayList<MonsterCard> getAllMonsterCards() {
+        ArrayList<MonsterCard> cards = new ArrayList<>();
+        cards.addAll(game.getCurrentPlayer().getField().getMonsterCards());
+        cards.addAll(game.getTheOtherPlayer().getField().getMonsterCards());
+        return cards;
+    }
+
+    public void mysticalSpaceTyphoon(SpellAndTrapCard spellAndTrapCard) {
+        SpellAndTrapCard toDestroy = null;
+        if (DuelView.getInstance().isMine())
+            toDestroy = DuelView.getInstance().getFromMyField();
+        else toDestroy = DuelView.getInstance().getFromOpponentField();
+         if (toDestroy != null) {
+             moveSpellToGY(toDestroy);
+         }
+         moveSpellToGY(spellAndTrapCard);
+    }
+
+    private void darkHole(SpellAndTrapCard spellAndTrapCard) {
+        int myMonstersSize = game.getCurrentPlayer().getField().getMonsterCards().size();
+        int opponentSize = game.getTheOtherPlayer().getField().getMonsterCards().size();
+        for (int i = 0; i < myMonstersSize; i++)
+            addToGY(game.getCurrentPlayer().getField().getMonsterCards().get(0));
+        for (int i = 0; i < opponentSize; i++)
+            addToGY(game.getTheOtherPlayer().getField().getMonsterCards().get(0));
+        moveSpellToGY(spellAndTrapCard);
+    }
+
+    private void harpiesFeatherDuster(SpellAndTrapCard spellAndTrapCard) {
+        int size = game.getTheOtherPlayer().getField().getTrapAndSpell().size();
+        for (int i = 0; i < size; i++)
+            moveSpellToGY(game.getTheOtherPlayer().getField().getTrapAndSpell().get(0));
+        moveSpellToGY(spellAndTrapCard);
+
     }
 
     private void changeOfHeart(ChangeOfHeart changeOfHeart) {
@@ -646,7 +814,7 @@ public class DuelController {
     private void monsterReborn(SpellAndTrapCard spellAndTrapCard) {
         MonsterCard monsterCard = null;
         ArrayList<Card> removeFrom = null;
-        if (DuelView.getInstance().isMyGraveyard()) {
+        if (DuelView.getInstance().isMine()) {
             monsterCard = DuelView.getInstance().getFromMyGY();
             removeFrom = game.getCurrentPlayer().getField().getGraveyard();
         } else {
@@ -832,8 +1000,18 @@ public class DuelController {
     }
 
     private void addToGY(MonsterCard toBeRemoved) {
-        toBeRemoved.getOwner().getField().getGraveyard().add(toBeRemoved);
-        toBeRemoved.getOwner().getField().getMonsterCards().remove(toBeRemoved);
+        Field field = toBeRemoved.getOwner().getField();
+        field.getGraveyard().add(toBeRemoved);
+        field.getMonsterCards().remove(toBeRemoved);
+        if (!field.getDeckZone().isEmpty() &&
+                (field.getHand().size() != 6)) {
+            SpellAndTrapCard supplySquad = field.hasThisCardActivated("Supply Squad");
+            if (supplySquad != null && !supplySquad.isHasBeenUsedInThisTurn()) {
+                supplySquad.setHasBeenUsedInThisTurn(true);
+                field.getHand().add(toBeRemoved.getOwner().getField().getDeckZone().get(0));
+                field.getDeckZone().remove(0);
+            }
+        }
     }
 
     public MonsterCard getMonsterAttacking() {
@@ -919,27 +1097,26 @@ public class DuelController {
 
     private void barbaros(int howToSummon) {
         MonsterCard barbaros = (MonsterCard) game.getSelectedCard();
-       if (howToSummon == 2) {
-           barbaros.setThisCardAttackPower(1900);
-           barbaros.setClassAttackPower(1900);
-       }
-       else {
-           ArrayList<MonsterCard> opponentMonsterCards = game.getTheOtherPlayer().getField().getMonsterCards();
-           ArrayList<SpellAndTrapCard> opponentSpellCards = game.getTheOtherPlayer().getField().getTrapAndSpell();
-           int max = Math.max(opponentMonsterCards.size(), opponentSpellCards.size());
-           tributeThreeCards();
-           game.getTheOtherPlayer().getField().setFieldZone(null);
-           for (int i = 0; i < max; i++) {
-               if (opponentMonsterCards.get(i) != null)
-                   opponentMonsterCards.remove(i);
-               if (opponentSpellCards.get(i) != null)
-                   opponentSpellCards.remove(i);
-           }
-       }
-       game.getCurrentPlayer().getField().getHand().remove(barbaros);
-       game.getCurrentPlayer().getField().getMonsterCards().add(barbaros);
-       barbaros.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
-       game.setSelectedCard(null);
-       game.setHasSummonedInThisTurn(true);
+        if (howToSummon == 2) {
+            barbaros.setThisCardAttackPower(1900);
+            barbaros.setClassAttackPower(1900);
+        } else {
+            ArrayList<MonsterCard> opponentMonsterCards = game.getTheOtherPlayer().getField().getMonsterCards();
+            ArrayList<SpellAndTrapCard> opponentSpellCards = game.getTheOtherPlayer().getField().getTrapAndSpell();
+            int max = Math.max(opponentMonsterCards.size(), opponentSpellCards.size());
+            tributeThreeCards();
+            game.getTheOtherPlayer().getField().setFieldZone(null);
+            for (int i = 0; i < max; i++) {
+                if (opponentMonsterCards.get(i) != null)
+                    opponentMonsterCards.remove(i);
+                if (opponentSpellCards.get(i) != null)
+                    opponentSpellCards.remove(i);
+            }
+        }
+        game.getCurrentPlayer().getField().getHand().remove(barbaros);
+        game.getCurrentPlayer().getField().getMonsterCards().add(barbaros);
+        barbaros.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        game.setSelectedCard(null);
+        game.setHasSummonedInThisTurn(true);
     }
 }
