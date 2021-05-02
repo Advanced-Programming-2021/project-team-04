@@ -47,4 +47,21 @@ public class Output {
     public void printShopMenuName() {
         System.out.println("Shop Menu");
     }
+
+    public void printMenuNavigationImpossible() {
+        System.out.println("menu navigation is not possible");
+    }
+
+    public void printLoginFirst() {
+        System.out.println("please login first");
+    }
+
+    public void printInvalidCommand() {
+        System.out.println("invalid command");
+    }
+
+    public void printUserLoggedOut() {
+        System.out.println("user logged out successfully!");
+    }
+
 }

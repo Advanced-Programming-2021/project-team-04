@@ -1,9 +1,24 @@
 package view;
-public class MainView extends Menu {
-    private static MainView singleInstance = null;
-    private MainView() {
 
+import controller.MainController;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class MainView extends Menu {
+
+    private static MainView singleInstance = null;
+
+    private final Pattern enterMenuPattern = Pattern.compile("(?:menu )?enter (?<name>\\S+)");
+    private final Pattern newDuelPattern = Pattern.compile("^d(?:uel)? (?=.*(?:\\-(?:(?:\\-new)|(?:n))))" +
+            "(?=.*(?:\\-(?:(?:\\-second\\-player)|(?:s)|(?:s\\-p)) (?<secondPlayerUsername>\\S+)))" +
+            "(?=.*(?:\\-(?:(?:\\-round(?:s)?)|(?:r)) (?<roundsNumber>\\d+))).+$");
+
+    private boolean continueLoop = true;
+
+    private MainView() {
     }
+
     public static MainView getInstance() {
         if (singleInstance == null)
             singleInstance = new MainView();
@@ -12,7 +27,22 @@ public class MainView extends Menu {
 
     @Override
     public void run() {
-
+        String command;
+        continueLoop = true;
+        while (continueLoop) {
+            continueLoop = !(command = Input.getInputMessage()).matches("(?:menu )?exit");
+            Matcher enterMenuMatcher = enterMenuPattern.matcher(command);
+            Matcher newDuelMatcher = newDuelPattern.matcher(command);
+            if (command.matches("(?:menu )?(?:show|s)\\-(?:current|c)"))
+                showCurrentMenu();
+            else if (command.matches("(?:user )?logout"))
+                logout();
+            else if (enterMenuMatcher.matches())
+                enterMenu(enterMenuMatcher);
+            else if (newDuelMatcher.matches())
+                newDuel(newDuelMatcher);
+            else Output.getInstance().printInvalidCommand();
+        }
     }
 
     @Override
@@ -20,22 +50,39 @@ public class MainView extends Menu {
         Output.getInstance().printMainMenuName();
     }
 
-    private void enterMenu(String input) {
-
+    private void enterMenu(Matcher matcher) {
+        String menuName = matcher.group("name");
+        if (menuName.matches("(?:L|l)ogin(?: (?:M|m)enu)?"))
+            continueLoop = false;
+        else if (menuName.matches("(?:S|s)coreboard(?: (?:M|m)enu)?"))
+            ScoreboardView.getInstance().run();
+        else if (menuName.matches("(?:D|d)uel(?: (?:M|m)enu)?"))
+            DuelView.getInstance().run();
+        else if (menuName.matches("(?:D|d)eck(?: (?:M|m)enu)?"))
+            DeckView.getInstance().run();
+        else if (menuName.matches("(?:P|p)rofile(?: (?:M|m)enu)?"))
+            ProfileView.getInstance().run();
+        else if (menuName.matches("(?:S|s)hop(?: (?:M|m)enu)?"))
+            ShopView.getInstance().run();
+        else Output.getInstance().printInvalidCommand();
     }
-    private void showCurrent() {
 
-    }
     private void logout() {
-
+        Output.getInstance().printUserLoggedOut();
+        continueLoop = false;
     }
-    private void newDuel(String input) {
 
+    private void newDuel(Matcher matcher) {
+        MainController.getInstance().newDuel(matcher.group("secondPlayerUsername"),
+                Integer.parseInt(matcher.group("roundsNumber")));
     }
+
     private void cheatIncreaseMoney() {
 
     }
+
     private void cheatIncreaseScore() {
 
     }
+
 }
