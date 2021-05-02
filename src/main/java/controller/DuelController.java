@@ -10,7 +10,6 @@ import java.util.ArrayList;
 public class DuelController {
     private static DuelController singleInstance = null;
     private Game game;
-    private int countForSwordOfRevealingLight = 0;
 
     private DuelController() {
 
@@ -163,9 +162,14 @@ public class DuelController {
 
     private void endPhase() {
         //TODO reset shit
-        SpellAndTrapCard sword = game.getTheOtherPlayer().getField().hasThisCardActivated("Swords of Revealing Light");
-        if (sword != null) countForSwordOfRevealingLight++;
-        if (countForSwordOfRevealingLight == 3) moveSpellOrTrapToGY(sword);
+        SwordsOfRevealingLight sword = (SwordsOfRevealingLight) game.getTheOtherPlayer().getField().hasThisCardActivated("Swords of Revealing Light");
+        if (sword != null) {
+            sword.counter++;
+            if (sword.counter == 3) {
+                moveSpellOrTrapToGY(sword);
+                sword.counter = 0;
+            }
+        }
     }
 
     public void selectCard(boolean myCard, CardStatusInField cardStatusInField, int number) {
@@ -284,6 +288,7 @@ public class DuelController {
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         if (monsterCard.getName().equals("Terratiger, the Empowered Warrior"))
             terraTigerMethod();
+        game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
         Output.getForNow();
         game.setHasSummonedInThisTurn(true);
@@ -375,6 +380,7 @@ public class DuelController {
         summonWithTribute();
         game.getCurrentPlayer().getField().getMonsterCards().add(selectedCard);
         selectedCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_DOWN);
+        game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
         game.setHasSummonedInThisTurn(true);
         Output.getForNow();
@@ -444,6 +450,10 @@ public class DuelController {
             Output.getForNow();
             return false;
         }
+        if (selectedCard.isHasBeenSetOrSummoned()) {
+            Output.getForNow();
+            return false;
+        }
         return true;
     }
 
@@ -473,6 +483,8 @@ public class DuelController {
         if (!isAttackValid(opponentMonsterPositionNumber)) return;
         MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber);
         MonsterCard attacker = (MonsterCard) game.getSelectedCard();
+        SwordsOfRevealingLight swordsOfRevealingLight = (SwordsOfRevealingLight) game.getTheOtherPlayer().getField().hasThisCardActivated("Swords of Revealing Light");
+        if (swordsOfRevealingLight != null) return;
         SpellAndTrapCard magicCylinderCard = game.getTheOtherPlayer().getField().hasTrapCard("Magic Cylinder");
         if (magicCylinderCard != null) {
             magicCylinder(attacker, magicCylinderCard);
@@ -486,6 +498,11 @@ public class DuelController {
         if (attacked.getName().equals("Suijin") &&
                 DuelView.getInstance().wantsToActivate("Suijin")) {
             ((Suijin) attacked).specialMethod(attacker);
+        }
+        if (attacked.getName().equals("Texchanger") &&
+                DuelView.getInstance().wantsToActivate("Texchanger")) {
+            texChanger(attacked);
+            return;
         }
         if (attacked.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP)
             attackInAttack(attacked, attacker);
@@ -708,6 +725,9 @@ public class DuelController {
             case "Twin Twisters":
                 twinTwisters(card);
                 break;
+            case "Swords of Revealing Light":
+                ((SwordsOfRevealingLight) card).specialMethod(game.getTheOtherPlayer());
+                break;
         }
     }
 
@@ -737,6 +757,7 @@ public class DuelController {
                 ((MagnumShield) equipSpell).setEquippedMonster(monsterToEquip);
         }
     }
+
 
     public void magicCylinder(MonsterCard attacker, SpellAndTrapCard magicCylinder) {
         if (!DuelView.getInstance().wantsToActivateTrap("Magic Cylinder")) return;
@@ -909,6 +930,7 @@ public class DuelController {
         if (!isSettingSpellAndTrapValid()) return;
         game.getCurrentPlayer().getField().getHand().remove(game.getSelectedCard());
         game.getCurrentPlayer().getField().getTrapAndSpell().add((SpellAndTrapCard) game.getSelectedCard());
+        game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
         Output.getForNow();
     }
@@ -958,7 +980,12 @@ public class DuelController {
         game.getCurrentPlayer().getField().getTrapAndSpell().remove(thisSpell);
         Output.getForNow();
     }
-
+    private void chooseMonsterMode(MonsterCard monsterCard) {
+        String mode = DuelView.getInstance().monsterMode().toLowerCase();
+        if (mode.equals("attack"))
+            monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        else monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
+    }
     private boolean isSumOfTributesValid(ArrayList<MonsterCard> toTribute, MonsterCard ritualMonster) {
         int sum = 0;
         for (MonsterCard monsterCard : toTribute)
@@ -1094,25 +1121,13 @@ public class DuelController {
         }
     }
 
-    public MonsterCard getMonsterAttacking() {
-
-    }
-
-    public MonsterCard forManEaterBug() {
-        // ask the client to choose card
+    public void forManEaterBug() {
+        MonsterCard monsterCard = DuelView.getInstance().getOpponentMonster();
+        if (monsterCard != null) addMonsterToGY(monsterCard);
     }
 
     public MonsterCard forScanner() {
-
-    }
-
-    public MonsterCard forTexChanger() {
-        if (!DuelView.getInstance().wantsToActivate("Texchanger")) return null;
-        //TODO
-    }
-
-    public void chooseMonsterMode(MonsterCard monsterCard) {
-
+        return null;
     }
 
     private void heraldOfCreation() {
@@ -1198,5 +1213,34 @@ public class DuelController {
         barbaros.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         game.setSelectedCard(null);
         game.setHasSummonedInThisTurn(true);
+    }
+
+    public void texChanger(MonsterCard attacked) {
+        if (!attacked.isHasBeenUsedInThisTurn()) {
+            ArrayList<Card> toRemoveFrom = new ArrayList<>();
+            int whereFrom = DuelView.getInstance().whereToSummonFrom();
+            MonsterCard monsterCard = null;
+            do {
+                switch (whereFrom) {
+                    case 1:
+                        monsterCard = DuelView.getInstance().getMonsterCardFromHand();
+                        toRemoveFrom = game.getCurrentPlayer().getField().getHand();
+                        break;
+                    case 2:
+                        monsterCard = DuelView.getInstance().getFromMyDeck();
+                        toRemoveFrom = game.getCurrentPlayer().getField().getDeckZone();
+                        break;
+                    case 3:
+                        monsterCard = DuelView.getInstance().getFromMyGY();
+                        toRemoveFrom = game.getCurrentPlayer().getField().getGraveyard();
+                }
+                if (monsterCard == null) return;
+        }
+                while (!(monsterCard.getCardType().equals("Normal") &&
+                        monsterCard.getMonsterType().equals("Cyberse")));
+
+            specialSummon(monsterCard, MonsterCardModeInField.ATTACK_FACE_UP, toRemoveFrom);
+            attacked.setHasBeenUsedInThisTurn(true);
+        }
     }
 }

@@ -156,7 +156,11 @@ public class DuelView extends Menu {
 
     @Override
     public void run() {
-
+        while (true) {
+            String command = Input.getInputMessage();
+            if (command.matches("select --monster \\d"))
+                selectCard(command);
+        }
     }
 
     @Override
@@ -167,7 +171,9 @@ public class DuelView extends Menu {
     public MonsterCard getRitualCard() {
     return null;
     }
-
+    public MonsterCard getOpponentMonster() {
+        return null;
+    }
     public ArrayList<MonsterCard> getTributes() {
         return null;
     }
@@ -180,6 +186,9 @@ public class DuelView extends Menu {
         return null;
     }
     public MonsterCard getFromMyGY() {
+        return null;
+    }
+    public MonsterCard getFromMyDeck() {
         return null;
     }
     public MonsterCard getFromOpponentGY() {
@@ -238,6 +247,11 @@ public class DuelView extends Menu {
     public SpellAndTrapCard getFromOpponentField() {
         return null;
     }
-
+    public int whereToSummonFrom() {
+        // 1 hand
+        // 2 deck
+        // 3 gy
+        return 0;
+    }
 
 }

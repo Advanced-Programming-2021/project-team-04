@@ -7,18 +7,25 @@ public class Card {
     protected String name;
     protected int price;
     protected String description;
-    protected int speed = 1;
     protected int allowedNumber;
     protected boolean isAttacked = false;
     protected boolean isAttacking = false;
     //TODO probably should handle more than this, maybe make an entry set for both cards *or a hashmap idk
     protected Account Owner;
     protected boolean hasBeenUsedInThisTurn = false;
+    protected boolean hasBeenSetOrSummoned = false;
 
     public Card() {
         allCards.add(this);
     }
 
+    public boolean isHasBeenSetOrSummoned() {
+        return hasBeenSetOrSummoned;
+    }
+
+    public void setHasBeenSetOrSummoned(boolean hasBeenSetOrSummoned) {
+        this.hasBeenSetOrSummoned = hasBeenSetOrSummoned;
+    }
 
     public boolean isHasBeenUsedInThisTurn() {
         return hasBeenUsedInThisTurn;
@@ -80,14 +87,6 @@ public class Card {
         return description;
     }
 
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
     public int getAllowedNumber() {
         return allowedNumber;
     }
@@ -102,4 +101,7 @@ public class Card {
                 return card;
         return null;
     }
+
+
+
 }

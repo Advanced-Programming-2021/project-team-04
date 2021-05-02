@@ -73,12 +73,28 @@ public class ShopController {
                     thisPlayer.addCard(new Suijin());
                     break;
                 }
-                case "Texchanger": {
-                    thisPlayer.addCard(new Texchanger());
-                    break;
-                }
                 case "The Calculator": {
                     thisPlayer.addCard(new TheCalculator());
+                    break;
+                }
+                case "Swords of Revealing Light": {
+                    thisPlayer.addCard(new SwordsOfRevealingLight());
+                    break;
+                }
+                case "United We Stand": {
+                    thisPlayer.addCard(new UnitedWeStand());
+                    break;
+                }
+                case "Sword of dark destruction": {
+                    thisPlayer.addCard(new SwordOfDarkDestruction());
+                    break;
+                }
+                case "Magnum Shield": {
+                    thisPlayer.addCard(new MagnumShield());
+                    break;
+                }
+                case "Black Pendant": {
+                    thisPlayer.addCard(new BlackPendant());
                     break;
                 }
                 default: {
@@ -112,13 +128,24 @@ public class ShopController {
         allCards.add(messengerOfPeace);
         Suijin suijin = new Suijin();
         allCards.add(suijin);
-        Texchanger texchanger = new Texchanger();
-        allCards.add(texchanger);
         TheCalculator calculator = new TheCalculator();
         allCards.add(calculator);
+        UnitedWeStand unitedWeStand = new UnitedWeStand();
+        allCards.add(unitedWeStand);
+        SwordsOfRevealingLight swordsOfRevealingLight = new SwordsOfRevealingLight();
+        allCards.add(swordsOfRevealingLight);
+        SwordOfDarkDestruction swordOfDarkDestruction = new SwordOfDarkDestruction();
+        allCards.add(swordOfDarkDestruction);
+        BlackPendant blackPendant = new BlackPendant();
+        allCards.add(blackPendant);
+        MagnumShield magnumShield = new MagnumShield();
+        allCards.add(magnumShield);
     }
 
     private void addMonsterCards() {
+        MonsterCard texChanger = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Texchanger.JSON");
+        texChanger.reset();
+        allCards.add(texChanger);
         MonsterCard alexandriteDragon = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Alexandrite Dragon.JSON");
         alexandriteDragon.reset();
         allCards.add(alexandriteDragon);
@@ -227,8 +254,6 @@ public class ShopController {
     }
 
     private void addSpellAndTrap() {
-        SpellAndTrapCard blackPendant = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Black Pendant.JSON");
-        allCards.add(blackPendant);
         SpellAndTrapCard callOfTheHaunted = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Call of The Haunted.JSON");
         allCards.add(callOfTheHaunted);
         SpellAndTrapCard closedForest = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Closed Forest.JSON");
@@ -243,8 +268,6 @@ public class ShopController {
         allCards.add(magicCylinder);
         SpellAndTrapCard magicJamamer = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Magic Jamamer.JSON");
         allCards.add(magicJamamer);
-        SpellAndTrapCard magnumShield = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Magnum Shield.JSON");
-        allCards.add(magnumShield);
         SpellAndTrapCard mindCrush = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Mind Crush.JSON");
         allCards.add(mindCrush);
         SpellAndTrapCard mirrorForce = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Mirror Force.JSON");
@@ -267,10 +290,6 @@ public class ShopController {
         allCards.add(spellAbsorption);
         SpellAndTrapCard supplySquad = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Supply Squad.JSON");
         allCards.add(supplySquad);
-        SpellAndTrapCard swordOfDarkDestruction = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Sword of dark destruction.JSON");
-        allCards.add(swordOfDarkDestruction);
-        SpellAndTrapCard swordOfRevealingLight = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Swords of Revealing Light.JSON");
-        allCards.add(swordOfRevealingLight);
         SpellAndTrapCard terraForming = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Terraforming.JSON");
         allCards.add(terraForming);
         SpellAndTrapCard timeSeal = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Time Seal.JSON");
@@ -283,8 +302,6 @@ public class ShopController {
         allCards.add(twinTwisters);
         SpellAndTrapCard umiiruka = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Umiiruka.JSON");
         allCards.add(umiiruka);
-        SpellAndTrapCard unitedWeStand = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/United We Stand.JSON");
-        allCards.add(unitedWeStand);
         SpellAndTrapCard vanityEmptiness = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Vanity's Emptiness.JSON");
         allCards.add(vanityEmptiness);
         SpellAndTrapCard wallOfRevealingLight = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Wall of Revealing Light.JSON");

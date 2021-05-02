@@ -1,8 +1,0 @@
-{
-    "name": "United We Stand",
-    "isSpell": true,
-    "property": "Equip",
-    "isLimited":false,
-    "price": 4300,
-    "description": "The equipped monster gains 800 ATK/DEF for each face-up monster you control."
-}

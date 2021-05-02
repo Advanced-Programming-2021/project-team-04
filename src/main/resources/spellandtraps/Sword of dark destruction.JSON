@@ -1,8 +1,0 @@
-{
-    "name": "Sword of dark destruction",
-    "isSpell": true,
-    "property": "Equip",
-    "isLimited":false,
-    "price": 4300,
-    "description": "A DARK monster equipped with this card increases its ATK by 400 points and decreases its DEF by 200 points."
-}
