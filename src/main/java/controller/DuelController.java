@@ -6,6 +6,7 @@ import view.DuelView;
 import view.Output;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class DuelController {
     private static DuelController singleInstance = null;
@@ -284,14 +285,27 @@ public class DuelController {
         if (!isSummonValid()) return;
         summonWithTribute();
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
+        if (handleTrapHole(monsterCard)) return;
         game.getCurrentPlayer().getField().getMonsterCards().add(monsterCard);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         if (monsterCard.getName().equals("Terratiger, the Empowered Warrior"))
             terraTigerMethod();
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
+        torrentialTribute();
         game.setSelectedCard(null);
         Output.getForNow();
         game.setHasSummonedInThisTurn(true);
+    }
+
+    private boolean handleTrapHole(MonsterCard monsterCard) {
+        SpellAndTrapCard trapHoleCard = game.getTheOtherPlayer().getField().hasTrapCard("Trap Hole");
+        if (monsterCard.getClassAttackPower() >= 1000 && trapHoleCard != null &&
+                DuelView.getInstance().wantsToActivate("Trap Hole")) {
+            trapHole(trapHoleCard, monsterCard);
+            game.setSelectedCard(null);
+            return true;
+        }
+        return false;
     }
 
     private void summonWithTribute() {
@@ -460,8 +474,9 @@ public class DuelController {
     private void flipSummon() {
         if (!isFlipSummonValid()) return;
         Output.getForNow();
-        game.setSelectedCard(null);
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
+        if (handleTrapHole(monsterCard)) return;
+        game.setSelectedCard(null);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
     }
 
@@ -728,6 +743,10 @@ public class DuelController {
             case "Swords of Revealing Light":
                 ((SwordsOfRevealingLight) card).specialMethod(game.getTheOtherPlayer());
                 break;
+            case "Mind Crush":
+                mindCrush(card);
+                break;
+
         }
     }
 
@@ -735,6 +754,58 @@ public class DuelController {
         spellAndTrapCard.reset();
         game.getCurrentPlayer().getField().getTrapAndSpell().remove(spellAndTrapCard);
         game.getCurrentPlayer().getField().getGraveyard().add(spellAndTrapCard);
+    }
+
+    public void torrentialTribute() {
+        SpellAndTrapCard torrentialTributeCard = game.getTheOtherPlayer().getField().hasTrapCard("Torrential Tribute");
+        if (torrentialTributeCard != null && DuelView.getInstance().wantsToActivate("Torrential Tribute")) {
+            moveSpellOrTrapToGY(torrentialTributeCard);
+            ArrayList<MonsterCard> myMonsterCards = game.getCurrentPlayer().getField().getMonsterCards();
+            ArrayList<MonsterCard> opponentsMonsterCards = game.getTheOtherPlayer().getField().getMonsterCards();
+            int mySize = myMonsterCards.size();
+            int opponentSize = opponentsMonsterCards.size();
+            int max = Math.max(mySize, opponentSize);
+            for (int i = 0; i < max ; i++) {
+                if (myMonsterCards.get(0) != null) {
+                    myMonsterCards.remove(0);
+                    addMonsterToGY(myMonsterCards.get(0));
+                }
+                if (opponentsMonsterCards.get(0) != null) {
+                    opponentsMonsterCards.remove(0);
+                    addMonsterToGY(opponentsMonsterCards.get(0));
+                }
+            }
+        }
+    }
+
+    public void trapHole(SpellAndTrapCard spellAndTrapCard, MonsterCard monsterCard) {
+        moveSpellOrTrapToGY(spellAndTrapCard);
+        addMonsterToGY(monsterCard);
+    }
+
+    public void mindCrush(SpellAndTrapCard spellAndTrapCard) {
+        String cardName = DuelView.getInstance().getCardName();
+        if (!opponentHasCard(cardName)) randomlyRemoveFromHand();
+        else {
+            ArrayList<Card> hand = game.getTheOtherPlayer().getField().getHand();
+            int size = hand.size();
+            ArrayList<Card> toRemove = new ArrayList<>();
+            for (Card card : hand) if (card.getName().equals(cardName)) toRemove.add(card);
+            hand.removeAll(toRemove);
+        }
+        moveSpellOrTrapToGY(spellAndTrapCard);
+    }
+    private void randomlyRemoveFromHand() {
+        Random rand = new Random();
+        int randomNumber = rand.nextInt(6);
+        while (game.getCurrentPlayer().getField().getHand().get(randomNumber) == null)
+            randomNumber = rand.nextInt(6);
+        game.getCurrentPlayer().getField().getHand().remove(randomNumber);
+    }
+    private boolean opponentHasCard(String cardName) {
+        for (Card card : game.getTheOtherPlayer().getField().getHand())
+            if (card.getName().equals(cardName)) return true;
+        return false;
     }
 
     private void equipMonster(SpellAndTrapCard equipSpell) {
@@ -766,8 +837,7 @@ public class DuelController {
     }
 
     public void mirrorForce(SpellAndTrapCard mirrorForce, Account opponent) {
-        ArrayList<MonsterCard> monsters = new ArrayList<>();
-        monsters.addAll(opponent.getField().getMonsterCards());
+        ArrayList<MonsterCard> monsters = new ArrayList<>(opponent.getField().getMonsterCards());
         for (MonsterCard monster : monsters)
             if (monster.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP)
                 addMonsterToGY(monster);

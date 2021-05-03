@@ -11,9 +11,15 @@ import java.util.ArrayList;
 public class DuelView extends Menu {
     private static DuelView singleInstance = null;
     public boolean isRPSDone = false;
-    private DuelView() {
-
+    @Override
+    public void run() {
+        while (true) {
+            String command = Input.getInputMessage();
+            if (command.matches("select --monster \\d"))
+                selectCard(command);
+        }
     }
+
     public static DuelView getInstance() {
         if (singleInstance == null)
             singleInstance = new DuelView();
@@ -154,14 +160,7 @@ public class DuelView extends Menu {
 
     }
 
-    @Override
-    public void run() {
-        while (true) {
-            String command = Input.getInputMessage();
-            if (command.matches("select --monster \\d"))
-                selectCard(command);
-        }
-    }
+
 
     @Override
     public void showCurrentMenu() {
@@ -252,6 +251,10 @@ public class DuelView extends Menu {
         // 2 deck
         // 3 gy
         return 0;
+    }
+
+    public String getCardName() {
+        return "";
     }
 
 }
