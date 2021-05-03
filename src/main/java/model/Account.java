@@ -22,6 +22,7 @@ public class Account {
     private int LP;
     private int countOfRoundsWon; //TODO should reset this
     private boolean canDraw = true; //TODO should reset this
+
     public Account(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
@@ -161,6 +162,12 @@ public class Account {
         return field;
     }
 
+    public boolean hasCardInHand(String cardName) {
+        for (Card card : field.getHand())
+            if (card.getName().equals(cardName)) return true;
+        return false;
+    }
+
     public Deck getDeckByName(String deckName) {
         for (Deck deck : getAllDecks())
             if (deck.getDeckName().equals(deckName))
@@ -208,7 +215,6 @@ public class Account {
     }
 
 
-
     private boolean hasEnoughMoney(int price) {
         return this.money >= price;
     }
@@ -239,6 +245,7 @@ public class Account {
     public void changeLP(int amount) {
         this.LP += amount;
     }
+
     public static Account getAccountByUsername(String username) {
         for (Account account : allAccounts)
             if (account.getUsername().equals(username))
@@ -246,7 +253,7 @@ public class Account {
         return null;
     }
 
-    public static Account getAccountByNickname (String nickName) {
+    public static Account getAccountByNickname(String nickName) {
         for (Account account : allAccounts)
             if (account.getNickname().equals(nickName))
                 return account;

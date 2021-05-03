@@ -55,8 +55,8 @@ public class DuelController {
     }
 
     public void chooseStarter(String username) {
-        if (game.getCurrentPlayer().getUsername().equals(username)) return;
-        game.changeTurn();
+        if (!game.getCurrentPlayer().getUsername().equals(username)) game.changeTurn();
+        game.getCurrentPlayer().setCanDraw(false);
     }
 
     public Game getGame() {
@@ -68,18 +68,36 @@ public class DuelController {
     }
 
     private void drawPhase() {
-        if (!game.getCurrentPlayer().canDraw())
+        if (!game.getCurrentPlayer().canDraw()) {
+            game.getCurrentPlayer().setCanDraw(true);
             return;
+        }
         Field field = game.getCurrentPlayer().getField();
+        if (field.getDeckZone().isEmpty()) {
+            game.finishGame();
+            return;
+        }
         field.getHand().add(field.getDeckZone().get(0));
-        makeChain(field);
+        field.getDeckZone().remove(0);
     }
 
     private void standbyPhase() {
         Field field = game.getCurrentPlayer().getField();
         Field opponentField = game.getTheOtherPlayer().getField();
+        handleSpecialCards(field, opponentField);
+    }
+
+    private void handleSpecialCards(Field field, Field opponentField) {
         handleField(field, opponentField);
         handleEquip(field);
+        handleTimeSeal(field, opponentField);
+        handleMindCrush(field, opponentField);
+        handleCallOfTheHaunted(field, opponentField);
+        handleCommandKnightAndHeraldOfCreation(field, opponentField);
+        handleMessengerOfPeace();
+    }
+
+    private void handleCommandKnightAndHeraldOfCreation(Field field, Field opponentField) {
         for (MonsterCard monsterCard : field.getMonsterCards()) {
             if (monsterCard.getName().equals("Herald of Creation") &&
                     !monsterCard.isHasBeenUsedInThisTurn() &&
@@ -100,8 +118,27 @@ public class DuelController {
                 commandKnight.setHasBeenUsedInThisTurn(true);
             }
         }
-        handleMessengerOfPeace();
-        makeChain(field);
+    }
+
+    private void handleCallOfTheHaunted(Field field, Field opponentField) {
+        SpellAndTrapCard callOfTheHauntedCard = field.hasTrapCard("Call of The Haunted");
+        if (callOfTheHauntedCard != null) callOfTheHaunted(callOfTheHauntedCard, field, true);
+        callOfTheHauntedCard = opponentField.hasTrapCard("Call of The Haunted");
+        if (callOfTheHauntedCard != null) callOfTheHaunted(callOfTheHauntedCard, opponentField, false);
+    }
+
+    private void handleMindCrush(Field field, Field opponentField) {
+        SpellAndTrapCard mindCrushCard = field.hasTrapCard("Mind Crush");
+        if (mindCrushCard != null) mindCrush(mindCrushCard, game.getTheOtherPlayer());
+        mindCrushCard = opponentField.hasTrapCard("Mind Crush");
+        if (mindCrushCard != null) mindCrush(mindCrushCard, game.getCurrentPlayer());
+    }
+
+    private void handleTimeSeal(Field field, Field opponentField) {
+        SpellAndTrapCard timeSealCard = field.hasTrapCard("Time Seal");
+        if (timeSealCard != null) timeSeal(timeSealCard, game.getTheOtherPlayer());
+        timeSealCard = opponentField.hasTrapCard("Time Seal");
+        if (timeSealCard != null) timeSeal(timeSealCard, game.getCurrentPlayer());
     }
 
     private void handleEquip(Field field) {
@@ -148,6 +185,38 @@ public class DuelController {
         if (field.hasQuickSpellOrTrap())
             ChainView.getInstance();
     }
+
+    private void showGameBoard(Account opponent, Account current) {
+        int opponentLP = opponent.getLP();
+        String opponentNickname = opponent.getNickname() + ": " + opponentLP;
+        int opponentHandCount = opponent.getField().getHand().size();
+        int opponentDeckNumber = opponent.getField().getDeckZone().size();
+        String opponentFieldZone = "O";
+        if (opponent.getField().getFieldZone() == null) opponentFieldZone = "E";
+        String[] opponentSpellZone = new String[5];
+        int opponentSpellZoneSize = opponent.getField().getTrapAndSpell().size();
+        for (int i = 0; i < 5; i++) {
+            if (opponentSpellZoneSize - 1 < i) {
+                opponentSpellZone[i] = "E";
+                continue;
+            }
+            SpellAndTrapCard spellAndTrapCard = opponent.getField().getTrapAndSpell().get(i);
+            if (spellAndTrapCard.isActive()) opponentSpellZone[i] = "O";
+            else opponentSpellZone[i] = "H";
+        }
+        int currentLP = current.getLP();
+        String currentNickname = current.getNickname() + ": " + currentLP;
+        int currentDeckNumber = current.getField().getDeckZone().size();
+        int currentHandCount = current.getField().getHand().size();
+        String currentFieldZone = "O";
+        if (current.getField().getFieldZone() == null) currentFieldZone = "E";
+        StringBuilder board = new StringBuilder();
+        board.append(opponentNickname + "\n");
+        for (int i = 0; i < opponentHandCount; i++) board.append("\tc");
+        board.append("\n" + opponentDeckNumber + "\n\t");
+    }
+
+
 
     private void firstMainPhase() {
 
@@ -258,11 +327,35 @@ public class DuelController {
     }
 
     private void nextPhase() {
-
+        switch (game.getCurrentPhase()) {
+            case DRAW_PHASE:
+                game.setCurrentPhase(Phases.STANDBY_PHASE);
+                standbyPhase();
+                break;
+            case STANDBY_PHASE:
+                game.setCurrentPhase(Phases.FIRST_MAIN_PHASE);
+                firstMainPhase();
+                break;
+            case FIRST_MAIN_PHASE:
+                game.setCurrentPhase(Phases.BATTLE_PHASE);
+                battlePhase();
+                break;
+            case BATTLE_PHASE:
+                game.setCurrentPhase(Phases.SECOND_MAIN_PHASE);
+                secondMainPhase();
+                break;
+            case SECOND_MAIN_PHASE:
+                game.setCurrentPhase(Phases.END_PHASE);
+                endPhase();
+                break;
+            case END_PHASE:
+                game.setCurrentPhase(Phases.DRAW_PHASE);
+                game.changeTurn();
+                drawPhase();
+        }
     }
 
     public void summon() {
-        //TODO چک کن کارتایی که وضعشون خاصه ritual
         if (game.getSelectedCard().getName().equals("The Tricky"))
             if (DuelView.getInstance().ordinaryOrSpecial()) {
                 theTricky();
@@ -282,6 +375,10 @@ public class DuelController {
             }
         }
         if (!isSummonValid()) return;
+        if (solemnWarning((MonsterCard) game.getSelectedCard())) {
+            game.setSelectedCard(null);
+            return;
+        }
         summonWithTribute();
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         if (handleTrapHole(monsterCard)) return;
@@ -290,17 +387,19 @@ public class DuelController {
         if (monsterCard.getName().equals("Terratiger, the Empowered Warrior"))
             terraTigerMethod();
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
-        torrentialTribute();
         game.setSelectedCard(null);
         Output.getForNow();
+        torrentialTribute();
         game.setHasSummonedInThisTurn(true);
     }
+
 
     private boolean handleTrapHole(MonsterCard monsterCard) {
         SpellAndTrapCard trapHoleCard = game.getTheOtherPlayer().getField().hasTrapCard("Trap Hole");
         if (monsterCard.getClassAttackPower() >= 1000 && trapHoleCard != null &&
-                DuelView.getInstance().wantsToActivate("Trap Hole")) {
-            trapHole(trapHoleCard, monsterCard);
+                DuelView.getInstance().wantsToActivateTrap("Trap Hole")) {
+            moveSpellOrTrapToGY(trapHoleCard);
+            addMonsterToGY(monsterCard);
             game.setSelectedCard(null);
             return true;
         }
@@ -495,7 +594,10 @@ public class DuelController {
 
     public void attack(int opponentMonsterPositionNumber) {
         if (!isAttackValid(opponentMonsterPositionNumber)) return;
-        if (negateAttack()) return;
+        if (negateAttack()) {
+            nextPhase();
+            return;
+        }
         MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber);
         MonsterCard attacker = (MonsterCard) game.getSelectedCard();
         SwordsOfRevealingLight swordsOfRevealingLight = (SwordsOfRevealingLight) game.getTheOtherPlayer().getField().hasThisCardActivated("Swords of Revealing Light");
@@ -531,7 +633,6 @@ public class DuelController {
         SpellAndTrapCard negateAttackCard = game.getTheOtherPlayer().getField().hasTrapCard("Negate Attack");
         if (negateAttackCard != null && DuelView.getInstance().wantsToActivate("Negate Attack")) {
             moveSpellOrTrapToGY(negateAttackCard);
-            game.changeTurn(); //TODO مرحله نبرد رو خاتمه دادن چه سمیه؟
             return true;
         }
         return false;
@@ -635,12 +736,13 @@ public class DuelController {
         if (!game.getTheOtherPlayer().getField().getMonsterCards().isEmpty()) {
             Output.getForNow();
             return false;
-        } //TODO check for a spell that prevents this
+        }
         return true;
     }
 
     public void activateSpell() {
         if (!isActivatingSpellValid()) return;
+        if (magicJamamer((SpellAndTrapCard) game.getSelectedCard())) return;
         SpellAndTrapCard selectedCard = (SpellAndTrapCard) game.getSelectedCard();
         selfAbsorption();
         if (selectedCard.getProperty().equals("Field")) {
@@ -753,13 +855,6 @@ public class DuelController {
             case "Swords of Revealing Light":
                 ((SwordsOfRevealingLight) card).specialMethod(game.getTheOtherPlayer());
                 break;
-            case "Mind Crush":
-                mindCrush(card);
-                break;
-            case "Call of The Haunted":
-                callOfTheHaunted();
-                break;
-
         }
     }
 
@@ -769,40 +864,65 @@ public class DuelController {
         game.getCurrentPlayer().getField().getGraveyard().add(spellAndTrapCard);
     }
 
-    public void callOfTheHaunted() {
-        Field field = game.getCurrentPlayer().getField();
-        SpellAndTrapCard callOfTheHauntedCard = field.hasTrapCard("Call of The Haunted");
-        if (callOfTheHauntedCard != null && DuelView.getInstance().wantsToActivate("Call Of The Haunted")) {
-            Card card = DuelView.getInstance().getFromMyGY();
+    public void callOfTheHaunted(SpellAndTrapCard callOfTheHauntedCard, Field field, boolean isCurrentPlayer) {
+        if (DuelView.getInstance().wantsToActivate("Call Of The Haunted")) {
+            moveSpellOrTrapToGY(callOfTheHauntedCard);
+            Card card = null;
+            if (isCurrentPlayer) card = DuelView.getInstance().getCardFromMyGY();
+            else card = DuelView.getInstance().getCardFromOpponentGY();
+            if (card == null) return;
             field.getGraveyard().remove(card);
             if (card instanceof MonsterCard) field.getMonsterCards().add((MonsterCard) card);
             else if (((SpellAndTrapCard) card).getProperty().equals("Field")) {
                 SpellAndTrapCard fieldCard = field.getFieldZone();
                 if (fieldCard != null) moveSpellOrTrapToGY(fieldCard);
                 field.setFieldZone((SpellAndTrapCard) card);
-            }
-            else field.getTrapAndSpell().add((SpellAndTrapCard) card);
+            } else field.getTrapAndSpell().add((SpellAndTrapCard) card);
         }
     }
 
-    public void timeSeal() {
-        SpellAndTrapCard timeSealCard = game.getTheOtherPlayer().getField().hasTrapCard("Time Seal");
-        if (timeSealCard != null && DuelView.getInstance().wantsToActivate("Time Seal")) {
+    public boolean solemnWarning(MonsterCard monsterCard) {
+        SpellAndTrapCard solemnWarning = game.getTheOtherPlayer().getField().hasTrapCard("Solemn Warning");
+        if (solemnWarning != null && DuelView.getInstance().wantsToActivateTrap("Solemn Warning")) {
+            moveSpellOrTrapToGY(solemnWarning);
+            game.getTheOtherPlayer().changeLP(-2000);
+            addMonsterToGY(monsterCard);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean magicJamamer(SpellAndTrapCard spellAndTrapCard) {
+        SpellAndTrapCard magicJamamer = game.getTheOtherPlayer().getField().hasTrapCard("Magic Jamamer");
+        if (magicJamamer != null && DuelView.getInstance().wantsToActivateTrap("Magic Jamamer")) {
+            moveSpellOrTrapToGY(magicJamamer);
+            Card toRemove = DuelView.getInstance().getCardFromHand();
+            if (toRemove != null) return false;
+            game.getTheOtherPlayer().getField().getHand().remove(toRemove);
+            game.getTheOtherPlayer().getField().getGraveyard().add(toRemove);
+            game.setSelectedCard(null);
+            return true;
+        }
+        return false;
+    }
+
+    public void timeSeal(SpellAndTrapCard timeSealCard, Account opponent) {
+        if (DuelView.getInstance().wantsToActivate("Time Seal")) {
             moveSpellOrTrapToGY(timeSealCard);
-            game.getCurrentPlayer().setCanDraw(false); //TODO ما الان باید کرنت رو فالس کنیم یا د ادر رو؟ چون ترن عوض میشه فکر کنم ولی نوبت نه
+            opponent.setCanDraw(false);
         }
     }
 
     public void torrentialTribute() {
         SpellAndTrapCard torrentialTributeCard = game.getTheOtherPlayer().getField().hasTrapCard("Torrential Tribute");
-        if (torrentialTributeCard != null && DuelView.getInstance().wantsToActivate("Torrential Tribute")) {
+        if (torrentialTributeCard != null && DuelView.getInstance().wantsToActivateTrap("Torrential Tribute")) {
             moveSpellOrTrapToGY(torrentialTributeCard);
             ArrayList<MonsterCard> myMonsterCards = game.getCurrentPlayer().getField().getMonsterCards();
             ArrayList<MonsterCard> opponentsMonsterCards = game.getTheOtherPlayer().getField().getMonsterCards();
             int mySize = myMonsterCards.size();
             int opponentSize = opponentsMonsterCards.size();
             int max = Math.max(mySize, opponentSize);
-            for (int i = 0; i < max ; i++) {
+            for (int i = 0; i < max; i++) {
                 if (myMonsterCards.get(0) != null) {
                     myMonsterCards.remove(0);
                     addMonsterToGY(myMonsterCards.get(0));
@@ -815,34 +935,25 @@ public class DuelController {
         }
     }
 
-    public void trapHole(SpellAndTrapCard spellAndTrapCard, MonsterCard monsterCard) {
-        moveSpellOrTrapToGY(spellAndTrapCard);
-        addMonsterToGY(monsterCard);
+
+    public void mindCrush(SpellAndTrapCard spellAndTrapCard, Account opponent) {
+        if (DuelView.getInstance().wantsToActivateTrap("Mind Crush")) {
+            String cardName = DuelView.getInstance().getCardName();
+            if (!opponent.hasCardInHand(cardName)) randomlyRemoveFromHand(spellAndTrapCard.getOwner());
+            else {
+                ArrayList<Card> hand = opponent.getField().getHand();
+                ArrayList<Card> toRemove = new ArrayList<>();
+                for (Card card : hand) if (card.getName().equals(cardName)) toRemove.add(card);
+                hand.removeAll(toRemove);
+            }
+            moveSpellOrTrapToGY(spellAndTrapCard);
+        }
     }
 
-    public void mindCrush(SpellAndTrapCard spellAndTrapCard) {
-        String cardName = DuelView.getInstance().getCardName();
-        if (!opponentHasCard(cardName)) randomlyRemoveFromHand();
-        else {
-            ArrayList<Card> hand = game.getTheOtherPlayer().getField().getHand();
-            int size = hand.size();
-            ArrayList<Card> toRemove = new ArrayList<>();
-            for (Card card : hand) if (card.getName().equals(cardName)) toRemove.add(card);
-            hand.removeAll(toRemove);
-        }
-        moveSpellOrTrapToGY(spellAndTrapCard);
-    }
-    private void randomlyRemoveFromHand() {
+    private void randomlyRemoveFromHand(Account account) {
         Random rand = new Random();
-        int randomNumber = rand.nextInt(6);
-        while (game.getCurrentPlayer().getField().getHand().get(randomNumber) == null)
-            randomNumber = rand.nextInt(6);
-        game.getCurrentPlayer().getField().getHand().remove(randomNumber);
-    }
-    private boolean opponentHasCard(String cardName) {
-        for (Card card : game.getTheOtherPlayer().getField().getHand())
-            if (card.getName().equals(cardName)) return true;
-        return false;
+        int randomNumber = rand.nextInt(account.getField().getHand().size());
+        account.getField().getHand().remove(randomNumber);
     }
 
     private void equipMonster(SpellAndTrapCard equipSpell) {
@@ -1087,12 +1198,14 @@ public class DuelController {
         game.getCurrentPlayer().getField().getTrapAndSpell().remove(thisSpell);
         Output.getForNow();
     }
+
     private void chooseMonsterMode(MonsterCard monsterCard) {
         String mode = DuelView.getInstance().monsterMode().toLowerCase();
         if (mode.equals("attack"))
             monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         else monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
     }
+
     private boolean isSumOfTributesValid(ArrayList<MonsterCard> toTribute, MonsterCard ritualMonster) {
         int sum = 0;
         for (MonsterCard monsterCard : toTribute)
@@ -1136,6 +1249,7 @@ public class DuelController {
 
     private void specialSummon(MonsterCard monsterCard, MonsterCardModeInField monsterCardModeInField,
                                ArrayList<Card> removeFrom) {
+        if (solemnWarning(monsterCard)) return;
         removeFrom.remove(monsterCard);
         game.getCurrentPlayer().getField().getMonsterCards().add(monsterCard);
         monsterCard.setMonsterCardModeInField(monsterCardModeInField);
@@ -1217,6 +1331,10 @@ public class DuelController {
         Field field = toBeRemoved.getOwner().getField();
         field.getGraveyard().add(toBeRemoved);
         field.getMonsterCards().remove(toBeRemoved);
+        handleSupplySquad(toBeRemoved, field);
+    }
+
+    private void handleSupplySquad(MonsterCard toBeRemoved, Field field) {
         if (!field.getDeckZone().isEmpty() &&
                 (field.getHand().size() != 6)) {
             SpellAndTrapCard supplySquad = field.hasThisCardActivated("Supply Squad");
@@ -1342,9 +1460,9 @@ public class DuelController {
                         toRemoveFrom = game.getCurrentPlayer().getField().getGraveyard();
                 }
                 if (monsterCard == null) return;
-        }
-                while (!(monsterCard.getCardType().equals("Normal") &&
-                        monsterCard.getMonsterType().equals("Cyberse")));
+            }
+            while (!(monsterCard.getCardType().equals("Normal") &&
+                    monsterCard.getMonsterType().equals("Cyberse")));
 
             specialSummon(monsterCard, MonsterCardModeInField.ATTACK_FACE_UP, toRemoveFrom);
             attacked.setHasBeenUsedInThisTurn(true);

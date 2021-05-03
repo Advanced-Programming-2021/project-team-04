@@ -203,6 +203,12 @@ public class DuelView extends Menu {
     public MonsterCard getFromMyGY() {
         return null;
     }
+    public Card getCardFromMyGY() {
+        return null;
+    }
+    public Card getCardFromOpponentGY() {
+        return null;
+    }
     public MonsterCard getFromMyDeck() {
         return null;
     }
