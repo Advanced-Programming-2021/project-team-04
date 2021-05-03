@@ -496,6 +496,7 @@ public class DuelController {
 
     public void attack(int opponentMonsterPositionNumber) {
         if (!isAttackValid(opponentMonsterPositionNumber)) return;
+        if (negateAttack()) return;
         MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber);
         MonsterCard attacker = (MonsterCard) game.getSelectedCard();
         SwordsOfRevealingLight swordsOfRevealingLight = (SwordsOfRevealingLight) game.getTheOtherPlayer().getField().hasThisCardActivated("Swords of Revealing Light");
@@ -525,6 +526,16 @@ public class DuelController {
         attacker.setHasAttacked(true);
         game.setSelectedCard(null);
 
+    }
+
+    private boolean negateAttack() {
+        SpellAndTrapCard negateAttackCard = game.getTheOtherPlayer().getField().hasTrapCard("Negate Attack");
+        if (negateAttackCard != null && DuelView.getInstance().wantsToActivate("Negate Attack")) {
+            moveSpellOrTrapToGY(negateAttackCard);
+            game.changeTurn(); //TODO مرحله نبرد رو خاتمه دادن چه سمیه؟
+            return true;
+        }
+        return false;
     }
 
     private void attackInDefense(MonsterCard attacked, MonsterCard attacker) {
@@ -746,6 +757,9 @@ public class DuelController {
             case "Mind Crush":
                 mindCrush(card);
                 break;
+            case "Call of The Haunted":
+                callOfTheHaunted();
+                break;
 
         }
     }
@@ -754,6 +768,30 @@ public class DuelController {
         spellAndTrapCard.reset();
         game.getCurrentPlayer().getField().getTrapAndSpell().remove(spellAndTrapCard);
         game.getCurrentPlayer().getField().getGraveyard().add(spellAndTrapCard);
+    }
+
+    public void callOfTheHaunted() {
+        Field field = game.getCurrentPlayer().getField();
+        SpellAndTrapCard callOfTheHauntedCard = field.hasTrapCard("Call of The Haunted");
+        if (callOfTheHauntedCard != null && DuelView.getInstance().wantsToActivate("Call Of The Haunted")) {
+            Card card = DuelView.getInstance().getFromMyGY();
+            field.getGraveyard().remove(card);
+            if (card instanceof MonsterCard) field.getMonsterCards().add((MonsterCard) card);
+            else if (((SpellAndTrapCard) card).getProperty().equals("Field")) {
+                SpellAndTrapCard fieldCard = field.getFieldZone();
+                if (fieldCard != null) moveSpellOrTrapToGY(fieldCard);
+                field.setFieldZone((SpellAndTrapCard) card);
+            }
+            else field.getTrapAndSpell().add((SpellAndTrapCard) card);
+        }
+    }
+
+    public void timeSeal() {
+        SpellAndTrapCard timeSealCard = game.getTheOtherPlayer().getField().hasTrapCard("Time Seal");
+        if (timeSealCard != null && DuelView.getInstance().wantsToActivate("Time Seal")) {
+            moveSpellOrTrapToGY(timeSealCard);
+            game.getCurrentPlayer().setCanDraw(false); //TODO ما الان باید کرنت رو فالس کنیم یا د ادر رو؟ چون ترن عوض میشه فکر کنم ولی نوبت نه
+        }
     }
 
     public void torrentialTribute() {

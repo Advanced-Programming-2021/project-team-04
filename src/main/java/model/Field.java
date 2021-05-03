@@ -55,7 +55,7 @@ public class Field {
         this.hand = hand;
     }
 
-    public Card getFieldZone() {
+    public SpellAndTrapCard getFieldZone() {
         return fieldZone;
     }
 
