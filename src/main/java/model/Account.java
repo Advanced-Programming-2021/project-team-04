@@ -23,6 +23,7 @@ public class Account {
     private int countOfRoundsWon; //TODO should reset this
     private boolean canDraw = true; //TODO should reset this
     private boolean canPlayerAttack = true;
+
     public Account(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
@@ -174,6 +175,12 @@ public class Account {
         for (Card card : field.getHand())
             if (card.getName().equals(cardName)) return true;
         return false;
+    }
+
+    public MonsterCard hasMirageDragon() {
+        for (MonsterCard monsterCard : field.getMonsterCards())
+            if (monsterCard.getName().equals("Mirage Dragon")) return monsterCard;
+        return null;
     }
 
     public Deck getDeckByName(String deckName) {

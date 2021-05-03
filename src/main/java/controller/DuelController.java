@@ -686,6 +686,16 @@ public class DuelController {
 
     }
 
+    public boolean handleMirageDragon(String name) {
+        Account opponent = null;
+        if (game.getCurrentPlayer().equals(name)) opponent = game.getTheOtherPlayer();
+        else opponent = game.getCurrentPlayer();
+        MonsterCard mirageDragon = opponent.hasMirageDragon();
+        if (mirageDragon != null && mirageDragon.getMonsterCardModeInField() != MonsterCardModeInField.DEFENSE_FACE_DOWN)
+            return true;
+        return false;
+    }
+
     private boolean negateAttack() {
         SpellAndTrapCard negateAttackCard = game.getTheOtherPlayer().getField().hasTrapCard("Negate Attack");
         if (negateAttackCard != null && DuelView.getInstance().wantsToActivate("Negate Attack")) {
@@ -818,7 +828,6 @@ public class DuelController {
             selectedCard.setActive(true);
         }
         callSpellAndTrapMethod(selectedCard);
-        //TODO MIRAGE DRAGON
         if (selectedCard.isActive()) Output.getForNow();
         game.setSelectedCard(null);
     }

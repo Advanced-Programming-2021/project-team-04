@@ -7,6 +7,7 @@ import model.MonsterCard;
 import model.SpellAndTrapCard;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -85,12 +86,9 @@ public class DuelView extends Menu {
 
     public boolean wantsToActivate(String cardName) {
         Output.getForNow();
-        String response = Input.getInputMessage();
-        while (true) {
-            if (response.matches("[Yy]")) return true;
-            if (response.matches("[Nn]")) return false;
-            Output.getForNow();
-        }
+        String activate = Input.getInputMessage();
+        if (activate.toLowerCase().matches("yes|y")) return true;
+        else return false;
     }
 
     private String getRPSInput() {
@@ -131,10 +129,6 @@ public class DuelView extends Menu {
         String position = matcher.group(1);
         if (position.equals("attack")) DuelController.getInstance().setPosition(true);
         else DuelController.getInstance().setPosition(false);
-    }
-
-    private void flipSummon() {
-
     }
 
     private void attack(String input) {
@@ -290,6 +284,7 @@ public class DuelView extends Menu {
     }
 
     public boolean wantsToActivateTrap(String name) {
+        if (DuelController.getInstance().handleMirageDragon("")) return false; //TODO name of the person activating this trap
         Output.getForNow();
         String activate = Input.getInputMessage();
         if (activate.toLowerCase().matches("yes|y")) return true;
@@ -297,52 +292,74 @@ public class DuelView extends Menu {
     }
 
     public boolean ordinaryOrSpecial() {
-        // ordinary false
-        // special true
-        boolean isSpecial = true;
-        return isSpecial;
+        Output.getForNow();
+        String ordinaryOrSpecial = Input.getInputMessage().toLowerCase();
+        if (ordinaryOrSpecial.matches("ordinary")) return false;
+        else return true;
     }
 
     public int numOfSpellCardsToDestroy() {
-        return 0;
+        Output.getForNow();
+        String number = Input.getInputMessage();
+        return Integer.parseInt(number);
     }
 
     public Card getCardFromHand() {
-        return null;
+        Output.getForNow();
+        String cardNumber = Input.getInputMessage();
+        if (cardNumber.matches("cancel")) return null;
+        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(cardNumber));
     }
 
     public boolean summonGateGuardian() {
-        return true;
+        Output.getForNow();
+        String input = Input.getInputMessage().toLowerCase();
+        if (input.matches("yes|y")) return true;
+        return false;
     }
 
     public int barbaros() {
+        Output.getForNow();
+        String summonMode = Input.getInputMessage();
+        return Integer.parseInt(summonMode);
         // 1 summon with 2 tributes
         // 2 summon normally
         // 3 summon with 3 tributes
-        return 0;
     }
 
     public boolean killMessengerOfPeace() {
-        return true;
+        Output.getForNow();
+        String input = Input.getInputMessage().toLowerCase();
+        if (input.matches("yes|y")) return true;
+        else return false;
     }
 
     public SpellAndTrapCard getFromMyField() {
-        return null;
+        Output.getForNow();
+        String spellNumber = Input.getInputMessage();
+        if (spellNumber.matches("cancel")) return null;
+        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getTrapAndSpell().get(Integer.parseInt(spellNumber));
     }
 
     public SpellAndTrapCard getFromOpponentField() {
-        return null;
+        Output.getForNow();
+        String spellNumber = Input.getInputMessage();
+        if (spellNumber.matches("cancel")) return null;
+        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getTrapAndSpell().get(Integer.parseInt(spellNumber));
     }
 
     public int whereToSummonFrom() {
+        Output.getForNow();
+        String originOfSummon = Input.getInputMessage();
+        return Integer.parseInt(originOfSummon);
         // 1 hand
         // 2 deck
         // 3 gy
-        return 0;
     }
 
     public String getCardName() {
-        return "";
+        Output.getForNow();
+        return Input.getInputMessage();
     }
 
 }
