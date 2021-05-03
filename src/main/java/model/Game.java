@@ -23,6 +23,7 @@ public class Game {
         setRounds(rounds);
         setTheOtherPlayer(secondPlayer);
         initializeGame();
+        setCurrentPhase(Phases.DRAW_PHASE);
     }
 
     public Account getWinnerOfRPS() {

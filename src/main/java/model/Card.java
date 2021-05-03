@@ -102,6 +102,10 @@ public class Card {
         return null;
     }
 
+    public void reset() {
+
+    }
+
 
 
 }

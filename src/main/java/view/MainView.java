@@ -46,6 +46,10 @@ public class MainView extends Menu {
                 newDuel(newDuelMatcher);
             else if (newDuelAIMatcher.matches())
                 newDuelAI();
+            else if (command.matches("The Aurora Strikes \\d+"))
+                cheatIncreaseScore(command);
+            else if (command.matches("The Hanged Man Rusts \\d+"))
+                cheatIncreaseMoney(command);
             else Output.getInstance().printInvalidCommand();
         }
     }
@@ -86,14 +90,19 @@ public class MainView extends Menu {
         //TODO call whatever menu we should call after AI is done
     }
 
-    //TODO cheat codes
-
-    private void cheatIncreaseMoney() {
-
+    private void cheatIncreaseScore(String string) {
+        Pattern pattern = Pattern.compile("The Aurora Strikes (\\d+)");
+        Matcher matcher = pattern.matcher(string);
+        matcher.find();
+        int amount = Integer.parseInt(matcher.group(1));
+        MainController.getInstance().cheatIncreaseScore(amount);
     }
 
-    private void cheatIncreaseScore() {
-
+    private void cheatIncreaseMoney(String string) {
+        Pattern pattern = Pattern.compile("The Aurora Strikes (\\d+)");
+        Matcher matcher = pattern.matcher(string);
+        matcher.find();
+        int amount = Integer.parseInt(matcher.group(1));
+        MainController.getInstance().cheatIncreaseMoney(amount);
     }
-
 }

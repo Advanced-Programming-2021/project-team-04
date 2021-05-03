@@ -2,6 +2,7 @@ package controller;
 
 import model.Account;
 import model.Game;
+import view.DuelView;
 import view.Output;
 
 public class MainController {
@@ -27,7 +28,8 @@ public class MainController {
         if (errorForNewGame(username, rounds)) {
             new Game(loggedIn, Account.getAccountByUsername(username), rounds);
             Output.getForNow();
-            view.MainView.getInstance().run();
+            DuelView.getInstance().runForRPS();
+            DuelView.getInstance().run();
         }
     }
 

@@ -57,6 +57,7 @@ public class DuelController {
     public void chooseStarter(String username) {
         if (!game.getCurrentPlayer().getUsername().equals(username)) game.changeTurn();
         game.getCurrentPlayer().setCanDraw(false);
+        game.getCurrentPlayer().setCanPlayerAttack(false);
     }
 
     public Game getGame() {
@@ -259,19 +260,35 @@ public class DuelController {
 
 
     private void firstMainPhase() {
-
+        Output.getForNow();
+        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     private void battlePhase() {
-
+        if (!game.getCurrentPlayer().canPlayerAttack()) {
+            game.getCurrentPlayer().setCanPlayerAttack(true);
+            nextPhase();
+        }
+        Output.getForNow();
     }
 
     private void secondMainPhase() {
-
+        Output.getForNow();
+        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     private void endPhase() {
-        //TODO reset shit
+        Output.getForNow();
+        reset();
+        handleSwordOfRevealingLight();
+    }
+
+    private void reset() {
+        game.getCurrentPlayer().getField().resetAllCards();
+        game.getTheOtherPlayer().getField().resetAllCards();
+    }
+
+    private void handleSwordOfRevealingLight() {
         SwordsOfRevealingLight sword = (SwordsOfRevealingLight) game.getTheOtherPlayer().getField().hasThisCardActivated("Swords of Revealing Light");
         if (sword != null) {
             sword.counter++;
@@ -366,7 +383,7 @@ public class DuelController {
         game.setSelectedCard(null);
     }
 
-    private void nextPhase() {
+    public void nextPhase() {
         switch (game.getCurrentPhase()) {
             case DRAW_PHASE:
                 game.setCurrentPhase(Phases.STANDBY_PHASE);
@@ -573,7 +590,7 @@ public class DuelController {
         return true;
     }
 
-    private void setPosition(boolean isAttack) {
+    public void setPosition(boolean isAttack) {
         if (!isSetPositionValid(isAttack)) return;
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
         if (isAttack) {
@@ -609,7 +626,7 @@ public class DuelController {
         return true;
     }
 
-    private void flipSummon() {
+    public void flipSummon() {
         if (!isFlipSummonValid()) return;
         Output.getForNow();
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
@@ -737,6 +754,10 @@ public class DuelController {
             Output.getForNow();
             return false;
         }
+        if (selectedCard.isHasAttacked()) {
+            Output.getForNow();
+            return false;
+        }
         return true;
     }
 
@@ -753,7 +774,7 @@ public class DuelController {
         return false;
     }
 
-    private void directAttack() {
+    public void directAttack() {
         if (!isDirectAttackValid()) return;
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
         game.getTheOtherPlayer().changeLP(-(selectedCard.getThisCardAttackPower()));

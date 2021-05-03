@@ -22,12 +22,20 @@ public class Account {
     private int LP;
     private int countOfRoundsWon; //TODO should reset this
     private boolean canDraw = true; //TODO should reset this
-
+    private boolean canPlayerAttack = true;
     public Account(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         allAccounts.add(this);
+    }
+
+    public boolean canPlayerAttack() {
+        return canPlayerAttack;
+    }
+
+    public void setCanPlayerAttack(boolean canPlayerAttack) {
+        this.canPlayerAttack = canPlayerAttack;
     }
 
     public boolean canDraw() {

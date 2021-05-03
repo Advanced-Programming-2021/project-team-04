@@ -165,4 +165,14 @@ public class Field {
         return null;
     }
 
+    public void resetAllCards() {
+        ArrayList<Card> allCards = new ArrayList<>();
+        allCards.addAll(monsterCards);
+        allCards.addAll(trapAndSpell);
+        allCards.add(fieldZone);
+        for (Card card : allCards)
+            card.reset();
+
+    }
+
 }
