@@ -13,6 +13,8 @@ public class MainView extends Menu {
     private final Pattern newDuelPattern = Pattern.compile("^d(?:uel)? (?=.*(?:\\-(?:(?:\\-new)|(?:n))))" +
             "(?=.*(?:\\-(?:(?:\\-second\\-player)|(?:s)|(?:s\\-p)) (?<secondPlayerUsername>\\S+)))" +
             "(?=.*(?:\\-(?:(?:\\-round(?:s)?)|(?:r)) (?<roundsNumber>\\d+))).+$");
+    private final Pattern newDuelAIPattern = Pattern.compile("^d(?:uel)? (?=.*(?:\\-(?:(?:\\-new)|(?:n))))" +
+            "(?=.*(?:\\-\\-ai))(?=.*(?:\\-(?:(?:\\-round(?:s)?)|(?:r)) (?<roundsNumber>\\d+))).+$");
 
     private boolean continueLoop = true;
 
@@ -33,6 +35,7 @@ public class MainView extends Menu {
             continueLoop = !(command = Input.getInputMessage()).matches("(?:menu )?exit");
             Matcher enterMenuMatcher = enterMenuPattern.matcher(command);
             Matcher newDuelMatcher = newDuelPattern.matcher(command);
+            Matcher newDuelAIMatcher = newDuelAIPattern.matcher(command);
             if (command.matches("(?:menu )?(?:show|s)\\-(?:current|c)"))
                 showCurrentMenu();
             else if (command.matches("(?:user )?logout"))
@@ -41,6 +44,8 @@ public class MainView extends Menu {
                 enterMenu(enterMenuMatcher);
             else if (newDuelMatcher.matches())
                 newDuel(newDuelMatcher);
+            else if (newDuelAIMatcher.matches())
+                newDuelAI();
             else Output.getInstance().printInvalidCommand();
         }
     }
@@ -76,6 +81,12 @@ public class MainView extends Menu {
         MainController.getInstance().newDuel(matcher.group("secondPlayerUsername"),
                 Integer.parseInt(matcher.group("roundsNumber")));
     }
+
+    private void newDuelAI() {
+        //TODO call whatever menu we should call after AI is done
+    }
+
+    //TODO cheat codes
 
     private void cheatIncreaseMoney() {
 

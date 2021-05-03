@@ -2,21 +2,36 @@ package view;
 
 import controller.DuelController;
 import model.Card;
+import model.CardStatusInField;
 import model.MonsterCard;
-import model.Phases;
 import model.SpellAndTrapCard;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DuelView extends Menu {
+
     private static DuelView singleInstance = null;
+
     public boolean isRPSDone = false;
+
+    private final Pattern selectCardPattern = Pattern.compile("^s(?:elect)? " +
+            "(?=.*(?:(?:\\-(?:(?:\\-(?:monster)|(?:spell)|(?:hand))|(?:[msh])) (?<number>\\d+)?)|(?:\\-(?:(?:\\-field)|(?:f))))).+");
+
     @Override
     public void run() {
-        while (true) {
-            String command = Input.getInputMessage();
-            if (command.matches("select --monster \\d"))
-                selectCard(command);
+        String command;
+        while (!(command = Input.getInputMessage()).matches("(?:menu )?exit") &&
+                !command.matches("(?:menu )?enter (?:M|m)ain(?: (?:M|m)enu)?")) {
+            Matcher selectCardMatcher = selectCardPattern.matcher(command);
+            if (command.matches("(?:menu )?(?:show|s)\\-(?:current|c)"))
+                showCurrentMenu();
+            else if (command.matches("(?:(?:select \\-d)|(?:deselect))"))
+                deselectCard();
+            else if (selectCardMatcher.matches())
+                selectCard(selectCardMatcher, command.contains("-o"), CardStatusInField.getCardStatusInField(command));
+            else Output.getInstance().printInvalidCommand();
         }
     }
 
@@ -93,11 +108,12 @@ public class DuelView extends Menu {
     private void showCurrent() {
 
     }
-    private void selectCard(String input) {
-
+    private void selectCard(Matcher matcher, boolean isPlayerCard, CardStatusInField cardStatusInField) {
+        DuelController.getInstance().selectCard(isPlayerCard, cardStatusInField,
+                cardStatusInField == CardStatusInField.FIELD_ZONE ? 0 : Integer.parseInt(matcher.group("number")));
     }
     private void deselectCard() {
-
+        DuelController.getInstance().deselectCard();
     }
     private void nextPhase() {
 

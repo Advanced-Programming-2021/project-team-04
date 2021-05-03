@@ -249,8 +249,7 @@ public class DuelController {
         return 4;
     }
 
-
-    private void deselectCard() {
+    public void deselectCard() {
         if (game.getSelectedCard() == null) {
             Output.getForNow();
             return;
