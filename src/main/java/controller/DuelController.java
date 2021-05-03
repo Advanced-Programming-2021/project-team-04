@@ -186,36 +186,76 @@ public class DuelController {
             ChainView.getInstance();
     }
 
-    private void showGameBoard(Account opponent, Account current) {
-        int opponentLP = opponent.getLP();
-        String opponentNickname = opponent.getNickname() + ": " + opponentLP;
-        int opponentHandCount = opponent.getField().getHand().size();
-        int opponentDeckNumber = opponent.getField().getDeckZone().size();
-        String opponentFieldZone = "O";
-        if (opponent.getField().getFieldZone() == null) opponentFieldZone = "E";
-        String[] opponentSpellZone = new String[5];
-        int opponentSpellZoneSize = opponent.getField().getTrapAndSpell().size();
+    private String[] makeSpellZone(ArrayList<SpellAndTrapCard> spellZone) {
+        String[] spellZoneString = new String[5];
         for (int i = 0; i < 5; i++) {
-            if (opponentSpellZoneSize - 1 < i) {
-                opponentSpellZone[i] = "E";
+            if (spellZone.size() - 1 < i) {
+                spellZoneString[i] = "E ";
                 continue;
             }
-            SpellAndTrapCard spellAndTrapCard = opponent.getField().getTrapAndSpell().get(i);
-            if (spellAndTrapCard.isActive()) opponentSpellZone[i] = "O";
-            else opponentSpellZone[i] = "H";
+            SpellAndTrapCard spellAndTrapCard = spellZone.get(i);
+            if (spellAndTrapCard.isActive()) spellZoneString[i] = "O ";
+            else spellZoneString[i] = "H ";
         }
-        int currentLP = current.getLP();
-        String currentNickname = current.getNickname() + ": " + currentLP;
-        int currentDeckNumber = current.getField().getDeckZone().size();
-        int currentHandCount = current.getField().getHand().size();
-        String currentFieldZone = "O";
-        if (current.getField().getFieldZone() == null) currentFieldZone = "E";
-        StringBuilder board = new StringBuilder();
-        board.append(opponentNickname + "\n");
-        for (int i = 0; i < opponentHandCount; i++) board.append("\tc");
-        board.append("\n" + opponentDeckNumber + "\n\t");
+        return spellZoneString;
     }
 
+    private String[] makeMonsterZone(ArrayList<MonsterCard> monsterZone) {
+        String[] monsterZoneString = new String[5];
+        for (int i = 0; i < 5; i++) {
+            if (monsterZone.size() - 1 < i) {
+                monsterZoneString[i] = "E ";
+                continue;
+            }
+            MonsterCard monsterCard = monsterZone.get(i);
+            if (monsterCard.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP)
+                monsterZoneString[i] = "OO";
+            else if (monsterCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_UP)
+                monsterZoneString[i] = "DO";
+            else monsterZoneString[i] = "DH";
+        }
+        return monsterZoneString;
+    }
+
+    private void showGameBoard(Account opponent, Account current) {
+        String opponentNickname = opponent.getNickname() + ": " + opponent.getLP();
+        int opponentHandCount = opponent.getField().getHand().size();
+        int opponentDeckNumber = opponent.getField().getDeckZone().size();
+        int opponentGraveYardCount = opponent.getField().getGraveyard().size();
+        String opponentFieldZone = "O ";
+        if (opponent.getField().getFieldZone() == null) opponentFieldZone = "E ";
+        String[] opponentSpellZone = makeSpellZone(opponent.getField().getTrapAndSpell());
+        String[] opponentMonsterZone = makeMonsterZone(opponent.getField().getMonsterCards());
+        String currentNickname = current.getNickname() + ": " + current.getLP();
+        int currentDeckNumber = current.getField().getDeckZone().size();
+        int currentGraveYardCount = current.getField().getGraveyard().size();
+        int currentHandCount = current.getField().getHand().size();
+        String currentFieldZone = "O ";
+        if (current.getField().getFieldZone() == null) currentFieldZone = "E ";
+        String[] currentSpellZone = makeSpellZone(current.getField().getTrapAndSpell());
+        String[] currentMonsterZone = makeMonsterZone(current.getField().getMonsterCards());
+
+        StringBuilder board = new StringBuilder();
+        board.append(opponentNickname + "\n");
+        for (int i = 0; i < opponentHandCount; i++) board.append("\tc ");
+        board.append("\n" + opponentDeckNumber + "\n\t");
+        board.append(opponentSpellZone[3] + "\t" + opponentSpellZone[1] + "\t" + opponentSpellZone[0]
+                + "\t" + opponentSpellZone[2] + "\t" + opponentSpellZone[4] + "\n\t");
+        board.append(opponentMonsterZone[3] + "\t" + opponentMonsterZone[1] + "\t" + opponentMonsterZone[0]
+                + "\t" + opponentMonsterZone[2] + "\t" + opponentMonsterZone[4] + "\n");
+        board.append(opponentGraveYardCount + "\t\t\t\t\t\t" + opponentFieldZone + "\n");
+        board.append("\n----------------------------------------------------------\n\n");
+        board.append(currentFieldZone + "\t\t\t\t\t\t" + currentGraveYardCount + "\n\t");
+        board.append(currentMonsterZone[4] + "\t" + currentMonsterZone[2] + "\t" + currentMonsterZone[0]
+                + "\t" + currentMonsterZone[1] + "\t" + currentMonsterZone[3] + "\n\t");
+        board.append(currentSpellZone[4] + "\t" + currentSpellZone[2] + "\t" + currentSpellZone[0]
+                + "\t" + currentSpellZone[1] + "\t" + currentSpellZone[3] + "\n");
+        board.append("  \t\t\t\t\t\t" + currentDeckNumber + "\n");
+        for (int i = 0; i < currentHandCount; i++) board.append("c \t");
+        board.append("\n" + currentNickname);
+
+        Output.getForNow();
+    }
 
 
     private void firstMainPhase() {
