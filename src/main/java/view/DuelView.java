@@ -109,7 +109,9 @@ public class DuelView extends Menu {
     }
 
     public int getTribute() {
-        return 0;
+        Output.getForNow();
+        String cardNumber = Input.getInputMessage();
+        return Integer.parseInt(cardNumber);
     }
 
 
