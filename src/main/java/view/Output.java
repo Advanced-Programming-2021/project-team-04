@@ -20,6 +20,128 @@ public class Output {
         System.out.println(toPrint);
     }
 
+    public void positionChanged() {
+        System.out.println("monster card position changed successfully");
+    }
+
+    public void alreadyChangedPosition() {
+        System.out.println("you already changed this card position in this turn");
+    }
+
+    public void alreadyInPosition() {
+        System.out.println("this card is already in the wanted position");
+    }
+
+    public void cantChangePosition() {
+        System.out.println("you can’t change this card position");
+    }
+
+    public void setSuccessfully() {
+        System.out.println("set successfully");
+    }
+
+    public void cantSet() {
+        System.out.println("you can’t set this card");
+    }
+
+    public void noMonster() {
+        System.out.println("there no monsters one this address");
+    }
+
+    public void notEnoughTribute() {
+        System.out.println("there are not enough cards for tribute");
+    }
+
+    public void alreadySummonedOrSet() {
+        System.out.println("you already summoned/set on this turn");
+    }
+
+    public void monsterZoneFull() {
+        System.out.println("monster card zone is full");
+    }
+
+    public void wrongPhase() {
+        System.out.println("action not allowed in this phase");
+    }
+
+    public void cantSummon() {
+        System.out.println("you can’t summon this card");
+    }
+
+    public void cardNotSelected() {
+        System.out.println("no card is selected yet");
+    }
+
+    public void summoned() {
+        System.out.println("summoned successfully");
+    }
+
+    public void enterANewPassword() {
+        System.out.println("please enter a new password");
+    }
+
+    public void invalidCurrentPassword() {
+        System.out.println("current password is invalid");
+    }
+
+    public void passwordChanged() {
+        System.out.println("password changed successfully!");
+    }
+
+    public void nicknameChanged() {
+        System.out.println("nickname changed successfully!");
+    }
+
+    public void cheatIncreaseScore() {
+        System.out.println("The space pirate crew of the Aurora\n" +
+                "Known as the Mechanisms\n" +
+                "Had been watching all this time, fascinated\n" +
+                "For when you're immortal\n" +
+                "A good war is a very pleasant distraction, indeed");
+    }
+
+    public void cheatIncreaseMoney() {
+        System.out.println("Deep within the depth of the station\n" +
+                "You’d find the key that brings your salvation\n" +
+                "Ornate and hidden past pain and privation\n" +
+                "It’s clutched in the Captain’s cold hands");
+    }
+
+    public void invalidDeck(String username) {
+        System.out.println(username + "’s deck is invalid");
+    }
+
+    public void noActiveDeck(String username) {
+        System.out.println(username + " has no active deck");
+    }
+
+    public void invalidNumOfRounds() {
+        System.out.println("number of rounds is not supported");
+    }
+
+    public void playerDoesntExist() {
+        System.out.println("there is no player with this username");
+    }
+
+    public void passwordDoesntMatch() {
+        System.out.println("Username and password didn’t match!");
+    }
+
+    public void userWithNicknameExists(String nickname) {
+        System.out.println("user with nickname " + nickname + " already exists");
+    }
+
+    public void userWithUsernameExists(String username) {
+        System.out.println("user with username " + username + " already exists");
+    }
+
+    public void userCreated() {
+        System.out.println("user created successfully!");
+    }
+    public void loggedIn() {
+        System.out.println("user logged in successfully!");
+    }
+
     public void noCardSelected() {
         System.out.println("no card is selected yet");
     }

@@ -16,6 +16,7 @@ public class LoginController {
     public void loginUser(String username, String password) {
         if (isLoggingInValid(username, password)) {
             MainController.getInstance().setLoggedIn(Account.getAccountByUsername(username));
+            Output.getInstance().loggedIn();
             MainView.getInstance().run();
         }
     }
@@ -23,14 +24,15 @@ public class LoginController {
     public void createUser(String username, String password, String nickname) {
         if (errorsForCreatingUser(username, nickname))
             new Account(username, password, nickname);
+        Output.getInstance().userCreated();
     }
 
     private boolean errorsForCreatingUser(String username, String nickname) {
         if (Account.getAllUsernames().contains(username)) {
-            Output.getForNow();
+            Output.getInstance().userWithUsernameExists(username);
             return false;
         } else if (Account.getAllNicknames().contains(nickname)) {
-            Output.getForNow();
+            Output.getInstance().userWithNicknameExists(nickname);
             return false;
         }
         return true;
@@ -38,10 +40,10 @@ public class LoginController {
 
     public boolean isLoggingInValid(String username, String password) {
         if (Account.getAccountByUsername(username) == null) {
-            Output.getForNow();
+            Output.getInstance().passwordDoesntMatch();
             return false;
         } else if (!Account.getAccountByUsername(username).getPassword().equals(password)) {
-            Output.getForNow();
+            Output.getInstance().passwordDoesntMatch();
             return false;
         }
         return true;

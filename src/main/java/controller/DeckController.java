@@ -68,7 +68,7 @@ public class DeckController {
         String isValid = "invalid";
         if (thisPlayer.getActiveDeck() != null) {
             Deck activeDeck = thisPlayer.getActiveDeck();
-            if (activeDeck.isMainDeckValid()) isValid = "valid";
+            if (activeDeck.isDeckValid()) isValid = "valid";
             toPrint += activeDeck.getDeckName() + ": main deck " + activeDeck.getMainDeck().size() + ", side deck " +
                     activeDeck.getSideDeck().size() + ", " + isValid + "\n";
         }
@@ -76,7 +76,7 @@ public class DeckController {
         if (!thisPlayer.getAllDecks().isEmpty()) {
             sortedDecks();
             for (Deck deck : thisPlayer.getAllDecks()) {
-                if (deck.isMainDeckValid()) isValid = "valid";
+                if (deck.isDeckValid()) isValid = "valid";
                 toPrint += deck.getDeckName() + ": main deck " + deck.getMainDeck().size() + ", side deck " +
                         deck.getSideDeck().size() + ", " + isValid + "\n";
             }

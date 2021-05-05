@@ -99,7 +99,7 @@ public class MainView extends Menu {
     }
 
     private void cheatIncreaseMoney(String string) {
-        Pattern pattern = Pattern.compile("The Aurora Strikes (\\d+)");
+        Pattern pattern = Pattern.compile("The Hanged Man Rusts (\\d+)");
         Matcher matcher = pattern.matcher(string);
         matcher.find();
         int amount = Integer.parseInt(matcher.group(1));

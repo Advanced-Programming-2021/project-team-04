@@ -150,15 +150,6 @@ public class Game {
         Collections.shuffle(theOtherPlayer.getActiveDeck().getMainDeck());
     }
 
-    public boolean isRoundFinished() {
-        return true;
-    }
-
-    public void setRoundFinished(boolean roundFinished) {
-
-    }
-
-
     public void changeTurn() {
         Account temp = currentPlayer;
         currentPlayer = theOtherPlayer;

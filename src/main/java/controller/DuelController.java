@@ -352,7 +352,7 @@ public class DuelController {
 
     public void deselectCard() {
         if (game.getSelectedCard() == null) {
-            Output.getForNow();
+            Output.getInstance().noCardSelected();
             return;
         }
         game.setSelectedCard(null);
@@ -421,7 +421,7 @@ public class DuelController {
             terraTigerMethod();
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
-        Output.getForNow();
+        Output.getInstance().summoned();
         torrentialTribute();
         game.setHasSummonedInThisTurn(true);
     }
@@ -457,7 +457,7 @@ public class DuelController {
 
     private boolean isTributeValid(int number) {
         if (game.getCurrentPlayer().getField().getMonsterCards().size() < number) {
-            Output.getForNow();
+            Output.getInstance().noMonster();
             return false;
         }
         return true;
@@ -465,36 +465,36 @@ public class DuelController {
 
     private boolean isSummonValid() {
         if (game.getSelectedCard() == null) {
-            Output.getForNow();
+            Output.getInstance().cardNotSelected();
             return false;
         } else if (!game.getCurrentPlayer().getField().getHand().contains(game.getSelectedCard())) {
-            Output.getForNow();
+            Output.getInstance().cantSummon();
             return false;
         } else if (!(game.getSelectedCard() instanceof MonsterCard)) {
-            Output.getForNow();
+            Output.getInstance().cantSummon();
             return false;
         }
         if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
-            Output.getForNow();
+            Output.getInstance().wrongPhase();
             return false;
         }
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         if (monsterCard.getCardType().equals("Ritual")) {
-            Output.getForNow();
+            Output.getInstance().cantSummon();
             return false;
         } else if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
-            Output.getForNow();
+            Output.getInstance().monsterZoneFull();
             return false;
         } else if (game.isHasSummonedInThisTurn()) {
-            Output.getForNow();
+            Output.getInstance().alreadySummonedOrSet();
             return false;
         } else if ((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) &&
                 game.getCurrentPlayer().getField().getMonsterCards().isEmpty()) {
-            Output.getForNow();
+            Output.getInstance().notEnoughTribute();
             return false;
         } else if ((monsterCard.getLevel() >= 7) &&
                 game.getCurrentPlayer().getField().getMonsterCards().size() < 2) {
-            Output.getForNow();
+            Output.getInstance().notEnoughTribute();
             return false;
         }
         return true;
@@ -504,7 +504,7 @@ public class DuelController {
         if (!isSettingMonsterValid()) return;
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
         if (selectedCard.getName().equals("Gate Guardian")) {
-            Output.getForNow();
+            Output.getInstance().setSuccessfully();
             return;
         }
         summonWithTribute();
@@ -518,35 +518,39 @@ public class DuelController {
 
     private boolean isSettingMonsterValid() {
         if (game.getSelectedCard() == null) {
-            Output.getForNow();
+            Output.getInstance().cardNotSelected();
             return false;
         }
         if (!game.getCurrentPlayer().getField().getHand().contains(game.getSelectedCard())) {
-            Output.getForNow();
+            Output.getInstance().cantSet();
             return false;
         }
-        if (game.getSelectedCard() instanceof MonsterCard) {
-            MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
-            if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
-                Output.getForNow();
-                return false;
-            }
-            if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
-                Output.getForNow();
-                return false;
-            }
-            if (game.isHasSummonedInThisTurn()) {
-                Output.getForNow();
-                return false;
-            } else if ((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) &&
-                    game.getCurrentPlayer().getField().getMonsterCards().isEmpty()) {
-                Output.getForNow();
-                return false;
-            } else if ((monsterCard.getLevel() >= 7) &&
-                    game.getCurrentPlayer().getField().getMonsterCards().size() < 2) {
-                Output.getForNow();
-                return false;
-            }
+        MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
+        if (monsterCard.getCardType().equals("Ritual")) {
+            Output.getInstance().cantSet();
+            return false;
+        }
+        if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
+            Output.getInstance().wrongPhase();
+            return false;
+        }
+        if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
+            Output.getInstance().monsterZoneFull();
+            return false;
+        }
+        if (game.isHasSummonedInThisTurn()) {
+            Output.getInstance().alreadySummonedOrSet();
+            return false;
+        }
+        if ((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) &&
+                game.getCurrentPlayer().getField().getMonsterCards().isEmpty()) {
+            Output.getInstance().notEnoughTribute();
+            return false;
+        }
+        if ((monsterCard.getLevel() >= 7) &&
+                game.getCurrentPlayer().getField().getMonsterCards().size() < 2) {
+            Output.getInstance().notEnoughTribute();
+            return false;
         }
         return true;
     }
@@ -560,28 +564,28 @@ public class DuelController {
             selectedCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
         }
         game.setSelectedCard(null);
-        Output.getForNow();
+        Output.getInstance().positionChanged();
     }
 
     private boolean isSetPositionValid(boolean isAttack) {
         if (checkSelectedCard()) return false;
         if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
-            Output.getForNow();
+            Output.getInstance().wrongPhase();
             return false;
         }
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
         if ((isAttack && selectedCard.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP) ||
                 (!isAttack && (selectedCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_UP ||
                         selectedCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN))) {
-            Output.getForNow();
+            Output.getInstance().alreadyInPosition();
             return false;
         }
         if (selectedCard.isHasChangedPosition()) {
-            Output.getForNow();
+            Output.getInstance().alreadyChangedPosition();
             return false;
         }
         if (selectedCard.isHasBeenSetOrSummoned()) {
-            Output.getForNow();
+            Output.getInstance().alreadySummonedOrSet();
             return false;
         }
         return true;
@@ -734,12 +738,12 @@ public class DuelController {
 
     private boolean checkSelectedCard() {
         if (game.getSelectedCard() == null) {
-            Output.getForNow();
+            Output.getInstance().cardNotSelected();
             return true;
         }
         if (!(game.getSelectedCard() instanceof MonsterCard) &&
                 !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
-            Output.getForNow();
+            Output.getInstance().cantChangePosition();
             return true;
         }
         return false;
