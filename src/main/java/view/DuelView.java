@@ -52,7 +52,7 @@ public class DuelView extends Menu {
             else if (command.matches("card show --(selected|s)"))
                 DuelController.getInstance().showSelectedCard();
             else if (command.matches("surrender"))
-                DuelController.getInstance().getGame().finishGame();
+                DuelController.getInstance().surrender();
             else if (command.matches("next phase"))
                 DuelController.getInstance().nextPhase();
             else if (command.matches("Death to the Mechanisms (\\d+)"))
@@ -87,8 +87,7 @@ public class DuelView extends Menu {
     public boolean wantsToActivate(String cardName) {
         Output.getForNow();
         String activate = Input.getInputMessage();
-        if (activate.toLowerCase().matches("yes|y")) return true;
-        else return false;
+        return activate.toLowerCase().matches("yes|y");
     }
 
     private String getRPSInput() {
@@ -129,8 +128,7 @@ public class DuelView extends Menu {
         Matcher matcher = pattern.matcher(input);
         matcher.find();
         String position = matcher.group(1);
-        if (position.equals("attack")) DuelController.getInstance().setPosition(true);
-        else DuelController.getInstance().setPosition(false);
+        DuelController.getInstance().setPosition(position.equals("attack"));
     }
 
     private void attack(String input) {
@@ -256,9 +254,7 @@ public class DuelView extends Menu {
     public boolean isMine() {
         Output.getForNow();
         String isMine = Input.getInputMessage();
-        if (isMine.toLowerCase().matches("yes|y"))
-            return true;
-        else return false;
+        return isMine.toLowerCase().matches("yes|y");
     }
 
     public SpellAndTrapCard getFieldSpellFromDeck() {
@@ -289,15 +285,13 @@ public class DuelView extends Menu {
         if (DuelController.getInstance().handleMirageDragon("")) return false; //TODO name of the person activating this trap
         Output.getForNow();
         String activate = Input.getInputMessage();
-        if (activate.toLowerCase().matches("yes|y")) return true;
-        else return false;
+        return activate.toLowerCase().matches("yes|y");
     }
 
     public boolean ordinaryOrSpecial() {
         Output.getForNow();
         String ordinaryOrSpecial = Input.getInputMessage().toLowerCase();
-        if (ordinaryOrSpecial.matches("ordinary")) return false;
-        else return true;
+        return !ordinaryOrSpecial.matches("ordinary");
     }
 
     public int numOfSpellCardsToDestroy() {
@@ -316,8 +310,7 @@ public class DuelView extends Menu {
     public boolean summonGateGuardian() {
         Output.getForNow();
         String input = Input.getInputMessage().toLowerCase();
-        if (input.matches("yes|y")) return true;
-        return false;
+        return input.matches("yes|y");
     }
 
     public int barbaros() {
@@ -332,8 +325,7 @@ public class DuelView extends Menu {
     public boolean killMessengerOfPeace() {
         Output.getForNow();
         String input = Input.getInputMessage().toLowerCase();
-        if (input.matches("yes|y")) return true;
-        else return false;
+        return input.matches("yes|y");
     }
 
     public SpellAndTrapCard getFromMyField() {

@@ -75,7 +75,7 @@ public class DuelController {
         }
         Field field = game.getCurrentPlayer().getField();
         if (field.getDeckZone().isEmpty()) {
-            game.finishGame();
+            game.finishGame(game.getCurrentPlayer());
             return;
         }
         field.getHand().add(field.getDeckZone().get(0));
@@ -1336,7 +1336,7 @@ public class DuelController {
     }
 
     public void cheatSetWinner() {
-        game.finishGame();
+        game.finishGame(game.getTheOtherPlayer());
     }
 
     public void cheatSeeMyDeck() {
@@ -1352,7 +1352,7 @@ public class DuelController {
     }
 
     public void surrender() {
-        game.finishGame();
+        game.finishGame(game.getCurrentPlayer());
     }
 
     private void moveToGraveyardAfterAttack(MonsterCard toBeRemoved, MonsterCard remover) {

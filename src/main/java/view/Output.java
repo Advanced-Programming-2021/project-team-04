@@ -20,6 +20,38 @@ public class Output {
         Output.forNow = forNow;
     }
 
+    public void cardDoesntExist(String cardName) {
+        System.out.println("card with name " + cardName + " does not exist");
+    }
+
+    public void deckDoesntExist(String deckName) {
+        System.out.println("deck with name " + deckName + " does not exist");
+    }
+
+    public void deckExists(String deckName) {
+        System.out.println("deck with name " + deckName + " already exists");
+    }
+
+    public void cardRemoved() {
+        System.out.println("card removed form deck successfully");
+    }
+
+    public void cardAddedToDeck() {
+        System.out.println("card added to deck successfully");
+    }
+
+    public void deckCreated() {
+        System.out.println("deck created successfully!");
+    }
+
+    public void deckDeleted() {
+        System.out.println("deck deleted successfully");
+    }
+
+    public void deckActivated() {
+        System.out.println("deck activated successfully");
+    }
+
     public void printLoginMenuName() {
         System.out.println("Login Menu");
     }

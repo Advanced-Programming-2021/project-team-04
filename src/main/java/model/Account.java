@@ -1,5 +1,7 @@
 package model;
 
+import controller.DuelController;
+
 import java.util.ArrayList;
 
 public class Account {
@@ -23,12 +25,25 @@ public class Account {
     private int countOfRoundsWon; //TODO should reset this
     private boolean canDraw = true; //TODO should reset this
     private boolean canPlayerAttack = true;
+    private int maxLPofThreeRounds;
 
     public Account(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         allAccounts.add(this);
+    }
+
+    public int getMaxLPofThreeRounds() {
+        return maxLPofThreeRounds;
+    }
+
+    public void setMaxLPofThreeRounds(int LP) {
+        maxLPofThreeRounds = LP;
+    }
+
+    public void checkMaxLPofThreeRounds() {
+        if (maxLPofThreeRounds < LP) maxLPofThreeRounds = LP;
     }
 
     public boolean canPlayerAttack() {
@@ -246,19 +261,15 @@ public class Account {
         field = null;
     }
 
-    private void reset() {
+    public void reset() {
         setLP(8000);
         deleteField();
-        //TODO not sure if it's all but duh
-    }
-
-
-    private boolean isPlayerDead() { //TODO this is not enough for game
-        return LP == 0;
+        countForRPS = 0;
     }
 
     public void changeLP(int amount) {
         this.LP += amount;
+        if (this.LP <= 0) DuelController.getInstance().getGame().finishGame(this);
     }
 
     public static Account getAccountByUsername(String username) {

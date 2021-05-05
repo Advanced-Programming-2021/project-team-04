@@ -3,6 +3,7 @@ package controller;
 import model.Account;
 import model.Card;
 import model.Deck;
+import model.MonsterCard;
 import view.Output;
 
 import java.util.ArrayList;
@@ -23,13 +24,13 @@ public class DeckController {
         if (errorForCreation(deckName)) {
             Deck thisDeck = new Deck(deckName);
             MainController.getInstance().getLoggedIn().addDeck(thisDeck);
-            Output.getForNow();
+            Output.getInstance().deckCreated();
         }
     }
 
     public void deleteDeck(String deckName) {
         if (errorForDeletingOrActivating(deckName)) {
-            Output.getForNow();
+            Output.getInstance().deckDeleted();
             if (thisPlayer.getDeckByName(deckName).equals(thisPlayer.getActiveDeck())) thisPlayer.setActiveDeck(null);
             thisPlayer.deleteDeck(thisPlayer.getDeckByName(deckName));
         }
@@ -38,20 +39,18 @@ public class DeckController {
     public void activateDeck(String deckName) {
         if (errorForDeletingOrActivating(deckName)) {
             thisPlayer.setActiveDeck(thisPlayer.getDeckByName(deckName));
-            Output.getForNow();
+            Output.getInstance().deckActivated();
         }
     }
 
     public void addCardToDeck(String deckName, String cardName, boolean isMainDeck) {
         if (errorForAddingCard(deckName, cardName, isMainDeck)) {
             Card card = thisPlayer.getCardByName(cardName);
-            if (isMainDeck) {
+            if (isMainDeck)
                 thisPlayer.getDeckByName(deckName).getMainDeck().add(card);
-                Output.getForNow();
-            } else {
+            else
                 thisPlayer.getDeckByName(deckName).getSideDeck().add(card);
-                Output.getForNow();
-            }
+            Output.getInstance().cardAddedToDeck();
         }
     }
 
@@ -60,7 +59,7 @@ public class DeckController {
         if (errorsForRemoving(deckName, cardName, isMainDeck)) {
             if (isMainDeck) thisPlayer.getDeckByName(deckName).getMainDeck().remove(Card.getCardByName(cardName));
             else thisPlayer.getDeckByName(deckName).getSideDeck().remove(Card.getCardByName(cardName));
-            Output.getForNow();
+            Output.getInstance().cardRemoved();
         }
     }
 
@@ -104,7 +103,7 @@ public class DeckController {
             if (isMain) {
                 toPrint += "Main deck:\n";
                 for (Card card : thisPlayer.getDeckByName(deckName).getMainDeck())
-                    if (card.isMonster) monsterCards.add(card);
+                    if (card instanceof MonsterCard) monsterCards.add(card);
                     else spellAndTrap.add(card);
                 toPrint += "Monsters:\n";
                 for (Card card : monsterCards)
@@ -150,9 +149,10 @@ public class DeckController {
             }
         });
     }
+
     private boolean errorForCreation(String deckName) {
-        if (MainController.getInstance().getLoggedIn().getDeckByName(deckName) != null) { //TODO just for this user?
-            Output.getForNow();
+        if (MainController.getInstance().getLoggedIn().getDeckByName(deckName) != null) {
+            Output.getInstance().deckExists(deckName);
             return false;
         }
         return true;
@@ -160,7 +160,7 @@ public class DeckController {
 
     private boolean errorForDeletingOrActivating(String deckName) {
         if (thisPlayer.getDeckByName(deckName) == null) {
-            Output.getForNow();
+            Output.getInstance().deckDoesntExist(deckName);
             return false;
         }
         return true;
@@ -168,7 +168,7 @@ public class DeckController {
 
     private boolean errorForAddingCard(String deckName, String cardName, boolean isMainDeck) {
         if (!thisPlayer.hasCard(cardName)) {
-            Output.getForNow();
+            Output.getInstance().
             return false;
         } else if (!thisPlayer.hasDeck(deckName)) {
             Output.getForNow();

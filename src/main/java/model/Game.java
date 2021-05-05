@@ -1,12 +1,14 @@
 package model;
 
+import controller.DuelController;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
 public class Game {
     private HashMap<Account, Integer> maxLifePoint;
-    private Account currentPlayer, theOtherPlayer, winnerOfRPS;
+    private Account currentPlayer, theOtherPlayer;
     private int rounds;
     private int currentRound;
     private Phases currentPhase;
@@ -17,6 +19,8 @@ public class Game {
     private ArrayList<Account> roundWinners;
     private Card lastSetCard;
     private ArrayList<Card> cardsWhichAttacked;
+    boolean isGameFinished = false;
+    private Account[] winnerOfEachRound = new Account[3];
 
     public Game(Account firstPlayer, Account secondPlayer, int rounds) {
         setCurrentPlayer(firstPlayer);
@@ -24,14 +28,7 @@ public class Game {
         setTheOtherPlayer(secondPlayer);
         initializeGame();
         setCurrentPhase(Phases.DRAW_PHASE);
-    }
-
-    public Account getWinnerOfRPS() {
-        return winnerOfRPS;
-    }
-
-    public void setWinnerOfRPS(Account winnerOfRPS) {
-        this.winnerOfRPS = winnerOfRPS;
+        setCurrentRound(1);
     }
 
     public Phases getCurrentPhase() {
@@ -139,6 +136,8 @@ public class Game {
     }
 
     private void initializeGame() {
+        currentPlayer.setField(new Field(currentPlayer.getActiveDeck().getMainDeck()));
+        theOtherPlayer.setField(new Field(theOtherPlayer.getActiveDeck().getMainDeck()));
         shuffleDeck();
         for (int i = 0; i < 5; i++) {
             currentPlayer.getField().getHand().add(currentPlayer.getField().getDeckZone().get(i));
@@ -151,11 +150,6 @@ public class Game {
         Collections.shuffle(theOtherPlayer.getActiveDeck().getMainDeck());
     }
 
-    public void addDecks() {
-
-    }
-
-
     public boolean isRoundFinished() {
         return true;
     }
@@ -164,9 +158,6 @@ public class Game {
 
     }
 
-    public boolean getIsRoundFinished() {
-        return true;
-    }
 
     public void changeTurn() {
         Account temp = currentPlayer;
@@ -175,85 +166,58 @@ public class Game {
         hasSummonedInThisTurn = false;
     }
 
-    public boolean isRoundValid(int round) {
-        return true;
-    }
-
-    public boolean hasSelectedCard() {
-        return false;
-    }
-
-    public void handleEndingWithOneRound() {
-
-    }
-
-    public void handleEndingWithThreeRound() {
-
-    }
-
-    public void drawCard() {
-
-    }
-
-    public void switchTurn() {
-
-    }
-
-    public void switchMonsterMode() {
-
-    }
-
-    public void activateSpell() {
-
-    }
-
-    public boolean canBeSummoned() {
-        return false;
-    }
-
-    public void addToCardsWhosePositionHasChanged() {
-
-    }
-
-    public void initializeCardsWhosePositionHasChanged() {
-
-    }
-
-    public void setPosition(boolean isAttack) {
-
-    }
-
-    public void setLastCard(Card card) {
-
-    }
-
-    public boolean isCardSetLast() {
-        return false;
-    }
-
-    public void addToCardsWhichAttacked() {
-
-    }
-
-    public void initializeCardsWhichAttacked() {
-
-    }
-
-    public void attackCard(Card cardToBeAttackedTo) {
-
-    }
-
-
-    public void ritualSummon() {
-
-    }
-
-
     public boolean isGameFinished() {
-        return true;
+        return isGameFinished;
     }
 
-    public void finishGame() {
+    public void finishWithOneRound(Account loser, Account winner) {
+        winner.setMoney(winner.getMoney() + 1000 + winner.getLP());
+        loser.setMoney(loser.getMoney() + 100);
+        isGameFinished = true;
+        winner.reset();
+        loser.reset();
+    }
 
+    public void finishWithThreeRounds(Account loser, Account winner) {
+        switch (currentRound) {
+            case 1:
+                winnerOfEachRound[0] = winner;
+                winner.setMaxLPofThreeRounds(winner.getLP());
+                loser.setMaxLPofThreeRounds(loser.getLP());
+                break;
+            case 2:
+                winner.checkMaxLPofThreeRounds();
+                loser.checkMaxLPofThreeRounds();
+                if (winnerOfEachRound[0] == winner) {
+                    finishMultipleRoundGame(loser, winner);
+                    return;
+                }
+                winnerOfEachRound[1] = winner;
+                break;
+            case 3:
+                winner.checkMaxLPofThreeRounds();
+                loser.checkMaxLPofThreeRounds();
+                finishMultipleRoundGame(loser, winner);
+                return;
+        }
+        DuelController.getInstance().chooseStarter(winner.getUsername());
+        initializeGame();
+        winner.reset();
+        loser.reset();
+    }
+
+    private void finishMultipleRoundGame(Account loser, Account winner) {
+        winner.setMoney(winner.getMoney() + 3000 + 3 * winner.getMaxLPofThreeRounds());
+        loser.setMoney(loser.getMoney() + 300);
+        isGameFinished = true;
+    }
+
+    public void finishGame(Account loser) {
+        Account winner = null;
+        if (currentPlayer.equals(loser)) winner = theOtherPlayer;
+        else winner = currentPlayer;
+        winner.setScore(winner.getScore() + 1000);
+        if (rounds == 1) finishWithOneRound(loser, winner);
+        else finishWithThreeRounds(loser, winner);
     }
 }

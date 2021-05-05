@@ -11,8 +11,8 @@ public class Field {
     private ArrayList<Card> hand = new ArrayList<>();
     private SpellAndTrapCard fieldZone;
 
-    public Field() {
-
+    public Field(ArrayList<Card> deck) {
+        deckZone.addAll(deck);
     }
 
     public ArrayList<Card> getGraveyard() {
