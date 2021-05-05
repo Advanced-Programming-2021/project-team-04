@@ -82,7 +82,7 @@ public class DeckController {
             }
         }
         toPrint = toPrint.substring(0, toPrint.length() - 2);
-        Output.getForNow();
+        Output.getInstance().printString(toPrint);
     }
 
     private void sortedDecks() {
@@ -113,7 +113,7 @@ public class DeckController {
                     toPrint += card.getName() + ": " + card.getDescription() + "\n";
             }
             toPrint = toPrint.substring(0, toPrint.length() - 2);
-            Output.getForNow();
+            Output.getInstance().printString(toPrint);
         }
     }
 
@@ -138,7 +138,7 @@ public class DeckController {
         for (Card card : thisPlayer.getAllCards())
             toPrint += card.getName() + ":" + card.getDescription() + "\n";
         toPrint = toPrint.substring(0, toPrint.length() - 2);
-        Output.getForNow();
+        Output.getInstance().printString(toPrint);
     }
 
     private void sortAllCards() {
@@ -168,19 +168,19 @@ public class DeckController {
 
     private boolean errorForAddingCard(String deckName, String cardName, boolean isMainDeck) {
         if (!thisPlayer.hasCard(cardName)) {
-            Output.getInstance().
+            Output.getInstance().cardDoesntExist(cardName);
             return false;
         } else if (!thisPlayer.hasDeck(deckName)) {
-            Output.getForNow();
+            Output.getInstance().deckDoesntExist(deckName);
             return false;
         } else if (isMainDeck && thisPlayer.getDeckByName(deckName).isMainDeckFull()) {
-            Output.getForNow();
+            Output.getInstance().mainDeckIsFull();
             return false;
         } else if (!isMainDeck && thisPlayer.getDeckByName(deckName).isSideDeckFull()) {
-            Output.getForNow();
+            Output.getInstance().sideDeckIsFull();
             return false;
         } else if (!thisPlayer.getDeckByName(deckName).isAddingCardValid(cardName)) {
-            Output.getForNow();
+            Output.getInstance().tooManyCards(deckName, cardName);
             return false;
         }
         return true;
@@ -188,13 +188,13 @@ public class DeckController {
 
     private boolean errorsForRemoving(String deckName, String cardName, boolean isMainDeck) {
         if (!thisPlayer.getAllDecks().contains(thisPlayer.getDeckByName(deckName))) {
-            Output.getForNow();
+            Output.getInstance().deckDoesntExist(deckName);
             return false;
         } else if (isMainDeck && !thisPlayer.getDeckByName(deckName).mainDeckHasCard(cardName)) {
-            Output.getForNow();
+            Output.getInstance().cardDoesntExistInMainDeck(cardName);
             return false;
         } else if (!isMainDeck && !thisPlayer.getDeckByName(deckName).sideDeckHasCard(cardName)) {
-            Output.getForNow();
+            Output.getInstance().cardDoesntExistInSideDeck(cardName);
             return false;
         }
         return true;

@@ -22,10 +22,6 @@ public class DuelController {
         return singleInstance;
     }
 
-    public void run() {
-
-    }
-
     public void rockPaperScissor(String thisPlayer, String theOtherPlayer) {
         if (thisPlayer.equals(theOtherPlayer)) return;
         if (thisPlayer.matches("rock") && theOtherPlayer.matches("scissors"))
@@ -69,6 +65,7 @@ public class DuelController {
     }
 
     private void drawPhase() {
+        Output.getInstance().printPhase("draw phase");
         if (!game.getCurrentPlayer().canDraw()) {
             game.getCurrentPlayer().setCanDraw(true);
             return;
@@ -83,6 +80,7 @@ public class DuelController {
     }
 
     private void standbyPhase() {
+        Output.getInstance().printPhase("standby phase");
         Field field = game.getCurrentPlayer().getField();
         Field opponentField = game.getTheOtherPlayer().getField();
         handleSpecialCards(field, opponentField);
@@ -255,12 +253,12 @@ public class DuelController {
         for (int i = 0; i < currentHandCount; i++) board.append("c \t");
         board.append("\n" + currentNickname);
 
-        Output.getForNow();
+        Output.getInstance().printString(board.toString());
     }
 
 
     private void firstMainPhase() {
-        Output.getForNow();
+        Output.getInstance().printPhase("main phase 1");
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
@@ -269,16 +267,16 @@ public class DuelController {
             game.getCurrentPlayer().setCanPlayerAttack(true);
             nextPhase();
         }
-        Output.getForNow();
+        Output.getInstance().printPhase("battle phase");
     }
 
     private void secondMainPhase() {
-        Output.getForNow();
+        Output.getInstance().printPhase("main phase 2");
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     private void endPhase() {
-        Output.getForNow();
+        Output.getInstance().printPhase("end phase");
         reset();
         handleSwordOfRevealingLight();
     }
@@ -316,7 +314,7 @@ public class DuelController {
                 game.setSelectedCard(thisPlayer.getField().getFieldZone());
                 break;
         }
-        Output.getForNow();
+        Output.getInstance().cardSelected();
     }
 
 
@@ -331,22 +329,22 @@ public class DuelController {
 
         if (cardStatusInField.equals(CardStatusInField.HAND) &&
                 number > thisPlayer.getField().getHand().size()) {
-            Output.getForNow();
+            Output.getInstance().invalidSelection();
             return false;
         }
         if (cardStatusInField.equals(CardStatusInField.MONSTER_FIELD) &&
                 number > thisPlayer.getField().getMonsterCards().size()) {
-            Output.getForNow();
+            Output.getInstance().invalidSelection();
             return false;
         }
         if (cardStatusInField.equals(CardStatusInField.SPELL_FIELD) &&
                 number > thisPlayer.getField().getTrapAndSpell().size()) {
-            Output.getForNow();
+            Output.getInstance().invalidSelection();
             return false;
         }
         if (cardStatusInField.equals(CardStatusInField.FIELD_ZONE) &&
                 thisPlayer.getField().getFieldZone() == null) {
-            Output.getForNow();
+            Output.getInstance().noCardInPosition();
             return false;
         }
         return true;
@@ -358,6 +356,7 @@ public class DuelController {
             return;
         }
         game.setSelectedCard(null);
+        Output.getInstance().cardDeselected();
     }
 
     public void nextPhase() {

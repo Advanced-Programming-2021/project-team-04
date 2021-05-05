@@ -16,8 +16,52 @@ public class Output {
         return forNow;
     }
 
-    public static void setForNow(String forNow) {
-        Output.forNow = forNow;
+    public void printString(String toPrint) {
+        System.out.println(toPrint);
+    }
+
+    public void noCardSelected() {
+        System.out.println("no card is selected yet");
+    }
+
+    public void cardDeselected() {
+        System.out.println("card deselected");
+    }
+
+    public void noCardInPosition() {
+        System.out.println("no card found in the given position");
+    }
+
+    public void invalidSelection() {
+        System.out.println("invalid selection");
+    }
+
+    public void cardSelected() {
+        System.out.println("card selected");
+    }
+
+    public void printPhase(String phase) {
+        System.out.println("phase: " + phase);
+    }
+
+    public void cardDoesntExistInSideDeck(String cardName) {
+        System.out.println("card with name " + cardName + " does not exist in side deck");
+    }
+
+    public void cardDoesntExistInMainDeck(String cardName) {
+        System.out.println("card with name " + cardName + " does not exist in main deck");
+    }
+
+    public void tooManyCards(String deckName, String cardName) {
+        System.out.println("there are already three cards with name " + cardName + " in deck " + deckName);
+    }
+
+    public void sideDeckIsFull() {
+        System.out.println("side deck is full");
+    }
+
+    public void mainDeckIsFull() {
+        System.out.println("main deck is full");
     }
 
     public void cardDoesntExist(String cardName) {
