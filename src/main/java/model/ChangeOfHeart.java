@@ -3,7 +3,7 @@ package model;
 public class ChangeOfHeart extends SpellAndTrapCard {
 
     private MonsterCard hijackedCard = null;
-    private Account originalOwner = null;
+    private Duelist originalOwner = null;
 
     public ChangeOfHeart() {
         super();

@@ -24,29 +24,26 @@ public class DuelController {
 
     public void rockPaperScissor(String thisPlayer, String theOtherPlayer) {
         if (thisPlayer.equals(theOtherPlayer)) return;
-        if (thisPlayer.matches("rock") && theOtherPlayer.matches("scissors"))
+        if (thisPlayer.matches("r(?:ock)?") && theOtherPlayer.matches("s(?:cissors)?"))
             game.getCurrentPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches("rock") && theOtherPlayer.matches("paper"))
+        else if (thisPlayer.matches("r(?:ock)?") && theOtherPlayer.matches("p(?:aper)?"))
             game.getTheOtherPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches("scissors") && theOtherPlayer.matches("paper"))
+        else if (thisPlayer.matches("s(?:cissors)?") && theOtherPlayer.matches("p(?:aper)?"))
             game.getCurrentPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches("scissors") && theOtherPlayer.matches("rock"))
+        else if (thisPlayer.matches("s(?:cissors)?") && theOtherPlayer.matches("r(?:ock)?"))
             game.getTheOtherPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches("paper") && theOtherPlayer.matches("rock"))
+        else if (thisPlayer.matches("p(?:aper)?") && theOtherPlayer.matches("r(?:ock)?"))
             game.getCurrentPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches("paper") && theOtherPlayer.matches("scissors"))
+        else if (thisPlayer.matches("p(?:aper)?") && theOtherPlayer.matches("s(?:cissors)?"))
             game.getTheOtherPlayer().increaseCountForRPS();
         if ((game.getCurrentPlayer().getCountForRPS() == 2 && game.getTheOtherPlayer().getCountForRPS() == 0) ||
                 game.getCurrentPlayer().getCountForRPS() == 3) {
             DuelView.getInstance().chooseStarter(game.getCurrentPlayer().getUsername());
-            DuelView.getInstance().isRPSDone = true;
-            return;
-        }
-        if ((game.getCurrentPlayer().getCountForRPS() == 0 && game.getTheOtherPlayer().getCountForRPS() == 2) ||
+            DuelView.getInstance().setRPSDone(true);
+        } else if ((game.getCurrentPlayer().getCountForRPS() == 0 && game.getTheOtherPlayer().getCountForRPS() == 2) ||
                 game.getTheOtherPlayer().getCountForRPS() == 3) {
             DuelView.getInstance().chooseStarter(game.getTheOtherPlayer().getUsername());
-            DuelView.getInstance().isRPSDone = true;
-            return;
+            DuelView.getInstance().setRPSDone(true);
         }
     }
 
@@ -298,6 +295,7 @@ public class DuelController {
     }
 
     public void selectCard(boolean myCard, CardStatusInField cardStatusInField, int number) {
+        //TODO is this method ok AI-wise?
         Account thisPlayer = createThisPlayer(myCard);
         if (!errorForSelecting(thisPlayer, number, cardStatusInField)) return;
         switch (cardStatusInField) {
@@ -319,6 +317,7 @@ public class DuelController {
 
 
     private Account createThisPlayer(boolean myCard) {
+        //TODO is this method ok AI-wise?
         Account thisPlayer;
         if (myCard) thisPlayer = game.getCurrentPlayer();
         else thisPlayer = game.getTheOtherPlayer();
@@ -652,6 +651,7 @@ public class DuelController {
     }
 
     public boolean handleMirageDragon(String name) {
+        //TODO is this method ok AI-wise
         Account opponent = null;
         if (game.getCurrentPlayer().equals(name)) opponent = game.getTheOtherPlayer();
         else opponent = game.getCurrentPlayer();
@@ -989,10 +989,10 @@ public class DuelController {
         }
     }
 
-    private void randomlyRemoveFromHand(Account account) {
+    private void randomlyRemoveFromHand(Duelist duelist) {
         Random rand = new Random();
-        int randomNumber = rand.nextInt(account.getField().getHand().size());
-        account.getField().getHand().remove(randomNumber);
+        int randomNumber = rand.nextInt(duelist.getField().getHand().size());
+        duelist.getField().getHand().remove(randomNumber);
     }
 
     private void equipMonster(SpellAndTrapCard equipSpell) {
@@ -1023,7 +1023,7 @@ public class DuelController {
         moveSpellOrTrapToGYFromSpellZone(magicCylinder);
     }
 
-    public void mirrorForce(SpellAndTrapCard mirrorForce, Account opponent) {
+    public void mirrorForce(SpellAndTrapCard mirrorForce, Duelist opponent) {
         ArrayList<MonsterCard> monsters = new ArrayList<>(opponent.getField().getMonsterCards());
         for (MonsterCard monster : monsters)
             if (monster.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP)
@@ -1032,9 +1032,9 @@ public class DuelController {
     }
 
 
-    private void decreaseLPWithTrap(Account account, int amount) {
-        if (account.getField().hasThisCardActivated("Ring of defense") == null)
-            account.changeLP(-amount);
+    private void decreaseLPWithTrap(Duelist duelist, int amount) {
+        if (duelist.getField().hasThisCardActivated("Ring of defense") == null)
+            duelist.changeLP(-amount);
     }
 
     private void advancedRitualArt(SpellAndTrapCard spellAndTrapCard) {
