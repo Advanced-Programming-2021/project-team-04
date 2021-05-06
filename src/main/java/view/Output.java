@@ -24,6 +24,10 @@ public class Output {
         System.out.println("monster card position changed successfully");
     }
 
+    public void flipSummoned() {
+        System.out.println("flip summoned successfully");
+    }
+
     public void alreadyChangedPosition() {
         System.out.println("you already changed this card position in this turn");
     }

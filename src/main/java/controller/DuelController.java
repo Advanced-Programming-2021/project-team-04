@@ -503,7 +503,7 @@ public class DuelController {
         if (!isSettingMonsterValid()) return;
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
         if (selectedCard.getName().equals("Gate Guardian")) {
-            Output.getInstance().setSuccessfully();
+            Output.getInstance().cantSet();
             return;
         }
         summonWithTribute();
@@ -512,7 +512,7 @@ public class DuelController {
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
         game.setHasSummonedInThisTurn(true);
-        Output.getForNow();
+        Output.getInstance().setSuccessfully();
     }
 
     private boolean isSettingMonsterValid() {
@@ -567,7 +567,15 @@ public class DuelController {
     }
 
     private boolean isSetPositionValid(boolean isAttack) {
-        if (checkSelectedCard()) return false;
+        if (game.getSelectedCard() == null) {
+            Output.getInstance().cardNotSelected();
+            return false;
+        }
+        if (!(game.getSelectedCard() instanceof MonsterCard) ||
+                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
+            Output.getInstance().cantChangePosition();
+            return false;
+        }
         if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
             Output.getInstance().wrongPhase();
             return false;
@@ -592,7 +600,7 @@ public class DuelController {
 
     public void flipSummon() {
         if (!isFlipSummonValid()) return;
-        Output.getForNow();
+        Output.getInstance().flipSummoned();
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         if (handleTrapHole(monsterCard)) return;
         game.setSelectedCard(null);
@@ -600,7 +608,15 @@ public class DuelController {
     }
 
     private boolean isFlipSummonValid() {
-        if (checkSelectedCard()) return false;
+        if (game.getSelectedCard() == null) {
+            Output.getInstance().cardNotSelected();
+            return false;
+        }
+        if (!(game.getSelectedCard() instanceof MonsterCard) ||
+                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
+            Output.getForNow();
+            return false;
+        }
         if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
             Output.getForNow();
             return false;
@@ -707,7 +723,15 @@ public class DuelController {
     }
 
     private boolean isAttackValid(int opponentMonsterPositionNumber) {
-        if (checkSelectedCard()) return false;
+        if (game.getSelectedCard() == null) {
+            Output.getInstance().cardNotSelected();
+            return false;
+        }
+        if (!(game.getSelectedCard() instanceof MonsterCard) ||
+                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
+            Output.getForNow();
+            return false;
+        }
         if (game.getCurrentPhase() != Phases.BATTLE_PHASE) {
             Output.getForNow();
             return false;
@@ -736,18 +760,6 @@ public class DuelController {
         return true;
     }
 
-    private boolean checkSelectedCard() {
-        if (game.getSelectedCard() == null) {
-            Output.getInstance().cardNotSelected();
-            return true;
-        }
-        if (!(game.getSelectedCard() instanceof MonsterCard) &&
-                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
-            Output.getInstance().cantChangePosition();
-            return true;
-        }
-        return false;
-    }
 
     public void directAttack() {
         if (!isDirectAttackValid()) return;
@@ -759,7 +771,15 @@ public class DuelController {
     }
 
     private boolean isDirectAttackValid() {
-        if (checkSelectedCard()) return false;
+        if (game.getSelectedCard() == null) {
+            Output.getInstance().cardNotSelected();
+            return false;
+        }
+        if (!(game.getSelectedCard() instanceof MonsterCard) ||
+                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
+            Output.getForNow();
+            return false;
+        }
         if (game.getCurrentPhase() != Phases.BATTLE_PHASE) {
             Output.getForNow();
             return false;

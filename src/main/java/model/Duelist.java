@@ -124,6 +124,7 @@ public abstract class Duelist {
 
     public void addCard(Card card) {
         this.getAllCards().add(card);
+        card.setOwner(this);
     }
 
     public boolean hasDeck(String deck) {
