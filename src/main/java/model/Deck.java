@@ -6,7 +6,6 @@ public class Deck {
     private ArrayList<Card> mainDeck = new ArrayList<>();
     private ArrayList<Card> sideDeck = new ArrayList<>();
     private String deckName;
-    private boolean isMainDeckValid;
     private boolean isMainDeckFull, isSideDeckFull;
 
     public Deck(String deckName) {
@@ -27,6 +26,11 @@ public class Deck {
 
     public boolean sideDeckHasCard(String cardName) { //TODO still doubt
         return sideDeck.contains(Card.getCardByName(cardName));
+    }
+
+    public boolean isDeckValid() {
+        if (mainDeck.size() >= 40 && mainDeck.size() <= 60 && sideDeck.size() <= 15) return true;
+        return false;
     }
 
     public boolean isAddingCardValid(String cardName) {
@@ -58,14 +62,6 @@ public class Deck {
         this.sideDeck = sideDeck;
     }
 
-    public boolean isMainDeckValid() {
-        isMainDeckValid = mainDeck.size() >= 40;
-        return isMainDeckValid;
-    }
-
-    public void setMainDeckValid(boolean mainDeckValid) {
-        isMainDeckValid = mainDeckValid;
-    }
 
     public boolean isMainDeckFull() {
         isMainDeckFull = mainDeck.size() == 60;

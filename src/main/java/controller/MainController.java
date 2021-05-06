@@ -35,10 +35,28 @@ public class MainController {
 
     private boolean errorForNewGame(String username, int rounds) {
         if (!Account.getAllAccounts().contains(Account.getAccountByUsername(username))) {
-            Output.getForNow();
+            Output.getInstance().playerDoesntExist();
             return false;
-        } else if (rounds != 1 && rounds != 3) {
-            Output.getForNow();
+        }
+        Account player2 = Account.getAccountByUsername(username);
+        if (loggedIn.getActiveDeck() == null) {
+            Output.getInstance().noActiveDeck(loggedIn.getUsername());
+            return false;
+        }
+        if (player2.getActiveDeck() == null) {
+            Output.getInstance().noActiveDeck(player2.getUsername());
+            return false;
+        }
+        if (loggedIn.getActiveDeck().isDeckValid()) {
+            Output.getInstance().invalidDeck(loggedIn.getUsername());
+            return false;
+        }
+        if (player2.getActiveDeck().isDeckValid()) {
+            Output.getInstance().invalidDeck(player2.getUsername());
+            return false;
+        }
+        if (rounds != 1 && rounds != 3) {
+            Output.getInstance().invalidNumOfRounds();
             return false;
         }
         return true;
@@ -46,9 +64,11 @@ public class MainController {
 
     public void cheatIncreaseMoney(int amount) {
         loggedIn.setMoney(loggedIn.getMoney() + amount);
+        Output.getInstance().cheatIncreaseMoney();
     }
 
     public void cheatIncreaseScore(int amount) {
         loggedIn.setScore(loggedIn.getScore() + amount);
+        Output.getInstance().cheatIncreaseScore();
     }
 }

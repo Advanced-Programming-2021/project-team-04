@@ -33,7 +33,7 @@ public class ShopController {
         for (Card card : allCards)
             toPrint += card.getName() + ":" + card.getPrice() + "\n";
         toPrint = toPrint.substring(0, toPrint.length() - 2);
-        Output.getForNow();
+        Output.getInstance().printString(toPrint);
     }
 
     public boolean isCardNameValid(String name) {
