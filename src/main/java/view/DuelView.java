@@ -15,7 +15,7 @@ public class DuelView extends Menu {
 
     private static DuelView singleInstance = null;
 
-    public boolean isRPSDone = false;
+    private boolean isRPSDone = false;
 
     private final Pattern selectCardPattern = Pattern.compile("^s(?:elect)? " +
             "(?=.*(?:(?:\\-(?:(?:\\-(?:monster)|(?:spell)|(?:hand))|(?:[msh])) (?<number>\\d+)?)|(?:\\-(?:(?:\\-field)|(?:f))))).+");
@@ -356,4 +356,7 @@ public class DuelView extends Menu {
         return Input.getInputMessage();
     }
 
+    public void setRPSDone(boolean RPSDone) {
+        isRPSDone = RPSDone;
+    }
 }

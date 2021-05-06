@@ -7,8 +7,9 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public class Game {
-    private HashMap<Account, Integer> maxLifePoint;
-    private Account currentPlayer, theOtherPlayer;
+    //TODO a AI game Class or updates for this one?
+    private HashMap<Duelist, Integer> maxLifePoint;
+    private Duelist currentPlayer, theOtherPlayer;
     private int rounds;
     private int currentRound;
     private Phases currentPhase;
@@ -16,13 +17,13 @@ public class Game {
     private Card selectedCard;
     private boolean hasSummonedInThisTurn;
     private ArrayList<Card> cardsWithChangedPositions;
-    private ArrayList<Account> roundWinners;
+    private ArrayList<Duelist> roundWinners;
     private Card lastSetCard;
     private ArrayList<Card> cardsWhichAttacked;
     boolean isGameFinished = false;
-    private Account[] winnerOfEachRound = new Account[3];
+    private Duelist[] winnerOfEachRound = new Duelist[3];
 
-    public Game(Account firstPlayer, Account secondPlayer, int rounds) {
+    public Game(Duelist firstPlayer, Duelist secondPlayer, int rounds) {
         setCurrentPlayer(firstPlayer);
         setRounds(rounds);
         setTheOtherPlayer(secondPlayer);
@@ -71,11 +72,11 @@ public class Game {
         this.hasSummonedInThisTurn = hasSummonedInThisTurn;
     }
 
-    public ArrayList<Account> getRoundWinners() {
+    public ArrayList<Duelist> getRoundWinners() {
         return roundWinners;
     }
 
-    public void setRoundWinners(ArrayList<Account> roundWinners) {
+    public void setRoundWinners(ArrayList<Duelist> roundWinners) {
         this.roundWinners = roundWinners;
     }
 
@@ -95,19 +96,20 @@ public class Game {
         this.currentRound = currentRound;
     }
 
-    public HashMap<Account, Integer> getMaxLifePoint() {
+    public HashMap<Duelist, Integer> getMaxLifePoint() {
         return maxLifePoint;
     }
 
-    public void setMaxLifePoint(HashMap<Account, Integer> maxLifePoint) {
+    public void setMaxLifePoint(HashMap<Duelist, Integer> maxLifePoint) {
         this.maxLifePoint = maxLifePoint;
     }
 
-    public Account getCurrentPlayer() {
+    public Duelist getCurrentPlayer() {
+        //TODO what are the fucking related problems
         return currentPlayer;
     }
 
-    public void setCurrentPlayer(Account currentPlayer) {
+    public void setCurrentPlayer(Duelist currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
 
@@ -119,11 +121,12 @@ public class Game {
         this.cardsWhichAttacked = cardsWhichAttacked;
     }
 
-    public Account getTheOtherPlayer() {
+    public Duelist getTheOtherPlayer() {
+        //TODO what are the fucking related problems
         return theOtherPlayer;
     }
 
-    public void setTheOtherPlayer(Account theOtherPlayer) {
+    public void setTheOtherPlayer(Duelist theOtherPlayer) {
         this.theOtherPlayer = theOtherPlayer;
     }
 
@@ -151,7 +154,7 @@ public class Game {
     }
 
     public void changeTurn() {
-        Account temp = currentPlayer;
+        Duelist temp = currentPlayer;
         currentPlayer = theOtherPlayer;
         theOtherPlayer = temp;
         hasSummonedInThisTurn = false;
@@ -160,6 +163,8 @@ public class Game {
     public boolean isGameFinished() {
         return isGameFinished;
     }
+
+    //TODO from here, update the class to handle AI game as well.
 
     public void finishWithOneRound(Account loser, Account winner) {
         winner.setMoney(winner.getMoney() + 1000 + winner.getLP());
@@ -204,6 +209,7 @@ public class Game {
     }
 
     public void finishGame(Account loser) {
+        //TODO is this method ok AI-wise?
         Account winner = null;
         if (currentPlayer.equals(loser)) winner = theOtherPlayer;
         else winner = currentPlayer;

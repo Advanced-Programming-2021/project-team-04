@@ -18,8 +18,9 @@ public class TheCalculator extends MonsterCard {
 
     @Override
     public int getThisCardAttackPower() {
+        //TODO is this method ok AI-wise?
         int amount = 0;
-        Account player = this.getOwner();
+        Duelist player = this.getOwner();
         for (MonsterCard monsterCard : player.getField().getMonsterCards())
             if (monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP)
             || monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_UP))

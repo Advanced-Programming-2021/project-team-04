@@ -11,7 +11,7 @@ public class Card {
     protected boolean isAttacked = false;
     protected boolean isAttacking = false;
     //TODO probably should handle more than this, maybe make an entry set for both cards *or a hashmap idk
-    protected Account Owner;
+    protected Duelist Owner;
     protected boolean hasBeenUsedInThisTurn = false;
     protected boolean hasBeenSetOrSummoned = false;
 
@@ -59,11 +59,12 @@ public class Card {
         Card.allCards = allCards;
     }
 
-    public Account getOwner() {
+    public Duelist getOwner() {
+        //TODO is this method ok AI-wise?
         return Owner;
     }
 
-    public void setOwner(Account owner) {
+    public void setOwner(Duelist owner) {
         Owner = owner;
     }
 
