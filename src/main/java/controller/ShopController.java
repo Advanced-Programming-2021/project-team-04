@@ -47,7 +47,8 @@ public class ShopController {
     }
 
     public void buyCard(String cardName) {
-        if (isCardNameValid(cardName)) {
+        if (isCardNameValid(cardName) &&
+                thisPlayer.hasEnoughMoney(Card.getCardByName(cardName).getPrice())) {
             switch (cardName) {
                 case "Change of Heart": {
                     thisPlayer.addCard(new ChangeOfHeart());
@@ -107,6 +108,7 @@ public class ShopController {
                     }
                 }
             }
+            thisPlayer.setMoney(thisPlayer.getMoney() - Card.getCardByName(cardName).getPrice());
         }
     }
 

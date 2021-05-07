@@ -1,5 +1,6 @@
 package model;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -108,13 +109,6 @@ public class Field {
     }
 
 
-    public boolean hasQuickSpellOrTrap() {
-        for (SpellAndTrapCard card : trapAndSpell)
-            if (card.getProperty().equals("")) //TODO
-                return true;
-        return false;
-    }
-
     public boolean isTributesLevelSumValid(int sum, int n) {
         if (sum > 0 && n == 0)
             return false;
@@ -173,6 +167,12 @@ public class Field {
         for (Card card : allCards)
             card.reset();
 
+    }
+
+    public SpellAndTrapCard isSet(String name) {
+        for (SpellAndTrapCard spellAndTrapCard : trapAndSpell)
+            if (spellAndTrapCard.getName().equals(name)) return spellAndTrapCard;
+        return null;
     }
 
 }

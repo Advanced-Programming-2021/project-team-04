@@ -107,7 +107,7 @@ public class Account extends Duelist {
         return money;
     }
 
-    private boolean hasEnoughMoney(int price) {
+    public boolean hasEnoughMoney(int price) {
         return this.money >= price;
     }
 
@@ -120,11 +120,5 @@ public class Account extends Duelist {
         return null;
     }
 
-    public static Account getAccountByNickname(String nickName) {
-        for (Account account : allAccounts)
-            if (account.getNickname().equals(nickName))
-                return account;
-        return null;
-    }
 
 }
