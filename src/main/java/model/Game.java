@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public class Game {
-    //TODO a AI game Class or updates for this one?
     private HashMap<Duelist, Integer> maxLifePoint;
     private Duelist currentPlayer, theOtherPlayer;
     private int rounds;
@@ -22,11 +21,13 @@ public class Game {
     private ArrayList<Card> cardsWhichAttacked;
     boolean isGameFinished = false;
     private Duelist[] winnerOfEachRound = new Duelist[3];
+    private boolean isAI;
 
-    public Game(Duelist firstPlayer, Duelist secondPlayer, int rounds) {
+    public Game(Duelist firstPlayer, Duelist secondPlayer, int rounds, boolean isAI) {
         setCurrentPlayer(firstPlayer);
         setRounds(rounds);
         setTheOtherPlayer(secondPlayer);
+        setAI(isAI);
         initializeGame();
         setCurrentPhase(Phases.DRAW_PHASE);
         setCurrentRound(1);
@@ -105,7 +106,6 @@ public class Game {
     }
 
     public Duelist getCurrentPlayer() {
-        //TODO what are the fucking related problems
         return currentPlayer;
     }
 
@@ -122,7 +122,6 @@ public class Game {
     }
 
     public Duelist getTheOtherPlayer() {
-        //TODO what are the fucking related problems
         return theOtherPlayer;
     }
 
@@ -136,6 +135,14 @@ public class Game {
 
     public void setRounds(int rounds) {
         this.rounds = rounds;
+    }
+
+    public boolean isAI() {
+        return isAI;
+    }
+
+    public void setAI(boolean AI) {
+        isAI = AI;
     }
 
     private void initializeGame() {
@@ -164,24 +171,28 @@ public class Game {
         return isGameFinished;
     }
 
-    //TODO from here, update the class to handle AI game as well.
-
-    public void finishWithOneRound(Account loser, Account winner) {
-        winner.setMoney(winner.getMoney() + 1000 + winner.getLP());
-        loser.setMoney(loser.getMoney() + 100);
+    public void finishWithOneRound(Duelist loser, Duelist winner) {
+        if (!isAI) {
+            ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
+            ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
+        }
+        else if (winner instanceof Account)
+            ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
+        else if (loser instanceof Account)
+            ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
         isGameFinished = true;
         winner.reset();
         loser.reset();
     }
 
-    public void finishWithThreeRounds(Account loser, Account winner) {
+    public void finishWithThreeRounds(Duelist loser, Duelist winner) {
         switch (currentRound) {
-            case 1:
+            case 1 -> {
                 winnerOfEachRound[0] = winner;
                 winner.setMaxLPofThreeRounds(winner.getLP());
                 loser.setMaxLPofThreeRounds(loser.getLP());
-                break;
-            case 2:
+            }
+            case 2 -> {
                 winner.checkMaxLPofThreeRounds();
                 loser.checkMaxLPofThreeRounds();
                 if (winnerOfEachRound[0] == winner) {
@@ -189,12 +200,13 @@ public class Game {
                     return;
                 }
                 winnerOfEachRound[1] = winner;
-                break;
-            case 3:
+            }
+            case 3 -> {
                 winner.checkMaxLPofThreeRounds();
                 loser.checkMaxLPofThreeRounds();
                 finishMultipleRoundGame(loser, winner);
                 return;
+            }
         }
         DuelController.getInstance().chooseStarter(winner.getUsername());
         initializeGame();
@@ -202,18 +214,24 @@ public class Game {
         loser.reset();
     }
 
-    private void finishMultipleRoundGame(Account loser, Account winner) {
-        winner.setMoney(winner.getMoney() + 3000 + 3 * winner.getMaxLPofThreeRounds());
-        loser.setMoney(loser.getMoney() + 300);
+    private void finishMultipleRoundGame(Duelist loser, Duelist winner) {
+        if (!isAI) {
+            ((Account) winner).setMoney(((Account) winner).getMoney() + 3000 + winner.getLP());
+            ((Account) loser).setMoney(((Account) loser).getMoney() + 300);
+        }
+        else if (winner instanceof Account)
+            ((Account) winner).setMoney(((Account) winner).getMoney() + 3000 + winner.getLP());
+        else if (loser instanceof Account)
+            ((Account) loser).setMoney(((Account) loser).getMoney() + 300);
         isGameFinished = true;
     }
 
-    public void finishGame(Account loser) {
-        //TODO is this method ok AI-wise?
-        Account winner = null;
+    public void finishGame(Duelist loser) {
+        Duelist winner;
         if (currentPlayer.equals(loser)) winner = theOtherPlayer;
         else winner = currentPlayer;
-        winner.setScore(winner.getScore() + 1000);
+        if (winner instanceof Account)
+            ((Account) winner).setScore(((Account) winner).getScore() + 1000);
         if (rounds == 1) finishWithOneRound(loser, winner);
         else finishWithThreeRounds(loser, winner);
     }

@@ -167,6 +167,7 @@ public class Output {
     }
 
     public void printPhase(String phase) {
+        //TODO create a method for every phase so this command doesn't get an input String
         System.out.println("phase: " + phase);
     }
 

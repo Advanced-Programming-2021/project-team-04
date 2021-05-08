@@ -12,6 +12,7 @@ public abstract class Duelist {
     protected String username, nickname;
     protected Field field;
     protected int LP, countForRPS;
+    protected int maxLPofThreeRounds;
     protected int countOfRoundsWon; //TODO should reset this
     protected boolean canDraw = true; //TODO should reset this
     protected boolean canPlayerAttack = true;
@@ -38,6 +39,18 @@ public abstract class Duelist {
 
     public void setCountForRPS(int countForRPS) {
         this.countForRPS = countForRPS;
+    }
+
+    public int getMaxLPofThreeRounds() {
+        return maxLPofThreeRounds;
+    }
+
+    public void setMaxLPofThreeRounds(int LP) {
+        maxLPofThreeRounds = LP;
+    }
+
+    public void checkMaxLPofThreeRounds() {
+        if (maxLPofThreeRounds < LP) maxLPofThreeRounds = LP;
     }
 
     public void increaseCountForRPS() {

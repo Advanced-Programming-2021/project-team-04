@@ -18,25 +18,12 @@ public class Account extends Duelist {
 
     private String password;
     private int score, money = 100000;
-    private int maxLPofThreeRounds;
 
     public Account(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         allAccounts.add(this);
-    }
-
-    public int getMaxLPofThreeRounds() {
-        return maxLPofThreeRounds;
-    }
-
-    public void setMaxLPofThreeRounds(int LP) {
-        maxLPofThreeRounds = LP;
-    }
-
-    public void checkMaxLPofThreeRounds() {
-        if (maxLPofThreeRounds < LP) maxLPofThreeRounds = LP;
     }
 
     public static void setAllAccounts(ArrayList<Account> allAccounts) {

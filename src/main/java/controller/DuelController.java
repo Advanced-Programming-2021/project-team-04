@@ -76,9 +76,7 @@ public class DuelController {
 
     private void standbyPhase() {
         Output.getInstance().printPhase("standby phase");
-        Field field = game.getCurrentPlayer().getField();
-        Field opponentField = game.getTheOtherPlayer().getField();
-        handleSpecialCards(field, opponentField);
+        handleSpecialCards(game.getCurrentPlayer().getField(), game.getTheOtherPlayer().getField());
         ArrayList<Scanner> scanners = game.getCurrentPlayer().getField().getActiveScanners();
         if (!scanners.isEmpty())
             for (Scanner scanner : scanners) forScanner(scanner);
@@ -180,6 +178,7 @@ public class DuelController {
 
 
     private String[] makeSpellZone(ArrayList<SpellAndTrapCard> spellZone) {
+        //TODO needs to go to Output class
         String[] spellZoneString = new String[5];
         for (int i = 0; i < 5; i++) {
             if (spellZone.size() - 1 < i) {
@@ -194,6 +193,7 @@ public class DuelController {
     }
 
     private String[] makeMonsterZone(ArrayList<MonsterCard> monsterZone) {
+        //TODO needs to go to Output class
         String[] monsterZoneString = new String[5];
         for (int i = 0; i < 5; i++) {
             if (monsterZone.size() - 1 < i) {
@@ -210,7 +210,8 @@ public class DuelController {
         return monsterZoneString;
     }
 
-    private void showGameBoard(Account opponent, Account current) {
+    private void showGameBoard(Duelist opponent, Duelist current) {
+        //TODO needs to go to Output class
         String opponentNickname = opponent.getNickname() + ": " + opponent.getLP();
         int opponentHandCount = opponent.getField().getHand().size();
         int opponentDeckNumber = opponent.getField().getDeckZone().size();
@@ -227,26 +228,20 @@ public class DuelController {
         if (current.getField().getFieldZone() == null) currentFieldZone = "E ";
         String[] currentSpellZone = makeSpellZone(current.getField().getTrapAndSpell());
         String[] currentMonsterZone = makeMonsterZone(current.getField().getMonsterCards());
-
         StringBuilder board = new StringBuilder();
-        board.append(opponentNickname + "\n");
-        for (int i = 0; i < opponentHandCount; i++) board.append("\tc ");
-        board.append("\n" + opponentDeckNumber + "\n\t");
-        board.append(opponentSpellZone[3] + "\t" + opponentSpellZone[1] + "\t" + opponentSpellZone[0]
-                + "\t" + opponentSpellZone[2] + "\t" + opponentSpellZone[4] + "\n\t");
-        board.append(opponentMonsterZone[3] + "\t" + opponentMonsterZone[1] + "\t" + opponentMonsterZone[0]
-                + "\t" + opponentMonsterZone[2] + "\t" + opponentMonsterZone[4] + "\n");
-        board.append(opponentGraveYardCount + "\t\t\t\t\t\t" + opponentFieldZone + "\n");
+        board.append(opponentNickname).append("\n");
+        board.append("\tc ".repeat(opponentHandCount));
+        board.append("\n").append(opponentDeckNumber).append("\n\t");
+        board.append(opponentSpellZone[3]).append("\t").append(opponentSpellZone[1]).append("\t").append(opponentSpellZone[0]).append("\t").append(opponentSpellZone[2]).append("\t").append(opponentSpellZone[4]).append("\n\t");
+        board.append(opponentMonsterZone[3]).append("\t").append(opponentMonsterZone[1]).append("\t").append(opponentMonsterZone[0]).append("\t").append(opponentMonsterZone[2]).append("\t").append(opponentMonsterZone[4]).append("\n");
+        board.append(opponentGraveYardCount).append("\t\t\t\t\t\t").append(opponentFieldZone).append("\n");
         board.append("\n----------------------------------------------------------\n\n");
-        board.append(currentFieldZone + "\t\t\t\t\t\t" + currentGraveYardCount + "\n\t");
-        board.append(currentMonsterZone[4] + "\t" + currentMonsterZone[2] + "\t" + currentMonsterZone[0]
-                + "\t" + currentMonsterZone[1] + "\t" + currentMonsterZone[3] + "\n\t");
-        board.append(currentSpellZone[4] + "\t" + currentSpellZone[2] + "\t" + currentSpellZone[0]
-                + "\t" + currentSpellZone[1] + "\t" + currentSpellZone[3] + "\n");
-        board.append("  \t\t\t\t\t\t" + currentDeckNumber + "\n");
-        for (int i = 0; i < currentHandCount; i++) board.append("c \t");
-        board.append("\n" + currentNickname);
-
+        board.append(currentFieldZone).append("\t\t\t\t\t\t").append(currentGraveYardCount).append("\n\t");
+        board.append(currentMonsterZone[4]).append("\t").append(currentMonsterZone[2]).append("\t").append(currentMonsterZone[0]).append("\t").append(currentMonsterZone[1]).append("\t").append(currentMonsterZone[3]).append("\n\t");
+        board.append(currentSpellZone[4]).append("\t").append(currentSpellZone[2]).append("\t").append(currentSpellZone[0]).append("\t").append(currentSpellZone[1]).append("\t").append(currentSpellZone[3]).append("\n");
+        board.append("  \t\t\t\t\t\t").append(currentDeckNumber).append("\n");
+        board.append("c \t".repeat(currentHandCount));
+        board.append("\n").append(currentNickname);
         Output.getInstance().printString(board.toString());
     }
 
@@ -969,7 +964,7 @@ public class DuelController {
         return false;
     }
 
-    public void timeSeal(SpellAndTrapCard timeSealCard, Account opponent) {
+    public void timeSeal(SpellAndTrapCard timeSealCard, Duelist opponent) {
         if (DuelView.getInstance().wantsToActivate("Time Seal")) {
             moveSpellOrTrapToGYFromSpellZone(timeSealCard);
             opponent.setCanDraw(false);
@@ -998,7 +993,7 @@ public class DuelController {
     }
 
 
-    public void mindCrush(SpellAndTrapCard spellAndTrapCard, Account opponent) {
+    public void mindCrush(SpellAndTrapCard spellAndTrapCard, Duelist opponent) {
         if (DuelView.getInstance().wantsToActivateTrap("Mind Crush")) {
             String cardName = DuelView.getInstance().getCardName();
             if (!opponent.hasCardInHand(cardName)) randomlyRemoveFromHand(spellAndTrapCard.getOwner());
@@ -1197,8 +1192,7 @@ public class DuelController {
 
     private void terraforming(SpellAndTrapCard spellAndTrapCard) {
         SpellAndTrapCard fieldSpell = DuelView.getInstance().getFieldSpellFromDeck();
-        if (fieldSpell != null)
-        {
+        if (fieldSpell != null) {
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
             if (game.getCurrentPlayer().getField().getHand().size() != 6)
                 game.getCurrentPlayer().getField().getHand().add(fieldSpell);
@@ -1632,11 +1626,11 @@ public class DuelController {
         forChain = new ArrayList<>();
     }
 
-    private void chainMethods(SpellAndTrapCard card){
+    private void chainMethods(SpellAndTrapCard card) {
         if (card == null) return;
         Account opponent = (Account) game.getCurrentPlayer();
         if (card.getOwner().equals(game.getCurrentPlayer()))
-        opponent = (Account) game.getTheOtherPlayer();
+            opponent = (Account) game.getTheOtherPlayer();
         switch (card.getName()) {
             case "Mind Crush" -> mindCrush(card, opponent);
             case "Twin Twisters" -> twinTwisters(card);
