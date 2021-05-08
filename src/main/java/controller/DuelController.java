@@ -79,6 +79,9 @@ public class DuelController {
         Field field = game.getCurrentPlayer().getField();
         Field opponentField = game.getTheOtherPlayer().getField();
         handleSpecialCards(field, opponentField);
+        ArrayList<Scanner> scanners = game.getCurrentPlayer().getField().getActiveScanners();
+        if (!scanners.isEmpty())
+            for (Scanner scanner : scanners) forScanner(scanner);
     }
 
     private void handleSpecialCards(Field field, Field opponentField) {
@@ -1434,8 +1437,14 @@ public class DuelController {
         if (monsterCard != null) addMonsterToGYFromMonsterZone(monsterCard);
     }
 
-    public MonsterCard forScanner() {
-        return null;
+    public void forScanner(Scanner scanner) {
+        if (DuelView.getInstance().wantsToActivate("Scanner")) {
+            MonsterCard toReplace = DuelView.getInstance().getFromOpponentGY();
+            scanner.setCardReplaced(toReplace);
+            ArrayList<MonsterCard> monsterCards = game.getCurrentPlayer().getField().getMonsterCards();
+            monsterCards.remove(scanner);
+            monsterCards.add(toReplace);
+        }
     }
 
     private void heraldOfCreation() {

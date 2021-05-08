@@ -16,6 +16,14 @@ public class Field {
         deckZone.addAll(deck);
     }
 
+    public ArrayList<Scanner> getActiveScanners() {
+        ArrayList<Scanner> scanners = new ArrayList<>();
+        for (MonsterCard monsterCard : monsterCards)
+            if (monsterCard.getName().equals("Scanner"))
+                scanners.add((Scanner) monsterCard);
+        return scanners;
+    }
+
     public ArrayList<Card> getGraveyard() {
         return graveyard;
     }
