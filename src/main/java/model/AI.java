@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class AI {
+public class AI extends Duelist {
     private ArrayList<MonsterCard> findTributes;
 
     public MonsterCard getMyStrongestMonster() {

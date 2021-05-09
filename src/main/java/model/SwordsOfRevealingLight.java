@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+
 public class SwordsOfRevealingLight extends SpellAndTrapCard {
     public int counter = 0;
     public SwordsOfRevealingLight() {
@@ -16,8 +18,9 @@ public class SwordsOfRevealingLight extends SpellAndTrapCard {
                 " flip all monsters they control face-up. While this card is face-up on the field, your opponent's monsters cannot declare an attack.";
     }
 
-    public void specialMethod(Account opponent) {
-        for (MonsterCard monsterCard : opponent.getField().getMonsterCards())
+    public void specialMethod(Duelist opponent) {
+        ArrayList<MonsterCard> monsterCards = opponent.getField().getMonsterCards();
+        for (MonsterCard monsterCard : monsterCards)
             if (monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN))
                 monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
     }

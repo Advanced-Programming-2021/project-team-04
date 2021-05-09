@@ -36,7 +36,7 @@ public class Output {
         System.out.println("this card is already in the wanted position");
     }
 
-    public void cantChangePosition() {
+    public void cannotChangePosition() {
         System.out.println("you can’t change this card position");
     }
 

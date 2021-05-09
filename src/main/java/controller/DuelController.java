@@ -245,7 +245,6 @@ public class DuelController {
         Output.getInstance().printString(board.toString());
     }
 
-
     private void firstMainPhase() {
         Output.getInstance().printPhase("main phase 1");
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
@@ -288,36 +287,23 @@ public class DuelController {
 
     public void selectCard(boolean myCard, CardStatusInField cardStatusInField, int number) {
         //TODO is this method ok AI-wise?
-        Account thisPlayer = createThisPlayer(myCard);
+        Duelist thisPlayer = createThisPlayer(myCard);
         if (!errorForSelecting(thisPlayer, number, cardStatusInField)) return;
         switch (cardStatusInField) {
-            case HAND:
-                game.setSelectedCard(thisPlayer.getField().getHand().get(number));
-                break;
-            case MONSTER_FIELD:
-                game.setSelectedCard(thisPlayer.getField().getMonsterCards().get(number));
-                break;
-            case SPELL_FIELD:
-                game.setSelectedCard(thisPlayer.getField().getTrapAndSpell().get(number));
-                break;
-            case FIELD_ZONE:
-                game.setSelectedCard(thisPlayer.getField().getFieldZone());
-                break;
+            case HAND -> game.setSelectedCard(thisPlayer.getField().getHand().get(number));
+            case MONSTER_FIELD -> game.setSelectedCard(thisPlayer.getField().getMonsterCards().get(number));
+            case SPELL_FIELD -> game.setSelectedCard(thisPlayer.getField().getTrapAndSpell().get(number));
+            case FIELD_ZONE -> game.setSelectedCard(thisPlayer.getField().getFieldZone());
         }
         Output.getInstance().cardSelected();
     }
 
 
-    private Account createThisPlayer(boolean myCard) {
-        //TODO is this method ok AI-wise?
-        Account thisPlayer;
-        if (myCard) thisPlayer = game.getCurrentPlayer();
-        else thisPlayer = game.getTheOtherPlayer();
-        return thisPlayer;
+    private Duelist createThisPlayer(boolean myCard) {
+        return myCard ? game.getCurrentPlayer() : game.getTheOtherPlayer();
     }
 
-    private boolean errorForSelecting(Account thisPlayer, int number, CardStatusInField cardStatusInField) {
-
+    private boolean errorForSelecting(Duelist thisPlayer, int number, CardStatusInField cardStatusInField) {
         if (cardStatusInField.equals(CardStatusInField.HAND) &&
                 number > thisPlayer.getField().getHand().size()) {
             Output.getInstance().invalidSelection();
@@ -352,30 +338,31 @@ public class DuelController {
 
     public void nextPhase() {
         switch (game.getCurrentPhase()) {
-            case DRAW_PHASE:
+            case DRAW_PHASE -> {
                 game.setCurrentPhase(Phases.STANDBY_PHASE);
                 standbyPhase();
-                break;
-            case STANDBY_PHASE:
+            }
+            case STANDBY_PHASE -> {
                 game.setCurrentPhase(Phases.FIRST_MAIN_PHASE);
                 firstMainPhase();
-                break;
-            case FIRST_MAIN_PHASE:
+            }
+            case FIRST_MAIN_PHASE -> {
                 game.setCurrentPhase(Phases.BATTLE_PHASE);
                 battlePhase();
-                break;
-            case BATTLE_PHASE:
+            }
+            case BATTLE_PHASE -> {
                 game.setCurrentPhase(Phases.SECOND_MAIN_PHASE);
                 secondMainPhase();
-                break;
-            case SECOND_MAIN_PHASE:
+            }
+            case SECOND_MAIN_PHASE -> {
                 game.setCurrentPhase(Phases.END_PHASE);
                 endPhase();
-                break;
-            case END_PHASE:
+            }
+            case END_PHASE -> {
                 game.setCurrentPhase(Phases.DRAW_PHASE);
                 game.changeTurn();
                 drawPhase();
+            }
         }
     }
 
@@ -564,9 +551,10 @@ public class DuelController {
             Output.getInstance().cardNotSelected();
             return false;
         }
+        //TODO can be handled with public boolean Duelist.hasCard(). do we need one?
         if (!(game.getSelectedCard() instanceof MonsterCard) ||
                 !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
-            Output.getInstance().cantChangePosition();
+            Output.getInstance().cannotChangePosition();
             return false;
         }
         if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
@@ -605,6 +593,7 @@ public class DuelController {
             Output.getInstance().cardNotSelected();
             return false;
         }
+        //TODO can be handled with public boolean Duelist.hasCard(). do we need one?
         if (!(game.getSelectedCard() instanceof MonsterCard) ||
                 !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
             Output.getForNow();
@@ -660,10 +649,9 @@ public class DuelController {
     }
 
     public boolean handleMirageDragon(String name) {
-        //TODO is this method ok AI-wise
-        Account opponent = null;
-        if (game.getCurrentPlayer().equals(name)) opponent = game.getTheOtherPlayer();
-        else opponent = game.getCurrentPlayer();
+        Duelist opponent;
+        //TODO why are we comparing a String and a Duelist?
+        opponent = game.getCurrentPlayer().equals(name) ? game.getTheOtherPlayer() : game.getCurrentPlayer();
         MonsterCard mirageDragon = opponent.hasMirageDragon();
         return mirageDragon != null && mirageDragon.getMonsterCardModeInField() != MonsterCardModeInField.DEFENSE_FACE_DOWN;
     }
@@ -719,6 +707,7 @@ public class DuelController {
             Output.getInstance().cardNotSelected();
             return false;
         }
+        //TODO can be handled with public boolean Duelist.hasCard(). do we need one?
         if (!(game.getSelectedCard() instanceof MonsterCard) ||
                 !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
             Output.getForNow();
@@ -767,6 +756,7 @@ public class DuelController {
             Output.getInstance().cardNotSelected();
             return false;
         }
+        //TODO can be handled with public boolean Duelist.hasCard(). do we need one?
         if (!(game.getSelectedCard() instanceof MonsterCard) ||
                 !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
             Output.getForNow();
@@ -794,16 +784,12 @@ public class DuelController {
         SpellAndTrapCard selectedCard = (SpellAndTrapCard) game.getSelectedCard();
         selfAbsorption();
         if (selectedCard.getProperty().equals("Field")) {
-            if (game.getCurrentPlayer().getField().getFieldZone() != null) {
+            if (game.getCurrentPlayer().getField().getFieldZone() != null)
                 game.getCurrentPlayer().getField().getGraveyard().add(game.getCurrentPlayer().getField().getFieldZone());
-            }
             game.getCurrentPlayer().getField().setFieldZone(selectedCard);
-            selectedCard.setActive(true);
-        } else {
-            if (!game.getCurrentPlayer().getField().getTrapAndSpell().contains(selectedCard))
+        } else if (!game.getCurrentPlayer().getField().getTrapAndSpell().contains(selectedCard))
                 game.getCurrentPlayer().getField().getTrapAndSpell().add(selectedCard);
-            selectedCard.setActive(true);
-        }
+        selectedCard.setActive(true);
         callSpellAndTrapMethod(selectedCard);
         if (selectedCard.isActive()) Output.getForNow();
         game.setSelectedCard(null);
@@ -849,60 +835,23 @@ public class DuelController {
 
     private void callSpellAndTrapMethod(SpellAndTrapCard card) {
         switch (card.getName()) {
-            case "Monster Reborn":
-                monsterReborn(card);
-                break;
-            case "Terraforming":
-                terraforming(card);
-                break;
-            case "Pot of Greed":
-                potOfGreed(card);
-                break;
-            case "Raigeki":
-                raigeki(card);
-                break;
-            case "Change of Heart":
-                changeOfHeart((ChangeOfHeart) card);
-                break;
-            case "Harpie's Feather Duster":
-                harpiesFeatherDuster(card);
-                break;
-            case "Dark Hole":
-                darkHole(card);
-                break;
-            case "Messenger of peace":
-                ((MessengerOfPeace) card).deactivateCards();
-                break;
-            case "Mystical space typhoon":
-                mysticalSpaceTyphoon(card);
-                break;
-            case "Yami":
-                yami();
-                break;
-            case "Forest":
-                forest();
-                break;
-            case "Closed Forest":
-                closedForest();
-                break;
-            case "Umiiruka":
-                umiiruka();
-                break;
-            case "Sword of dark destruction":
-            case "Black Pendant":
-            case "United We Stand":
-            case "Magnum Shield":
-                equipMonster(card);
-                break;
-            case "Advanced Ritual Art":
-                advancedRitualArt(card);
-                break;
-            case "Twin Twisters":
-                twinTwisters(card);
-                break;
-            case "Swords of Revealing Light":
-                ((SwordsOfRevealingLight) card).specialMethod(game.getTheOtherPlayer());
-                break;
+            case "Monster Reborn" -> monsterReborn(card);
+            case "Terraforming" -> terraforming(card);
+            case "Pot of Greed" -> potOfGreed(card);
+            case "Raigeki" -> raigeki(card);
+            case "Change of Heart" -> changeOfHeart((ChangeOfHeart) card);
+            case "Harpie's Feather Duster" -> harpiesFeatherDuster(card);
+            case "Dark Hole" -> darkHole(card);
+            case "Messenger of peace" -> ((MessengerOfPeace) card).deactivateCards();
+            case "Mystical space typhoon" -> mysticalSpaceTyphoon(card);
+            case "Yami" -> yami();
+            case "Forest" -> forest();
+            case "Closed Forest" -> closedForest();
+            case "Umiiruka" -> umiiruka();
+            case "Sword of dark destruction", "Black Pendant", "United We Stand", "Magnum Shield" -> equipMonster(card);
+            case "Advanced Ritual Art" -> advancedRitualArt(card);
+            case "Twin Twisters" -> twinTwisters(card);
+            case "Swords of Revealing Light" -> ((SwordsOfRevealingLight) card).specialMethod(game.getTheOtherPlayer());
         }
     }
 
@@ -921,7 +870,7 @@ public class DuelController {
     public void callOfTheHaunted(SpellAndTrapCard callOfTheHauntedCard, Field field, boolean isCurrentPlayer) {
         if (DuelView.getInstance().wantsToActivate("Call Of The Haunted")) {
             moveSpellOrTrapToGYFromSpellZone(callOfTheHauntedCard);
-            Card card = null;
+            Card card;
             if (isCurrentPlayer) card = DuelView.getInstance().getCardFromMyGY();
             else card = DuelView.getInstance().getCardFromOpponentGY();
             if (card == null) return;
@@ -1020,17 +969,10 @@ public class DuelController {
             return;
         }
         switch (equipSpell.getName()) {
-            case "Sword of dark destruction":
-                ((SwordOfDarkDestruction) equipSpell).setEquippedMonster(monsterToEquip);
-                break;
-            case "Black Pendant":
-                ((BlackPendant) equipSpell).setEquippedMonster(monsterToEquip);
-                break;
-            case "United We Stand":
-                ((UnitedWeStand) equipSpell).setEquippedMonster(monsterToEquip);
-                break;
-            case "Magnum Shield":
-                ((MagnumShield) equipSpell).setEquippedMonster(monsterToEquip);
+            case "Sword of dark destruction" -> ((SwordOfDarkDestruction) equipSpell).setEquippedMonster(monsterToEquip);
+            case "Black Pendant" -> ((BlackPendant) equipSpell).setEquippedMonster(monsterToEquip);
+            case "United We Stand" -> ((UnitedWeStand) equipSpell).setEquippedMonster(monsterToEquip);
+            case "Magnum Shield" -> ((MagnumShield) equipSpell).setEquippedMonster(monsterToEquip);
         }
     }
 
@@ -1070,7 +1012,7 @@ public class DuelController {
         game.getCurrentPlayer().getField().getGraveyard().add(removeFromHand);
         int numOfSpellCardsToDestroy = DuelView.getInstance().numOfSpellCardsToDestroy();
         for (int i = 0; i < numOfSpellCardsToDestroy; i++) {
-            SpellAndTrapCard toDestroy = null;
+            SpellAndTrapCard toDestroy;
             if (DuelView.getInstance().isMine()) toDestroy = DuelView.getInstance().getFromMyField();
             else toDestroy = DuelView.getInstance().getFromOpponentField();
             if (toDestroy == null) continue;
@@ -1132,7 +1074,7 @@ public class DuelController {
     }
 
     public void mysticalSpaceTyphoon(SpellAndTrapCard spellAndTrapCard) { //TODO
-        SpellAndTrapCard toDestroy = null;
+        SpellAndTrapCard toDestroy;
         if (DuelView.getInstance().isMine())
             toDestroy = DuelView.getInstance().getFromMyField();
         else toDestroy = DuelView.getInstance().getFromOpponentField();
