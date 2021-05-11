@@ -27,7 +27,6 @@ public class MainController {
     public void newDuel(String username, int rounds) {
         if (errorForNewGame(username, rounds)) {
             new Game(loggedIn, Account.getAccountByUsername(username), rounds, false);
-            Output.getForNow();
             DuelView.getInstance().runForRPS();
             DuelView.getInstance().run();
         }

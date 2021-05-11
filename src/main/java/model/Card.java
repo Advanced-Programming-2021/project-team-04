@@ -7,7 +7,7 @@ public class Card {
     protected String name;
     protected int price;
     protected String description;
-    protected int allowedNumber;
+    protected int allowedNumber = 3;
     protected boolean isAttacked = false;
     protected boolean isAttacking = false;
     //TODO probably should handle more than this, maybe make an entry set for both cards *or a hashmap idk
@@ -101,6 +101,10 @@ public class Card {
             if (card.getName().equals(name))
                 return card;
         return null;
+    }
+
+    public String toString() {
+        return "";
     }
 
     public void reset() {

@@ -15,6 +15,14 @@ public class SpellAndTrapCard extends Card {
         spellAndTrapCards.add(this);
     }
 
+    public boolean isLimited() {
+        return isLimited;
+    }
+
+    public void setLimited(boolean limited) {
+        isLimited = limited;
+    }
+
     public String getProperty() {
         return property;
     }

@@ -359,4 +359,20 @@ public class DuelView extends Menu {
     public void setRPSDone(boolean RPSDone) {
         isRPSDone = RPSDone;
     }
+
+    public boolean wantsToExchange() {
+        Output.getForNow();
+        String input = Input.getInputMessage().toLowerCase();
+        return input.matches("y(?:es)?");
+    }
+
+    public String[] cardsToExchange() {
+        Output.getForNow();
+        //card from side deck
+        //*
+        //card from main deck
+        String input = Input.getInputMessage();
+        String[] names = input.split("\\*");
+        return names;
+    }
 }

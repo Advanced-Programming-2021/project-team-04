@@ -34,6 +34,11 @@ public class Deck {
     }
 
     public boolean isAddingCardValid(String cardName) {
+        Card card = Card.getCardByName(cardName);
+        if (card instanceof SpellAndTrapCard) {
+            SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) card;
+            if (spellAndTrapCard.isLimited()) spellAndTrapCard.setAllowedNumber(1);
+        }
         int count = 0;
         for (Card thisCard : getMainDeck())
             if (thisCard.getName().equals(cardName))

@@ -10,7 +10,7 @@ public class Game {
     private HashMap<Duelist, Integer> maxLifePoint;
     private Duelist currentPlayer, theOtherPlayer;
     private int rounds;
-    private int currentRound;
+    private int currentRound = 0;
     private Phases currentPhase;
     private gameRounds totalRounds;
     private Card selectedCard;
@@ -146,13 +146,14 @@ public class Game {
     }
 
     private void initializeGame() {
-        currentPlayer.setField(new Field(currentPlayer.getActiveDeck().getMainDeck()));
-        theOtherPlayer.setField(new Field(theOtherPlayer.getActiveDeck().getMainDeck()));
+        currentPlayer.setField(new Field(currentPlayer.getActiveDeck()));
+        theOtherPlayer.setField(new Field(theOtherPlayer.getActiveDeck()));
         shuffleDeck();
         for (int i = 0; i < 5; i++) {
             currentPlayer.getField().getHand().add(currentPlayer.getField().getDeckZone().get(i));
             theOtherPlayer.getField().getHand().add(theOtherPlayer.getField().getDeckZone().get(i));
         }
+        currentRound++;
     }
 
     public void shuffleDeck() {
@@ -175,14 +176,15 @@ public class Game {
         if (!isAI) {
             ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
             ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
-        }
-        else if (winner instanceof Account)
+        } else if (winner instanceof Account)
             ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
         else if (loser instanceof Account)
             ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
         isGameFinished = true;
         winner.reset();
         loser.reset();
+        loser.deleteField();
+        winner.deleteField();
     }
 
     public void finishWithThreeRounds(Duelist loser, Duelist winner) {
@@ -208,22 +210,29 @@ public class Game {
                 return;
             }
         }
+        if (winner instanceof Account)
+            DuelController.getInstance().exchangeCardsWithSideDeck((Account) winner);
+        if (loser instanceof Account)
+            DuelController.getInstance().exchangeCardsWithSideDeck((Account) loser);
         DuelController.getInstance().chooseStarter(winner.getUsername());
-        initializeGame();
         winner.reset();
         loser.reset();
+        initializeGame();
     }
 
     private void finishMultipleRoundGame(Duelist loser, Duelist winner) {
         if (!isAI) {
             ((Account) winner).setMoney(((Account) winner).getMoney() + 3000 + winner.getLP());
             ((Account) loser).setMoney(((Account) loser).getMoney() + 300);
-        }
-        else if (winner instanceof Account)
+        } else if (winner instanceof Account)
             ((Account) winner).setMoney(((Account) winner).getMoney() + 3000 + winner.getLP());
         else if (loser instanceof Account)
             ((Account) loser).setMoney(((Account) loser).getMoney() + 300);
         isGameFinished = true;
+        loser.deleteField();
+        winner.deleteField();
+        winner.reset();
+        loser.reset();
     }
 
     public void finishGame(Duelist loser) {

@@ -168,13 +168,12 @@ public abstract class Duelist {
         return true;
     }
 
-    private void deleteField() {
+    public void deleteField() {
         field = null;
     }
 
     public void reset() {
         setLP(8000);
-        deleteField();
         countForRPS = 0;
     }
 

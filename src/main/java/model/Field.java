@@ -11,9 +11,11 @@ public class Field {
     private ArrayList<MonsterCard> monsterCards = new ArrayList<>();
     private ArrayList<Card> hand = new ArrayList<>();
     private SpellAndTrapCard fieldZone;
+    private ArrayList<Card> sideDeck;
 
-    public Field(ArrayList<Card> deck) {
-        deckZone.addAll(deck);
+    public Field(Deck deck) {
+        deckZone.addAll(deck.getMainDeck());
+        sideDeck.addAll(deck.getSideDeck());
     }
 
     public ArrayList<Scanner> getActiveScanners() {
@@ -183,4 +185,22 @@ public class Field {
         return null;
     }
 
+    public void exchangeCards(String fromSide, String fromMain) {
+        Card cardFromMain = null;
+        Card cardFromSide = null;
+        for (Card card : deckZone)
+            if (card.getName().equals(fromMain)) {
+                cardFromMain = card;
+                break;
+            }
+        for (Card card : sideDeck)
+            if (card.getName().equals(fromSide)) {
+                cardFromSide = card;
+                break;
+            }
+        deckZone.add(cardFromSide);
+        deckZone.remove(cardFromMain);
+        sideDeck.add(cardFromMain);
+        sideDeck.remove(cardFromSide);
+    }
 }

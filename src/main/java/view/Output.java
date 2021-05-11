@@ -16,8 +16,92 @@ public class Output {
         return forNow;
     }
 
+    public void selectCardToAdd() {
+        System.out.println("select a card to add to chain");
+    }
+
+    public void addToChain() {
+        System.out.println("do you want to add card to chain?");
+    }
+
+    public void makeChain() {
+        System.out.println("do you want to make a chain?");
+    }
+
+    public void invalidCard() {
+        System.out.println("selected card is not valid");
+    }
+
+    public void cardNotVisible() {
+        System.out.println("card is not visible");
+    }
+
     public void printString(String toPrint) {
         System.out.println(toPrint);
+    }
+
+    public void invalidTributeSum() {
+        System.out.println("selected monsters levels don’t match with ritual monster");
+    }
+
+    public void cannotRitualSummon() {
+        System.out.println("there is no way you could ritual summon a monster");
+    }
+
+    public void cannotRitualSummonThisCard() {
+        System.out.println("you can't ritual summon this card");
+    }
+
+    public void cannotSet() {
+        System.out.println("you can’t set this card");
+    }
+
+    public void preparationsNotDone() {
+        System.out.println("preparations of this spell are not done yet");
+    }
+
+    public void spellZoneFull() {
+        System.out.println("spell card zone is full");
+    }
+
+    public void alreadyActive() {
+        System.out.println("you have already activated this card");
+    }
+
+    public void onlySpells() {
+        System.out.println("activate effect is only for spell cards.");
+    }
+
+    public void spellActivated() {
+        System.out.println("spell activated");
+    }
+
+    public void receivedDamage(int damage) {
+        System.out.println("you opponent receives " + damage + " battle damage");
+    }
+
+    public void cannotDirectAttack() {
+        System.out.println("you can’t attack the opponent directly");
+    }
+
+    public void noCardHere() {
+        System.out.println("there is no card to attack here");
+    }
+
+    public void alreadyAttacked() {
+        System.out.println("this card already attacked");
+    }
+
+    public void cannotFlipSummon() {
+        System.out.println("you can’t flip summon this card");
+    }
+
+    public void cannotAttackThisCard() {
+        System.out.println("you can’t attack this card");
+    }
+
+    public void cannotAttack() {
+        System.out.println("you can’t attack with this card");
     }
 
     public void positionChanged() {
