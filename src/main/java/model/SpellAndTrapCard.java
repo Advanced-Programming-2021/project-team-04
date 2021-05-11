@@ -1,13 +1,18 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
 public class SpellAndTrapCard extends Card {
     protected static ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
     protected boolean isActive = false;
     protected boolean canBeActivated = true;
+    @Expose(serialize = true, deserialize = true)
     protected boolean isSpell;
+    @Expose(serialize = true, deserialize = true)
     protected String property;
+    @Expose(serialize = true, deserialize = true)
     protected boolean isLimited;
 
     public SpellAndTrapCard() {

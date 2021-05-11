@@ -1,11 +1,16 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
 public class Card {
     protected static ArrayList<Card> allCards = new ArrayList<>();
+    @Expose(serialize = true, deserialize = true)
     protected String name;
+    @Expose(serialize = true, deserialize = true)
     protected int price;
+    @Expose(serialize = true, deserialize = true)
     protected String description;
     protected int allowedNumber = 3;
     protected boolean isAttacked = false;

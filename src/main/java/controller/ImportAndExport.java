@@ -2,6 +2,7 @@ package controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.Account;
+import model.Card;
 import model.MonsterCard;
 import model.SpellAndTrapCard;
 
@@ -17,6 +18,15 @@ public class ImportAndExport {
         if (singleInstance == null)
             singleInstance = new ImportAndExport();
         return singleInstance;
+    }
+
+    public void importCard(String cardName, String type) {
+        if (type.equals("monster")) readMonsterCard("src/main/resources/importandexport/" + cardName + ".JSON");
+        else readSpellAndTrapCard("src/main/resources/importandexport/" + cardName + ".JSON")
+    }
+
+    public void exportCard(String cardName) {
+        writeToJson("src/main/resources/importandexport/" + cardName + ".JSON", Card.getCardByName(cardName));
     }
 
     public MonsterCard readMonsterCard(String address) {
@@ -44,9 +54,9 @@ public class ImportAndExport {
         }
     }
 
-    public void writeFile(String address, Object object) {
+    public void writeToJson(String address, Object object) {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.create();
+        Gson gson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
         FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(address);

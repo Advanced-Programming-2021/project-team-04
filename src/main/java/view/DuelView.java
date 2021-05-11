@@ -85,30 +85,30 @@ public class DuelView extends Menu {
 
 
     public boolean wantsToActivate(String cardName) {
-        Output.getForNow();
+        Output.getInstance().wantToActivate(cardName);
         String activate = Input.getInputMessage();
         return activate.toLowerCase().matches("y(?:es)?");
     }
 
     private String getRPSInput() {
-        Output.getForNow(); //maybe it could get the users name as input to say who should enter
+        Output.getInstance().pickRPS();
         String input = Input.getInputMessage().toLowerCase();
         while (!(input.matches("r(?:ock)?") || input.matches("p(?:aper)?") ||
                 input.matches("s(?:cissors)?"))) {
-            Output.getForNow();
+            Output.getInstance().invalidSelection();
             input = Input.getInputMessage();
         }
         return input;
     }
 
     public void chooseStarter(String winnerUsername) {
-        Output.getForNow();
+        Output.getInstance().chooseStarter();
         String username = Input.getInputMessage();
         DuelController.getInstance().chooseStarter(username);
     }
 
     public int getTribute() {
-        Output.getForNow();
+        Output.getInstance().chooseTribute();
         String cardNumber = Input.getInputMessage();
         return Integer.parseInt(cardNumber);
     }
@@ -169,7 +169,7 @@ public class DuelView extends Menu {
     }
 
     public MonsterCard getRitualCard() {
-        Output.getForNow();
+        Output.getInstance().chooseRitualCard();
         String ritualCardNumber = Input.getInputMessage();
         if (ritualCardNumber.equals("cancel")) return null;
         int number = Integer.parseInt(ritualCardNumber);
@@ -177,7 +177,7 @@ public class DuelView extends Menu {
     }
 
     public MonsterCard getOpponentMonster() {
-        Output.getForNow();
+        Output.getInstance().chooseMonster();
         String monsterCardNumber = Input.getInputMessage();
         if (monsterCardNumber.equals("cancel")) return null;
         int number = Integer.parseInt(monsterCardNumber);
@@ -185,7 +185,7 @@ public class DuelView extends Menu {
     }
 
     public ArrayList<MonsterCard> getTributes() {
-        Output.getForNow();
+        Output.getInstance().chooseTributes();
         String numbers = Input.getInputMessage();
         if (numbers.equals("cancel")) return null;
         String[] afterSplit = numbers.split(" ");
@@ -199,12 +199,12 @@ public class DuelView extends Menu {
     }
 
     public String monsterMode() {
-        Output.getForNow();
+        Output.getInstance().chooseMonsterMode();
         return Input.getInputMessage();
     }
 
     public MonsterCard getMonsterCardFromHand() {
-        Output.getForNow();
+        Output.getInstance().chooseMonster();
         String number = Input.getInputMessage();
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
@@ -212,7 +212,7 @@ public class DuelView extends Menu {
     }
 
     public MonsterCard getFromMyGY() {
-        Output.getForNow();
+        Output.getInstance().chooseMonster();
         String number = Input.getInputMessage();
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
@@ -220,7 +220,7 @@ public class DuelView extends Menu {
     }
 
     public Card getCardFromMyGY() {
-        Output.getForNow();
+        Output.getInstance().chooseCard();
         String number = Input.getInputMessage();
         if (number.equals("cancel")) return null;
         int cardNumber = Integer.parseInt(number);
@@ -228,7 +228,7 @@ public class DuelView extends Menu {
     }
 
     public Card getCardFromOpponentGY() {
-        Output.getForNow();
+        Output.getInstance().chooseCard();
         String number = Input.getInputMessage();
         if (number.equals("cancel")) return null;
         int cardNumber = Integer.parseInt(number);
@@ -236,7 +236,7 @@ public class DuelView extends Menu {
     }
 
     public MonsterCard getFromMyDeck() {
-        Output.getForNow();
+        Output.getInstance().chooseMonster();
         String number = Input.getInputMessage();
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
@@ -244,7 +244,7 @@ public class DuelView extends Menu {
     }
 
     public MonsterCard getFromOpponentGY() {
-        Output.getForNow();
+        Output.getInstance().chooseMonster();
         String number = Input.getInputMessage();
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
@@ -252,13 +252,13 @@ public class DuelView extends Menu {
     }
 
     public boolean isMine() {
-        Output.getForNow();
+        Output.getInstance().isMine();
         String isMine = Input.getInputMessage();
         return isMine.toLowerCase().matches("y(?:es)?");
     }
 
     public SpellAndTrapCard getFieldSpellFromDeck() {
-        Output.getForNow();
+        Output.getInstance().chooseFieldSpell();
         String number = Input.getInputMessage();
         if (number.equals("cancel")) return null;
         int spellNumber = Integer.parseInt(number);
@@ -266,7 +266,7 @@ public class DuelView extends Menu {
     }
 
     public MonsterCard getMonsterToEquip() {
-        Output.getForNow();
+        Output.getInstance().chooseMonster();
         String monsterCardNumber = Input.getInputMessage();
         if (monsterCardNumber.equals("cancel")) return null;
         int number = Integer.parseInt(monsterCardNumber);
@@ -274,7 +274,7 @@ public class DuelView extends Menu {
     }
 
     public MonsterCard getHijackedCard() {
-        Output.getForNow();
+        Output.getInstance().chooseMonster();
         String monsterCardNumber = Input.getInputMessage();
         if (monsterCardNumber.equals("cancel")) return null;
         int number = Integer.parseInt(monsterCardNumber);
@@ -283,38 +283,38 @@ public class DuelView extends Menu {
 
     public boolean wantsToActivateTrap(String name) {
         if (DuelController.getInstance().handleMirageDragon("")) return false; //TODO name of the person activating this trap
-        Output.getForNow();
+        Output.getInstance().wantToActivate(name);
         String activate = Input.getInputMessage();
         return activate.toLowerCase().matches("y(?:es)?");
     }
 
     public boolean ordinaryOrSpecial() {
-        Output.getForNow();
+        Output.getInstance().summonMode();
         String ordinaryOrSpecial = Input.getInputMessage().toLowerCase();
         return !ordinaryOrSpecial.matches("o(?:rd(?:inary)?)?");
     }
 
     public int numOfSpellCardsToDestroy() {
-        Output.getForNow();
+        Output.getInstance().numOfCards();
         String number = Input.getInputMessage();
         return Integer.parseInt(number);
     }
 
     public Card getCardFromHand() {
-        Output.getForNow();
+        Output.getInstance().chooseCard();
         String cardNumber = Input.getInputMessage();
         if (cardNumber.matches("cancel")) return null;
         return DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(cardNumber));
     }
 
     public boolean summonGateGuardian() {
-        Output.getForNow();
+        Output.getInstance().gateGuardian();
         String input = Input.getInputMessage().toLowerCase();
         return input.matches("y(?:es)?");
     }
 
     public int barbaros() {
-        Output.getForNow();
+        Output.getInstance().barbaros();
         String summonMode = Input.getInputMessage();
         return Integer.parseInt(summonMode);
         // 1 summon with 2 tributes
@@ -323,27 +323,27 @@ public class DuelView extends Menu {
     }
 
     public boolean killMessengerOfPeace() {
-        Output.getForNow();
+        Output.getInstance().killMessengerOfPeace();
         String input = Input.getInputMessage().toLowerCase();
         return input.matches("y(?:es)?");
     }
 
     public SpellAndTrapCard getFromMyField() {
-        Output.getForNow();
+        Output.getInstance().chooseSpell();
         String spellNumber = Input.getInputMessage();
         if (spellNumber.matches("cancel")) return null;
         return DuelController.getInstance().getGame().getCurrentPlayer().getField().getTrapAndSpell().get(Integer.parseInt(spellNumber));
     }
 
     public SpellAndTrapCard getFromOpponentField() {
-        Output.getForNow();
+        Output.getInstance().chooseSpell();
         String spellNumber = Input.getInputMessage();
         if (spellNumber.matches("cancel")) return null;
         return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getTrapAndSpell().get(Integer.parseInt(spellNumber));
     }
 
     public int whereToSummonFrom() {
-        Output.getForNow();
+        Output.getInstance().whereToSummonFrom();
         String originOfSummon = Input.getInputMessage();
         return Integer.parseInt(originOfSummon);
         // 1 hand
@@ -352,7 +352,7 @@ public class DuelView extends Menu {
     }
 
     public String getCardName() {
-        Output.getForNow();
+        Output.getInstance().cardName();
         return Input.getInputMessage();
     }
 
@@ -361,18 +361,18 @@ public class DuelView extends Menu {
     }
 
     public boolean wantsToExchange() {
-        Output.getForNow();
+        Output.getInstance().wantsToExchange();
         String input = Input.getInputMessage().toLowerCase();
         return input.matches("y(?:es)?");
     }
 
     public String[] cardsToExchange() {
-        Output.getForNow();
+        Output.getInstance().cardsToExchange();
         //card from side deck
-        //*
+        // *
         //card from main deck
         String input = Input.getInputMessage();
-        String[] names = input.split("\\*");
+        String[] names = input.split(" \\* ");
         return names;
     }
 }

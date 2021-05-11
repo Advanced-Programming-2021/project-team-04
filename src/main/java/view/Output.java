@@ -16,6 +16,125 @@ public class Output {
         return forNow;
     }
 
+    public void revealCard(String cardName) {
+        System.out.print("opponent’s monster card was " + cardName + " and ");
+    }
+
+    public void lostInDefense(int damage) {
+        System.out.println("no card is destroyed and you received " + damage + " battle damage");
+    }
+
+    public void drawInDefense() {
+        System.out.println("no card is destroyed");
+    }
+
+    public void wonInDefense() {
+        System.out.println("the defense position monster is destroyed");
+    }
+
+    public void lostInAttack(int damage) {
+        System.out.println("Your monster card is destroyed and you received " + damage + " battle damage");
+    }
+
+    public void drawInAttack() {
+        System.out.println("both you and your opponent monster cards are destroyed and no one receives damage");
+    }
+
+    public void wonAttackInAttack(int damage) {
+        System.out.println("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
+    }
+
+    public void cardsToExchange() {
+        System.out.println("enter the name of the cards you want to exchange:" +
+                "\n(card from side deck * card from main deck");
+    }
+
+    public void wantsToExchange() {
+        System.out.println("do you want to exchange a card with your side deck?");
+    }
+
+    public void cardName() {
+        System.out.println("enter a card name:");
+    }
+
+    public void whereToSummonFrom() {
+        System.out.println("where do you want to summon a card from?" +
+                "\n1: hand" +
+                "\n2: deck" +
+                "\n3: graveyard");
+    }
+
+    public void chooseSpell() {
+        System.out.println("enter the number of the spell you choose:");
+    }
+
+    public void killMessengerOfPeace() {
+        System.out.println("do you want to kill messenger of peace instead of paying 100 LP?");
+    }
+
+    public void barbaros() {
+        System.out.println("how do you want to summon this card?" +
+                "\n1: with 2 tributes" +
+                "\n2: with 0 tributes and ATK reduction" +
+                "\n3: with 3 tributes and destruction of all opponent cards");
+    }
+
+    public void gateGuardian() {
+        System.out.println("do you want to summon this card with three tributes?");
+    }
+
+    public void numOfCards() {
+        System.out.println("how many cards do you want to destroy?"); //TODO whats its range
+    }
+
+    public void summonMode() {
+        System.out.println("how do you want to summon this card (ordinary or special)?");
+    }
+
+    public void chooseFieldSpell() {
+        System.out.println("enter the number of the field spell you choose:");
+    }
+
+    public void isMine() {
+        System.out.println("do you want to choose from your own cards?");
+    }
+
+    public void chooseCard() {
+        System.out.println("enter the number of the card you choose:");
+    }
+
+    public void chooseMonsterMode() {
+        System.out.println("choose the monster mode (Attack or Defense):");
+    }
+
+    public void chooseTributes() {
+        System.out.println("enter the numbers of the card you want to tribute divided by a space:");
+    }
+
+    public void chooseMonster() {
+        System.out.println("enter the number of the monster you choose:");
+    }
+
+    public void chooseRitualCard() {
+        System.out.println("enter the number of the ritual card you choose:");
+    }
+
+    public void chooseTribute() {
+        System.out.println("enter the number of the card you want to tribute:");
+    }
+
+    public void chooseStarter() {
+        System.out.println("choose who should begin the game:");
+    }
+
+    public void pickRPS() {
+        System.out.println("choose rock or paper or scissors:");
+    }
+
+    public void wantToActivate(String cardName) {
+        System.out.println("do you want to activate " + cardName + "?");
+    }
+
     public void selectCardToAdd() {
         System.out.println("select a card to add to chain");
     }
@@ -307,6 +426,9 @@ public class Output {
         System.out.println("deck activated successfully");
     }
 
+    public void printImportExportMenuName() {
+        System.out.println("Import and Export Menu");
+    }
     public void printLoginMenuName() {
         System.out.println("Login Menu");
     }

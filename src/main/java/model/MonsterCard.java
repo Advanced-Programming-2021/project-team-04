@@ -1,11 +1,21 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 public class MonsterCard extends Card {
-    protected int classAttackPower, classDefensePower;
+    @Expose(serialize = true, deserialize = true)
+    protected int classAttackPower;
+    @Expose(serialize = true, deserialize = true)
+    protected int classDefensePower;
     protected int thisCardAttackPower, thisCardDefensePower;
+    @Expose(serialize = true, deserialize = true)
     protected int level;
+    @Expose(serialize = true, deserialize = true)
     protected String monsterType;
+    @Expose(serialize = true, deserialize = true)
     protected String cardType;
+    @Expose(serialize = true, deserialize = true)
+    protected String attribute;
     protected MonsterCardModeInField monsterCardModeInField;
     protected boolean canBeRemoved = true;
     protected boolean canAttack = true;

@@ -650,7 +650,6 @@ public class DuelController {
 
     public boolean handleMirageDragon(String name) {
         Duelist opponent;
-        //TODO what
         opponent = game.getCurrentPlayer().getUsername().equals(name) ? game.getTheOtherPlayer() : game.getCurrentPlayer();
         MonsterCard mirageDragon = opponent.hasMirageDragon();
         return mirageDragon != null && mirageDragon.getMonsterCardModeInField() != MonsterCardModeInField.DEFENSE_FACE_DOWN;
@@ -667,39 +666,46 @@ public class DuelController {
     }
 
     private void attackInDefense(MonsterCard attacked, MonsterCard attacker) {
+        if (attacked.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN)
+            Output.getInstance().revealCard(attacked.getName());
         if (attacked.getThisCardDefensePower() < attacker.getThisCardAttackPower()) {
             moveToGraveyardAfterAttack(attacked, attacker);
-            Output.getForNow(); //TODO get the card and check the shit
+            Output.getInstance().wonInDefense();
             return;
         }
         if (attacked.getThisCardDefensePower() == attacker.getThisCardAttackPower()) {
             attacked.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
-            Output.getForNow();
+            Output.getInstance().drawInDefense();
             return;
         }
-        game.getCurrentPlayer().changeLP(attacker.getThisCardAttackPower() - attacked.getThisCardDefensePower());
+        int damage = attacker.getThisCardAttackPower() - attacked.getThisCardDefensePower();
+        game.getCurrentPlayer().changeLP(damage);
         attacked.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
-        Output.getForNow();
+        Output.getInstance().lostInDefense(-damage);
     }
 
     private void attackInAttack(MonsterCard attacked, MonsterCard attacker) {
         if (attacked.getThisCardAttackPower() < attacker.getThisCardAttackPower()) {
             moveToGraveyardAfterAttack(attacked, attacker);
-            Output.getForNow();
-            if (!attacked.getName().equals("Exploder Dragon"))
-                game.getTheOtherPlayer().changeLP(attacked.getThisCardAttackPower() - attacker.getThisCardAttackPower());
+            if (!attacked.getName().equals("Exploder Dragon")) {
+                int damage = attacked.getThisCardAttackPower() - attacker.getThisCardAttackPower();
+                game.getTheOtherPlayer().changeLP(damage);
+                Output.getInstance().wonAttackInAttack(-damage);
+            }  else Output.getInstance().lostInAttack(0);
             return;
         }
         if (attacked.getThisCardAttackPower() == attacker.getThisCardAttackPower()) {
             moveToGraveyardAfterAttack(attacker, attacked);
             moveToGraveyardAfterAttack(attacked, attacker);
-            Output.getForNow();
+            Output.getInstance().drawInAttack();
             return;
         }
-        if (!attacker.getName().equals("Exploder Dragon"))
-            game.getCurrentPlayer().changeLP(attacker.getThisCardAttackPower() - attacked.getThisCardAttackPower());
+        if (!attacker.getName().equals("Exploder Dragon")) {
+            int damage = attacker.getThisCardAttackPower() - attacked.getThisCardAttackPower();
+            game.getCurrentPlayer().changeLP(damage);
+            Output.getInstance().lostInAttack(-damage);
+        } else Output.getInstance().lostInAttack(0);
         moveToGraveyardAfterAttack(attacker, attacked);
-        Output.getForNow();
     }
 
     private boolean isAttackValid(int opponentMonsterPositionNumber) {
