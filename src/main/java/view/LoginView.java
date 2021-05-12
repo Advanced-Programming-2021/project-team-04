@@ -49,7 +49,8 @@ public class LoginView extends Menu {
     }
 
     private void loginUser(Matcher matcher) {
-        LoginController.getInstance().loginUser(matcher.group("username"), matcher.group("password"));
+         if (LoginController.getInstance().loginUser(matcher.group("username"), matcher.group("password")))
+             MainView.getInstance().run();
     }
 
 }

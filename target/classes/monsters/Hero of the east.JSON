@@ -1,0 +1,11 @@
+{
+    "name": "Hero of the east",
+    "level": 3,
+    "attribute": "EARTH",
+    "monsterType": "Warrior",
+    "cardType": "Normal",
+    "classAttackPower": 1100,
+    "classDefensePower": 1000,
+    "price": 1700,
+    "description": "Feel da strength ah dis sword-swinging samurai from da Far East."
+}

@@ -1,0 +1,8 @@
+{
+    "name": "Pot of Greed",
+    "isSpell": true,
+    "property": "Normal",
+    "isLimited": true,
+    "price": 2500,
+    "description": "Draw 2 cards."
+}

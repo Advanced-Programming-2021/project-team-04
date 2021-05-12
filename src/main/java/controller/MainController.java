@@ -24,12 +24,12 @@ public class MainController {
         return singleInstance;
     }
 
-    public void newDuel(String username, int rounds) {
+    public boolean newDuel(String username, int rounds) {
         if (errorForNewGame(username, rounds)) {
             new Game(loggedIn, Account.getAccountByUsername(username), rounds, false);
-            DuelView.getInstance().runForRPS();
-            DuelView.getInstance().run();
+            return true;
         }
+        return false;
     }
 
     private boolean errorForNewGame(String username, int rounds) {

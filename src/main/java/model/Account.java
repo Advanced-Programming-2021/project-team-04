@@ -24,6 +24,8 @@ public class Account extends Duelist {
         this.password = password;
         this.nickname = nickname;
         allAccounts.add(this);
+        allUsernames.add(username);
+        allNicknames.add(nickname);
     }
 
     public static void setAllAccounts(ArrayList<Account> allAccounts) {

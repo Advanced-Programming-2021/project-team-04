@@ -31,7 +31,7 @@ private static ScoreboardController singleInstance = null;
             }
             previousScore = account.getScore();
         }
-        Output.getForNow();
+        Output.getInstance().printString(sorted);
     }
 
     private void sortedAccounts() {

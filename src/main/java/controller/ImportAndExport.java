@@ -22,7 +22,7 @@ public class ImportAndExport {
 
     public void importCard(String cardName, String type) {
         if (type.equals("monster")) readMonsterCard("src/main/resources/importandexport/" + cardName + ".JSON");
-        else readSpellAndTrapCard("src/main/resources/importandexport/" + cardName + ".JSON")
+        else readSpellAndTrapCard("src/main/resources/importandexport/" + cardName + ".JSON"); //TODO abbas
     }
 
     public void exportCard(String cardName) {
