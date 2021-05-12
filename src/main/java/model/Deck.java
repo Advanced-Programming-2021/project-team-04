@@ -1,10 +1,15 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.ArrayList;
 
 public class Deck {
+    @Expose(serialize = true, deserialize = true)
     private ArrayList<Card> mainDeck = new ArrayList<>();
+    @Expose(serialize = true, deserialize = true)
     private ArrayList<Card> sideDeck = new ArrayList<>();
+    @Expose(serialize = true, deserialize = true)
     private String deckName;
     private boolean isMainDeckFull, isSideDeckFull;
 

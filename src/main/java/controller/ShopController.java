@@ -35,6 +35,10 @@ public class ShopController {
         Output.getInstance().printString(toPrint);
     }
 
+    public static ArrayList<Card> getAllCards() {
+        return allCards;
+    }
+
     public boolean isCardNameValid(String name) {
         String cardName = null;
         for (Card card : allCards)
@@ -109,7 +113,7 @@ public class ShopController {
                     if (monsterCard != null)
                         MainController.getInstance().getLoggedIn().addCard(monsterCard);
                     else {
-                        SpellAndTrapCard spellAndTrapCard = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/monsters/" + cardName + ".JSON");
+                        SpellAndTrapCard spellAndTrapCard = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/" + cardName + ".JSON");
                         MainController.getInstance().getLoggedIn().addCard(spellAndTrapCard);
                     }
                 }

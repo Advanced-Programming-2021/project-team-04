@@ -383,7 +383,7 @@ public class Output {
     }
 
     public void tooManyCards(String deckName, String cardName) {
-        System.out.println("there are already three cards with name " + cardName + " in deck " + deckName);
+        System.out.println("there are already too many cards with name " + cardName + " in deck " + deckName);
     }
 
     public void sideDeckIsFull() {

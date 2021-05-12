@@ -1,15 +1,21 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import controller.DuelController;
 
 import java.util.ArrayList;
 
 public abstract class Duelist {
 
+    @Expose(serialize = true, deserialize = true)
     protected ArrayList<Deck> allDecks = new ArrayList<Deck>();
+    @Expose(serialize = true, deserialize = true)
     protected ArrayList<Card> allCards = new ArrayList<Card>();
     protected Deck activeDeck;
-    protected String username, nickname;
+    @Expose(serialize = true, deserialize = true)
+    protected String username;
+    @Expose(serialize = true, deserialize = true)
+    protected String nickname;
     protected Field field;
     protected int LP, countForRPS;
     protected int maxLPofThreeRounds;

@@ -46,11 +46,11 @@ public class MainController {
             Output.getInstance().noActiveDeck(player2.getUsername());
             return false;
         }
-        if (loggedIn.getActiveDeck().isDeckValid()) {
+        if (!loggedIn.getActiveDeck().isDeckValid()) {
             Output.getInstance().invalidDeck(loggedIn.getUsername());
             return false;
         }
-        if (player2.getActiveDeck().isDeckValid()) {
+        if (!player2.getActiveDeck().isDeckValid()) {
             Output.getInstance().invalidDeck(player2.getUsername());
             return false;
         }
