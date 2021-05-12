@@ -385,7 +385,7 @@ public class DuelController {
                 return;
             }
         }
-        if (!isSummonValid()) return;
+        if (!game.isAI() && !isSummonValid()) return;
         if (solemnWarning((MonsterCard) game.getSelectedCard())) {
             game.setSelectedCard(null);
             return;
@@ -612,7 +612,7 @@ public class DuelController {
     }
 
     public void attack(int opponentMonsterPositionNumber) {
-        if (!isAttackValid(opponentMonsterPositionNumber)) return;
+        if (!game.isAI() && !isAttackValid(opponentMonsterPositionNumber)) return;
         if (negateAttack()) {
             nextPhase();
             return;
