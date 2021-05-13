@@ -110,4 +110,43 @@ public class DeckTest {
         DeckController.getInstance().addCardToDeck("Sleeping Beauty Syndrome", "Mind Crush", true);
         Assertions.assertEquals("there are already too many cards with name Mind Crush in deck Sleeping Beauty Syndrome\r\n", outputStream.toString());
     }
+
+    @Test
+    public void removeCardTest() {
+        ShopController.getInstance().buyCard("Slot Machine");
+        DeckController.getInstance().createDeck("Virkelighetens Etterklang");
+        Deck deck = thisAccount.getDeckByName("Virkelighetens Etterklang");
+        Card card = Card.getCardByName("Slot Machine");
+        deck.getMainDeck().add(card);
+        DeckController.getInstance().removeCardFromDeck("Virkelighetens Etterklang", "Slot Machine", true);
+        Assertions.assertFalse(deck.getMainDeck().contains(card));
+    }
+
+    @Test
+    public void deckDoesntExistTest() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DeckController.getInstance().removeCardFromDeck("Virkelighetens Etterklang", "Slot Machine", true);
+        Assertions.assertEquals("deck with name Virkelighetens Etterklang does not exist\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void cardDoesntExistInMainTest() {
+        DeckController.getInstance().createDeck("The Last Shadow Puppets");
+        thisAccount.getDeckByName("The Last Shadow Puppets");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DeckController.getInstance().removeCardFromDeck("The Last Shadow Puppets", "Slot Machine", true);
+        Assertions.assertEquals("card with name Slot Machine does not exist in main deck\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void cardDoesntExistInSideTest() {
+        DeckController.getInstance().createDeck("Woods of Ypres");
+        thisAccount.getDeckByName("Woods of Ypres");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DeckController.getInstance().removeCardFromDeck("Woods of Ypres", "Slot Machine", false);
+        Assertions.assertEquals("card with name Slot Machine does not exist in side deck\r\n", outputStream.toString());
+    }
 }
