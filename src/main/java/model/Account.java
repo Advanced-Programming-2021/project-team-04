@@ -33,6 +33,12 @@ public class Account extends Duelist {
         allNicknames.add(nickname);
     }
 
+    public static void addAccount(Account account) {
+        allAccounts.add(account);
+        allUsernames.add(account.getUsername());
+        allNicknames.add(account.getNickname());
+    }
+
     public static void setAllAccounts(ArrayList<Account> allAccounts) {
         Account.allAccounts = allAccounts;
     }
@@ -103,6 +109,12 @@ public class Account extends Duelist {
 
     public boolean hasEnoughMoney(int price) {
         return this.money >= price;
+    }
+
+    public static void removeAccount(Account account) {
+        allAccounts.remove(account);
+        allNicknames.remove(account.getNickname());
+        allUsernames.remove(account.getUsername());
     }
 
 

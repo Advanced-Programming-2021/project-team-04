@@ -6,10 +6,14 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 public class ScoreBoardTest {
     @BeforeAll
     public static void createUsers() {
+        ArrayList<Account> allAccounts = new ArrayList<>(Account.getAllAccounts());
+        for (Account account : allAccounts)
+            Account.removeAccount(account);
         Account first = new Account("Adelard Dekker", "Priest", "Jesus Christ");
         first.setScore(37);
         Account second = new Account("Agnes Montague", "Red Hair", "Crush Material");

@@ -82,7 +82,8 @@ public class SpellAndTrapCard extends Card {
 
     public void reset() {
         hasBeenUsedInThisTurn = false;
-        isActive = false;
+        if (Owner.getField().getGraveyard().contains(this))
+            isActive = false;
     }
 
     public int getSpeed() {

@@ -20,11 +20,13 @@ public class ProfileTest {
     public void changeNicknameTest() {
         ProfileController.getInstance().changeNickname("yag");
         Assertions.assertEquals(thisAccount.getNickname(), "yag");
+        ProfileController.getInstance().changeNickname("Erard Ke");
     }
     @Test
     public void changePasswordTest() {
         ProfileController.getInstance().changePassword("bean$le", "beanLee");
         Assertions.assertEquals(thisAccount.getPassword(), "beanLee");
+        ProfileController.getInstance().changePassword( "beanLee","bean$le");
     }
     @Test
     public void invalidCurrentPasswordTest() {
