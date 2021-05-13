@@ -82,8 +82,11 @@ public class MainView extends Menu {
     }
 
     private void newDuel(Matcher matcher) {
-        MainController.getInstance().newDuel(matcher.group("secondPlayerUsername"),
-                Integer.parseInt(matcher.group("roundsNumber")));
+        if (MainController.getInstance().newDuel(matcher.group("secondPlayerUsername"),
+                Integer.parseInt(matcher.group("roundsNumber")))) {
+            DuelView.getInstance().runForRPS();
+            DuelView.getInstance().run();
+        }
     }
 
     private void newDuelAI() {

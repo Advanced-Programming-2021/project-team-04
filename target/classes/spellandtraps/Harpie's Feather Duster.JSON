@@ -1,0 +1,8 @@
+{
+    "name": "Harpie's Feather Duster",
+    "isSpell": true,
+    "property": "Normal",
+    "isLimited": false,
+    "price": 2500,
+    "description": "Destroy all Spells and Traps your opponent controls."
+}

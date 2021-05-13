@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import controller.DuelController;
 
 import java.util.ArrayList;
@@ -16,14 +17,20 @@ public class Account extends Duelist {
         allUsernames = new ArrayList<>();
     }
 
+    @Expose(serialize = true, deserialize = true)
     private String password;
-    private int score, money = 100000;
+    @Expose(serialize = true, deserialize = true)
+    private int score;
+    @Expose(serialize = true, deserialize = true)
+    private int money = 100000;
 
     public Account(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         allAccounts.add(this);
+        allUsernames.add(username);
+        allNicknames.add(nickname);
     }
 
     public static void setAllAccounts(ArrayList<Account> allAccounts) {

@@ -13,18 +13,20 @@ public class LoginController {
         return singleInstance;
     }
 
-    public void loginUser(String username, String password) {
+    public boolean loginUser(String username, String password) {
         if (isLoggingInValid(username, password)) {
             MainController.getInstance().setLoggedIn(Account.getAccountByUsername(username));
             Output.getInstance().loggedIn();
-            MainView.getInstance().run();
+            return true;
         }
+        return false;
     }
 
     public void createUser(String username, String password, String nickname) {
-        if (errorsForCreatingUser(username, nickname))
+        if (errorsForCreatingUser(username, nickname)) {
             new Account(username, password, nickname);
-        Output.getInstance().userCreated();
+            Output.getInstance().userCreated();
+        }
     }
 
     private boolean errorsForCreatingUser(String username, String nickname) {

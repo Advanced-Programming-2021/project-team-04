@@ -1,4 +1,5 @@
 package controller;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.Account;
@@ -11,18 +12,37 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.channels.AcceptPendingException;
+import java.util.ArrayList;
 
 public class ImportAndExport {
     private static ImportAndExport singleInstance = null;
+
     public static ImportAndExport getInstance() {
         if (singleInstance == null)
             singleInstance = new ImportAndExport();
         return singleInstance;
     }
 
+    public void writeAllUsers() {
+        ArrayList<Account> allAccounts = Account.getAllAccounts();
+        for (Account account : allAccounts)
+            writeToJson("src/main/resources/users/" + account.getUsername() + ".JSON", account);
+    }
+
+    public void readAllUsers() {
+        //TODO how to read all of the files
+    }
+
     public void importCard(String cardName, String type) {
-        if (type.equals("monster")) readMonsterCard("src/main/resources/importandexport/" + cardName + ".JSON");
-        else readSpellAndTrapCard("src/main/resources/importandexport/" + cardName + ".JSON")
+        if (type.equals("monster")) {
+            MonsterCard monsterCard = readMonsterCard("src/main/resources/importandexport/" + cardName + ".JSON");
+            monsterCard.reset();
+            ShopController.getAllCards().add(monsterCard);
+        } else {
+            SpellAndTrapCard spellAndTrapCard = readSpellAndTrapCard("src/main/resources/importandexport/" + cardName + ".JSON");
+            spellAndTrapCard.reset();
+            ShopController.getAllCards().add(spellAndTrapCard);
+        }
     }
 
     public void exportCard(String cardName) {
@@ -36,11 +56,11 @@ public class ImportAndExport {
             Gson gson = gsonBuilder.create();
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             return gson.fromJson(bufferedReader, MonsterCard.class);
-        }
-        catch (Exception FileNotFoundException) {
+        } catch (Exception FileNotFoundException) {
             return null;
         }
     }
+
     public SpellAndTrapCard readSpellAndTrapCard(String address) {
         try {
             FileReader fileReader = new FileReader(address);
@@ -48,8 +68,7 @@ public class ImportAndExport {
             Gson gson = gsonBuilder.create();
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             return gson.fromJson(bufferedReader, SpellAndTrapCard.class);
-        }
-        catch (Exception FileNotFoundException) {
+        } catch (Exception FileNotFoundException) {
             return null;
         }
     }

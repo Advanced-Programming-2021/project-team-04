@@ -12,7 +12,6 @@ import java.util.Comparator;
 public class ShopController {
     private static ShopController singleInstance = null;
     private static ArrayList<Card> allCards;
-    private final Account thisPlayer = MainController.getInstance().getLoggedIn();
 
     static {
         allCards = new ArrayList<>();
@@ -36,79 +35,90 @@ public class ShopController {
         Output.getInstance().printString(toPrint);
     }
 
+    public static ArrayList<Card> getAllCards() {
+        return allCards;
+    }
+
     public boolean isCardNameValid(String name) {
         String cardName = null;
         for (Card card : allCards)
             if (card.getName().equals(name)) {
-                cardName = name;
-                break;
+                return true;
             }
-        return cardName != null;
+        Output.getInstance().printInvalidCardName();
+        return false;
+    }
+
+    private boolean hasEnoughMoney(String cardName) {
+       if (!MainController.getInstance().getLoggedIn().hasEnoughMoney(Card.getCardByName(cardName).getPrice())) {
+           Output.getInstance().printDoesntHaveEnoughMoney();
+           return false;
+       }
+       return true;
     }
 
     public void buyCard(String cardName) {
-        if (isCardNameValid(cardName) &&
-                thisPlayer.hasEnoughMoney(Card.getCardByName(cardName).getPrice())) {
+        if (isCardNameValid(cardName) && hasEnoughMoney(cardName)) {
             switch (cardName) {
                 case "Change of Heart": {
-                    thisPlayer.addCard(new ChangeOfHeart());
+                    MainController.getInstance().getLoggedIn().addCard(new ChangeOfHeart());
                     break;
                 }
                 case "Command Knight": {
-                    thisPlayer.addCard(new CommandKnight());
+                    MainController.getInstance().getLoggedIn().addCard(new CommandKnight());
                     break;
                 }
                 case "Man-Eater Bug": {
-                    thisPlayer.addCard(new ManEaterBug());
+                    MainController.getInstance().getLoggedIn().addCard(new ManEaterBug());
                     break;
                 }
                 case "Messenger of peace": {
-                    thisPlayer.addCard(new MessengerOfPeace());
+                    MainController.getInstance().getLoggedIn().addCard(new MessengerOfPeace());
                     break;
                 }
                 case "Scanner": {
-                    thisPlayer.addCard(new Scanner());
+                    MainController.getInstance().getLoggedIn().addCard(new Scanner());
                     break;
                 }
                 case "Suijin": {
-                    thisPlayer.addCard(new Suijin());
+                    MainController.getInstance().getLoggedIn().addCard(new Suijin());
                     break;
                 }
                 case "The Calculator": {
-                    thisPlayer.addCard(new TheCalculator());
+                    MainController.getInstance().getLoggedIn().addCard(new TheCalculator());
                     break;
                 }
                 case "Swords of Revealing Light": {
-                    thisPlayer.addCard(new SwordsOfRevealingLight());
+                    MainController.getInstance().getLoggedIn().addCard(new SwordsOfRevealingLight());
                     break;
                 }
                 case "United We Stand": {
-                    thisPlayer.addCard(new UnitedWeStand());
+                    MainController.getInstance().getLoggedIn().addCard(new UnitedWeStand());
                     break;
                 }
                 case "Sword of dark destruction": {
-                    thisPlayer.addCard(new SwordOfDarkDestruction());
+                    MainController.getInstance().getLoggedIn().addCard(new SwordOfDarkDestruction());
                     break;
                 }
                 case "Magnum Shield": {
-                    thisPlayer.addCard(new MagnumShield());
+                    MainController.getInstance().getLoggedIn().addCard(new MagnumShield());
                     break;
                 }
                 case "Black Pendant": {
-                    thisPlayer.addCard(new BlackPendant());
+                    MainController.getInstance().getLoggedIn().addCard(new BlackPendant());
                     break;
                 }
                 default: {
                     MonsterCard monsterCard = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/" + cardName + ".JSON");
                     if (monsterCard != null)
-                        thisPlayer.addCard(monsterCard);
+                        MainController.getInstance().getLoggedIn().addCard(monsterCard);
                     else {
-                        SpellAndTrapCard spellAndTrapCard = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/monsters/" + cardName + ".JSON");
-                        thisPlayer.addCard(spellAndTrapCard);
+                        SpellAndTrapCard spellAndTrapCard = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/" + cardName + ".JSON");
+                        MainController.getInstance().getLoggedIn().addCard(spellAndTrapCard);
                     }
                 }
             }
-            thisPlayer.setMoney(thisPlayer.getMoney() - Card.getCardByName(cardName).getPrice());
+            MainController.getInstance().getLoggedIn().setMoney(MainController.getInstance().getLoggedIn().getMoney() - Card.getCardByName(cardName).getPrice());
         }
     }
 
@@ -148,12 +158,15 @@ public class ShopController {
         MonsterCard texChanger = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Texchanger.JSON");
         texChanger.reset();
         allCards.add(texChanger);
-        MonsterCard alexandriteDragon = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Alexandrite Dragon.JSON");
-        alexandriteDragon.reset();
-        allCards.add(alexandriteDragon);
+        MonsterCard bitron = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Bitron.JSON");
+        bitron.reset();
+        allCards.add(bitron);
         MonsterCard axeRaider = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Axe Raider.JSON");
         axeRaider.reset();
         allCards.add(axeRaider);
+        MonsterCard alexandriteDragon = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Alexandrite Dragon.JSON");
+        alexandriteDragon.reset();
+        allCards.add(alexandriteDragon);
         MonsterCard babyDragon = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Baby dragon.JSON");
         babyDragon.reset();
         allCards.add(babyDragon);
@@ -166,9 +179,6 @@ public class ShopController {
         MonsterCard beastKingBarbaros = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Beast King Barbaros.JSON");
         beastKingBarbaros.reset();
         allCards.add(beastKingBarbaros);
-        MonsterCard bitron = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Bitron.JSON");
-        bitron.reset();
-        allCards.add(bitron);
         MonsterCard blueEyesWhiteDragon = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Blue-Eyes white dragon.JSON");
         blueEyesWhiteDragon.reset();
         allCards.add(blueEyesWhiteDragon);

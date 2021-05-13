@@ -11,7 +11,7 @@ public class Field {
     private ArrayList<MonsterCard> monsterCards = new ArrayList<>();
     private ArrayList<Card> hand = new ArrayList<>();
     private SpellAndTrapCard fieldZone;
-    private ArrayList<Card> sideDeck;
+    private ArrayList<Card> sideDeck = new ArrayList<>();
 
     public Field(Deck deck) {
         deckZone.addAll(deck.getMainDeck());

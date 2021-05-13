@@ -187,7 +187,7 @@ public class DeckController {
     }
 
     private boolean errorsForRemoving(String deckName, String cardName, boolean isMainDeck) {
-        if (!thisPlayer.getAllDecks().contains(thisPlayer.getDeckByName(deckName))) {
+        if (thisPlayer.getDeckByName(deckName) == null) {
             Output.getInstance().deckDoesntExist(deckName);
             return false;
         } else if (isMainDeck && !thisPlayer.getDeckByName(deckName).mainDeckHasCard(cardName)) {
