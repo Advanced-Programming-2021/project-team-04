@@ -8,6 +8,7 @@ import model.Deck;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import view.Output;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -49,6 +50,15 @@ public class DeckTest {
         DeckController.getInstance().activateDeck("Despair");
         Assertions.assertNotNull(thisAccount.getActiveDeck());
         thisAccount.setActiveDeck(null);
+    }
+
+    @Test
+    public void addCardTest() {
+        DeckController.getInstance().createDeck("Speck of Dust");
+        ShopController.getInstance().buyCard("Mind Crush");
+        Card card = thisAccount.getAllCards().get(thisAccount.getAllCards().size() - 1);
+        DeckController.getInstance().addCardToDeck("Speck of Dust", "Mind Crush", true);
+        Assertions.assertTrue(thisAccount.getDeckByName("Speck of Dust").getMainDeck().contains(card));
     }
 
     @Test
@@ -149,5 +159,49 @@ public class DeckTest {
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().removeCardFromDeck("Woods of Ypres", "Slot Machine", false);
         Assertions.assertEquals("card with name Slot Machine does not exist in side deck\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void printDeckTest() {
+        DeckController.getInstance().createDeck("Woods of Ypres");
+        thisAccount.getDeckByName("Woods of Ypres");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DeckController.getInstance().printDeck("Woods of Ypres", true);
+        Assertions.assertEquals("Deck: Woods of Ypres\n" +
+                "Main deck:\n" +
+                "Monsters:\n" +
+                "Spell and Traps\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void printAllDecksTest() {
+        DeckController.getInstance().createDeck("Fragile Dreams");
+        DeckController.getInstance().createDeck("Reverie");
+        DeckController.getInstance().createDeck("There Is A Light That Never Goes Out");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DeckController.getInstance().printAllDecks();
+        Assertions.assertEquals("Decks:\n" +
+                "Active deck:\n" +
+                "Other decks: \n" +
+                "Fragile Dreams: main deck 0, side deck 0, invalid\n" +
+                "Reverie: main deck 0, side deck 0, invalid\n" +
+                "There Is A Light That Never Goes Out: main deck 0, side deck 0, invalid\r\n", outputStream.toString());
+
+    }
+
+    @Test
+    public void printAllCardsTest() {
+        Account bloodOrange = new Account("Champagne Coast", "Cold Green Wlatz", "tamino");
+        MainController.getInstance().setLoggedIn(bloodOrange);
+        ShopController.getInstance().buyCard("Curtain of the dark ones");
+        ShopController.getInstance().buyCard("Harpie's Feather Duster");
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DeckController.getInstance().printAllCards();
+        Assertions.assertEquals("Curtain of the dark ones:A curtain that a spellcaster made, it is said to raise a dark power.\n" +
+                "Harpie's Feather Duster:Destroy all Spells and Traps your opponent controls\r\n", outputStream.toString());
+        MainController.getInstance().setLoggedIn(thisAccount);
     }
 }

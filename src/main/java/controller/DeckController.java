@@ -81,7 +81,7 @@ public class DeckController {
                         deck.getSideDeck().size() + ", " + isValid + "\n";
             }
         }
-        toPrint = toPrint.substring(0, toPrint.length() - 2);
+        toPrint = toPrint.substring(0, toPrint.length() - 1);
         Output.getInstance().printString(toPrint);
     }
 
@@ -159,7 +159,7 @@ public class DeckController {
     }
 
     private boolean errorForDeletingOrActivating(String deckName) {
-        if (thisPlayer.getDeckByName(deckName) == null) {
+        if (!thisPlayer.hasDeck(deckName)) {
             Output.getInstance().deckDoesntExist(deckName);
             return false;
         }

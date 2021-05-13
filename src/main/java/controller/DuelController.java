@@ -148,14 +148,14 @@ public class DuelController {
     }
 
     private void handleField(Field field, Field opponentField) {
-        if (field.getFieldZone().getName().equals("Umiiruka") ||
-                opponentField.getFieldZone().getName().equals("Umiiruka")) umiiruka();
-        if (field.getFieldZone().getName().equals("Forest") ||
-                opponentField.getFieldZone().getName().equals("Forest")) forest();
-        if (field.getFieldZone().getName().equals("Closed Forest") ||
-                opponentField.getFieldZone().getName().equals("Closed Forest")) closedForest();
-        if (field.getFieldZone().getName().equals("Yami") ||
-                opponentField.getFieldZone().getName().equals("Yami")) yami();
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().equals("Umiiruka")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().equals("Umiiruka"))) umiiruka();
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().equals("Forest")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().equals("Forest"))) forest();
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().equals("Closed Forest")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().equals("Closed Forest"))) closedForest();
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().equals("Yami")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().equals("Yami"))) yami();
     }
 
     private void handleMessengerOfPeace() {

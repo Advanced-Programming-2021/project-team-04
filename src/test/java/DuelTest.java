@@ -5,8 +5,11 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import javax.swing.*;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.PrintStream;
 
 public class DuelTest {
     static Account thisPlayer = new Account("Bad Decisions", "The Strokes", "Why Do I Exist");
@@ -58,4 +61,57 @@ public class DuelTest {
         thisPlayer.getField().getTrapAndSpell().remove(card);
         card.setOwner(null);
     }
+
+    @Test
+    public void selectErrorsHandTest() {
+        int number = thisPlayer.getField().getHand().size() + 1;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().selectCard(true, CardStatusInField.HAND, number);
+        Assertions.assertEquals("invalid selection\r\n",outputStream.toString());
+    }
+
+    @Test
+    public void selectErrorsMonsterTest() {
+        int number = thisPlayer.getField().getMonsterCards().size() + 1;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().selectCard(true, CardStatusInField.MONSTER_FIELD, number);
+        Assertions.assertEquals("invalid selection\r\n",outputStream.toString());
+    }
+
+    @Test
+    public void selectErrorsSpellTest() {
+        int number = thisPlayer.getField().getTrapAndSpell().size() + 1;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().selectCard(true, CardStatusInField.SPELL_FIELD, number);
+        Assertions.assertEquals("invalid selection\r\n",outputStream.toString());
+    }
+
+    @Test
+    public void selectErrorsField() {
+        thisPlayer.getField().setFieldZone(null);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().selectCard(true, CardStatusInField.FIELD_ZONE, 0);
+        Assertions.assertEquals("no card found in the given position\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void selectTest() {
+        DuelController.getInstance().selectCard(true, CardStatusInField.HAND, 0);
+        Assertions.assertEquals(DuelController.getInstance().getGame().getSelectedCard(), card);
+        DuelController.getInstance().deselectCard();
+        Assertions.assertNull(DuelController.getInstance().getGame().getSelectedCard());
+    }
+
+    @Test
+    public void nextPhaseTest() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.DRAW_PHASE);
+        DuelController.getInstance().nextPhase();
+        Assertions.assertEquals(Phases.STANDBY_PHASE, DuelController.getInstance().getGame().getCurrentPhase());
+    }
+
+
 }
