@@ -33,6 +33,12 @@ public class Account extends Duelist {
         allNicknames.add(nickname);
     }
 
+    public static void addAccount(Account account) {
+        allAccounts.add(account);
+        allUsernames.add(account.getUsername());
+        allNicknames.add(account.getNickname());
+    }
+
     public static void setAllAccounts(ArrayList<Account> allAccounts) {
         Account.allAccounts = allAccounts;
     }

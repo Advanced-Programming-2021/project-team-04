@@ -7,10 +7,7 @@ import model.Card;
 import model.MonsterCard;
 import model.SpellAndTrapCard;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.channels.AcceptPendingException;
 import java.util.ArrayList;
 
@@ -30,7 +27,9 @@ public class ImportAndExport {
     }
 
     public void readAllUsers() {
-        //TODO how to read all of the files
+        File folder = new File("src/main/resources/users");
+        for (File file : folder.listFiles())
+            Account.addAccount(readAccount("src/main/resources/users/" + file.getName()));
     }
 
     public void importCard(String cardName, String type) {
@@ -47,6 +46,18 @@ public class ImportAndExport {
 
     public void exportCard(String cardName) {
         writeToJson("src/main/resources/importandexport/" + cardName + ".JSON", Card.getCardByName(cardName));
+    }
+
+    public Account readAccount(String address) {
+        try {
+            FileReader fileReader = new FileReader(address);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            return gson.fromJson(bufferedReader, Account.class);
+        } catch (Exception FileNotFoundException) {
+            return null;
+        }
     }
 
     public MonsterCard readMonsterCard(String address) {
@@ -82,17 +93,6 @@ public class ImportAndExport {
             fileWriter.write(gson.toJson(object));
             fileWriter.close();
         } catch (IOException ignored) {
-        }
-    }
-
-    public Account readAccount(String fileAddress) {
-        try (FileReader fileReader = new FileReader(fileAddress)) {
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            return gson.fromJson(bufferedReader, Account.class);
-        } catch (IOException e) {
-            return null;
         }
     }
 }
