@@ -175,7 +175,8 @@ public class Field {
         allCards.addAll(trapAndSpell);
         allCards.add(fieldZone);
         for (Card card : allCards)
-            card.reset();
+            if (card != null)
+                card.reset();
 
     }
 

@@ -48,6 +48,7 @@ public class DeckTest {
         DeckController.getInstance().createDeck("Despair");
         DeckController.getInstance().activateDeck("Despair");
         Assertions.assertNotNull(thisAccount.getActiveDeck());
+        thisAccount.setActiveDeck(null);
     }
 
     @Test
@@ -99,16 +100,16 @@ public class DeckTest {
     @Test
     public void repeatedCardsTest() {
         ShopController.getInstance().buyCard("Mind Crush");
-        DeckController.getInstance().createDeck("Sleeping Beauty Syndrome");
-        Deck deck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
+        DeckController.getInstance().createDeck("Save Me");
+        Deck deck = thisAccount.getDeckByName("Save Me");
         Card card = Card.getCardByName("Mind Crush");
         deck.getMainDeck().add(card);
         deck.getMainDeck().add(card);
         deck.getMainDeck().add(card);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        DeckController.getInstance().addCardToDeck("Sleeping Beauty Syndrome", "Mind Crush", true);
-        Assertions.assertEquals("there are already too many cards with name Mind Crush in deck Sleeping Beauty Syndrome\r\n", outputStream.toString());
+        DeckController.getInstance().addCardToDeck("Save Me", "Mind Crush", true);
+        Assertions.assertEquals("there are already too many cards with name Mind Crush in deck Save Me\r\n", outputStream.toString());
     }
 
     @Test

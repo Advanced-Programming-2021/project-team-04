@@ -77,6 +77,7 @@ public class MainView extends Menu {
     }
 
     private void logout() {
+        MainController.getInstance().setLoggedIn(null);
         Output.getInstance().printUserLoggedOut();
         continueLoop = false;
     }

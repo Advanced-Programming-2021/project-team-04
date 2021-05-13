@@ -59,7 +59,7 @@ public class DuelController {
         this.game = game;
     }
 
-    private void drawPhase() {
+    public void drawPhase() {
         Output.getInstance().printPhase("draw phase");
         if (!game.getCurrentPlayer().canDraw()) {
             game.getCurrentPlayer().setCanDraw(true);
@@ -250,7 +250,7 @@ public class DuelController {
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
-    private void battlePhase() {
+    public void battlePhase() {
         if (!game.getCurrentPlayer().canPlayerAttack()) {
             game.getCurrentPlayer().setCanPlayerAttack(true);
             nextPhase();
@@ -263,7 +263,7 @@ public class DuelController {
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
-    private void endPhase() {
+    public void endPhase() {
         Output.getInstance().printPhase("end phase");
         reset();
         handleSwordOfRevealingLight();
@@ -860,9 +860,9 @@ public class DuelController {
     }
 
     private void moveSpellOrTrapToGYFromSpellZone(SpellAndTrapCard spellAndTrapCard) {
-        spellAndTrapCard.reset();
         game.getCurrentPlayer().getField().getTrapAndSpell().remove(spellAndTrapCard);
         game.getCurrentPlayer().getField().getGraveyard().add(spellAndTrapCard);
+        spellAndTrapCard.reset();
     }
 
     private void moveSpellOrTrapToGYFromFieldZone(SpellAndTrapCard spellAndTrapCard) {

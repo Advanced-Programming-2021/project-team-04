@@ -38,6 +38,7 @@ public class MainTest {
         thisAccount.setActiveDeck(deck);
         MainController.getInstance().newDuel("Jan Kilbride", 1);
         Assertions.assertEquals(someoneElse.getUsername() + " has no active deck\r\n", outputStream.toString());
+        thisAccount.setActiveDeck(null);
     }
     @Test
     public void invalidDeckTestForThisUser() {
@@ -47,6 +48,8 @@ public class MainTest {
         someoneElse.setActiveDeck(new Deck("no happy ending"));
         MainController.getInstance().newDuel("Jan Kilbride", 3);
         Assertions.assertEquals("Gerard Keay’s deck is invalid\r\n", outputStream.toString());
+        thisAccount.setActiveDeck(null);
+        someoneElse.setActiveDeck(null);
     }
     @Test
     public void invalidDeckTestForTheOtherPlayer() {
@@ -59,6 +62,8 @@ public class MainTest {
         someoneElse.setActiveDeck(new Deck("no happy ending"));
         MainController.getInstance().newDuel("Jan Kilbride", 3);
         Assertions.assertEquals("Jan Kilbride’s deck is invalid\r\n", outputStream.toString());
+        thisAccount.setActiveDeck(null);
+        someoneElse.setActiveDeck(null);
     }
     @Test
     public void invalidRoundTest() {
@@ -71,6 +76,8 @@ public class MainTest {
         someoneElse.setActiveDeck(deck);
         MainController.getInstance().newDuel("Jan Kilbride", 4);
         Assertions.assertEquals("number of rounds is not supported\r\n", outputStream.toString());
+        thisAccount.setActiveDeck(null);
+        someoneElse.setActiveDeck(null);
     }
     @Test
     public void cheatIncreaseMoneyTest() {

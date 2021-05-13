@@ -111,6 +111,12 @@ public class Account extends Duelist {
         return this.money >= price;
     }
 
+    public static void removeAccount(Account account) {
+        allAccounts.remove(account);
+        allNicknames.remove(account.getNickname());
+        allUsernames.remove(account.getUsername());
+    }
+
 
 
     public static Account getAccountByUsername(String username) {
