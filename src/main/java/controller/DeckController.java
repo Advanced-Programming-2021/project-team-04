@@ -12,7 +12,6 @@ import java.util.Comparator;
 
 public class DeckController {
     private static DeckController singleInstance = null;
-    private Account thisPlayer = MainController.getInstance().getLoggedIn();
 
     public static DeckController getInstance() {
         if (singleInstance == null)
@@ -29,6 +28,7 @@ public class DeckController {
     }
 
     public void deleteDeck(String deckName) {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorForDeletingOrActivating(deckName)) {
             Output.getInstance().deckDeleted();
             if (thisPlayer.getDeckByName(deckName).equals(thisPlayer.getActiveDeck())) thisPlayer.setActiveDeck(null);
@@ -37,6 +37,7 @@ public class DeckController {
     }
 
     public void activateDeck(String deckName) {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorForDeletingOrActivating(deckName)) {
             thisPlayer.setActiveDeck(thisPlayer.getDeckByName(deckName));
             Output.getInstance().deckActivated();
@@ -44,6 +45,7 @@ public class DeckController {
     }
 
     public void addCardToDeck(String deckName, String cardName, boolean isMainDeck) {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorForAddingCard(deckName, cardName, isMainDeck)) {
             Card card = thisPlayer.getCardByName(cardName);
             if (isMainDeck)
@@ -64,6 +66,7 @@ public class DeckController {
     }
 
     public void printAllDecks() {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         String toPrint = "Decks:\nActive deck:\n";
         String isValid = "invalid";
         if (thisPlayer.getActiveDeck() != null) {
@@ -86,6 +89,7 @@ public class DeckController {
     }
 
     private void sortedDecks() {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         thisPlayer.getAllDecks().sort(new Comparator<Deck>() {
             @Override
             public int compare(Deck o1, Deck o2) {
@@ -95,6 +99,7 @@ public class DeckController {
     }
 
     public void printDeck(String deckName, boolean isMain) {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorForDeletingOrActivating(deckName)) {
             ArrayList<Card> monsterCards = new ArrayList<>();
             ArrayList<Card> spellAndTrap = new ArrayList<>();
@@ -118,6 +123,7 @@ public class DeckController {
     }
 
     public void sortedCards(String deckName) {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         thisPlayer.getDeckByName(deckName).getMainDeck().sort(new Comparator<Card>() {
             @Override
             public int compare(Card o1, Card o2) {
@@ -133,6 +139,7 @@ public class DeckController {
     }
 
     public void printAllCards() {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         String toPrint = "";
         sortAllCards();
         for (Card card : thisPlayer.getAllCards())
@@ -142,6 +149,7 @@ public class DeckController {
     }
 
     private void sortAllCards() {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         Collections.sort(thisPlayer.getAllCards(), new Comparator<Card>() {
             @Override
             public int compare(Card o1, Card o2) {
@@ -159,6 +167,7 @@ public class DeckController {
     }
 
     private boolean errorForDeletingOrActivating(String deckName) {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (!thisPlayer.hasDeck(deckName)) {
             Output.getInstance().deckDoesntExist(deckName);
             return false;
@@ -167,6 +176,7 @@ public class DeckController {
     }
 
     private boolean errorForAddingCard(String deckName, String cardName, boolean isMainDeck) {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (!thisPlayer.hasCard(cardName)) {
             Output.getInstance().cardDoesntExist(cardName);
             return false;
@@ -187,6 +197,7 @@ public class DeckController {
     }
 
     private boolean errorsForRemoving(String deckName, String cardName, boolean isMainDeck) {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (thisPlayer.getDeckByName(deckName) == null) {
             Output.getInstance().deckDoesntExist(deckName);
             return false;

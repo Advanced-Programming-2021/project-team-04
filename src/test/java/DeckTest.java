@@ -176,6 +176,8 @@ public class DeckTest {
 
     @Test
     public void printAllDecksTest() {
+        Account bifrost = new Account("Losing Track", "Cold Green Wlatz", "The Void Sings");
+        MainController.getInstance().setLoggedIn(bifrost);
         DeckController.getInstance().createDeck("Fragile Dreams");
         DeckController.getInstance().createDeck("Reverie");
         DeckController.getInstance().createDeck("There Is A Light That Never Goes Out");
@@ -188,6 +190,7 @@ public class DeckTest {
                 "Fragile Dreams: main deck 0, side deck 0, invalid\n" +
                 "Reverie: main deck 0, side deck 0, invalid\n" +
                 "There Is A Light That Never Goes Out: main deck 0, side deck 0, invalid\r\n", outputStream.toString());
+        MainController.getInstance().setLoggedIn(thisAccount);
 
     }
 
