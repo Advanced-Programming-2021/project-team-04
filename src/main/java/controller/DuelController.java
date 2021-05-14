@@ -1269,7 +1269,7 @@ public class DuelController {
                                ArrayList<Card> removeFrom) {
         removeFrom.remove(monsterCard);
         if (solemnWarning(monsterCard)) return;
-        game.getCurrentPlayer().getField().getMonsterCards().add(monsterCard);
+        monsterCard.getOwner().getField().getMonsterCards().add(monsterCard);
         monsterCard.setMonsterCardModeInField(monsterCardModeInField);
     }
 
@@ -1387,7 +1387,7 @@ public class DuelController {
         }
     }
 
-    private void heraldOfCreation() {
+    public void heraldOfCreation() {
         MonsterCard monsterCard = DuelView.getInstance().getFromMyGY();
         if (monsterCard.getLevel() < 7) return;
         MonsterCard monsterCardToRemove = DuelView.getInstance().getMonsterCardFromHand();
@@ -1423,7 +1423,7 @@ public class DuelController {
         return true;
     }
 
-    private void theTricky() {
+    public void theTricky() {
         MonsterCard monsterCard = DuelView.getInstance().getMonsterCardFromHand();
         game.getCurrentPlayer().getField().getHand().remove(monsterCard);
         game.getCurrentPlayer().getField().getGraveyard().add(monsterCard);
@@ -1431,7 +1431,7 @@ public class DuelController {
         game.setSelectedCard(null);
     }
 
-    private void gateGuardian() {
+    public void gateGuardian() {
         tributeThreeCards();
         MonsterCard gateGuardian = (MonsterCard) game.getSelectedCard();
         specialSummon(gateGuardian, MonsterCardModeInField.ATTACK_FACE_UP, game.getCurrentPlayer().getField().getHand());
@@ -1447,7 +1447,7 @@ public class DuelController {
         addMonsterToGYFromMonsterZone(game.getCurrentPlayer().getField().getMonsterCards().get(thirdTribute));
     }
 
-    private void barbaros(int howToSummon) {
+    public void barbaros(int howToSummon) {
         MonsterCard barbaros = (MonsterCard) game.getSelectedCard();
         if (howToSummon == 2) {
             barbaros.setThisCardAttackPower(1900);
@@ -1455,23 +1455,19 @@ public class DuelController {
         } else {
             ArrayList<MonsterCard> opponentMonsterCards = game.getTheOtherPlayer().getField().getMonsterCards();
             ArrayList<SpellAndTrapCard> opponentSpellCards = game.getTheOtherPlayer().getField().getTrapAndSpell();
-            int max = Math.max(opponentMonsterCards.size(), opponentSpellCards.size());
             tributeThreeCards();
             if (game.getTheOtherPlayer().getField().getFieldZone() != null)
                 moveSpellOrTrapToGYFromFieldZone(game.getTheOtherPlayer().getField().getFieldZone());
-            //TODO fucked up here fix it
-            for (int i = 0; i < max; i++) {
-                if (opponentMonsterCards.get(i) != null)
-                    opponentMonsterCards.remove(i);
-                if (opponentSpellCards.get(i) != null)
-                    opponentSpellCards.remove(i);
+            int spellSize = opponentSpellCards.size();
+            int monsterSize = opponentMonsterCards.size();
+            for (int i = 0; i < spellSize; i++) {
+                opponentSpellCards.remove(0);
+            }
+            for (int i = 0; i < monsterSize; i++) {
+                opponentMonsterCards.remove(0);
             }
         }
         game.getCurrentPlayer().getField().getHand().remove(barbaros);
-        game.getCurrentPlayer().getField().getMonsterCards().add(barbaros);
-        barbaros.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
-        game.setSelectedCard(null);
-        game.setHasSummonedInThisTurn(true);
     }
 
     public void texChanger(MonsterCard attacked) {
@@ -1482,15 +1478,15 @@ public class DuelController {
             do {
                 switch (whereFrom) {
                     case 1:
-                        monsterCard = DuelView.getInstance().getMonsterCardFromHand();
+                        monsterCard = DuelView.getInstance().getMonsterCardFromHand(true);
                         toRemoveFrom = game.getCurrentPlayer().getField().getHand();
                         break;
                     case 2:
-                        monsterCard = DuelView.getInstance().getFromMyDeck();
+                        monsterCard = DuelView.getInstance().getFromMyDeck(true);
                         toRemoveFrom = game.getCurrentPlayer().getField().getDeckZone();
                         break;
                     case 3:
-                        monsterCard = DuelView.getInstance().getFromMyGY();
+                        monsterCard = DuelView.getInstance().getFromMyGY(true);
                         toRemoveFrom = game.getCurrentPlayer().getField().getGraveyard();
                 }
                 if (monsterCard == null) return;

@@ -375,4 +375,29 @@ public class DuelView extends Menu {
         String[] names = input.split(" \\* ");
         return names;
     }
+
+    public MonsterCard getFromMyDeck(boolean isOpponent) {
+        Output.getInstance().chooseMonster();
+        String number = Input.getInputMessage();
+        if (number.equals("cancel")) return null;
+        int monsterNumber = Integer.parseInt(number);
+        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getDeckZone().get(monsterNumber);
+    }
+
+    public MonsterCard getFromMyGY(boolean isOpponent) {
+        Output.getInstance().chooseMonster();
+        String number = Input.getInputMessage();
+        if (number.equals("cancel")) return null;
+        int monsterNumber = Integer.parseInt(number);
+        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(monsterNumber);
+    }
+
+    public MonsterCard getMonsterCardFromHand(boolean isOpponent) {
+        Output.getInstance().chooseMonster();
+        String number = Input.getInputMessage();
+        if (number.equals("cancel")) return null;
+        int monsterNumber = Integer.parseInt(number);
+        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(monsterNumber);
+    }
+
 }
