@@ -1,17 +1,23 @@
 package controller;
 
 import model.*;
-import view.IO;
+import view.Output;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 public class ShopController {
     private static ShopController singleInstance = null;
     private static ArrayList<Card> allCards;
 
-    private ShopController() {
+    static {
         allCards = new ArrayList<>();
+    }
+
+    public ShopController() {
         createCardForShop();
     }
 
@@ -26,7 +32,7 @@ public class ShopController {
         for (Card card : allCards)
             toPrint += card.getName() + ":" + card.getPrice() + "\n";
         toPrint = toPrint.substring(0, toPrint.length() - 2);
-        IO.getInstance().printString(toPrint);
+        Output.getInstance().printString(toPrint);
     }
 
     public static ArrayList<Card> getAllCards() {
@@ -39,13 +45,13 @@ public class ShopController {
             if (card.getName().equals(name)) {
                 return true;
             }
-        IO.getInstance().printInvalidCardName();
+        Output.getInstance().printInvalidCardName();
         return false;
     }
 
     private boolean hasEnoughMoney(String cardName) {
        if (!MainController.getInstance().getLoggedIn().hasEnoughMoney(Card.getCardByName(cardName).getPrice())) {
-           IO.getInstance().printDoesntHaveEnoughMoney();
+           Output.getInstance().printDoesntHaveEnoughMoney();
            return false;
        }
        return true;

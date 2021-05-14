@@ -1,25 +1,19 @@
 package view;
 
-import java.util.Scanner;
-
-public class IO {
-
-    private static IO singleInstance = null;
-
-    private IO() {
+public class Output {
+    private static Output singleInstance = null;
+    private Output() {
 
     }
-
-    public static IO getInstance() {
+    public static Output getInstance() {
         if (singleInstance == null)
-            singleInstance = new IO();
+            singleInstance = new Output();
         return singleInstance;
     }
+    private static String forNow = "";
 
-    private final Scanner scanner = new Scanner(System.in);
-
-    public String getInputMessage(){
-        return scanner.nextLine().trim().toLowerCase();
+    public static String getForNow() {
+        return forNow;
     }
 
     public void revealCard(String cardName) {

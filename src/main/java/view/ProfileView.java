@@ -5,14 +5,14 @@ import controller.ProfileController;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ProfileView extends ViewMenu {
+public class ProfileView extends Menu {
 
     private static ProfileView singleInstance = null;
 
     private final Pattern changeNicknamePattern = Pattern.compile("^(?:profile )?change " +
-            "(?=.*(?:-(?:(?:-nickname)|(?:n))) (?<nickname>\\S+)).+$");
-    private final Pattern changePasswordPattern = Pattern.compile("^(?:profile )?change (?=.*(?:-(?:(?:-password)|(?:p))))" +
-            "(?=.*(?:-(?:(?:-current)|(?:c))) (?<currentPassword>\\S+))(?=.*(?:-(?:(?:-new)|(?:n))) (?<newPassword>\\S+)).+$");
+            "(?=.*(?:\\-(?:(?:\\-nickname)|(?:n))) (?<nickname>\\S+)).+$");
+    private final Pattern changePasswordPattern = Pattern.compile("^(?:profile )?change (?=.*(?:\\-(?:(?:\\-password)|(?:p))))" +
+            "(?=.*(?:\\-(?:(?:\\-current)|(?:c))) (?<currentPassword>\\S+))(?=.*(?:\\-(?:(?:\\-new)|(?:n))) (?<newPassword>\\S+)).+$");
 
     private ProfileView() {}
 
@@ -25,25 +25,24 @@ public class ProfileView extends ViewMenu {
     @Override
     public void run() {
         String command;
-        while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
-                !command.matches("(?:menu )?enter main(?: menu)?")) {
+        while (!(command = Input.getInputMessage()).matches("(?:menu )?exit") && !command.matches("(?:menu )?enter (?:M|m)ain(?: (?:M|m)enu)?")) {
             Matcher changeNicknameMatcher = changeNicknamePattern.matcher(command);
             Matcher changePasswordMatcher = changePasswordPattern.matcher(command);
-            if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
+            if (command.matches("(?:menu )?(?:show|s)\\-(?:current|c)"))
                 showCurrentMenu();
             else if (command.matches("(?:menu )?enter \\S+"))
-                IO.getInstance().printMenuNavigationImpossible();
+                Output.getInstance().printMenuNavigationImpossible();
             else if (changeNicknameMatcher.matches())
                 changeNickname(changeNicknameMatcher);
             else if (changePasswordMatcher.matches())
                 changePassword(changePasswordMatcher);
-            else IO.getInstance().printInvalidCommand();
+            else Output.getInstance().printInvalidCommand();
         }
     }
 
     @Override
     public void showCurrentMenu() {
-        IO.getInstance().printProfileMenuName();
+        Output.getInstance().printProfileMenuName();
     }
 
     private void changeNickname(Matcher matcher) {
