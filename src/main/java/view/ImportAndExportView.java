@@ -12,7 +12,7 @@ public class ImportAndExportView extends ViewMenu {
         while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit")) {
             if (command.startsWith("import "))
                 importCard(command);
-            else if (command.startsWith("export card "))
+            else if (command.startsWith("export c"))
                 exportCard(command);
             else IO.getInstance().printInvalidCommand();
         }

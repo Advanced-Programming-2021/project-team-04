@@ -19,7 +19,7 @@ public class IO {
     private final Scanner scanner = new Scanner(System.in);
 
     public String getInputMessage(){
-        return scanner.nextLine().trim().toLowerCase();
+        return scanner.nextLine().trim();
     }
 
     public void revealCard(String cardName) {

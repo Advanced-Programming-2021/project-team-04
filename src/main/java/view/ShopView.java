@@ -23,7 +23,7 @@ public class ShopView extends ViewMenu {
     public void run() {
         String command;
         while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
-                !command.matches("(?:menu )?enter main(?: menu)?")) {
+                !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
             Matcher buyCardMatcher = buyCardPattern.matcher(command);
             if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
                 showCurrentMenu();

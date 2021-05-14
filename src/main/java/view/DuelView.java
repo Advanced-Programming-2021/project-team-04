@@ -27,7 +27,7 @@ public class DuelView extends ViewMenu {
     public void run() {
         String command;
         while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
-                !command.matches("(?:menu )?enter main(?: menu)?") &&
+                !command.matches("(?:menu )?enter [Mm]ain(?: menu)?") &&
                 !DuelController.getInstance().getGame().isGameFinished()) {
             Matcher selectCardMatcher = selectCardPattern.matcher(command);
             if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
@@ -58,15 +58,15 @@ public class DuelView extends ViewMenu {
                 DuelController.getInstance().surrender();
             else if (command.matches("next(?: phase)?"))
                 DuelController.getInstance().nextPhase();
-            else if (command.matches("death(?: to)?(?: the)? mechanisms (\\d+)"))
+            else if (command.matches("Death(?: to)?(?: the)? Mechanisms (\\d+)"))
                 cheatDecreaseLP(command);
-            else if (command.matches("underworld blues (\\d+)"))
+            else if (command.matches("Underworld Blues (\\d+)"))
                 cheatIncreaseLP(command);
-            else if (command.matches("person(?: of)? interest"))
+            else if (command.matches("Person(?: of)? Interest"))
                 DuelController.getInstance().cheatSeeMyDeck();
-            else if (command.matches("conspiracy(?: to) commit treason"))
+            else if (command.matches("Conspiracy(?: to) Commit Treason"))
                 DuelController.getInstance().cheatSetWinner();
-            else if (command.matches("drunk space pirate"))
+            else if (command.matches("Drunk Space Pirate"))
                 DuelController.getInstance().cheatShowRivalHand();
             else IO.getInstance().printInvalidCommand();
         }
@@ -117,7 +117,6 @@ public class DuelView extends ViewMenu {
         return Integer.parseInt(cardNumber);
     }
 
-
     private void selectCard(Matcher matcher, boolean isPlayersCard, CardStatusInField cardStatusInField) {
         DuelController.getInstance().selectCard(isPlayersCard, cardStatusInField,
                 cardStatusInField == CardStatusInField.FIELD_ZONE ? 0 : Integer.parseInt(matcher.group("number")));
@@ -128,7 +127,7 @@ public class DuelView extends ViewMenu {
     }
 
     private void setPosition(String input) {
-        Pattern pattern = Pattern.compile("set \\-(?:(?:\\-position)|(?:p)) (att(?:ack)?|def(?:ense)?)");
+        Pattern pattern = Pattern.compile("set -(?:(?:-position)|(?:p)) (att(?:ack)?|def(?:ense)?)");
         Matcher matcher = pattern.matcher(input);
         matcher.find();
         String position = matcher.group(1);

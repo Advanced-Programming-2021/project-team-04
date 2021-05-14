@@ -26,7 +26,7 @@ public class ProfileView extends ViewMenu {
     public void run() {
         String command;
         while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
-                !command.matches("(?:menu )?enter main(?: menu)?")) {
+                !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
             Matcher changeNicknameMatcher = changeNicknamePattern.matcher(command);
             Matcher changePasswordMatcher = changePasswordPattern.matcher(command);
             if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))

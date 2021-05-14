@@ -46,9 +46,9 @@ public class MainView extends ViewMenu {
                 newDuel(newDuelMatcher);
             else if (newDuelAIMatcher.matches())
                 newDuelAI();
-            else if (command.matches("the aurora strikes \\d+"))
+            else if (command.matches("The Aurora Strikes \\d+"))
                 cheatIncreaseScore(command);
-            else if (command.matches("the hanged man rusts \\d+"))
+            else if (command.matches("The Hanged Man Rusts \\d+"))
                 cheatIncreaseMoney(command);
             else IO.getInstance().printInvalidCommand();
         }
@@ -61,17 +61,17 @@ public class MainView extends ViewMenu {
 
     private void enterMenu(Matcher matcher) {
         String menuName = matcher.group("name");
-        if (menuName.matches("login(?: menu)?"))
+        if (menuName.matches("[Ll]ogin(?: [Mm]enu)?"))
             continueLoop = false;
-        else if (menuName.matches("scoreboard(?: menu)?"))
+        else if (menuName.matches("[Ss]coreboard(?: [Mm]enu)?"))
             ScoreboardView.getInstance().run();
-        else if (menuName.matches("duel(?: menu)?"))
+        else if (menuName.matches("[Dd]uel(?: [Mm]enu)?"))
             DuelView.getInstance().run();
-        else if (menuName.matches("deck(?: menu)?"))
+        else if (menuName.matches("[Dd]eck(?: [Mm]enu)?"))
             DeckView.getInstance().run();
-        else if (menuName.matches("profile(?: menu)?"))
+        else if (menuName.matches("[Pp]rofile(?: [Mm]enu)?"))
             ProfileView.getInstance().run();
-        else if (menuName.matches("shop(?: menu)?"))
+        else if (menuName.matches("[Ss]hop(?: [Mm]enu)?"))
             ShopView.getInstance().run();
         else IO.getInstance().printInvalidCommand();
     }
@@ -95,7 +95,7 @@ public class MainView extends ViewMenu {
     }
 
     private void cheatIncreaseScore(String string) {
-        Pattern pattern = Pattern.compile("the aurora strikes (\\d+)");
+        Pattern pattern = Pattern.compile("The Aurora Strikes (\\d+)");
         Matcher matcher = pattern.matcher(string);
         matcher.find();
         int amount = Integer.parseInt(matcher.group(1));
@@ -103,7 +103,7 @@ public class MainView extends ViewMenu {
     }
 
     private void cheatIncreaseMoney(String string) {
-        Pattern pattern = Pattern.compile("the hanged man rusts (\\d+)");
+        Pattern pattern = Pattern.compile("The Hanged Man Rusts (\\d+)");
         Matcher matcher = pattern.matcher(string);
         matcher.find();
         int amount = Integer.parseInt(matcher.group(1));
