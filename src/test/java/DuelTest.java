@@ -1,15 +1,19 @@
 import controller.DuelController;
+import controller.MainController;
 import controller.ShopController;
 import model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import view.IO;
 
 import javax.swing.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class DuelTest {
     static Account thisPlayer = new Account("Bad Decisions", "The Strokes", "Why Do I Exist");
@@ -18,6 +22,7 @@ public class DuelTest {
     @BeforeAll
     public static void setup() {
         ShopController.getInstance();
+        MainController.getInstance().setLoggedIn(thisPlayer);
         card = (SpellAndTrapCard) Card.getCardByName("Dark Hole");
         Deck deck = new Deck("Damaged");
         for (int i = 0; i < 40; i++)
@@ -42,6 +47,7 @@ public class DuelTest {
         DuelController.getInstance().drawPhase();
         Assertions.assertEquals(6,thisPlayer.getField().getHand().size());
         Assertions.assertEquals(39, thisPlayer.getField().getDeckZone().size());
+        thisPlayer.getField().getHand().remove(5);
     }
     @Test
     public void battlePhaseTest() {
@@ -112,6 +118,51 @@ public class DuelTest {
         DuelController.getInstance().nextPhase();
         Assertions.assertEquals(Phases.STANDBY_PHASE, DuelController.getInstance().getGame().getCurrentPhase());
     }
-
-
+//
+//    @Test
+//    public void texChangerTest() {
+//        MonsterCard texChanger = (MonsterCard) Card.getCardByName("Texchanger");
+//        ArrayList<Card> backupHand = theOtherPlayer.getField().getHand();
+//        theOtherPlayer.getField().setHand(new ArrayList<>());
+//        MonsterCard leotron = (MonsterCard) Card.getCardByName("Leotron");
+//        leotron.setOwner(theOtherPlayer);
+//        theOtherPlayer.getField().getHand().add(leotron);
+//        theOtherPlayer.getField().getMonsterCards().add(texChanger);
+//        InputStream backup = System.in;
+//        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n0\r\n".getBytes());
+//        System.setIn(input);
+//        DuelController.getInstance().texChanger(texChanger);
+//        Assertions.assertTrue(theOtherPlayer.getField().getMonsterCards().contains(leotron));
+//        System.setIn(backup);
+//        theOtherPlayer.getField().setHand(backupHand);
+//        leotron.setOwner(null);
+//    }
+//
+//    @Test
+//    public void barbarosTestTwo() {
+//        MonsterCard barbaros = (MonsterCard) Card.getCardByName("Beast King Barbaros");
+//        DuelController.getInstance().getGame().setSelectedCard(barbaros);
+//        DuelController.getInstance().barbaros(2);
+//        Assertions.assertEquals(1900, barbaros.getThisCardAttackPower());
+//    }
+//
+//    @Test
+//    public void barbarosTestThree() {
+//        theOtherPlayer.getField().getMonsterCards().add((MonsterCard) Card.getCardByName("Baby dragon"));
+//        MonsterCard barbaros = (MonsterCard) Card.getCardByName("Beast King Barbaros");
+//        DuelController.getInstance().getGame().setSelectedCard(barbaros);
+//        ArrayList<Card> backupCards = thisPlayer.getAllCards();
+//        thisPlayer.setAllCards(new ArrayList<>());
+//        for (int i = 0; i < 3; i++) {
+//            ShopController.getInstance().buyCard("Baby dragon");
+//            thisPlayer.getField().getMonsterCards().add((MonsterCard) thisPlayer.getAllCards().get(0));
+//        }
+//        InputStream backup = System.in;
+//        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n0\r\n".getBytes());
+//        System.setIn(input);
+//        DuelController.getInstance().barbaros(3);
+//        Assertions.assertEquals(0, theOtherPlayer.getField().getMonsterCards().size());
+//        thisPlayer.setAllCards(backupCards);
+//        System.setIn(backup);
+//    }
 }

@@ -1276,7 +1276,7 @@ public class DuelController {
                                ArrayList<Card> removeFrom) {
         removeFrom.remove(monsterCard);
         if (solemnWarning(monsterCard)) return;
-        game.getCurrentPlayer().getField().getMonsterCards().add(monsterCard);
+        monsterCard.getOwner().getField().getMonsterCards().add(monsterCard);
         monsterCard.setMonsterCardModeInField(monsterCardModeInField);
     }
 
@@ -1454,7 +1454,7 @@ public class DuelController {
         addMonsterToGYFromMonsterZone(game.getCurrentPlayer().getField().getMonsterCards().get(thirdTribute));
     }
 
-    private void barbaros(int howToSummon) {
+    public void barbaros(int howToSummon) {
         MonsterCard barbaros = (MonsterCard) game.getSelectedCard();
         if (howToSummon == 2) {
             barbaros.setThisCardAttackPower(1900);
@@ -1462,16 +1462,16 @@ public class DuelController {
         } else {
             ArrayList<MonsterCard> opponentMonsterCards = game.getTheOtherPlayer().getField().getMonsterCards();
             ArrayList<SpellAndTrapCard> opponentSpellCards = game.getTheOtherPlayer().getField().getTrapAndSpell();
-            int max = Math.max(opponentMonsterCards.size(), opponentSpellCards.size());
             tributeThreeCards();
             if (game.getTheOtherPlayer().getField().getFieldZone() != null)
                 moveSpellOrTrapToGYFromFieldZone(game.getTheOtherPlayer().getField().getFieldZone());
-            //TODO fucked up here fix it
-            for (int i = 0; i < max; i++) {
-                if (opponentMonsterCards.get(i) != null)
-                    opponentMonsterCards.remove(i);
-                if (opponentSpellCards.get(i) != null)
-                    opponentSpellCards.remove(i);
+            int spellSize = opponentSpellCards.size();
+            int monsterSize = opponentMonsterCards.size();
+            for (int i = 0; i < spellSize; i++) {
+                opponentSpellCards.remove(0);
+            }
+            for (int i = 0; i < monsterSize; i++) {
+                opponentMonsterCards.remove(0);
             }
         }
         game.getCurrentPlayer().getField().getHand().remove(barbaros);
@@ -1489,22 +1489,21 @@ public class DuelController {
             do {
                 switch (whereFrom) {
                     case 1:
-                        monsterCard = DuelView.getInstance().getMonsterCardFromHand();
-                        toRemoveFrom = game.getCurrentPlayer().getField().getHand();
+                        monsterCard = DuelView.getInstance().getMonsterCardFromHand(true);
+                        toRemoveFrom = game.getTheOtherPlayer().getField().getHand();
                         break;
                     case 2:
-                        monsterCard = DuelView.getInstance().getFromMyDeck();
-                        toRemoveFrom = game.getCurrentPlayer().getField().getDeckZone();
+                        monsterCard = DuelView.getInstance().getFromMyDeck(true);
+                        toRemoveFrom = game.getTheOtherPlayer().getField().getDeckZone();
                         break;
                     case 3:
-                        monsterCard = DuelView.getInstance().getFromMyGY();
-                        toRemoveFrom = game.getCurrentPlayer().getField().getGraveyard();
+                        monsterCard = DuelView.getInstance().getFromMyGY(true);
+                        toRemoveFrom = game.getTheOtherPlayer().getField().getGraveyard();
                 }
                 if (monsterCard == null) return;
             }
             while (!(monsterCard.getCardType().equals("Normal") &&
                     monsterCard.getMonsterType().equals("Cyberse")));
-
             specialSummon(monsterCard, MonsterCardModeInField.ATTACK_FACE_UP, toRemoveFrom);
             attacked.setHasBeenUsedInThisTurn(true);
         }

@@ -215,12 +215,28 @@ public class DuelView extends ViewMenu {
         return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(monsterNumber);
     }
 
+    public MonsterCard getMonsterCardFromHand(boolean isOpponent) {
+        IO.getInstance().chooseMonster();
+        String number = IO.getInstance().getInputMessage();
+        if (number.equals("cancel")) return null;
+        int monsterNumber = Integer.parseInt(number);
+        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(monsterNumber);
+    }
+
     public MonsterCard getFromMyGY() {
         IO.getInstance().chooseMonster();
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
         return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(monsterNumber);
+    }
+
+    public MonsterCard getFromMyGY(boolean isOpponent) {
+        IO.getInstance().chooseMonster();
+        String number = IO.getInstance().getInputMessage();
+        if (number.equals("cancel")) return null;
+        int monsterNumber = Integer.parseInt(number);
+        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(monsterNumber);
     }
 
     public Card getCardFromMyGY() {
@@ -245,6 +261,14 @@ public class DuelView extends ViewMenu {
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
         return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getDeckZone().get(monsterNumber);
+    }
+
+    public MonsterCard getFromMyDeck(boolean isOpponent) {
+        IO.getInstance().chooseMonster();
+        String number = IO.getInstance().getInputMessage();
+        if (number.equals("cancel")) return null;
+        int monsterNumber = Integer.parseInt(number);
+        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getDeckZone().get(monsterNumber);
     }
 
     public MonsterCard getFromOpponentGY() {
