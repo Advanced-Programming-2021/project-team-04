@@ -2,7 +2,8 @@ package controller;
 
 import model.Account;
 import model.Game;
-import view.IO;
+import view.DuelView;
+import view.Output;
 
 public class MainController {
     private Account loggedIn;
@@ -15,6 +16,7 @@ public class MainController {
     public void setLoggedIn(Account loggedIn) {
         this.loggedIn = loggedIn;
     }
+
 
     public static MainController getInstance() {
         if (singleInstance == null)
@@ -32,28 +34,28 @@ public class MainController {
 
     private boolean errorForNewGame(String username, int rounds) {
         if (!Account.getAllAccounts().contains(Account.getAccountByUsername(username))) {
-            IO.getInstance().playerDoesntExist();
+            Output.getInstance().playerDoesntExist();
             return false;
         }
         Account player2 = Account.getAccountByUsername(username);
         if (loggedIn.getActiveDeck() == null) {
-            IO.getInstance().noActiveDeck(loggedIn.getUsername());
+            Output.getInstance().noActiveDeck(loggedIn.getUsername());
             return false;
         }
         if (player2.getActiveDeck() == null) {
-            IO.getInstance().noActiveDeck(player2.getUsername());
+            Output.getInstance().noActiveDeck(player2.getUsername());
             return false;
         }
         if (!loggedIn.getActiveDeck().isDeckValid()) {
-            IO.getInstance().invalidDeck(loggedIn.getUsername());
+            Output.getInstance().invalidDeck(loggedIn.getUsername());
             return false;
         }
         if (!player2.getActiveDeck().isDeckValid()) {
-            IO.getInstance().invalidDeck(player2.getUsername());
+            Output.getInstance().invalidDeck(player2.getUsername());
             return false;
         }
         if (rounds != 1 && rounds != 3) {
-            IO.getInstance().invalidNumOfRounds();
+            Output.getInstance().invalidNumOfRounds();
             return false;
         }
         return true;
@@ -61,11 +63,11 @@ public class MainController {
 
     public void cheatIncreaseMoney(int amount) {
         loggedIn.setMoney(loggedIn.getMoney() + amount);
-        IO.getInstance().cheatIncreaseMoney();
+        Output.getInstance().cheatIncreaseMoney();
     }
 
     public void cheatIncreaseScore(int amount) {
         loggedIn.setScore(loggedIn.getScore() + amount);
-        IO.getInstance().cheatIncreaseScore();
+        Output.getInstance().cheatIncreaseScore();
     }
 }

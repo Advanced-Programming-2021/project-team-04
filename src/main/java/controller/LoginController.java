@@ -1,7 +1,8 @@
 package controller;
 
 import model.Account;
-import view.IO;
+import view.MainView;
+import view.Output;
 
 public class LoginController {
     private static LoginController singleInstance = null;
@@ -12,14 +13,10 @@ public class LoginController {
         return singleInstance;
     }
 
-    private LoginController() {
-
-    }
-
     public boolean loginUser(String username, String password) {
         if (isLoggingInValid(username, password)) {
             MainController.getInstance().setLoggedIn(Account.getAccountByUsername(username));
-            IO.getInstance().loggedIn();
+            Output.getInstance().loggedIn();
             return true;
         }
         return false;
@@ -28,16 +25,16 @@ public class LoginController {
     public void createUser(String username, String password, String nickname) {
         if (errorsForCreatingUser(username, nickname)) {
             new Account(username, password, nickname);
-            IO.getInstance().userCreated();
+            Output.getInstance().userCreated();
         }
     }
 
     private boolean errorsForCreatingUser(String username, String nickname) {
         if (Account.getAllUsernames().contains(username)) {
-            IO.getInstance().userWithUsernameExists(username);
+            Output.getInstance().userWithUsernameExists(username);
             return false;
         } else if (Account.getAllNicknames().contains(nickname)) {
-            IO.getInstance().userWithNicknameExists(nickname);
+            Output.getInstance().userWithNicknameExists(nickname);
             return false;
         }
         return true;
@@ -45,10 +42,10 @@ public class LoginController {
 
     public boolean isLoggingInValid(String username, String password) {
         if (Account.getAccountByUsername(username) == null) {
-            IO.getInstance().passwordDoesntMatch();
+            Output.getInstance().passwordDoesntMatch();
             return false;
         } else if (!Account.getAccountByUsername(username).getPassword().equals(password)) {
-            IO.getInstance().passwordDoesntMatch();
+            Output.getInstance().passwordDoesntMatch();
             return false;
         }
         return true;

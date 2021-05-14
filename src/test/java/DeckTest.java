@@ -1,4 +1,5 @@
 import controller.DeckController;
+import controller.DuelController;
 import controller.MainController;
 import controller.ShopController;
 import model.Account;
@@ -7,6 +8,7 @@ import model.Deck;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import view.Output;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
