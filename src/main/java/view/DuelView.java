@@ -105,6 +105,7 @@ public class DuelView extends ViewMenu {
     }
 
     public void chooseStarter(String winnerUsername) {
+        //TODO WTF? what is the point of winnerUsername?
         IO.getInstance().chooseStarter();
         String username = IO.getInstance().getInputMessage();
         DuelController.getInstance().chooseStarter(username);

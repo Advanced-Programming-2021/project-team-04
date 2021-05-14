@@ -18,7 +18,6 @@ public class IO {
 
     private final Scanner scanner = new Scanner(System.in);
 
-    //TODO add .toLowerCase() and change related regex
     public String getInputMessage(){
         return scanner.nextLine().trim().toLowerCase();
     }
