@@ -5,7 +5,7 @@ import controller.ShopController;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ShopView extends Menu {
+public class ShopView extends ViewMenu {
 
     private static ShopView singleInstance = null;
 
@@ -22,24 +22,24 @@ public class ShopView extends Menu {
     @Override
     public void run() {
         String command;
-        while (!(command = Input.getInputMessage()).matches("(?:menu )?exit") &&
-                !command.matches("(?:menu )?enter (?:M|m)ain(?: (?:M|m)enu)?")) {
+        while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
+                !command.matches("(?:menu )?enter main(?: menu)?")) {
             Matcher buyCardMatcher = buyCardPattern.matcher(command);
-            if (command.matches("(?:menu )?(?:show|s)\\-(?:current|c)"))
+            if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
                 showCurrentMenu();
             else if (command.matches("(?:menu )?enter \\S+"))
-                Output.getInstance().printMenuNavigationImpossible();
-            else if (command.matches("(?:shop )?s(?:how)? \\-(?:(?:\\-all)|(?:a))"))
+                IO.getInstance().printMenuNavigationImpossible();
+            else if (command.matches("(?:shop )?s(?:how)? -(?:(?:-all)|(?:a))"))
                 showAllCards();
             else if (buyCardMatcher.matches())
                 buyCard(buyCardMatcher);
-            else Output.getInstance().printInvalidCommand();
+            else IO.getInstance().printInvalidCommand();
         }
     }
 
     @Override
     public void showCurrentMenu() {
-        Output.getInstance().printShopMenuName();
+        IO.getInstance().printShopMenuName();
     }
 
     private void showAllCards() {

@@ -1,7 +1,7 @@
 package controller;
 
 import model.Account;
-import view.Output;
+import view.IO;
 
 public class ProfileController {
     private static ProfileController singleInstance = null;
@@ -12,27 +12,31 @@ public class ProfileController {
         return singleInstance;
     }
 
+    private ProfileController() {
+
+    }
+
     public void changeNickname(String name) {
         if (isChangingNicknameValid(name)) {
             MainController.getInstance().getLoggedIn().setNickname(name);
-            Output.getInstance().nicknameChanged();
+            IO.getInstance().nicknameChanged();
         }
     }
 
     public void changePassword(String oldPassword, String newPassword) {
         if (isChangingPasswordValid(oldPassword, newPassword)) {
             MainController.getInstance().getLoggedIn().setPassword(newPassword);
-            Output.getInstance().passwordChanged();
+            IO.getInstance().passwordChanged();
         }
     }
     private boolean isChangingPasswordValid(String oldPassword, String newPassword) {
         Account player = MainController.getInstance().getLoggedIn();
         if (!player.getPassword().equals(oldPassword)) {
-            Output.getInstance().invalidCurrentPassword();
+            IO.getInstance().invalidCurrentPassword();
             return false;
         }
         else if (oldPassword.equals(newPassword)) {
-            Output.getInstance().enterANewPassword();
+            IO.getInstance().enterANewPassword();
             return false;
         }
         return true;
@@ -40,7 +44,7 @@ public class ProfileController {
     }
     private boolean isChangingNicknameValid(String nickname) {
         if (Account.getAllNicknames().contains(nickname)) {
-            Output.getInstance().userWithNicknameExists(nickname);
+            IO.getInstance().userWithNicknameExists(nickname);
             return false;
         }
         return true;

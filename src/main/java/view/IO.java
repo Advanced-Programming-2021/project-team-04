@@ -1,19 +1,26 @@
 package view;
 
-public class Output {
-    private static Output singleInstance = null;
-    private Output() {
+import java.util.Scanner;
+
+public class IO {
+
+    private static IO singleInstance = null;
+
+    private IO() {
 
     }
-    public static Output getInstance() {
+
+    public static IO getInstance() {
         if (singleInstance == null)
-            singleInstance = new Output();
+            singleInstance = new IO();
         return singleInstance;
     }
-    private static String forNow = "";
 
-    public static String getForNow() {
-        return forNow;
+    private final Scanner scanner = new Scanner(System.in);
+
+    //TODO add .toLowerCase() and change related regex
+    public String getInputMessage(){
+        return scanner.nextLine().trim().toLowerCase();
     }
 
     public void revealCard(String cardName) {

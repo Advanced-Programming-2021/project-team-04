@@ -20,6 +20,10 @@ public class ImportAndExport {
         return singleInstance;
     }
 
+    private ImportAndExport() {
+
+    }
+
     public void writeAllUsers() {
         ArrayList<Account> allAccounts = Account.getAllAccounts();
         for (Account account : allAccounts)

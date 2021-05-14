@@ -4,7 +4,7 @@ import model.Account;
 import model.Card;
 import model.Deck;
 import model.MonsterCard;
-import view.Output;
+import view.IO;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,18 +19,22 @@ public class DeckController {
         return singleInstance;
     }
 
+    private DeckController() {
+
+    }
+
     public void createDeck(String deckName) {
         if (errorForCreation(deckName)) {
             Deck thisDeck = new Deck(deckName);
             MainController.getInstance().getLoggedIn().addDeck(thisDeck);
-            Output.getInstance().deckCreated();
+            IO.getInstance().deckCreated();
         }
     }
 
     public void deleteDeck(String deckName) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorForDeletingOrActivating(deckName)) {
-            Output.getInstance().deckDeleted();
+            IO.getInstance().deckDeleted();
             if (thisPlayer.getDeckByName(deckName).equals(thisPlayer.getActiveDeck())) thisPlayer.setActiveDeck(null);
             thisPlayer.deleteDeck(thisPlayer.getDeckByName(deckName));
         }
@@ -40,7 +44,7 @@ public class DeckController {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorForDeletingOrActivating(deckName)) {
             thisPlayer.setActiveDeck(thisPlayer.getDeckByName(deckName));
-            Output.getInstance().deckActivated();
+            IO.getInstance().deckActivated();
         }
     }
 
@@ -52,7 +56,7 @@ public class DeckController {
                 thisPlayer.getDeckByName(deckName).getMainDeck().add(card);
             else
                 thisPlayer.getDeckByName(deckName).getSideDeck().add(card);
-            Output.getInstance().cardAddedToDeck();
+            IO.getInstance().cardAddedToDeck();
         }
     }
 
@@ -61,7 +65,7 @@ public class DeckController {
         if (errorsForRemoving(deckName, cardName, isMainDeck)) {
             if (isMainDeck) thisPlayer.getDeckByName(deckName).getMainDeck().remove(Card.getCardByName(cardName));
             else thisPlayer.getDeckByName(deckName).getSideDeck().remove(Card.getCardByName(cardName));
-            Output.getInstance().cardRemoved();
+            IO.getInstance().cardRemoved();
         }
     }
 
@@ -85,7 +89,7 @@ public class DeckController {
             }
         }
         toPrint = toPrint.substring(0, toPrint.length() - 1);
-        Output.getInstance().printString(toPrint);
+        IO.getInstance().printString(toPrint);
     }
 
     private void sortedDecks() {
@@ -118,7 +122,7 @@ public class DeckController {
                     toPrint += card.getName() + ": " + card.getDescription() + "\n";
             }
             toPrint = toPrint.substring(0, toPrint.length() - 2);
-            Output.getInstance().printString(toPrint);
+            IO.getInstance().printString(toPrint);
         }
     }
 
@@ -145,7 +149,7 @@ public class DeckController {
         for (Card card : thisPlayer.getAllCards())
             toPrint += card.getName() + ":" + card.getDescription() + "\n";
         toPrint = toPrint.substring(0, toPrint.length() - 2);
-        Output.getInstance().printString(toPrint);
+        IO.getInstance().printString(toPrint);
     }
 
     private void sortAllCards() {
@@ -160,7 +164,7 @@ public class DeckController {
 
     private boolean errorForCreation(String deckName) {
         if (MainController.getInstance().getLoggedIn().getDeckByName(deckName) != null) {
-            Output.getInstance().deckExists(deckName);
+            IO.getInstance().deckExists(deckName);
             return false;
         }
         return true;
@@ -169,7 +173,7 @@ public class DeckController {
     private boolean errorForDeletingOrActivating(String deckName) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (!thisPlayer.hasDeck(deckName)) {
-            Output.getInstance().deckDoesntExist(deckName);
+            IO.getInstance().deckDoesntExist(deckName);
             return false;
         }
         return true;
@@ -178,19 +182,19 @@ public class DeckController {
     private boolean errorForAddingCard(String deckName, String cardName, boolean isMainDeck) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (!thisPlayer.hasCard(cardName)) {
-            Output.getInstance().cardDoesntExist(cardName);
+            IO.getInstance().cardDoesntExist(cardName);
             return false;
         } else if (!thisPlayer.hasDeck(deckName)) {
-            Output.getInstance().deckDoesntExist(deckName);
+            IO.getInstance().deckDoesntExist(deckName);
             return false;
         } else if (isMainDeck && thisPlayer.getDeckByName(deckName).isMainDeckFull()) {
-            Output.getInstance().mainDeckIsFull();
+            IO.getInstance().mainDeckIsFull();
             return false;
         } else if (!isMainDeck && thisPlayer.getDeckByName(deckName).isSideDeckFull()) {
-            Output.getInstance().sideDeckIsFull();
+            IO.getInstance().sideDeckIsFull();
             return false;
         } else if (!thisPlayer.getDeckByName(deckName).isAddingCardValid(cardName)) {
-            Output.getInstance().tooManyCards(deckName, cardName);
+            IO.getInstance().tooManyCards(deckName, cardName);
             return false;
         }
         return true;
@@ -199,13 +203,13 @@ public class DeckController {
     private boolean errorsForRemoving(String deckName, String cardName, boolean isMainDeck) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (thisPlayer.getDeckByName(deckName) == null) {
-            Output.getInstance().deckDoesntExist(deckName);
+            IO.getInstance().deckDoesntExist(deckName);
             return false;
         } else if (isMainDeck && !thisPlayer.getDeckByName(deckName).mainDeckHasCard(cardName)) {
-            Output.getInstance().cardDoesntExistInMainDeck(cardName);
+            IO.getInstance().cardDoesntExistInMainDeck(cardName);
             return false;
         } else if (!isMainDeck && !thisPlayer.getDeckByName(deckName).sideDeckHasCard(cardName)) {
-            Output.getInstance().cardDoesntExistInSideDeck(cardName);
+            IO.getInstance().cardDoesntExistInSideDeck(cardName);
             return false;
         }
         return true;

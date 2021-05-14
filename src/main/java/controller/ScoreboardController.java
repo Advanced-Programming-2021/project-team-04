@@ -1,8 +1,8 @@
 package controller;
 
 import model.Account;
-import view.Output;
-import java.util.Collections;
+import view.IO;
+
 import java.util.Comparator;
 
 public class ScoreboardController {
@@ -14,6 +14,11 @@ private static ScoreboardController singleInstance = null;
             singleInstance = new ScoreboardController();
         return singleInstance;
     }
+
+    private ScoreboardController() {
+
+    }
+
     public void run() {
         sortedAccounts();
         String sorted = "";
@@ -31,7 +36,7 @@ private static ScoreboardController singleInstance = null;
             }
             previousScore = account.getScore();
         }
-        Output.getInstance().printString(sorted);
+        IO.getInstance().printString(sorted);
     }
 
     private void sortedAccounts() {

@@ -1,12 +1,26 @@
 package model;
 
 import controller.DuelController;
+import controller.MainController;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class AI extends Duelist {
 
+    private static AI singleInstance = null;
+
     private ArrayList<MonsterCard> findTributes;
+
+    public static AI getInstance() {
+        if (singleInstance == null)
+            singleInstance = new AI();
+        return singleInstance;
+    }
+
+    private AI() {
+
+    }
 
     public void attack(Duelist opponent) {
         MonsterCard strongestAIMonster = getStrongestMonsterCardInZone();
