@@ -1,6 +1,6 @@
 package view;
 
-public abstract class Menu {
+public abstract class ViewMenu {
 
     public abstract void run();
 

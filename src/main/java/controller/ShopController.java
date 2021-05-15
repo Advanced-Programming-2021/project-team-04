@@ -1,12 +1,9 @@
 package controller;
 
 import model.*;
-import view.Output;
+import view.IO;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class ShopController {
@@ -28,11 +25,11 @@ public class ShopController {
     }
 
     public void showAllCards() {
-        String toPrint = "";
+        StringBuilder toPrint = new StringBuilder();
         for (Card card : allCards)
-            toPrint += card.getName() + ":" + card.getPrice() + "\n";
-        toPrint = toPrint.substring(0, toPrint.length() - 2);
-        Output.getInstance().printString(toPrint);
+            toPrint.append(card.getName()).append(":").append(card.getPrice()).append("\n");
+        toPrint = new StringBuilder(toPrint.substring(0, toPrint.length() - 2));
+        IO.getInstance().printString(toPrint.toString());
     }
 
     public static ArrayList<Card> getAllCards() {
@@ -45,13 +42,13 @@ public class ShopController {
             if (card.getName().equals(name)) {
                 return true;
             }
-        Output.getInstance().printInvalidCardName();
+        IO.getInstance().printInvalidCardName();
         return false;
     }
 
     private boolean hasEnoughMoney(String cardName) {
        if (!MainController.getInstance().getLoggedIn().hasEnoughMoney(Card.getCardByName(cardName).getPrice())) {
-           Output.getInstance().printDoesntHaveEnoughMoney();
+           IO.getInstance().printDoesntHaveEnoughMoney();
            return false;
        }
        return true;
@@ -60,55 +57,19 @@ public class ShopController {
     public void buyCard(String cardName) {
         if (isCardNameValid(cardName) && hasEnoughMoney(cardName)) {
             switch (cardName) {
-                case "Change of Heart": {
-                    MainController.getInstance().getLoggedIn().addCard(new ChangeOfHeart());
-                    break;
-                }
-                case "Command Knight": {
-                    MainController.getInstance().getLoggedIn().addCard(new CommandKnight());
-                    break;
-                }
-                case "Man-Eater Bug": {
-                    MainController.getInstance().getLoggedIn().addCard(new ManEaterBug());
-                    break;
-                }
-                case "Messenger of peace": {
-                    MainController.getInstance().getLoggedIn().addCard(new MessengerOfPeace());
-                    break;
-                }
-                case "Scanner": {
-                    MainController.getInstance().getLoggedIn().addCard(new Scanner());
-                    break;
-                }
-                case "Suijin": {
-                    MainController.getInstance().getLoggedIn().addCard(new Suijin());
-                    break;
-                }
-                case "The Calculator": {
-                    MainController.getInstance().getLoggedIn().addCard(new TheCalculator());
-                    break;
-                }
-                case "Swords of Revealing Light": {
-                    MainController.getInstance().getLoggedIn().addCard(new SwordsOfRevealingLight());
-                    break;
-                }
-                case "United We Stand": {
-                    MainController.getInstance().getLoggedIn().addCard(new UnitedWeStand());
-                    break;
-                }
-                case "Sword of dark destruction": {
-                    MainController.getInstance().getLoggedIn().addCard(new SwordOfDarkDestruction());
-                    break;
-                }
-                case "Magnum Shield": {
-                    MainController.getInstance().getLoggedIn().addCard(new MagnumShield());
-                    break;
-                }
-                case "Black Pendant": {
-                    MainController.getInstance().getLoggedIn().addCard(new BlackPendant());
-                    break;
-                }
-                default: {
+                case "Change of Heart" -> MainController.getInstance().getLoggedIn().addCard(new ChangeOfHeart());
+                case "Command Knight" -> MainController.getInstance().getLoggedIn().addCard(new CommandKnight());
+                case "Man-Eater Bug" -> MainController.getInstance().getLoggedIn().addCard(new ManEaterBug());
+                case "Messenger of peace" -> MainController.getInstance().getLoggedIn().addCard(new MessengerOfPeace());
+                case "Scanner" -> MainController.getInstance().getLoggedIn().addCard(new Scanner());
+                case "Suijin" -> MainController.getInstance().getLoggedIn().addCard(new Suijin());
+                case "The Calculator" -> MainController.getInstance().getLoggedIn().addCard(new TheCalculator());
+                case "Swords of Revealing Light" -> MainController.getInstance().getLoggedIn().addCard(new SwordsOfRevealingLight());
+                case "United We Stand" -> MainController.getInstance().getLoggedIn().addCard(new UnitedWeStand());
+                case "Sword of dark destruction" -> MainController.getInstance().getLoggedIn().addCard(new SwordOfDarkDestruction());
+                case "Magnum Shield" -> MainController.getInstance().getLoggedIn().addCard(new MagnumShield());
+                case "Black Pendant" -> MainController.getInstance().getLoggedIn().addCard(new BlackPendant());
+                default -> {
                     MonsterCard monsterCard = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/" + cardName + ".JSON");
                     if (monsterCard != null)
                         MainController.getInstance().getLoggedIn().addCard(monsterCard);
@@ -323,11 +284,6 @@ public class ShopController {
     }
 
     private void sort() {
-        allCards.sort(new Comparator<Card>() {
-            @Override
-            public int compare(Card o1, Card o2) {
-                return o1.getName().compareTo(o2.getName());
-            }
-        });
+        allCards.sort(Comparator.comparing(Card::getName));
     }
 }

@@ -1,9 +1,7 @@
 package controller;
 
 import model.Account;
-import view.Output;
-import java.util.Collections;
-import java.util.Comparator;
+import view.IO;
 
 public class ScoreboardController {
 
@@ -16,7 +14,7 @@ private static ScoreboardController singleInstance = null;
     }
     public void run() {
         sortedAccounts();
-        String sorted = "";
+        StringBuilder sorted = new StringBuilder();
         int count = 0;
         int countForEquals = 0;
         int previousScore = -1;
@@ -24,24 +22,21 @@ private static ScoreboardController singleInstance = null;
             count++;
             if (previousScore != account.getScore()) {
                 countForEquals = count;
-                sorted += count + "- " + account.getNickname() + ": " + account.getScore() + "\n";
+                sorted.append(count).append("- ").append(account.getNickname()).append(": ").append(account.getScore()).append("\n");
             }
             else{
-                sorted += countForEquals + "- " + account.getNickname() + ": " + account.getScore() + "\n";
+                sorted.append(countForEquals).append("- ").append(account.getNickname()).append(": ").append(account.getScore()).append("\n");
             }
             previousScore = account.getScore();
         }
-        Output.getInstance().printString(sorted);
+        IO.getInstance().printString(sorted.toString());
     }
 
     private void sortedAccounts() {
-        Account.getAllAccounts().sort(new Comparator<Account>() {
-            @Override
-            public int compare(Account o1, Account o2) {
-                int compared = -Integer.compare(o1.getScore(), o2.getScore());
-                if (compared == 0) compared = o1.getNickname().compareTo(o2.getNickname());
-                return compared;
-            }
+        Account.getAllAccounts().sort((o1, o2) -> {
+            int compared = -Integer.compare(o1.getScore(), o2.getScore());
+            if (compared == 0) compared = o1.getNickname().compareTo(o2.getNickname());
+            return compared;
         });
     }
 }

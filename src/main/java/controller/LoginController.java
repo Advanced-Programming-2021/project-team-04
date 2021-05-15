@@ -1,8 +1,7 @@
 package controller;
 
 import model.Account;
-import view.MainView;
-import view.Output;
+import view.IO;
 
 public class LoginController {
     private static LoginController singleInstance = null;
@@ -16,7 +15,7 @@ public class LoginController {
     public boolean loginUser(String username, String password) {
         if (isLoggingInValid(username, password)) {
             MainController.getInstance().setLoggedIn(Account.getAccountByUsername(username));
-            Output.getInstance().loggedIn();
+            IO.getInstance().loggedIn();
             return true;
         }
         return false;
@@ -25,16 +24,16 @@ public class LoginController {
     public void createUser(String username, String password, String nickname) {
         if (errorsForCreatingUser(username, nickname)) {
             new Account(username, password, nickname);
-            Output.getInstance().userCreated();
+            IO.getInstance().userCreated();
         }
     }
 
     private boolean errorsForCreatingUser(String username, String nickname) {
         if (Account.getAllUsernames().contains(username)) {
-            Output.getInstance().userWithUsernameExists(username);
+            IO.getInstance().userWithUsernameExists(username);
             return false;
         } else if (Account.getAllNicknames().contains(nickname)) {
-            Output.getInstance().userWithNicknameExists(nickname);
+            IO.getInstance().userWithNicknameExists(nickname);
             return false;
         }
         return true;
@@ -42,10 +41,10 @@ public class LoginController {
 
     public boolean isLoggingInValid(String username, String password) {
         if (Account.getAccountByUsername(username) == null) {
-            Output.getInstance().passwordDoesntMatch();
+            IO.getInstance().passwordDoesntMatch();
             return false;
         } else if (!Account.getAccountByUsername(username).getPassword().equals(password)) {
-            Output.getInstance().passwordDoesntMatch();
+            IO.getInstance().passwordDoesntMatch();
             return false;
         }
         return true;

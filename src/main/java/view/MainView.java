@@ -5,16 +5,16 @@ import controller.MainController;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class MainView extends Menu {
+public class MainView extends ViewMenu {
 
     private static MainView singleInstance = null;
 
     private final Pattern enterMenuPattern = Pattern.compile("(?:menu )?enter (?<name>\\S+)");
-    private final Pattern newDuelPattern = Pattern.compile("^d(?:uel)? (?=.*(?:\\-(?:(?:\\-new)|(?:n))))" +
-            "(?=.*(?:\\-(?:(?:\\-second\\-player)|(?:s)|(?:s\\-p)) (?<secondPlayerUsername>\\S+)))" +
-            "(?=.*(?:\\-(?:(?:\\-round(?:s)?)|(?:r)) (?<roundsNumber>\\d+))).+$");
-    private final Pattern newDuelAIPattern = Pattern.compile("^d(?:uel)? (?=.*(?:\\-(?:(?:\\-new)|(?:n))))" +
-            "(?=.*(?:\\-\\-ai))(?=.*(?:\\-(?:(?:\\-round(?:s)?)|(?:r)) (?<roundsNumber>\\d+))).+$");
+    private final Pattern newDuelPattern = Pattern.compile("^d(?:uel)? (?=.*(?:-(?:(?:-new)|(?:n))))" +
+            "(?=.*(?:-(?:(?:-second-player)|(?:s)|(?:s-p)) (?<secondPlayerUsername>\\S+)))" +
+            "(?=.*(?:-(?:(?:-round(?:s)?)|(?:r)) (?<roundsNumber>\\d+))).+$");
+    private final Pattern newDuelAIPattern = Pattern.compile("^d(?:uel)? (?=.*(?:-(?:(?:-new)|(?:n))))" +
+            "(?=.*(?:--ai))(?=.*(?:-(?:(?:-round(?:s)?)|(?:r)) (?<roundsNumber>\\d+))).+$");
 
     private boolean continueLoop = true;
 
@@ -32,11 +32,11 @@ public class MainView extends Menu {
         String command;
         continueLoop = true;
         while (continueLoop) {
-            continueLoop = !(command = Input.getInputMessage()).matches("(?:menu )?exit");
+            continueLoop = !(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit");
             Matcher enterMenuMatcher = enterMenuPattern.matcher(command);
             Matcher newDuelMatcher = newDuelPattern.matcher(command);
             Matcher newDuelAIMatcher = newDuelAIPattern.matcher(command);
-            if (command.matches("(?:menu )?(?:show|s)\\-(?:current|c)"))
+            if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
                 showCurrentMenu();
             else if (command.matches("(?:user )?logout"))
                 logout();
@@ -50,35 +50,35 @@ public class MainView extends Menu {
                 cheatIncreaseScore(command);
             else if (command.matches("The Hanged Man Rusts \\d+"))
                 cheatIncreaseMoney(command);
-            else Output.getInstance().printInvalidCommand();
+            else IO.getInstance().printInvalidCommand();
         }
     }
 
     @Override
     public void showCurrentMenu() {
-        Output.getInstance().printMainMenuName();
+        IO.getInstance().printMainMenuName();
     }
 
     private void enterMenu(Matcher matcher) {
         String menuName = matcher.group("name");
-        if (menuName.matches("(?:L|l)ogin(?: (?:M|m)enu)?"))
+        if (menuName.matches("[Ll]ogin(?: [Mm]enu)?"))
             continueLoop = false;
-        else if (menuName.matches("(?:S|s)coreboard(?: (?:M|m)enu)?"))
+        else if (menuName.matches("[Ss]coreboard(?: [Mm]enu)?"))
             ScoreboardView.getInstance().run();
-        else if (menuName.matches("(?:D|d)uel(?: (?:M|m)enu)?"))
+        else if (menuName.matches("[Dd]uel(?: [Mm]enu)?"))
             DuelView.getInstance().run();
-        else if (menuName.matches("(?:D|d)eck(?: (?:M|m)enu)?"))
+        else if (menuName.matches("[Dd]eck(?: [Mm]enu)?"))
             DeckView.getInstance().run();
-        else if (menuName.matches("(?:P|p)rofile(?: (?:M|m)enu)?"))
+        else if (menuName.matches("[Pp]rofile(?: [Mm]enu)?"))
             ProfileView.getInstance().run();
-        else if (menuName.matches("(?:S|s)hop(?: (?:M|m)enu)?"))
+        else if (menuName.matches("[Ss]hop(?: [Mm]enu)?"))
             ShopView.getInstance().run();
-        else Output.getInstance().printInvalidCommand();
+        else IO.getInstance().printInvalidCommand();
     }
 
     private void logout() {
         MainController.getInstance().setLoggedIn(null);
-        Output.getInstance().printUserLoggedOut();
+        IO.getInstance().printUserLoggedOut();
         continueLoop = false;
     }
 

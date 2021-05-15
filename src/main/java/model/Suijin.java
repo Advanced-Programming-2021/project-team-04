@@ -1,7 +1,5 @@
 package model;
 
-import controller.DuelController;
-
 public class Suijin extends MonsterCard {
 
     private boolean hasBeenUsedInGeneral = false;

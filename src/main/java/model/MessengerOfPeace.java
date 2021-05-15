@@ -1,7 +1,6 @@
 package model;
 
 import controller.DuelController;
-import view.DuelView;
 
 import java.util.ArrayList;
 
