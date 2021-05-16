@@ -65,6 +65,7 @@ public class ShopTest {
                 "Pot of Greed:2500\n" +
                 "Raigeki:2500\n" +
                 "Ring of defense:3500\n" +
+                "Scanner:8000\n" +
                 "Silver Fang:1700\n" +
                 "Skull Guardian:7900\n" +
                 "Slot Machine:7500\n" +

@@ -7,7 +7,13 @@ public class Scanner extends MonsterCard {
 
     public Scanner() {
         super();
-        reset();
+        setName("Scanner");
+        setLevel(1);
+        setMonsterType("Machine");
+        setPrice(8000);
+        setClassAttackPower(0);
+        setClassDefensePower(0);
+        setDescription();
     }
 
     public MonsterCard getCardReplaced() {
@@ -29,14 +35,6 @@ public class Scanner extends MonsterCard {
     }
 
     public void reset() {
-        setName("Scanner");
-        setLevel(1);
-        setMonsterType("Machine");
-        setPrice(8000);
-        setClassAttackPower(0);
-        setClassDefensePower(0);
-        setDescription();
-
         Field field = this.getOwner().getField();
         if (field.getMonsterCards().contains(cardReplaced)) {
             field.getMonsterCards().remove(cardReplaced);
@@ -45,7 +43,7 @@ public class Scanner extends MonsterCard {
             field.getGraveyard().remove(cardReplaced);
             field.getGraveyard().add(this);
         }
-
+        originalOwner.getField().getGraveyard().add(cardReplaced);
         cardReplaced.setOwner(originalOwner);
         originalOwner = null;
         cardReplaced = null;

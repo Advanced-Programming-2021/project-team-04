@@ -131,7 +131,7 @@ public class Field {
         String toPrint = "";
         for (Card card : graveyard)
             toPrint += card.getName() + ":" + card.getDescription() + "\n";
-        toPrint = toPrint.substring(0, toPrint.length() - 2);
+        toPrint = toPrint.substring(0, toPrint.length() - 1);
         return toPrint;
     }
 
@@ -148,9 +148,12 @@ public class Field {
 
     public ArrayList<MonsterCard> ordinaryLowLevelCards() {
         ArrayList<MonsterCard> thisCards = new ArrayList<>();
-        for (MonsterCard monsterCard : monsterCards)
-            if (monsterCard.getLevel() <= 4 && monsterCard.cardType.equals("Normal"))
-                thisCards.add(monsterCard);
+        for (Card monsterCard : hand)
+            if (monsterCard instanceof MonsterCard) {
+                MonsterCard monsterCard1 = (MonsterCard) monsterCard;
+                if (monsterCard1.getLevel() <= 4 && monsterCard1.cardType.equals("Normal"))
+                    thisCards.add(monsterCard1);
+            }
         return thisCards;
     }
 

@@ -1308,7 +1308,7 @@ public class DuelController {
         StringBuilder rivalHand = new StringBuilder();
         for (Card card : game.getTheOtherPlayer().getField().getHand())
             rivalHand.append(card.getName()).append("\n");
-        rivalHand = new StringBuilder(rivalHand.substring(0, rivalHand.length() - 2));
+        rivalHand = new StringBuilder(rivalHand.substring(0, rivalHand.length() - 1));
         IO.getInstance().printString(rivalHand.toString());
     }
 
@@ -1324,7 +1324,7 @@ public class DuelController {
         StringBuilder toPrint = new StringBuilder();
         for (Card card : game.getCurrentPlayer().getField().getDeckZone())
             toPrint.append(card.getName()).append("\n");
-        toPrint = new StringBuilder(toPrint.substring(0, toPrint.length() - 2));
+        toPrint = new StringBuilder(toPrint.substring(0, toPrint.length() - 1));
         IO.getInstance().printString(toPrint.toString());
     }
 
@@ -1338,7 +1338,8 @@ public class DuelController {
 
     private void moveToGraveyardAfterAttack(MonsterCard toBeRemoved, MonsterCard remover) {
         addMonsterToGYFromMonsterZone(toBeRemoved);
-        if (toBeRemoved.getName().equals("Exploder Dragon") || toBeRemoved.getName().equals("Yomi Ship")) {
+        if (toBeRemoved.getName().equals("Exploder Dragon") ||
+                toBeRemoved.getName().equals("Yomi Ship")) {
             addMonsterToGYFromMonsterZone(remover);
         }
     }
@@ -1358,7 +1359,7 @@ public class DuelController {
         field.getHand().remove(toBeRemoved);
     }
 
-    private void handleSupplySquad(MonsterCard toBeRemoved, Field field) {
+    public void handleSupplySquad(MonsterCard toBeRemoved, Field field) {
         if (!field.getDeckZone().isEmpty() &&
                 (field.getHand().size() != 6)) {
             SpellAndTrapCard supplySquad = field.hasThisCardActivated("Supply Squad");
@@ -1395,16 +1396,13 @@ public class DuelController {
     }
 
 
-    private void terraTigerMethod() {
+    public void terraTigerMethod() {
         if (!DuelView.getInstance().wantsToActivate("Terratiger, the Empowered Warrior")) return;
         if (!errorForTerraTiger()) {
             IO.getInstance().invalidCard();
             return;
         }
         MonsterCard monsterCard = DuelView.getInstance().getMonsterCardFromHand();
-        while (!game.getCurrentPlayer().getField().ordinaryLowLevelCards().contains(monsterCard)) {
-            monsterCard = DuelView.getInstance().getMonsterCardFromHand();
-        }
         specialSummon(monsterCard, MonsterCardModeInField.DEFENSE_FACE_DOWN, game.getCurrentPlayer().getField().getHand());
         game.setSelectedCard(null);
         game.setHasSummonedInThisTurn(true);

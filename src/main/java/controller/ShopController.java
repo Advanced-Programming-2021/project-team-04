@@ -113,6 +113,8 @@ public class ShopController {
         allCards.add(blackPendant);
         MagnumShield magnumShield = new MagnumShield();
         allCards.add(magnumShield);
+        Scanner scanner = new Scanner();
+        allCards.add(scanner);
     }
 
     private void addMonsterCards() {
