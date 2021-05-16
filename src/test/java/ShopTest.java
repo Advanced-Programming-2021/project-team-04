@@ -49,7 +49,7 @@ public class ShopTest {
                 "Herald of Creation:2700\n" +
                 "Hero of the east:1700\n" +
                 "Horn Imp:2500\n" +
-                "Leotron :2500\n" +
+                "Leotron:2500\n" +
                 "Magic Cylinder:2000\n" +
                 "Magic Jamamer:3000\n" +
                 "Magnum Shield:4300\n" +

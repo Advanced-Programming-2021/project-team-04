@@ -1,6 +1,7 @@
 package model;
 
 import controller.DuelController;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 

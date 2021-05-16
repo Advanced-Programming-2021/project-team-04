@@ -5,14 +5,14 @@ import controller.LoginController;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginView extends Menu {
+public class LoginView extends ViewMenu {
 
     private static LoginView singleInstance = null;
 
-    private final Pattern createUserPattern = Pattern.compile("^(?:user )?create (?=.*(?:\\-(?:(?:\\-username)|(?:u))) (?<username>\\S+))" +
-            "(?=.*(?:\\-(?:(?:\\-password)|(?:p))) (?<password>\\S+))(?=.*(?:\\-(?:(?:\\-nickname)|(?:n))) (?<nickname>\\S+)).+$");
-    private final Pattern loginUserPattern = Pattern.compile("^(?:user )?login (?=.*(?:\\-(?:(?:\\-username)|(?:u))) (?<username>\\S+))" +
-            "(?=.*(?:\\-(?:(?:\\-password)|(?:p))) (?<password>\\S+)).+$");
+    private final Pattern createUserPattern = Pattern.compile("^(?:user )?create (?=.*(?:-(?:(?:-username)|(?:u))) (?<username>\\S+))" +
+            "(?=.*(?:-(?:(?:-password)|(?:p))) (?<password>\\S+))(?=.*(?:-(?:(?:-nickname)|(?:n))) (?<nickname>\\S+)).+$");
+    private final Pattern loginUserPattern = Pattern.compile("^(?:user )?login (?=.*(?:-(?:(?:-username)|(?:u))) (?<username>\\S+))" +
+            "(?=.*(?:-(?:(?:-password)|(?:p))) (?<password>\\S+)).+$");
 
     private LoginView() {}
 
@@ -25,23 +25,23 @@ public class LoginView extends Menu {
     @Override
     public void run() {
         String command;
-        while (!(command = Input.getInputMessage()).matches("(?:menu )?exit")) {
+        while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit")) {
             Matcher createUserMatcher = createUserPattern.matcher(command), loginUserMatcher = loginUserPattern.matcher(command);
-            if (command.matches("(?:menu )?(?:show|s)\\-(?:current|c)"))
+            if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
                 showCurrentMenu();
             else if (createUserMatcher.matches())
                 createUser(createUserMatcher);
             else if (loginUserMatcher.matches())
                 loginUser(loginUserMatcher);
             else if (command.matches("(?:menu )?enter \\S+"))
-                Output.getInstance().printLoginFirst();
-            else Output.getInstance().printInvalidCommand();
+                IO.getInstance().printLoginFirst();
+            else IO.getInstance().printInvalidCommand();
         }
     }
 
     @Override
     public void showCurrentMenu() {
-        Output.getInstance().printLoginMenuName();
+        IO.getInstance().printLoginMenuName();
     }
 
     private void createUser(Matcher matcher) {

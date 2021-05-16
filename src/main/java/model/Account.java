@@ -1,7 +1,6 @@
 package model;
 
 import com.google.gson.annotations.Expose;
-import controller.DuelController;
 
 import java.util.ArrayList;
 

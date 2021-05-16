@@ -5,6 +5,8 @@ import model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import view.IO;
+import view.Input;
 
 import javax.swing.*;
 import java.io.ByteArrayInputStream;
@@ -36,6 +38,7 @@ public class DuelTest {
         InputStream backup = System.in;
         ByteArrayInputStream in = new ByteArrayInputStream("Bad Decisions".getBytes());
         System.setIn(in);
+        IO.getInstance().resetScanner();
         DuelController.getInstance().rockPaperScissor("s", "r");
         DuelController.getInstance().rockPaperScissor("r", "p");
         System.setIn(backup);
@@ -133,6 +136,7 @@ public class DuelTest {
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("1\r\n0\r\n".getBytes());
         System.setIn(input);
+        IO.getInstance().resetScanner();
         DuelController.getInstance().texChanger(texChanger);
         System.setIn(backup);
         theOtherPlayer.getField().setHand(backupHand);
@@ -162,6 +166,7 @@ public class DuelTest {
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n0\r\n".getBytes());
         System.setIn(input);
+        IO.getInstance().resetScanner();
         DuelController.getInstance().barbaros(3);
         System.setIn(backup);
         thisPlayer.setAllCards(backupCards);
@@ -183,6 +188,7 @@ public class DuelTest {
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n0\r\n".getBytes());
         System.setIn(input);
+        IO.getInstance().resetScanner();
         DuelController.getInstance().gateGuardian();
         System.setIn(backup);
         thisPlayer.setAllCards(backupCards);
@@ -203,6 +209,7 @@ public class DuelTest {
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0".getBytes());
         System.setIn(input);
+        IO.getInstance().resetScanner();
         DuelController.getInstance().theTricky();
         System.setIn(backup);
         thisPlayer.setAllCards(backupCards);
@@ -226,6 +233,7 @@ public class DuelTest {
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n".getBytes());
         System.setIn(input);
+        IO.getInstance().resetScanner();
         DuelController.getInstance().heraldOfCreation();
         System.setIn(backup);
         boolean hasCard = thisPlayer.getField().getHand().contains(spiralSerpent);

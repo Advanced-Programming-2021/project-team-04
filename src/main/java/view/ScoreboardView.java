@@ -2,7 +2,7 @@ package view;
 
 import controller.ScoreboardController;
 
-public class ScoreboardView extends Menu {
+public class ScoreboardView extends ViewMenu {
     private static ScoreboardView singleInstance = null;
 
     private ScoreboardView() {
@@ -18,20 +18,21 @@ public class ScoreboardView extends Menu {
     @Override
     public void run() {
         String command;
-        while (!(command = Input.getInputMessage()).matches("(?:menu )?exit") && !command.matches("(?:menu )?enter (?:M|m)ain(?: (?:M|m)enu)?")) {
-            if (command.matches("(?:menu )?(?:show|s)\\-(?:current|c)"))
+        while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
+                !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
+            if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
                 showCurrentMenu();
             else if (command.matches("(?:scoreboard )?show"))
                 showScoreboard();
             else if (command.matches("(?:menu )?enter \\S+"))
-                Output.getInstance().printMenuNavigationImpossible();
-            else Output.getInstance().printInvalidCommand();
+                IO.getInstance().printMenuNavigationImpossible();
+            else IO.getInstance().printInvalidCommand();
         }
     }
 
     @Override
     public void showCurrentMenu() {
-        Output.getInstance().printScoreboardMenuName();
+        IO.getInstance().printScoreboardMenuName();
     }
 
     private void showScoreboard() {

@@ -1,19 +1,30 @@
 package view;
 
-public class Output {
-    private static Output singleInstance = null;
-    private Output() {
+import java.util.Scanner;
+
+public class IO {
+
+    private static IO singleInstance = null;
+
+    private Scanner scanner = new Scanner(System.in);
+
+    private IO() {
 
     }
-    public static Output getInstance() {
+
+    public static IO getInstance() {
         if (singleInstance == null)
-            singleInstance = new Output();
+            singleInstance = new IO();
         return singleInstance;
     }
-    private static String forNow = "";
 
-    public static String getForNow() {
-        return forNow;
+    public String getInputMessage(){
+        return scanner.nextLine().trim();
+    }
+
+    public void resetScanner() {
+        //used only for unit tests
+        scanner = new Scanner(System.in);
     }
 
     public void revealCard(String cardName) {
