@@ -310,6 +310,13 @@ public class DuelView extends ViewMenu {
         return DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(cardNumber));
     }
 
+    public Card getCardFromTheOtherPlayerHand() {
+        IO.getInstance().chooseCard();
+        String cardNumber = IO.getInstance().getInputMessage();
+        if (cardNumber.matches("cancel")) return null;
+        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(Integer.parseInt(cardNumber));
+    }
+
     public boolean summonGateGuardian() {
         IO.getInstance().gateGuardian();
         String input = IO.getInstance().getInputMessage().toLowerCase();
