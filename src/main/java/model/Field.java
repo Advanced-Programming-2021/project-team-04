@@ -119,6 +119,7 @@ public class Field {
 
 
     public boolean isTributesLevelSumValid(int sum, int n) {
+        if (sum < 0) return false;
         if (sum > 0 && n == 0)
             return false;
         if (sum == 0)

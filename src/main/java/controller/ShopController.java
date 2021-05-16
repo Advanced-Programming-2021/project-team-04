@@ -229,6 +229,8 @@ public class ShopController {
     }
 
     private void addSpellAndTrap() {
+        SpellAndTrapCard advancedRitualArt = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Advanced Ritual Art.JSON");
+        allCards.add(advancedRitualArt);
         SpellAndTrapCard callOfTheHaunted = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Call of The Haunted.JSON");
         allCards.add(callOfTheHaunted);
         SpellAndTrapCard closedForest = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/Closed Forest.JSON");

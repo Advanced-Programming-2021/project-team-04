@@ -19,7 +19,8 @@ public class ShopTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         ShopController.getInstance().showAllCards();
-        Assertions.assertEquals("Alexandrite Dragon:2600\n" +
+        Assertions.assertEquals("Advanced Ritual Art:3000\n" +
+                "Alexandrite Dragon:2600\n" +
                 "Axe Raider:3100\n" +
                 "Baby dragon:1600\n" +
                 "Battle OX:2900\n" +

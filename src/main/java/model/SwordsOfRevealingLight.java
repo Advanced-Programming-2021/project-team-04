@@ -1,5 +1,7 @@
 package model;
 
+import controller.DuelController;
+
 import java.util.ArrayList;
 
 public class SwordsOfRevealingLight extends SpellAndTrapCard {
@@ -19,6 +21,8 @@ public class SwordsOfRevealingLight extends SpellAndTrapCard {
     }
 
     public void specialMethod(Duelist opponent) {
+        DuelController.getInstance().makeChain(DuelController.getInstance().getGame().getCurrentPlayer(),
+                DuelController.getInstance().getGame().getTheOtherPlayer());
         ArrayList<MonsterCard> monsterCards = opponent.getField().getMonsterCards();
         for (MonsterCard monsterCard : monsterCards)
             if (monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN))
