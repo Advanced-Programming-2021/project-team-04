@@ -95,7 +95,7 @@ public class IO {
     }
 
     public void numOfCards() {
-        System.out.println("how many cards do you want to destroy?"); //TODO whats its range
+        System.out.println("how many cards do you want to destroy? (two cards at most)");
     }
 
     public void summonMode() {
