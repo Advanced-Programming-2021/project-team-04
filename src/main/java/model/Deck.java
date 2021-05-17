@@ -34,8 +34,7 @@ public class Deck {
     }
 
     public boolean isDeckValid() {
-        if (mainDeck.size() >= 40 && mainDeck.size() <= 60 && sideDeck.size() <= 15) return true;
-        return false;
+        return mainDeck.size() >= 40 && mainDeck.size() <= 60 && sideDeck.size() <= 15;
     }
 
     public boolean isAddingCardValid(String cardName) {
@@ -51,9 +50,7 @@ public class Deck {
         for (Card thisCard : getSideDeck())
             if (thisCard.getName().equals(cardName))
                 count++;
-        if (count == 3 || Card.getCardByName(cardName).getAllowedNumber() == count)
-            return false;
-        return true;
+        return count != 3 && Card.getCardByName(cardName).getAllowedNumber() != count;
     }
 
     public ArrayList<Card> getMainDeck() {

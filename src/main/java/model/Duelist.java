@@ -133,6 +133,10 @@ public abstract class Duelist {
         return null;
     }
 
+    public void setAllDecks(ArrayList<Deck> allDecks) {
+        this.allDecks = allDecks;
+    }
+
     public void addDeck(Deck deck) {
         this.getAllDecks().add(deck);
     }

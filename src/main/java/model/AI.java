@@ -1,6 +1,7 @@
 package model;
 
 import controller.DuelController;
+import controller.ImportAndExport;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,6 +12,7 @@ public class AI extends Duelist {
 
     private AI() {
         username = "AI";
+        setAllDecks(ImportAndExport.getInstance().readAllDecks("src/main/resources/decks/"));
     }
 
     public static AI getInstance() {
