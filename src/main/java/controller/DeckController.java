@@ -4,7 +4,6 @@ import model.*;
 import view.IO;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 
 public class DeckController {
@@ -18,8 +17,8 @@ public class DeckController {
 
     public void createDeck(String deckName) {
         if (errorForCreation(deckName)) {
-            Deck thisDeck = new Deck(deckName);
-            MainController.getInstance().getLoggedIn().addDeck(thisDeck);
+            GameDeck thisGameDeck = new GameDeck(deckName);
+            MainController.getInstance().getLoggedIn().addDeck(thisGameDeck);
             IO.getInstance().deckCreated();
         }
     }
@@ -67,16 +66,16 @@ public class DeckController {
         StringBuilder toPrint = new StringBuilder("Decks:\nActive deck:\n");
         String isValid = "invalid";
         if (thisPlayer.getActiveDeck() != null) {
-            Deck activeDeck = thisPlayer.getActiveDeck();
-            if (activeDeck.isDeckValid()) isValid = "valid";
-            toPrint.append(activeDeck.getDeckName()).append(": main deck ").append(activeDeck.getMainDeck().size()).append(", side deck ").append(activeDeck.getSideDeck().size()).append(", ").append(isValid).append("\n");
+            GameDeck activeGameDeck = thisPlayer.getActiveDeck();
+            if (activeGameDeck.isDeckValid()) isValid = "valid";
+            toPrint.append(activeGameDeck.getDeckName()).append(": main deck ").append(activeGameDeck.getMainDeck().size()).append(", side deck ").append(activeGameDeck.getSideDeck().size()).append(", ").append(isValid).append("\n");
         }
         toPrint.append("Other decks: \n");
         if (!thisPlayer.getAllDecks().isEmpty()) {
             sortedDecks();
-            for (Deck deck : thisPlayer.getAllDecks()) {
-                if (deck.isDeckValid()) isValid = "valid";
-                toPrint.append(deck.getDeckName()).append(": main deck ").append(deck.getMainDeck().size()).append(", side deck ").append(deck.getSideDeck().size()).append(", ").append(isValid).append("\n");
+            for (GameDeck gameDeck : thisPlayer.getAllDecks()) {
+                if (gameDeck.isDeckValid()) isValid = "valid";
+                toPrint.append(gameDeck.getDeckName()).append(": main deck ").append(gameDeck.getMainDeck().size()).append(", side deck ").append(gameDeck.getSideDeck().size()).append(", ").append(isValid).append("\n");
             }
         }
         toPrint = new StringBuilder(toPrint.substring(0, toPrint.length() - 1));
@@ -85,7 +84,7 @@ public class DeckController {
 
     private void sortedDecks() {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
-        thisPlayer.getAllDecks().sort(Comparator.comparing(Deck::getDeckName));
+        thisPlayer.getAllDecks().sort(Comparator.comparing(GameDeck::getDeckName));
     }
 
     public void printDeck(String deckName, boolean isMain) {

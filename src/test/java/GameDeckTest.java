@@ -3,7 +3,7 @@ import controller.MainController;
 import controller.ShopController;
 import model.Account;
 import model.Card;
-import model.Deck;
+import model.GameDeck;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-public class DeckTest {
+public class GameDeckTest {
     public static Account thisAccount = new Account("Gerard Keay", "bean$le", "Erard Ke");
 
     @BeforeAll
@@ -81,10 +81,10 @@ public class DeckTest {
     public void fullMainDeckTest() {
         ShopController.getInstance().buyCard("Magic Cylinder");
         DeckController.getInstance().createDeck("Sleeping Beauty Syndrome");
-        Deck deck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
+        GameDeck gameDeck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
         Card card = Card.getCardByName("Mind Crush");
         for (int i = 0; i < 60; i++)
-            deck.getMainDeck().add(card);
+            gameDeck.getMainDeck().add(card);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().addCardToDeck("Sleeping Beauty Syndrome", "Magic Cylinder", true);
@@ -95,10 +95,10 @@ public class DeckTest {
     public void fullSideDeckTest() {
         ShopController.getInstance().buyCard("Magic Cylinder");
         DeckController.getInstance().createDeck("Sleeping Beauty Syndrome");
-        Deck deck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
+        GameDeck gameDeck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
         Card card = Card.getCardByName("Mind Crush");
         for (int i = 0; i < 15; i++)
-            deck.getSideDeck().add(card);
+            gameDeck.getSideDeck().add(card);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().addCardToDeck("Sleeping Beauty Syndrome", "Magic Cylinder", false);
@@ -109,11 +109,11 @@ public class DeckTest {
     public void repeatedCardsTest() {
         ShopController.getInstance().buyCard("Mind Crush");
         DeckController.getInstance().createDeck("Save Me");
-        Deck deck = thisAccount.getDeckByName("Save Me");
+        GameDeck gameDeck = thisAccount.getDeckByName("Save Me");
         Card card = Card.getCardByName("Mind Crush");
-        deck.getMainDeck().add(card);
-        deck.getMainDeck().add(card);
-        deck.getMainDeck().add(card);
+        gameDeck.getMainDeck().add(card);
+        gameDeck.getMainDeck().add(card);
+        gameDeck.getMainDeck().add(card);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().addCardToDeck("Save Me", "Mind Crush", true);
@@ -124,11 +124,11 @@ public class DeckTest {
     public void removeCardTest() {
         ShopController.getInstance().buyCard("Slot Machine");
         DeckController.getInstance().createDeck("Virkelighetens Etterklang");
-        Deck deck = thisAccount.getDeckByName("Virkelighetens Etterklang");
+        GameDeck gameDeck = thisAccount.getDeckByName("Virkelighetens Etterklang");
         Card card = Card.getCardByName("Slot Machine");
-        deck.getMainDeck().add(card);
+        gameDeck.getMainDeck().add(card);
         DeckController.getInstance().removeCardFromDeck("Virkelighetens Etterklang", "Slot Machine", true);
-        Assertions.assertFalse(deck.getMainDeck().contains(card));
+        Assertions.assertFalse(gameDeck.getMainDeck().contains(card));
     }
 
     @Test

@@ -143,7 +143,7 @@ public class IO {
     }
 
     public void printAIsRPS(String rps) {
-        System.out.println("computer chose: " + rps);
+        System.out.println("computer chose: " + rps );
     }
 
     public void wantToActivate(String cardName) {

@@ -1,10 +1,7 @@
-import controller.DuelController;
 import controller.MainController;
 import controller.ShopController;
 import model.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
 
 public class AIDuelTest {
 
@@ -16,11 +13,11 @@ public class AIDuelTest {
         ShopController.getInstance();
         MainController.getInstance().setLoggedIn(thisAccount);
         card = (SpellAndTrapCard) Card.getCardByName("Dark Hole");
-        Deck deck = new Deck("Damaged");
+        GameDeck gameDeck = new GameDeck("Damaged");
         for (int i = 0; i < 40; i++)
-            deck.getMainDeck().add(card);
-        thisAccount.setActiveDeck(deck);
-        thisAccount.setActiveDeck(deck);
+            gameDeck.getMainDeck().add(card);
+        thisAccount.setActiveDeck(gameDeck);
+        thisAccount.setActiveDeck(gameDeck);
         MainController.getInstance().newAIDuel(1);
     }
 

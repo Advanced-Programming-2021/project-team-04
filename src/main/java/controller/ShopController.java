@@ -117,6 +117,8 @@ public class ShopController {
         allCards.add(scanner);
     }
 
+    //TODO an iteration through the monster and spellAndTrap folders would do better
+
     private void addMonsterCards() {
         MonsterCard texChanger = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/Texchanger.JSON");
         texChanger.reset();

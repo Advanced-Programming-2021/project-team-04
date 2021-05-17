@@ -6,15 +6,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import view.IO;
-import view.Input;
 
-import javax.swing.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class DuelTest {
     static Account thisPlayer = new Account("Bad Decisions", "The Strokes", "Why Do I Exist");
@@ -26,11 +23,11 @@ public class DuelTest {
         ShopController.getInstance();
         MainController.getInstance().setLoggedIn(thisPlayer);
         card = (SpellAndTrapCard) Card.getCardByName("Dark Hole");
-        Deck deck = new Deck("Damaged");
+        GameDeck gameDeck = new GameDeck("Damaged");
         for (int i = 0; i < 40; i++)
-            deck.getMainDeck().add(card);
-        thisPlayer.setActiveDeck(deck);
-        theOtherPlayer.setActiveDeck(deck);
+            gameDeck.getMainDeck().add(card);
+        thisPlayer.setActiveDeck(gameDeck);
+        theOtherPlayer.setActiveDeck(gameDeck);
         DuelController.getInstance().setGame(new Game(thisPlayer, theOtherPlayer, 3, false));
     }
 

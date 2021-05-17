@@ -79,21 +79,21 @@ public class ImportAndExport {
         }
     }
 
-    public ArrayList<Deck> readAllDecks(String address) {
-        ArrayList<Deck> decks = new ArrayList<>();
+    public ArrayList<GameDeck> readAllDecks(String address) {
+        ArrayList<GameDeck> gameDecks = new ArrayList<>();
         File folder = new File(address);
         for (File file : Objects.requireNonNull(folder.listFiles()))
-            decks.add(readDeck(address + file.getName()));
-        return decks;
+            gameDecks.add(readDeck(address + file.getName()));
+        return gameDecks;
     }
 
-    public Deck readDeck(String address) {
+    public GameDeck readDeck(String address) {
         try {
             FileReader fileReader = new FileReader(address);
             GsonBuilder gsonBuilder = new GsonBuilder();
             Gson gson = gsonBuilder.create();
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            return gson.fromJson(bufferedReader, Deck.class);
+            return gson.fromJson(bufferedReader, GameDeck.class);
         } catch (Exception FileNotFoundException) {
             return null;
         }
@@ -134,4 +134,9 @@ public class ImportAndExport {
         } catch (IOException ignored) {
         }
     }
+
+//    public GameDeck getGameDeck(PlayerDeck playerDeck) {
+//        //TODO this method or GameDeck's constructor?
+//    }
+
 }

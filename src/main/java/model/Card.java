@@ -19,6 +19,8 @@ public class Card {
     protected boolean hasBeenUsedInThisTurn = false;
     protected boolean hasBeenSetOrSummoned = false;
 
+    //TODO NEED a fucking method that takes the card name as input and shows whether it is a monster card or a spell or trap
+
     public Card() {
         allCards.add(this);
     }

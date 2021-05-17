@@ -8,10 +8,10 @@ import java.util.ArrayList;
 public abstract class Duelist {
 
     @Expose(serialize = true, deserialize = true)
-    protected ArrayList<Deck> allDecks = new ArrayList<Deck>();
+    protected ArrayList<GameDeck> allGameDecks = new ArrayList<GameDeck>();
     @Expose(serialize = true, deserialize = true)
     protected ArrayList<Card> allCards = new ArrayList<Card>();
-    protected Deck activeDeck;
+    protected GameDeck activeGameDeck;
     @Expose(serialize = true, deserialize = true)
     protected String username;
     @Expose(serialize = true, deserialize = true)
@@ -83,16 +83,16 @@ public abstract class Duelist {
         this.field = field;
     }
 
-    public ArrayList<Deck> getAllDecks() {
-        return allDecks;
+    public ArrayList<GameDeck> getAllDecks() {
+        return allGameDecks;
     }
 
     public ArrayList<Card> getAllCards() {
         return allCards;
     }
 
-    public Deck getActiveDeck() {
-        return activeDeck;
+    public GameDeck getActiveDeck() {
+        return activeGameDeck;
     }
 
     public String getUsername() {
@@ -119,10 +119,10 @@ public abstract class Duelist {
         return null;
     }
 
-    public Deck getDeckByName(String deckName) {
-        for (Deck deck : getAllDecks())
-            if (deck.getDeckName().equals(deckName))
-                return deck;
+    public GameDeck getDeckByName(String deckName) {
+        for (GameDeck gameDeck : getAllDecks())
+            if (gameDeck.getDeckName().equals(deckName))
+                return gameDeck;
         return null;
     }
 
@@ -133,16 +133,16 @@ public abstract class Duelist {
         return null;
     }
 
-    public void setAllDecks(ArrayList<Deck> allDecks) {
-        this.allDecks = allDecks;
+    public void setAllDecks(ArrayList<GameDeck> allGameDecks) {
+        this.allGameDecks = allGameDecks;
     }
 
-    public void addDeck(Deck deck) {
-        this.getAllDecks().add(deck);
+    public void addDeck(GameDeck gameDeck) {
+        this.getAllDecks().add(gameDeck);
     }
 
-    public void deleteDeck(Deck deck) {
-        this.getAllDecks().remove(deck);
+    public void deleteDeck(GameDeck gameDeck) {
+        this.getAllDecks().remove(gameDeck);
     }
 
     public void addCard(Card card) {
@@ -151,8 +151,8 @@ public abstract class Duelist {
     }
 
     public boolean hasDeck(String deck) {
-        for (Deck thisDeck : allDecks)
-            if (thisDeck.getDeckName().equals(deck))
+        for (GameDeck thisGameDeck : allGameDecks)
+            if (thisGameDeck.getDeckName().equals(deck))
                 return true;
         return false;
     }
@@ -165,13 +165,13 @@ public abstract class Duelist {
     }
 
     private void activateDeck(String deckName) {
-        for (Deck thisDeck : allDecks)
-            if (thisDeck.getDeckName().equals(deckName))
-                activeDeck = thisDeck;
+        for (GameDeck thisGameDeck : allGameDecks)
+            if (thisGameDeck.getDeckName().equals(deckName))
+                activeGameDeck = thisGameDeck;
     }
 
     private boolean hasActiveDeck() {
-        return activeDeck != null;
+        return activeGameDeck != null;
     }
 
     private boolean hasEnoughCardInHand(int amount) { //TODO check while writing the code

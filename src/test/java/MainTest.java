@@ -1,7 +1,7 @@
 import controller.MainController;
 import model.Account;
 import model.Card;
-import model.Deck;
+import model.GameDeck;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -34,8 +34,8 @@ public class MainTest {
     public void activeDeckTestForTheOtherPlayer() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        Deck deck = new Deck("No Pressure");
-        thisAccount.setActiveDeck(deck);
+        GameDeck gameDeck = new GameDeck("No Pressure");
+        thisAccount.setActiveDeck(gameDeck);
         MainController.getInstance().newDuel("Jan Kilbride", 1);
         Assertions.assertEquals(someoneElse.getUsername() + " has no active deck\r\n", outputStream.toString());
         thisAccount.setActiveDeck(null);
@@ -44,8 +44,8 @@ public class MainTest {
     public void invalidDeckTestForThisUser() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        thisAccount.setActiveDeck(new Deck("our boy jack"));
-        someoneElse.setActiveDeck(new Deck("no happy ending"));
+        thisAccount.setActiveDeck(new GameDeck("our boy jack"));
+        someoneElse.setActiveDeck(new GameDeck("no happy ending"));
         MainController.getInstance().newDuel("Jan Kilbride", 3);
         Assertions.assertEquals("Gerard Keay’s deck is invalid\r\n", outputStream.toString());
         thisAccount.setActiveDeck(null);
@@ -55,11 +55,11 @@ public class MainTest {
     public void invalidDeckTestForTheOtherPlayer() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        Deck deck = new Deck("our boy jack");
+        GameDeck gameDeck = new GameDeck("our boy jack");
         for (int i = 0; i < 40; i++)
-            deck.getMainDeck().add(Card.getCardByName("Call of The Haunted"));
-        thisAccount.setActiveDeck(deck);
-        someoneElse.setActiveDeck(new Deck("no happy ending"));
+            gameDeck.getMainDeck().add(Card.getCardByName("Call of The Haunted"));
+        thisAccount.setActiveDeck(gameDeck);
+        someoneElse.setActiveDeck(new GameDeck("no happy ending"));
         MainController.getInstance().newDuel("Jan Kilbride", 3);
         Assertions.assertEquals("Jan Kilbride’s deck is invalid\r\n", outputStream.toString());
         thisAccount.setActiveDeck(null);
@@ -69,11 +69,11 @@ public class MainTest {
     public void invalidRoundTest() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        Deck deck = new Deck("our boy jack");
+        GameDeck gameDeck = new GameDeck("our boy jack");
         for (int i = 0; i < 40; i++)
-            deck.getMainDeck().add(Card.getCardByName("Call of The Haunted"));
-        thisAccount.setActiveDeck(deck);
-        someoneElse.setActiveDeck(deck);
+            gameDeck.getMainDeck().add(Card.getCardByName("Call of The Haunted"));
+        thisAccount.setActiveDeck(gameDeck);
+        someoneElse.setActiveDeck(gameDeck);
         MainController.getInstance().newDuel("Jan Kilbride", 4);
         Assertions.assertEquals("number of rounds is not supported\r\n", outputStream.toString());
         thisAccount.setActiveDeck(null);
