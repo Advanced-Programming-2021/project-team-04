@@ -758,7 +758,12 @@ public class DuelController {
 
 
     public void directAttack() {
-        if (!isDirectAttackValid()) return;
+        System.out.println("mioo");
+        if (!isDirectAttackValid()) {
+            System.out.println("what");
+            return;
+        }
+        System.out.println("mio");
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
         int damage = selectedCard.getThisCardAttackPower();
         game.getTheOtherPlayer().changeLP(-damage);
@@ -767,12 +772,12 @@ public class DuelController {
         game.setSelectedCard(null);
     }
 
-    private boolean isDirectAttackValid() {
+    public boolean isDirectAttackValid() {
         if (game.getSelectedCard() == null) {
             IO.getInstance().cardNotSelected();
             return false;
         }
-        //TODO can be handled with public boolean Duelist.hasCard(). do we need one?
+        //TODO can be handled with public boolean Duelist.hasCard(). do we need one? no dude no welp
         if (!(game.getSelectedCard() instanceof MonsterCard) ||
                 !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
             IO.getInstance().cannotAttack();
@@ -819,7 +824,7 @@ public class DuelController {
             game.getTheOtherPlayer().changeLP(500);
     }
 
-    private boolean isActivatingSpellValid() {
+    public boolean isActivatingSpellValid() {
         if (game.getSelectedCard() == null) {
             IO.getInstance().noCardSelected();
             return false;
@@ -833,7 +838,8 @@ public class DuelController {
             IO.getInstance().onlySpells();
             return false;
         }
-        if (game.getCurrentPhase() != Phases.FIRST_MAIN_PHASE && game.getCurrentPhase() != Phases.SECOND_MAIN_PHASE) {
+        if (game.getCurrentPhase() != Phases.FIRST_MAIN_PHASE &&
+                game.getCurrentPhase() != Phases.SECOND_MAIN_PHASE) {
             IO.getInstance().wrongPhase();
             return false;
         }
@@ -841,7 +847,8 @@ public class DuelController {
             IO.getInstance().alreadyActive();
             return false;
         }
-        if (game.getCurrentPlayer().getField().getHand().contains(selectedCard) && !selectedCard.getProperty().equals("Field") &&
+        if (game.getCurrentPlayer().getField().getHand().contains(selectedCard) &&
+                !selectedCard.getProperty().equals("Field") &&
                 game.getCurrentPlayer().getField().getTrapAndSpell().size() == 5) {
             IO.getInstance().spellZoneFull();
             return false;

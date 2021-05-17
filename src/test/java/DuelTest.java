@@ -1183,5 +1183,203 @@ public class DuelTest {
         Assertions.assertEquals(8500, thisPlayer.getLP());
         thisPlayer.setLP(LP);
         thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        callOfTheHaunted.reset();
+    }
+
+    @Test
+    public void errorForActivation1() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().isActivatingSpellValid();
+        Assertions.assertEquals("no card is selected yet\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void errorForActivation2() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Wattkid");
+        monsterCard.setOwner(thisPlayer);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().isActivatingSpellValid();
+        Assertions.assertEquals("activate effect is only for spell cards.\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void errorForActivating3() {
+        SpellAndTrapCard callOfTheHaunted = (SpellAndTrapCard) Card.getCardByName("Spell Absorption");
+        callOfTheHaunted.setOwner(thisPlayer);
+        Phases phase = DuelController.getInstance().getGame().getCurrentPhase();
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.DRAW_PHASE);
+        DuelController.getInstance().getGame().setSelectedCard(callOfTheHaunted);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().isActivatingSpellValid();
+        Assertions.assertEquals("action not allowed in this phase\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setCurrentPhase(phase);
+    }
+
+    @Test
+    public void errorForActivating4() {
+        SpellAndTrapCard callOfTheHaunted = (SpellAndTrapCard) Card.getCardByName("Spell Absorption");
+        callOfTheHaunted.setOwner(thisPlayer);
+        callOfTheHaunted.setActive(true);
+        Phases phase = DuelController.getInstance().getGame().getCurrentPhase();
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.FIRST_MAIN_PHASE);
+        DuelController.getInstance().getGame().setSelectedCard(callOfTheHaunted);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().isActivatingSpellValid();
+        Assertions.assertEquals("you have already activated this card\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setCurrentPhase(phase);
+    }
+
+    @Test
+    public void errorForActivating5() {
+        SpellAndTrapCard callOfTheHaunted = (SpellAndTrapCard) Card.getCardByName("Spell Absorption");
+        callOfTheHaunted.setOwner(thisPlayer);
+        callOfTheHaunted.setActive(false);
+        Phases phase = DuelController.getInstance().getGame().getCurrentPhase();
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.FIRST_MAIN_PHASE);
+        ArrayList<Card> handBackUp = thisPlayer.getField().getHand();
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
+        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        thisPlayer.getField().setHand(new ArrayList<>());
+        for (int i = 0; i < 5; i++) {
+            SpellAndTrapCard reki = (SpellAndTrapCard) Card.getCardByName("Raigeki");
+            reki.setOwner(thisPlayer);
+            thisPlayer.getField().getTrapAndSpell().add(reki);
+        }
+        thisPlayer.getField().getHand().add(callOfTheHaunted);
+        DuelController.getInstance().getGame().setSelectedCard(callOfTheHaunted);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().isActivatingSpellValid();
+        Assertions.assertEquals("spell card zone is full\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setCurrentPhase(phase);
+        thisPlayer.getField().setHand(handBackUp);
+        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        DuelController.getInstance().getGame().setSelectedCard(null);
+    }
+
+    @Test
+    public void activateTest() {
+        SpellAndTrapCard inTheCloset = (SpellAndTrapCard) Card.getCardByName("Closed Forest");
+        inTheCloset.setOwner(thisPlayer);
+        DuelController.getInstance().getGame().setSelectedCard(inTheCloset);
+        ArrayList<Card> handBackUp = thisPlayer.getField().getHand();
+        SpellAndTrapCard field = thisPlayer.getField().getFieldZone();
+        Phases phase = DuelController.getInstance().getGame().getCurrentPhase();
+        thisPlayer.getField().setFieldZone(null);
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.FIRST_MAIN_PHASE);
+        thisPlayer.getField().setHand(new ArrayList<>());
+        thisPlayer.getField().getHand().add(inTheCloset);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().activateSpell();
+        Assertions.assertEquals("spell activated\r\n", outputStream.toString());
+        thisPlayer.getField().setHand(handBackUp);
+        thisPlayer.getField().setFieldZone(field);
+        DuelController.getInstance().getGame().setCurrentPhase(phase);
+    }
+
+    @Test
+    public void directAttackError1() {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().isDirectAttackValid();
+        Assertions.assertEquals("no card is selected yet\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void directAttackError2() {
+        SpellAndTrapCard inTheCloset = (SpellAndTrapCard) Card.getCardByName("Closed Forest");
+        inTheCloset.setOwner(thisPlayer);
+        DuelController.getInstance().getGame().setSelectedCard(inTheCloset);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().isDirectAttackValid();
+        Assertions.assertEquals("you can’t attack with this card\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void directAttackError3() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Wattkid");
+        monsterCard.setOwner(thisPlayer);
+        Phases phase = DuelController.getInstance().getGame().getCurrentPhase();
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.DRAW_PHASE);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().isDirectAttackValid();
+        Assertions.assertEquals("action not allowed in this phase\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setCurrentPhase(phase);
+        thisPlayer.getField().setMonsterCards(monsterCards);
+    }
+
+    @Test
+    public void directAttackError4() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Wattkid");
+        monsterCard.setOwner(thisPlayer);
+        monsterCard.setHasAttacked(true);
+        Phases phase = DuelController.getInstance().getGame().getCurrentPhase();
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().isDirectAttackValid();
+        Assertions.assertEquals("this card already attacked\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setCurrentPhase(phase);
+        thisPlayer.getField().setMonsterCards(monsterCards);
+        monsterCard.setHasAttacked(false);
+    }
+
+    @Test
+    public void directAttackError5() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Wattkid");
+        monsterCard.setOwner(thisPlayer);
+        MonsterCard monsterCard1 = (MonsterCard) Card.getCardByName("Wattkid");
+        monsterCard.setOwner(thisPlayer);
+        Phases phase = DuelController.getInstance().getGame().getCurrentPhase();
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
+        ArrayList<MonsterCard> monsterCards1 = theOtherPlayer.getField().getMonsterCards();
+        theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
+        theOtherPlayer.getField().getMonsterCards().add(monsterCard1);
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().isDirectAttackValid();
+        Assertions.assertEquals("you can’t attack the opponent directly\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setCurrentPhase(phase);
+        thisPlayer.getField().setMonsterCards(monsterCards);
+        thisPlayer.getField().setMonsterCards(monsterCards1);
+    }
+
+    @Test
+    public void directAttack() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Wattkid");
+        monsterCard.setOwner(thisPlayer);
+        monsterCard.setHasAttacked(false);
+        Phases phase = DuelController.getInstance().getGame().getCurrentPhase();
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().directAttack();
+        Assertions.assertNull(DuelController.getInstance().getGame().getSelectedCard());
+        DuelController.getInstance().getGame().setCurrentPhase(phase);
+        thisPlayer.getField().setMonsterCards(monsterCards);
     }
 }
