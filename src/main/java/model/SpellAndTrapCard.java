@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class SpellAndTrapCard extends Card {
     protected static ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
     protected boolean isActive = false;
-    protected boolean canBeActivated = true;
     @Expose(serialize = true, deserialize = true)
     protected boolean isSpell;
     @Expose(serialize = true, deserialize = true)
@@ -24,24 +23,12 @@ public class SpellAndTrapCard extends Card {
         return isLimited;
     }
 
-    public void setLimited(boolean limited) {
-        isLimited = limited;
-    }
-
     public String getProperty() {
         return property;
     }
 
     public void setProperty(String property) {
         this.property = property;
-    }
-
-    public static ArrayList<SpellAndTrapCard> getSpellAndTrapCards() {
-        return spellAndTrapCards;
-    }
-
-    public static void setSpellAndTrapCards(ArrayList<SpellAndTrapCard> spellAndTrapCards) {
-        SpellAndTrapCard.spellAndTrapCards = spellAndTrapCards;
     }
 
     public boolean isSpell() {
@@ -58,18 +45,6 @@ public class SpellAndTrapCard extends Card {
 
     public void setActive(boolean active) {
         isActive = active;
-    }
-
-    public boolean isCanBeActivated() {
-        return canBeActivated;
-    }
-
-    public void setCanBeActivated(boolean canBeActivated) {
-        this.canBeActivated = canBeActivated;
-    }
-
-    public boolean canBeUsed(Game game) {
-        return false;
     }
 
     @Override

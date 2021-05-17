@@ -1171,4 +1171,20 @@ public class DuelTest {
         thisPlayer.getField().setTrapAndSpell(mySpells);
         thisPlayer.getField().setGraveyard(myGY);
     }
+
+    @Test
+    public void spellAbsorptionTest() {
+        SpellAndTrapCard callOfTheHaunted = (SpellAndTrapCard) Card.getCardByName("Spell Absorption");
+        callOfTheHaunted.setOwner(thisPlayer);
+        callOfTheHaunted.setActive(true);
+        int LP = thisPlayer.getLP();
+        thisPlayer.setLP(8000);
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
+        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        thisPlayer.getField().getTrapAndSpell().add(callOfTheHaunted);
+        DuelController.getInstance().selfAbsorption();
+        Assertions.assertEquals(8500, thisPlayer.getLP());
+        thisPlayer.setLP(LP);
+        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+    }
 }

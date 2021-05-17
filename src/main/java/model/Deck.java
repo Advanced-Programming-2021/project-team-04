@@ -60,46 +60,18 @@ public class Deck {
         return mainDeck;
     }
 
-    public void setMainDeck(ArrayList<Card> mainDeck) {
-        this.mainDeck = mainDeck;
-    }
-
     public ArrayList<Card> getSideDeck() {
         return sideDeck;
     }
-
-    public void setSideDeck(ArrayList<Card> sideDeck) {
-        this.sideDeck = sideDeck;
-    }
-
 
     public boolean isMainDeckFull() {
         isMainDeckFull = mainDeck.size() == 60;
         return isMainDeckFull;
     }
 
-    public void setMainDeckFull(boolean mainDeckFull) {
-        isMainDeckFull = mainDeckFull;
-    }
-
     public boolean isSideDeckFull() {
         isSideDeckFull = sideDeck.size() == 15;
         return isSideDeckFull;
-    }
-
-    public void setSideDeckFull(boolean sideDeckFull) {
-        isSideDeckFull = sideDeckFull;
-    }
-
-    private void addCardToDeck(Card card, boolean isMainDeck) {
-        if (isMainDeck) mainDeck.add(card);
-        else sideDeck.add(card);
-    }
-
-    private void removeCardFromDeck(Card card, boolean isMainDeck) {
-        if (isMainDeck) // in the controller, check the errors
-            mainDeck.remove(card);
-        else sideDeck.remove(card);
     }
 
     @Override

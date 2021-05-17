@@ -13,9 +13,6 @@ public class Card {
     @Expose(serialize = true, deserialize = true)
     protected String description;
     protected int allowedNumber = 3;
-    protected boolean isAttacked = false;
-    protected boolean isAttacking = false;
-    //TODO probably should handle more than this, maybe make an entry set for both cards *or a hashmap idk
     protected Duelist Owner;
     @Expose(serialize = true, deserialize = true)
     protected String ownerUsername;
@@ -42,29 +39,6 @@ public class Card {
         this.hasBeenUsedInThisTurn = hasBeenUsedInThisTurn;
     }
 
-    public boolean isAttacking() {
-        return isAttacking;
-    }
-
-    public void setAttacking(boolean attacking) {
-        isAttacking = attacking;
-    }
-
-    public boolean isAttacked() {
-        return isAttacked;
-    }
-
-    public void setAttacked(boolean attacked) {
-        isAttacked = attacked;
-    }
-
-    public static ArrayList<Card> getAllCards() {
-        return allCards;
-    }
-
-    public static void setAllCards(ArrayList<Card> allCards) {
-        Card.allCards = allCards;
-    }
 
     public Duelist getOwner() {
         //TODO is this method ok AI-wise?

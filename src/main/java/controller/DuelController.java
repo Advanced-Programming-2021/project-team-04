@@ -802,7 +802,7 @@ public class DuelController {
         game.setSelectedCard(null);
     }
 
-    private void selfAbsorption() {
+    public void selfAbsorption() {
         makeChain(game.getCurrentPlayer(), game.getTheOtherPlayer());
         if (game.getCurrentPlayer().getField().hasThisCardActivated("Spell Absorption") != null)
             game.getCurrentPlayer().changeLP(500);

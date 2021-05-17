@@ -57,14 +57,6 @@ public class Game {
         this.lastSetCard = lastSetCard;
     }
 
-    public ArrayList<Card> getCardsWithChangedPositions() {
-        return cardsWithChangedPositions;
-    }
-
-    public void setCardsWithChangedPositions(ArrayList<Card> cardsWithChangedPositions) {
-        this.cardsWithChangedPositions = cardsWithChangedPositions;
-    }
-
     public boolean isHasSummonedInThisTurn() {
         return hasSummonedInThisTurn;
     }
@@ -111,14 +103,6 @@ public class Game {
 
     public void setCurrentPlayer(Duelist currentPlayer) {
         this.currentPlayer = currentPlayer;
-    }
-
-    public ArrayList<Card> getCardsWhichAttacked() {
-        return cardsWhichAttacked;
-    }
-
-    public void setCardsWhichAttacked(ArrayList<Card> cardsWhichAttacked) {
-        this.cardsWhichAttacked = cardsWhichAttacked;
     }
 
     public Duelist getTheOtherPlayer() {

@@ -132,9 +132,6 @@ public class MonsterCard extends Card {
         this.thisCardAttackPower += amount;
     }
 
-    public void changeDefensePower(int amount) {
-        this.thisCardDefensePower += amount;
-    }
 
     public void reset() {
         this.thisCardDefensePower = classDefensePower;

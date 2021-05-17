@@ -73,51 +73,6 @@ public class Field {
         this.fieldZone = fieldZone;
     }
 
-    public void shuffleDeck() {
-        Collections.shuffle(deckZone);
-    }
-
-    public void removeCardFromHand(Card card) {
-        hand.remove(card);
-    }
-
-    public void addCardToGraveyard(Card card) {
-        graveyard.add(card);
-    }
-
-    public void removeCardFromGraveyard(Card card) {
-        graveyard.remove(card);
-    }
-
-    public void addCardToMonsterZone(MonsterCard card) {
-        monsterCards.add((card));
-    }
-
-    public void addCardToSpellZone(SpellAndTrapCard card) {
-        trapAndSpell.add(card);
-    }
-
-    public void setCardToFieldZone(SpellAndTrapCard card) {
-        fieldZone = card;
-    }
-
-    public boolean isMonsterZoneFull() {
-        return monsterCards.size() == 5;
-    }
-
-    public boolean isSpellZoneFull() {
-        return trapAndSpell.size() == 5;
-    }
-
-    public boolean isCardInHand(Card card) {
-        return hand.contains(card);
-    }
-
-    public boolean isCardInMonsterZone(MonsterCard card) {
-        return monsterCards.contains(card);
-    }
-
-
     public boolean isTributesLevelSumValid(int sum, int n) {
         if (sum < 0) return false;
         if (sum > 0 && n == 0)

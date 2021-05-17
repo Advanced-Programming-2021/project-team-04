@@ -38,21 +38,6 @@ public class Account extends Duelist {
         allNicknames.add(account.getNickname());
     }
 
-    public static void setAllAccounts(ArrayList<Account> allAccounts) {
-        Account.allAccounts = allAccounts;
-    }
-
-    public static void setAllUsernames(ArrayList<String> allUsernames) {
-        Account.allUsernames = allUsernames;
-    }
-
-    public static void setAllNicknames(ArrayList<String> allNicknames) {
-        Account.allNicknames = allNicknames;
-    }
-
-    public void setAllDecks(ArrayList<Deck> allDecks) {
-        this.allDecks = allDecks;
-    }
 
     public void setAllCards(ArrayList<Card> allCards) {
         this.allCards = allCards;
@@ -60,10 +45,6 @@ public class Account extends Duelist {
 
     public void setActiveDeck(Deck activeDeck) {
         this.activeDeck = activeDeck;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public void setPassword(String password) {

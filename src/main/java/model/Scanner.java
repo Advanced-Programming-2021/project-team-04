@@ -16,10 +16,6 @@ public class Scanner extends MonsterCard {
         setDescription();
     }
 
-    public MonsterCard getCardReplaced() {
-        return cardReplaced;
-    }
-
     public void setCardReplaced(MonsterCard cardReplaced) {
         originalOwner = cardReplaced.getOwner();
         cardReplaced.setOwner(this.getOwner());
