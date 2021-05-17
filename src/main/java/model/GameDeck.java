@@ -1,10 +1,11 @@
 package model;
 
 import com.google.gson.annotations.Expose;
+import controller.ImportAndExport;
 
 import java.util.ArrayList;
 
-public class Deck {
+public class GameDeck {
     @Expose(serialize = true, deserialize = true)
     private ArrayList<Card> mainDeck = new ArrayList<>();
     @Expose(serialize = true, deserialize = true)
@@ -13,9 +14,18 @@ public class Deck {
     private String deckName;
     private boolean isMainDeckFull, isSideDeckFull;
 
-    public Deck(String deckName) {
+    public GameDeck(String deckName) {
         setDeckName(deckName);
     }
+
+//    public GameDeck(PlayerDeck playerDeck) {
+//        playerDeck.getMainDeckCards().keySet().forEach(n -> {
+//            for (int i = 0; i < playerDeck.getMainDeckCards().get(n); i++) {
+                /*TODO somehow convert the fucking PlayerDeck to a motherfucking GameDeck
+                   a method which shows whether a card is monster or spell or trap would be USEFUL*/
+//            }
+//        });
+//    }
 
     public String getDeckName() {
         return deckName;
@@ -34,8 +44,7 @@ public class Deck {
     }
 
     public boolean isDeckValid() {
-        if (mainDeck.size() >= 40 && mainDeck.size() <= 60 && sideDeck.size() <= 15) return true;
-        return false;
+        return mainDeck.size() >= 40 && mainDeck.size() <= 60 && sideDeck.size() <= 15;
     }
 
     public boolean isAddingCardValid(String cardName) {
@@ -51,9 +60,7 @@ public class Deck {
         for (Card thisCard : getSideDeck())
             if (thisCard.getName().equals(cardName))
                 count++;
-        if (count == 3 || Card.getCardByName(cardName).getAllowedNumber() == count)
-            return false;
-        return true;
+        return count != 3 && Card.getCardByName(cardName).getAllowedNumber() != count;
     }
 
     public ArrayList<Card> getMainDeck() {

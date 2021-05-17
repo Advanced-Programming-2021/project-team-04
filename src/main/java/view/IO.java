@@ -142,6 +142,10 @@ public class IO {
         System.out.println("choose rock or paper or scissors:");
     }
 
+    public void printAIsRPS(String rps) {
+        System.out.println("computer chose: " + rps );
+    }
+
     public void wantToActivate(String cardName) {
         System.out.println("do you want to activate " + cardName + "?");
     }

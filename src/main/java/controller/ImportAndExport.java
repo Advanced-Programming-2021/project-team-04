@@ -2,13 +2,10 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import model.Account;
-import model.Card;
-import model.MonsterCard;
-import model.SpellAndTrapCard;
-
+import model.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ImportAndExport {
     private static ImportAndExport singleInstance = null;
@@ -19,6 +16,29 @@ public class ImportAndExport {
         return singleInstance;
     }
 
+//    public static void main(String[] args) {
+//        Account account = new Account("BoJack Horseman", "the password", "BoJack");
+//        Deck deck = new Deck("First AI Deck");
+//        MainController.getInstance().setLoggedIn(account);
+//        account.addDeck(deck);
+//        account.setActiveDeck(deck);
+//        getInstance().readAllMonsterCards(account, deck);
+//        getInstance().writeToJson("src/main/resources/decks/First AI Deck.JSON", deck);
+//        Deck deck = getInstance().readDeck("src/main/resources/decks/First AI Deck.JSON");
+//        System.out.println(deck.isDeckValid());
+//    }
+//
+//    public void readAllMonsterCards(Account account, Deck deck) {
+//        File folder = new File("src/main/resources/monsters");
+//        MonsterCard monsterCard;
+//        for (File file : Objects.requireNonNull(folder.listFiles()))
+//            for (int i = 0; i < 2; i++) {
+//                monsterCard = readMonsterCard("src/main/resources/monsters/" + file.getName());
+//                account.addCard(monsterCard);
+//                DeckController.getInstance().addCardToDeck(deck.getDeckName(), monsterCard.getName(), !deck.isMainDeckFull());
+//            }
+//    }
+
     public void writeAllUsers() {
         ArrayList<Account> allAccounts = Account.getAllAccounts();
         for (Account account : allAccounts)
@@ -27,7 +47,7 @@ public class ImportAndExport {
 
     public void readAllUsers() {
         File folder = new File("src/main/resources/users");
-        for (File file : folder.listFiles())
+        for (File file : Objects.requireNonNull(folder.listFiles()))
             Account.addAccount(readAccount("src/main/resources/users/" + file.getName()));
     }
 
@@ -54,6 +74,26 @@ public class ImportAndExport {
             Gson gson = gsonBuilder.create();
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             return gson.fromJson(bufferedReader, Account.class);
+        } catch (Exception FileNotFoundException) {
+            return null;
+        }
+    }
+
+    public ArrayList<GameDeck> readAllDecks(String address) {
+        ArrayList<GameDeck> gameDecks = new ArrayList<>();
+        File folder = new File(address);
+        for (File file : Objects.requireNonNull(folder.listFiles()))
+            gameDecks.add(readDeck(address + file.getName()));
+        return gameDecks;
+    }
+
+    public GameDeck readDeck(String address) {
+        try {
+            FileReader fileReader = new FileReader(address);
+            GsonBuilder gsonBuilder = new GsonBuilder();
+            Gson gson = gsonBuilder.create();
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            return gson.fromJson(bufferedReader, GameDeck.class);
         } catch (Exception FileNotFoundException) {
             return null;
         }
@@ -94,4 +134,9 @@ public class ImportAndExport {
         } catch (IOException ignored) {
         }
     }
+
+//    public GameDeck getGameDeck(PlayerDeck playerDeck) {
+//        //TODO this method or GameDeck's constructor?
+//    }
+
 }

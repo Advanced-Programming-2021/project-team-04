@@ -1,11 +1,25 @@
 package model;
 
 import controller.DuelController;
+import controller.ImportAndExport;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
 public class AI extends Duelist {
+
+    private static AI singleInstance = null;
+
+    private AI() {
+        username = "AI";
+        setAllDecks(ImportAndExport.getInstance().readAllDecks("src/main/resources/decks/"));
+    }
+
+    public static AI getInstance() {
+        if (singleInstance == null)
+            singleInstance = new AI();
+        return singleInstance;
+    }
 
     private ArrayList<MonsterCard> findTributes;
 

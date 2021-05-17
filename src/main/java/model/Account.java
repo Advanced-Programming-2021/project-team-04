@@ -43,8 +43,8 @@ public class Account extends Duelist {
         this.allCards = allCards;
     }
 
-    public void setActiveDeck(Deck activeDeck) {
-        this.activeDeck = activeDeck;
+    public void setActiveDeck(GameDeck activeGameDeck) {
+        this.activeGameDeck = activeGameDeck;
     }
 
     public void setPassword(String password) {

@@ -1,5 +1,6 @@
 package controller;
 
+import model.AI;
 import model.Account;
 import model.Game;
 import view.IO;
@@ -31,6 +32,14 @@ public class MainController {
         return false;
     }
 
+    public boolean newAIDuel(int rounds) {
+        if (errorForNewAIGame(rounds)) {
+            new Game(loggedIn, AI.getInstance(), rounds, true);
+            return true;
+        }
+        return false;
+    }
+
     private boolean errorForNewGame(String username, int rounds) {
         if (!Account.getAllAccounts().contains(Account.getAccountByUsername(username))) {
             IO.getInstance().playerDoesntExist();
@@ -51,6 +60,22 @@ public class MainController {
         }
         if (!player2.getActiveDeck().isDeckValid()) {
             IO.getInstance().invalidDeck(player2.getUsername());
+            return false;
+        }
+        if (rounds != 1 && rounds != 3) {
+            IO.getInstance().invalidNumOfRounds();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean errorForNewAIGame(int rounds) {
+        if (loggedIn.getActiveDeck() == null) {
+            IO.getInstance().noActiveDeck(loggedIn.getUsername());
+            return false;
+        }
+        if (!loggedIn.getActiveDeck().isDeckValid()) {
+            IO.getInstance().invalidDeck(loggedIn.getUsername());
             return false;
         }
         if (rounds != 1 && rounds != 3) {

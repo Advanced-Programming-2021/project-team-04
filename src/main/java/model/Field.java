@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class Field {
     private ArrayList<Card> graveyard = new ArrayList<>();
@@ -12,9 +11,9 @@ public class Field {
     private SpellAndTrapCard fieldZone;
     private ArrayList<Card> sideDeck = new ArrayList<>();
 
-    public Field(Deck deck) {
-        deckZone.addAll(deck.getMainDeck());
-        sideDeck.addAll(deck.getSideDeck());
+    public Field(GameDeck gameDeck) {
+        deckZone.addAll(gameDeck.getMainDeck());
+        sideDeck.addAll(gameDeck.getSideDeck());
     }
 
     public ArrayList<Scanner> getActiveScanners() {
