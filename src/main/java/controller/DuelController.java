@@ -367,6 +367,15 @@ public class DuelController {
                 drawPhase();
             }
         }
+        if (getGame().getCurrentPlayer() instanceof AI) handleAI();
+    }
+
+    private void handleAI() {
+        switch (game.getCurrentPhase()) {
+            case FIRST_MAIN_PHASE, SECOND_MAIN_PHASE -> AI.getInstance().summonMonster();
+            case BATTLE_PHASE -> AI.getInstance().attack(getGame().getTheOtherPlayer());
+        }
+        nextPhase();
     }
 
     public void summon() {

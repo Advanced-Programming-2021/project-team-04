@@ -2,13 +2,10 @@ package controller;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import model.Account;
-import model.Card;
-import model.MonsterCard;
-import model.SpellAndTrapCard;
-
+import model.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ImportAndExport {
     private static ImportAndExport singleInstance = null;
@@ -27,7 +24,7 @@ public class ImportAndExport {
 
     public void readAllUsers() {
         File folder = new File("src/main/resources/users");
-        for (File file : folder.listFiles())
+        for (File file : Objects.requireNonNull(folder.listFiles()))
             Account.addAccount(readAccount("src/main/resources/users/" + file.getName()));
     }
 

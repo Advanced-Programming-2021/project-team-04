@@ -7,6 +7,7 @@ import model.MonsterCard;
 import model.SpellAndTrapCard;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,8 +17,15 @@ public class DuelView extends ViewMenu {
 
     private boolean isRPSDone = false;
 
+    private final String[] rps = {"r", "p", "s"};
+
+    private final Random random = new Random();
+
     private final Pattern selectCardPattern = Pattern.compile("^s(?:elect)? " +
             "(?=.*(?:(?:-(?:(?:-(?:monster)|(?:spell)|(?:hand))|(?:[msh])) (?<number>\\d+)?)|(?:-(?:(?:-field)|(?:f))))).+");
+    private final Pattern attackPattern = Pattern.compile("att(?:ack)? (?<number>\\d+)");
+    private final Pattern cheatDecreaseLPPattern = Pattern.compile("Death(?: to)?(?: the)? Mechanisms (?<number>\\d+)");
+    private final Pattern cheatIncreaseLPPattern = Pattern.compile("Underworld Blues (?<number>\\d+)");
 
     private DuelView() {
 
@@ -30,10 +38,13 @@ public class DuelView extends ViewMenu {
                 !command.matches("(?:menu )?enter [Mm]ain(?: menu)?") &&
                 !DuelController.getInstance().getGame().isGameFinished()) {
             Matcher selectCardMatcher = selectCardPattern.matcher(command);
+            Matcher attackMatcher = attackPattern.matcher(command);
+            Matcher cheatDecreaseLPMatcher = cheatDecreaseLPPattern.matcher(command);
+            Matcher cheatIncreaseLPMatcher = cheatIncreaseLPPattern.matcher(command);
             if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
                 showCurrentMenu();
             else if (command.matches("(?:(?:select -d)|(?:deselect))"))
-                deselectCard();
+                DuelController.getInstance().deselectCard();
             else if (selectCardMatcher.matches())
                 selectCard(selectCardMatcher, command.contains("-o"), CardStatusInField.getCardStatusInField(command));
             else if (command.matches("sum(?:mon)?"))
@@ -41,27 +52,27 @@ public class DuelView extends ViewMenu {
             else if (command.matches("se(?:t)?"))
                 DuelController.getInstance().set();
             else if (command.matches("set -(?:(?:-position)|(?:p)) (?:att(?:ack)?|def(?:ense)?)"))
-                setPosition(command);
+                DuelController.getInstance().setPosition(command.contains("att"));
             else if (command.matches("f(?:lip)?-sum(?:mon)?"))
                 DuelController.getInstance().flipSummon();
-            else if (command.matches("att(?:ack)? \\d+"))
-                attack(command);
+            else if (attackMatcher.matches())
+                DuelController.getInstance().attack(Integer.parseInt(attackMatcher.group("number")));
             else if (command.matches("att(?:ack)? d(?:ir(?:ect)?)?"))
                 DuelController.getInstance().directAttack();
             else if (command.matches("activ(?:at)?e(?: effect)?"))
                 DuelController.getInstance().activateSpell();
             else if (command.matches("(?:show )?grave(?:yard)?"))
                 showGraveyard();
-            else if (command.matches("(?:c(?:ard)? )?show \\-(?:(?:\\-select(?:ed)?)|(?:s))"))
+            else if (command.matches("(?:c(?:ard)? )?show -(?:(?:-select(?:ed)?)|(?:s))"))
                 DuelController.getInstance().showSelectedCard();
             else if (command.matches("sur(?:render)?"))
                 DuelController.getInstance().surrender();
             else if (command.matches("next(?: phase)?"))
                 DuelController.getInstance().nextPhase();
-            else if (command.matches("Death(?: to)?(?: the)? Mechanisms (\\d+)"))
-                cheatDecreaseLP(command);
-            else if (command.matches("Underworld Blues (\\d+)"))
-                cheatIncreaseLP(command);
+            else if (cheatDecreaseLPMatcher.matches())
+                DuelController.getInstance().cheatDecreaseLP(Integer.parseInt(cheatDecreaseLPMatcher.group("number")));
+            else if (cheatIncreaseLPMatcher.matches())
+                DuelController.getInstance().cheatIncreaseLP(Integer.parseInt(cheatIncreaseLPMatcher.group("number")));
             else if (command.matches("Person(?: of)? Interest"))
                 DuelController.getInstance().cheatSeeMyDeck();
             else if (command.matches("Conspiracy(?: to) Commit Treason"))
@@ -86,6 +97,14 @@ public class DuelView extends ViewMenu {
         }
     }
 
+    public void runForRPSAgainstAI() {
+        while (!isRPSDone) {
+            String playersChoice = getRPSInput();
+            String AIsChoice = rps[random.nextInt(3)];
+            IO.getInstance().printAIsRPS(AIsChoice);
+            DuelController.getInstance().rockPaperScissor(playersChoice, AIsChoice);
+        }
+    }
 
     public boolean wantsToActivate(String cardName) {
         IO.getInstance().wantToActivate(cardName);
@@ -105,6 +124,8 @@ public class DuelView extends ViewMenu {
     }
 
     public void chooseStarter(String winnerUsername) {
+        if (winnerUsername.equals("AI"))
+            DuelController.getInstance().chooseStarter(winnerUsername);
         IO.getInstance().chooseStarter();
         String username = IO.getInstance().getInputMessage();
         DuelController.getInstance().chooseStarter(username);
@@ -116,30 +137,9 @@ public class DuelView extends ViewMenu {
         return Integer.parseInt(cardNumber);
     }
 
-
     private void selectCard(Matcher matcher, boolean isPlayersCard, CardStatusInField cardStatusInField) {
         DuelController.getInstance().selectCard(isPlayersCard, cardStatusInField,
                 cardStatusInField == CardStatusInField.FIELD_ZONE ? 0 : Integer.parseInt(matcher.group("number")));
-    }
-
-    private void deselectCard() {
-        DuelController.getInstance().deselectCard();
-    }
-
-    private void setPosition(String input) {
-        Pattern pattern = Pattern.compile("set \\-(?:(?:\\-position)|(?:p)) (att(?:ack)?|def(?:ense)?)");
-        Matcher matcher = pattern.matcher(input);
-        matcher.find();
-        String position = matcher.group(1);
-        DuelController.getInstance().setPosition(position.matches("att(?:ack)?"));
-    }
-
-    private void attack(String input) {
-        Pattern pattern = Pattern.compile("att(?:ack)? (\\d+)");
-        Matcher matcher = pattern.matcher(input);
-        matcher.find();
-        int number = Integer.parseInt(matcher.group(1));
-        DuelController.getInstance().attack(number);
     }
 
     private void showGraveyard() {
@@ -148,22 +148,6 @@ public class DuelView extends ViewMenu {
             String command = IO.getInstance().getInputMessage();
             if (command.matches("back")) break;
         }
-    }
-
-    private void cheatIncreaseLP(String string) {
-        Pattern pattern = Pattern.compile("Underworld Blues (\\d+)");
-        Matcher matcher = pattern.matcher(string);
-        matcher.find();
-        int number = Integer.parseInt(matcher.group(1));
-        DuelController.getInstance().cheatIncreaseLP(number);
-    }
-
-    private void cheatDecreaseLP(String input) {
-        Pattern pattern = Pattern.compile("Death(?: to)?(?: the)? Mechanisms (\\d+)");
-        Matcher matcher = pattern.matcher(input);
-        matcher.find();
-        int number = Integer.parseInt(matcher.group(1));
-        DuelController.getInstance().cheatDecreaseLP(number);
     }
 
     @Override
@@ -382,8 +366,7 @@ public class DuelView extends ViewMenu {
         // *
         //card from main deck
         String input = IO.getInstance().getInputMessage();
-        String[] names = input.split(" \\* ");
-        return names;
+        return input.split(" \\* ");
     }
 
     public MonsterCard getFromMyDeck(boolean isOpponent) {

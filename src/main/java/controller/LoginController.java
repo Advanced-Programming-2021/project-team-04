@@ -29,7 +29,7 @@ public class LoginController {
     }
 
     private boolean errorsForCreatingUser(String username, String nickname) {
-        if (Account.getAllUsernames().contains(username)) {
+        if (Account.getAllUsernames().contains(username) || username.equals("AI")) {
             IO.getInstance().userWithUsernameExists(username);
             return false;
         } else if (Account.getAllNicknames().contains(nickname)) {

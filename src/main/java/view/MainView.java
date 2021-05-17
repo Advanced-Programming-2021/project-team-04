@@ -45,7 +45,7 @@ public class MainView extends ViewMenu {
             else if (newDuelMatcher.matches())
                 newDuel(newDuelMatcher);
             else if (newDuelAIMatcher.matches())
-                newDuelAI();
+                newDuelAI(newDuelAIMatcher);
             else if (command.matches("The Aurora Strikes \\d+"))
                 cheatIncreaseScore(command);
             else if (command.matches("The Hanged Man Rusts \\d+"))
@@ -90,8 +90,11 @@ public class MainView extends ViewMenu {
         }
     }
 
-    private void newDuelAI() {
-        //TODO call whatever menu we should call after AI is done
+    private void newDuelAI(Matcher matcher) {
+        if (MainController.getInstance().newAIDuel(Integer.parseInt(matcher.group("roundsNumber")))) {
+            DuelView.getInstance().runForRPSAgainstAI();
+            DuelView.getInstance().run();
+        }
     }
 
     private void cheatIncreaseScore(String string) {

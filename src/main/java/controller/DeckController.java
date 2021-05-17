@@ -1,9 +1,6 @@
 package controller;
 
-import model.Account;
-import model.Card;
-import model.Deck;
-import model.MonsterCard;
+import model.*;
 import view.IO;
 
 import java.util.ArrayList;
