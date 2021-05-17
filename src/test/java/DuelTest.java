@@ -1366,6 +1366,7 @@ public class DuelTest {
 
     @Test
     public void directAttack() {
+        theOtherPlayer.setLP(8000);
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Wattkid");
         monsterCard.setOwner(thisPlayer);
         monsterCard.setHasAttacked(false);
@@ -1378,8 +1379,456 @@ public class DuelTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().directAttack();
-        Assertions.assertNull(DuelController.getInstance().getGame().getSelectedCard());
+        Assertions.assertEquals("you opponent receives " + monsterCard.getThisCardAttackPower() + " battle damage\r\n", outputStream.toString());
         DuelController.getInstance().getGame().setCurrentPhase(phase);
         thisPlayer.getField().setMonsterCards(monsterCards);
     }
+
+    @Test
+    public void attackError1() {
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("no card is selected yet\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void attackError2() {
+        SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) Card.getCardByName("Raigeki");
+        DuelController.getInstance().getGame().setSelectedCard(spellAndTrapCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("you can’t attack with this card\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+    }
+
+    @Test
+    public void attackError3() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Slot Machine");
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.FIRST_MAIN_PHASE);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("action not allowed in this phase\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+    }
+
+    @Test
+    public void attackError4() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Slot Machine");
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        monsterCard.setHasAttacked(true);
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("this card already attacked\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+        monsterCard.setHasAttacked(false);
+    }
+
+    @Test
+    public void attackError5() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Slot Machine");
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
+        theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("there is no card to attack here\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+        theOtherPlayer.getField().setMonsterCards(opponentMonsters);
+    }
+
+    @Test
+    public void attackError6() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Slot Machine");
+        MonsterCard attacked = (MonsterCard) Card.getCardByName("Spiral Serpent") ;
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
+        theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
+        theOtherPlayer.getField().getMonsterCards().add(attacked);
+        attacked.setCanBeRemoved(false);
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("you can’t attack this card\r\n", outputStream.toString());
+        attacked.setCanBeRemoved(true);
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+        theOtherPlayer.getField().setMonsterCards(opponentMonsters);
+    }
+
+    @Test
+    public void attackError7() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Slot Machine");
+        MonsterCard attacked = (MonsterCard) Card.getCardByName("Spiral Serpent") ;
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
+        theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
+        theOtherPlayer.getField().getMonsterCards().add(attacked);
+        monsterCard.setCanAttack(false);
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("you can’t attack with this card\r\n", outputStream.toString());
+        monsterCard.setCanAttack(true);
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+        theOtherPlayer.getField().setMonsterCards(opponentMonsters);
+    }
+
+    @Test
+    public void attackInAttackWinTest() {
+        theOtherPlayer.setLP(8000);
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        MonsterCard attacked = (MonsterCard) Card.getCardByName("Wattkid");
+        MonsterCard attacker = (MonsterCard) Card.getCardByName("Baby dragon");
+        attacked.reset();
+        attacker.reset();
+        attacked.setOwner(theOtherPlayer);
+        attacker.setOwner(thisPlayer);
+        DuelController.getInstance().getGame().setSelectedCard(attacker);
+        attacked.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(attacker);
+        theOtherPlayer.getField().getMonsterCards().add(attacked);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("your opponent’s monster is destroyed and your opponent receives 200 battle damage\r\n", outputStream.toString());
+        thisPlayer.getField().setMonsterCards(myMonsters);
+        theOtherPlayer.getField().setMonsterCards(opponentMonsters);
+    }
+
+    @Test
+    public void attackInAttackDrawTest() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        MonsterCard attacked = (MonsterCard) Card.getCardByName("Silver Fang");
+        MonsterCard attacker = (MonsterCard) Card.getCardByName("Baby dragon");
+        attacked.reset();
+        attacker.reset();
+        attacked.setOwner(theOtherPlayer);
+        attacker.setOwner(thisPlayer);
+        DuelController.getInstance().getGame().setSelectedCard(attacker);
+        attacked.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(attacker);
+        theOtherPlayer.getField().getMonsterCards().add(attacked);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("both you and your opponent monster cards are destroyed and no one receives damage\r\n", outputStream.toString());
+        thisPlayer.getField().setMonsterCards(myMonsters);
+        theOtherPlayer.getField().setMonsterCards(opponentMonsters);
+    }
+
+    @Test
+    public void attackInAttackLossTest() {
+        thisPlayer.setLP(8000);
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        MonsterCard attacker = (MonsterCard) Card.getCardByName("Wattkid");
+        MonsterCard attacked = (MonsterCard) Card.getCardByName("Baby dragon");
+        attacked.reset();
+        attacker.reset();
+        attacked.setOwner(theOtherPlayer);
+        attacker.setOwner(thisPlayer);
+        DuelController.getInstance().getGame().setSelectedCard(attacker);
+        attacked.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(attacker);
+        theOtherPlayer.getField().getMonsterCards().add(attacked);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("Your monster card is destroyed and you received 200 battle damage\r\n", outputStream.toString());
+        thisPlayer.getField().setMonsterCards(myMonsters);
+        theOtherPlayer.getField().setMonsterCards(opponentMonsters);
+    }
+
+    @Test
+    public void attackInDefenseWinTest() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        MonsterCard attacked = (MonsterCard) Card.getCardByName("Wattkid");
+        MonsterCard attacker = (MonsterCard) Card.getCardByName("Baby dragon");
+        attacked.reset();
+        attacker.reset();
+        attacked.setOwner(theOtherPlayer);
+        attacker.setOwner(thisPlayer);
+        DuelController.getInstance().getGame().setSelectedCard(attacker);
+        attacked.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_DOWN);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(attacker);
+        theOtherPlayer.getField().getMonsterCards().add(attacked);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("opponent’s monster card was Wattkid and the defense position monster is destroyed\r\n", outputStream.toString());
+        thisPlayer.getField().setMonsterCards(myMonsters);
+        theOtherPlayer.getField().setMonsterCards(opponentMonsters);
+    }
+
+    @Test
+    public void attackInDefenseDrawTest() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        MonsterCard attacked = (MonsterCard) Card.getCardByName("Fireyarou");
+        MonsterCard attacker = (MonsterCard) Card.getCardByName("Wattkid");
+        attacked.reset();
+        attacker.reset();
+        attacked.setOwner(theOtherPlayer);
+        attacker.setOwner(thisPlayer);
+        DuelController.getInstance().getGame().setSelectedCard(attacker);
+        attacked.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(attacker);
+        theOtherPlayer.getField().getMonsterCards().add(attacked);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("no card is destroyed\r\n", outputStream.toString());
+        thisPlayer.getField().setMonsterCards(myMonsters);
+        theOtherPlayer.getField().setMonsterCards(opponentMonsters);
+    }
+
+    @Test
+    public void attackInDefenseLossTest() {
+        thisPlayer.setLP(8000);
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        MonsterCard attacker = (MonsterCard) Card.getCardByName("Wattkid");
+        MonsterCard attacked = (MonsterCard) Card.getCardByName("Axe Raider");
+        attacked.reset();
+        attacker.reset();
+        attacked.setOwner(theOtherPlayer);
+        attacker.setOwner(thisPlayer);
+        DuelController.getInstance().getGame().setSelectedCard(attacker);
+        attacked.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(attacker);
+        theOtherPlayer.getField().getMonsterCards().add(attacked);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().attack(1);
+        Assertions.assertEquals("no card is destroyed and you received 150 battle damage\r\n", outputStream.toString());
+        thisPlayer.getField().setMonsterCards(myMonsters);
+        theOtherPlayer.getField().setMonsterCards(opponentMonsters);
+    }
+
+    @Test
+    public void flipSummonError1() {
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().flipSummon();
+        Assertions.assertEquals("no card is selected yet\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void flipSummonError2() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().flipSummon();
+        Assertions.assertEquals("you can’t change this card's position\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+    }
+
+    @Test
+    public void flipSummonError3() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().flipSummon();
+        Assertions.assertEquals("action not allowed in this phase\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+    }
+
+    @Test
+    public void flipSummonError4() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.SECOND_MAIN_PHASE);
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
+        monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().flipSummon();
+        Assertions.assertEquals("you can’t flip summon this card\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+    }
+
+    @Test
+    public void flipSummon() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.SECOND_MAIN_PHASE);
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
+        monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_DOWN);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        DuelController.getInstance().flipSummon();
+        Assertions.assertEquals(monsterCard.getMonsterCardModeInField(), MonsterCardModeInField.ATTACK_FACE_UP);
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+    }
+
+    @Test
+    public void setPositionErrorTest1() {
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().setPosition(true);
+        Assertions.assertEquals("no card is selected yet\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void setPositionErrorTest2() {
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().setPosition(true);
+        Assertions.assertEquals("you can’t change this card's position\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+    }
+
+    @Test
+    public void setPositionErrorTest3() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().setPosition(true);
+        Assertions.assertEquals("action not allowed in this phase\r\n", outputStream.toString());
+        thisPlayer.getField().setMonsterCards(myMonsters);
+        DuelController.getInstance().getGame().setSelectedCard(null);
+    }
+
+    @Test
+    public void setPositionErrorTest4() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.SECOND_MAIN_PHASE);
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
+        monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().setPosition(true);
+        Assertions.assertEquals("this card is already in the wanted position\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+    }
+
+    @Test
+    public void setPositionErrorTest5() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.SECOND_MAIN_PHASE);
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
+        monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
+        monsterCard.setHasChangedPosition(true);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().setPosition(true);
+        Assertions.assertEquals("you already changed this card position in this turn\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+    }
+
+    @Test
+    public void setPositionErrorTest6() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.SECOND_MAIN_PHASE);
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
+        monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
+        monsterCard.setHasChangedPosition(false);
+        monsterCard.setHasBeenSetOrSummoned(true);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        DuelController.getInstance().setPosition(true);
+        Assertions.assertEquals("you already summoned/set on this turn\r\n", outputStream.toString());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+    }
+
+    @Test
+    public void setPosition() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.SECOND_MAIN_PHASE);
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
+        monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
+        monsterCard.setHasChangedPosition(false);
+        monsterCard.setHasBeenSetOrSummoned(false);
+        ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(monsterCard);
+        DuelController.getInstance().getGame().setSelectedCard(monsterCard);
+        DuelController.getInstance().setPosition(true);
+        Assertions.assertEquals(MonsterCardModeInField.ATTACK_FACE_UP, monsterCard.getMonsterCardModeInField());
+        DuelController.getInstance().getGame().setSelectedCard(null);
+        thisPlayer.getField().setMonsterCards(myMonsters);
+    }
+
 }

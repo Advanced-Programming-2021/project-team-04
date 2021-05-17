@@ -255,7 +255,7 @@ public class IO {
     }
 
     public void cannotChangePosition() {
-        System.out.println("you can’t change this card position");
+        System.out.println("you can’t change this card's position");
     }
 
     public void setSuccessfully() {
