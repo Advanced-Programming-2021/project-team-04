@@ -24,6 +24,14 @@ public class Field {
         return scanners;
     }
 
+    public ArrayList<Card> getSideDeck() {
+        return sideDeck;
+    }
+
+    public void setSideDeck(ArrayList<Card> sideDeck) {
+        this.sideDeck = sideDeck;
+    }
+
     public ArrayList<Card> getGraveyard() {
         return graveyard;
     }

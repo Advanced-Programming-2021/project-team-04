@@ -31,8 +31,8 @@ public class CommandKnight extends MonsterCard {
         monsterCards.addAll(opponentMonsterCards);
             if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP) ||
                     this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
-                for (MonsterCard monsterCard : monsterCards)
-                    monsterCard.changeAttackPower(400);
+                for (int i = 0; i < monsterCards.size(); i++)
+                    monsterCards.get(i).changeAttackPower(400);
     }
 
     private void isRemovable() {

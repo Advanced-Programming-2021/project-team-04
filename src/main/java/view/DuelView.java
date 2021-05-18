@@ -366,7 +366,7 @@ public class DuelView extends ViewMenu {
         // *
         //card from main deck
         String input = IO.getInstance().getInputMessage();
-        return input.split(" \\* ");
+        return input.split("\\*");
     }
 
     public MonsterCard getFromMyDeck(boolean isOpponent) {

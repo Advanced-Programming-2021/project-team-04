@@ -92,8 +92,10 @@ public class DuelController {
         handleMessengerOfPeace();
     }
 
-    private void handleCommandKnightAndHeraldOfCreation(Field field, Field opponentField) {
-        for (MonsterCard monsterCard : field.getMonsterCards()) {
+    public void handleCommandKnightAndHeraldOfCreation(Field field, Field opponentField) {
+        ArrayList<MonsterCard> myMonsters = new ArrayList<>(field.getMonsterCards());
+        ArrayList<MonsterCard> opponentMonsters = new ArrayList<>(opponentField.getMonsterCards());
+        for (MonsterCard monsterCard : myMonsters) {
             if (monsterCard.getName().equals("Herald of Creation") &&
                     !monsterCard.isHasBeenUsedInThisTurn() &&
                     !(monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN))) {
@@ -106,7 +108,7 @@ public class DuelController {
                 commandKnight.setHasBeenUsedInThisTurn(true);
             }
         }
-        for (MonsterCard monsterCard : opponentField.getMonsterCards()) {
+        for (MonsterCard monsterCard : opponentMonsters) {
             if (monsterCard.getName().equals("Command Knight")) {
                 CommandKnight commandKnight = (CommandKnight) monsterCard;
                 commandKnight.specialMethod();
@@ -277,13 +279,18 @@ public class DuelController {
         game.getTheOtherPlayer().getField().resetAllCards();
     }
 
-    private void handleSwordOfRevealingLight() {
+    public void handleSwordOfRevealingLight() {
         SwordsOfRevealingLight sword = (SwordsOfRevealingLight) game.getTheOtherPlayer().getField().hasThisCardActivated("Swords of Revealing Light");
         if (sword != null) {
             sword.counter++;
             if (sword.counter == 3) {
                 moveSpellOrTrapToGYFromSpellZone(sword);
                 sword.counter = 0;
+            }
+            else {
+                for (MonsterCard monsterCard : game.getCurrentPlayer().getField().getMonsterCards())
+                    if (monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN))
+                        monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
             }
         }
     }
@@ -887,7 +894,7 @@ public class DuelController {
         spellAndTrapCard.reset();
     }
 
-    private void moveSpellOrTrapToGYFromFieldZone(SpellAndTrapCard spellAndTrapCard) {
+    public void moveSpellOrTrapToGYFromFieldZone(SpellAndTrapCard spellAndTrapCard) {
         spellAndTrapCard.reset();
         game.getCurrentPlayer().getField().setFieldZone(null);
         game.getCurrentPlayer().getField().getGraveyard().add(spellAndTrapCard);
@@ -901,12 +908,7 @@ public class DuelController {
             else card = DuelView.getInstance().getCardFromOpponentGY();
             if (card == null) return;
             field.getGraveyard().remove(card);
-            if (card instanceof MonsterCard) field.getMonsterCards().add((MonsterCard) card);
-            else if (((SpellAndTrapCard) card).getProperty().equals("Field")) {
-                SpellAndTrapCard fieldCard = field.getFieldZone();
-                if (fieldCard != null) moveSpellOrTrapToGYFromFieldZone(fieldCard);
-                field.setFieldZone((SpellAndTrapCard) card);
-            } else field.getTrapAndSpell().add((SpellAndTrapCard) card);
+            field.getMonsterCards().add((MonsterCard) card);
         }
     }
 
@@ -1557,7 +1559,7 @@ public class DuelController {
         }
     }
 
-    private boolean actionForChain(Duelist temp) {
+    public boolean actionForChain(Duelist temp) {
         IO.getInstance().selectCardToAdd();
         String inputMessage = IO.getInstance().getInputMessage();
         if (inputMessage.equalsIgnoreCase("cancel")) return true;
@@ -1567,7 +1569,7 @@ public class DuelController {
     }
 
 
-    private boolean canMakeChain(Duelist player) {
+    public boolean canMakeChain(Duelist player) {
         ArrayList<String> cardNames = new ArrayList<>();
         cardNames.add("Mind Crush");
         cardNames.add("Twin Twisters");
@@ -1582,7 +1584,7 @@ public class DuelController {
         return false;
     }
 
-    private void activateCards() {
+    public void activateCards() {
         isChainActive = true;
         for (SpellAndTrapCard card : forChain)
             card.setActive(true);
@@ -1605,6 +1607,10 @@ public class DuelController {
             case "Time Seal" -> timeSeal(card, opponent);
             case "Call of The Haunted" -> callOfTheHaunted(card, card.getOwner().getField(), card.getOwner().equals(game.getCurrentPlayer()));
         }
+    }
+
+    public ArrayList<SpellAndTrapCard> getForChain() {
+        return forChain;
     }
 
     public void exchangeCardsWithSideDeck(Account account) {
