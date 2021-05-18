@@ -630,6 +630,7 @@ public class DuelController {
             nextPhase();
             return;
         }
+        opponentMonsterPositionNumber--; //TODO check these numbers and shits
         MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber);
         MonsterCard attacker = (MonsterCard) game.getSelectedCard();
         SwordsOfRevealingLight swordsOfRevealingLight = (SwordsOfRevealingLight) game.getTheOtherPlayer().getField().hasThisCardActivated("Swords of Revealing Light");
@@ -745,11 +746,12 @@ public class DuelController {
             IO.getInstance().noCardHere();
             return false;
         }
-        if (!selectedCard.canBeRemoved()) {
+        MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber - 1);
+        if (!attacked.canBeRemoved()) { //TODO when is this set as false
             IO.getInstance().cannotAttackThisCard();
             return false;
         }
-        if (!selectedCard.canAttack()) {
+        if (!selectedCard.canAttack()) { //TODO this also
             IO.getInstance().cannotAttack();
             return false;
         }
@@ -758,12 +760,7 @@ public class DuelController {
 
 
     public void directAttack() {
-        System.out.println("mioo");
-        if (!isDirectAttackValid()) {
-            System.out.println("what");
-            return;
-        }
-        System.out.println("mio");
+        if (!isDirectAttackValid()) return;
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
         int damage = selectedCard.getThisCardAttackPower();
         game.getTheOtherPlayer().changeLP(-damage);
