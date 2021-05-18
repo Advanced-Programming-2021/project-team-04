@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class DuelTest {
     static Account thisPlayer = new Account("Bad Decisions", "The Strokes", "Why Do I Exist");
@@ -205,7 +206,7 @@ public class DuelTest {
         thisPlayer.setAllCards(new ArrayList<>());
         DuelController.getInstance().getGame().setSelectedCard(theTricky);
         ShopController.getInstance().buyCard("Baby dragon");
-        thisPlayer.getField().getHand().add((MonsterCard) thisPlayer.getAllCards().get(0));
+        thisPlayer.getField().getHand().add(thisPlayer.getAllCards().get(0));
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0".getBytes());
         System.setIn(input);
@@ -1949,6 +1950,9 @@ public class DuelTest {
         yomi.setOwner(thisPlayer);
         ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
         ArrayList<Card> GY = thisPlayer.getField().getGraveyard();
+        ArrayList<Card> handBackUp = thisPlayer.getField().getHand();
+        thisPlayer.getField().setHand(new ArrayList<>());
+        thisPlayer.getField().getHand().add(slotMachine);
         thisPlayer.getField().setGraveyard(new ArrayList<>());
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
         thisPlayer.getField().getMonsterCards().add(yomi);
@@ -1965,6 +1969,7 @@ public class DuelTest {
                 thisPlayer.getField().getGraveyard().contains(warriorDaiGrepher));
         thisPlayer.getField().setMonsterCards(monsterCards);
         thisPlayer.getField().setGraveyard(GY);
+        thisPlayer.getField().setHand(handBackUp);
         DuelController.getInstance().getGame().setSelectedCard(null);
     }
 
@@ -1976,6 +1981,9 @@ public class DuelTest {
         SpellAndTrapCard trapHole = (SpellAndTrapCard) Card.getCardByName("Trap Hole");
         trapHole.setOwner(thisPlayer);
         ArrayList<SpellAndTrapCard> spellAndTrapCards = theOtherPlayer.getField().getTrapAndSpell();
+        ArrayList<Card> handBackUp = thisPlayer.getField().getHand();
+        thisPlayer.getField().setHand(handBackUp);
+        thisPlayer.getField().getHand().add(trapHole);
         theOtherPlayer.getField().setTrapAndSpell(new ArrayList<>());
         theOtherPlayer.getField().getTrapAndSpell().add(trapHole);
         ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
@@ -1992,6 +2000,7 @@ public class DuelTest {
         thisPlayer.getField().setGraveyard(GY);
         thisPlayer.getField().setMonsterCards(monsterCards);
         theOtherPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        thisPlayer.getField().setHand(handBackUp);
     }
 
     @Test
@@ -2012,6 +2021,68 @@ public class DuelTest {
         thisPlayer.getField().setMonsterCards(monsterCardsBackUp);
         DuelController.getInstance().getGame().setSelectedCard(null);
         DuelController.getInstance().getGame().setHasSummonedInThisTurn(false);
+
     }
 
+    @Test
+    public void changePhaseDrawTest() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.DRAW_PHASE);
+        DuelController.getInstance().nextPhase();
+        Assertions.assertEquals(Phases.STANDBY_PHASE, DuelController.getInstance().getGame().getCurrentPhase());
+    }
+
+    @Test
+    public void changePhaseStandByTest() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.STANDBY_PHASE);
+        DuelController.getInstance().nextPhase();
+        Assertions.assertEquals(Phases.FIRST_MAIN_PHASE, DuelController.getInstance().getGame().getCurrentPhase());
+    }
+
+    @Test
+    public void changePhaseBattleTest() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
+        DuelController.getInstance().nextPhase();
+        Assertions.assertEquals(Phases.SECOND_MAIN_PHASE, DuelController.getInstance().getGame().getCurrentPhase());
+    }
+
+    @Test
+    public void changePhaseFirstTest() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.FIRST_MAIN_PHASE);
+        DuelController.getInstance().nextPhase();
+        Assertions.assertEquals(Phases.BATTLE_PHASE, DuelController.getInstance().getGame().getCurrentPhase());
+    }
+
+    @Test
+    public void changePhaseEndTest() {
+        DuelController.getInstance().getGame().setCurrentPhase(Phases.END_PHASE);
+        ArrayList<Card> myCards = thisPlayer.getField().getHand();
+        thisPlayer.getField().setHand(new ArrayList<>());
+        ArrayList<Card> opponentCards = theOtherPlayer.getField().getHand();
+        theOtherPlayer.getField().setHand(new ArrayList<>());
+        DuelController.getInstance().nextPhase();
+        Assertions.assertEquals(Phases.DRAW_PHASE, DuelController.getInstance().getGame().getCurrentPhase());
+        thisPlayer.getField().setHand(myCards);
+        theOtherPlayer.getField().setHand(opponentCards);
+    }
+
+    @Test
+    public void messengerOfPeaceTest() {
+        int LP = thisPlayer.getLP();
+        thisPlayer.setLP(8000);
+        MessengerOfPeace messengerOfPiss = new MessengerOfPeace();
+        messengerOfPiss.setOwner(thisPlayer);
+        messengerOfPiss.setActive(true);
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
+        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        thisPlayer.getField().getTrapAndSpell().add(messengerOfPiss);
+        InputStream backup = System.in;
+        ByteArrayInputStream input = new ByteArrayInputStream("no\r\n".getBytes());
+        System.setIn(input);
+        IO.getInstance().resetScanner();
+        DuelController.getInstance().handleMessengerOfPeace();
+        Assertions.assertEquals(7900, thisPlayer.getLP());
+        System.setIn(backup);
+        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        thisPlayer.setLP(LP);
+    }
 }

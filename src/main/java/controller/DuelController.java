@@ -161,7 +161,7 @@ public class DuelController {
                 (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().equals("Yami"))) yami();
     }
 
-    private void handleMessengerOfPeace() {
+    public void handleMessengerOfPeace() {
         SpellAndTrapCard myMessengerOfPeace = game.getCurrentPlayer().getField().hasThisCardActivated("Messenger of peace");
         if (myMessengerOfPeace != null) {
             if (DuelView.getInstance().killMessengerOfPeace())
@@ -378,7 +378,7 @@ public class DuelController {
         nextPhase();
     }
 
-    public void summon() {
+    public void summon() { //TODO what the fuck? test shode vali ghermeze hanuz :|
         if (handleSpecialCases()) return;
         summonWithTribute();
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
