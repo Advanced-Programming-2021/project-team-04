@@ -379,29 +379,7 @@ public class DuelController {
     }
 
     public void summon() {
-        if (game.getSelectedCard().getName().equals("The Tricky"))
-            if (DuelView.getInstance().ordinaryOrSpecial()) {
-                theTricky();
-                return;
-            }
-        if (game.getSelectedCard().getName().equals("Gate Guardian")) {
-            if (DuelView.getInstance().summonGateGuardian()) {
-                gateGuardian();
-            }
-            return;
-        }
-        if (game.getSelectedCard().getName().equals("Beast King Barbaros")) {
-            int howToSummon = DuelView.getInstance().barbaros();
-            if (howToSummon != 1) {
-                barbaros(howToSummon);
-                return;
-            }
-        }
-        if (!game.isAI() && !isSummonValid()) return;
-        if (solemnWarning((MonsterCard) game.getSelectedCard())) {
-            game.setSelectedCard(null);
-            return;
-        }
+        if (handleSpecialCases()) return;
         summonWithTribute();
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         if (handleTrapHole(monsterCard)) return;
@@ -416,21 +394,48 @@ public class DuelController {
         game.setHasSummonedInThisTurn(true);
     }
 
-
-    private boolean handleTrapHole(MonsterCard monsterCard) {
-        SpellAndTrapCard trapHoleCard = game.getTheOtherPlayer().getField().hasTrapCard("Trap Hole");
-        if (monsterCard.getClassAttackPower() >= 1000 && trapHoleCard != null &&
-                DuelView.getInstance().wantsToActivateTrap("Trap Hole")) {
-            makeChain(game.getCurrentPlayer(), game.getTheOtherPlayer());
-            moveSpellOrTrapToGYFromSpellZone(trapHoleCard);
-            addMonsterToGYFromHand(monsterCard);
+    private boolean handleSpecialCases() {
+        if (game.getSelectedCard().getName().equals("The Tricky"))
+            if (DuelView.getInstance().ordinaryOrSpecial()) {
+                theTricky();
+                return true;
+            }
+        if (game.getSelectedCard().getName().equals("Gate Guardian")) {
+            if (DuelView.getInstance().summonGateGuardian()) {
+                gateGuardian();
+            }
+            return true;
+        }
+        if (game.getSelectedCard().getName().equals("Beast King Barbaros")) {
+            int howToSummon = DuelView.getInstance().barbaros();
+            if (howToSummon != 1) {
+                barbaros(howToSummon);
+                return true;
+            }
+        }
+        if (!game.isAI() && !isSummonValid()) return true;
+        if (solemnWarning((MonsterCard) game.getSelectedCard())) {
             game.setSelectedCard(null);
             return true;
         }
         return false;
     }
 
-    private void summonWithTribute() {
+
+    public boolean handleTrapHole(MonsterCard monsterCard) {
+        SpellAndTrapCard trapHoleCard = game.getTheOtherPlayer().getField().hasTrapCard("Trap Hole");
+        if (monsterCard.getClassAttackPower() >= 1000 && trapHoleCard != null &&
+                DuelView.getInstance().wantsToActivateTrap("Trap Hole")) {
+            makeChain(game.getCurrentPlayer(), game.getTheOtherPlayer());
+            moveSpellOrTrapToGYFromSpellZone(trapHoleCard);
+            addMonsterToGYFromMonsterZone(monsterCard);
+            game.setSelectedCard(null);
+            return true;
+        }
+        return false;
+    }
+
+    public void summonWithTribute() {
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         if (monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) {
             int number = DuelView.getInstance().getTribute();
@@ -441,12 +446,12 @@ public class DuelController {
             int secondNumber = DuelView.getInstance().getTribute();
             if (isTributeValid(firstNumber) && isTributeValid(secondNumber) && firstNumber != secondNumber) {
                 addMonsterToGYFromMonsterZone(game.getCurrentPlayer().getField().getMonsterCards().get(firstNumber));
-                addMonsterToGYFromMonsterZone(game.getCurrentPlayer().getField().getMonsterCards().get(secondNumber));
+                addMonsterToGYFromMonsterZone(game.getCurrentPlayer().getField().getMonsterCards().get(secondNumber - 1));
             }
         }
     }
 
-    private boolean isTributeValid(int number) {
+    public boolean isTributeValid(int number) {
         if (game.getCurrentPlayer().getField().getMonsterCards().size() < number) {
             IO.getInstance().noMonster();
             return false;
@@ -454,7 +459,7 @@ public class DuelController {
         return true;
     }
 
-    private boolean isSummonValid() {
+    public boolean isSummonValid() {
         if (game.getSelectedCard() == null) {
             IO.getInstance().cardNotSelected();
             return false;
