@@ -1,13 +1,15 @@
 package model;
 
 import com.google.gson.annotations.Expose;
+import controller.MainController;
 
 public class MonsterCard extends Card {
     @Expose(serialize = true, deserialize = true)
     protected int classAttackPower;
     @Expose(serialize = true, deserialize = true)
     protected int classDefensePower;
-    protected int thisCardAttackPower, thisCardDefensePower;
+    protected int thisCardAttackPower;
+    protected int thisCardDefensePower;
     @Expose(serialize = true, deserialize = true)
     protected int level;
     @Expose(serialize = true, deserialize = true)
@@ -132,7 +134,7 @@ public class MonsterCard extends Card {
         this.thisCardAttackPower += amount;
     }
 
-
+    @Override
     public void reset() {
         this.thisCardDefensePower = classDefensePower;
         this.thisCardAttackPower = classAttackPower;
@@ -140,6 +142,7 @@ public class MonsterCard extends Card {
         this.canBeRemoved = true;
         this.hasChangedPosition = false;
         this.hasAttacked = false;
+        this.ownerUsername = MainController.getInstance().getLoggedIn().getUsername();
         //TODO is it enough?
     }
 

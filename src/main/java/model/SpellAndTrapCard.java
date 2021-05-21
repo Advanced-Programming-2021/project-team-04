@@ -1,6 +1,7 @@
 package model;
 
 import com.google.gson.annotations.Expose;
+import controller.MainController;
 
 import java.util.ArrayList;
 
@@ -49,14 +50,16 @@ public class SpellAndTrapCard extends Card {
 
     @Override
     public String toString() {
-        String spellAndTrap = "Trap";
+        var spellAndTrap = "Trap";
         if (isSpell) spellAndTrap = "Spell";
         return "Name: " + this.name + "\n" + spellAndTrap + "\nType: " + this.property
                 + "\nDescription: " + this.description;
     }
 
+    @Override
     public void reset() {
         hasBeenUsedInThisTurn = false;
+        this.setOwner(MainController.getInstance().getLoggedIn());
         if (Owner.getField().getGraveyard().contains(this))
             isActive = false;
     }

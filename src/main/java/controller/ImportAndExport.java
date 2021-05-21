@@ -46,18 +46,18 @@ public class ImportAndExport {
     }
 
     public void readAllUsers() {
-        File folder = new File("src/main/resources/users");
+        var folder = new File("src/main/resources/users");
         for (File file : Objects.requireNonNull(folder.listFiles()))
             Account.addAccount(readAccount("src/main/resources/users/" + file.getName()));
     }
 
     public void importCard(String cardName, String type) {
         if (type.equals("monster")) {
-            MonsterCard monsterCard = readMonsterCard("src/main/resources/importandexport/" + cardName + ".JSON");
+            var monsterCard = readMonsterCard("src/main/resources/importandexport/" + cardName + ".JSON");
             monsterCard.reset();
             ShopController.getAllCards().add(monsterCard);
         } else {
-            SpellAndTrapCard spellAndTrapCard = readSpellAndTrapCard("src/main/resources/importandexport/" + cardName + ".JSON");
+            var spellAndTrapCard = readSpellAndTrapCard("src/main/resources/importandexport/" + cardName + ".JSON");
             spellAndTrapCard.reset();
             ShopController.getAllCards().add(spellAndTrapCard);
         }
@@ -69,19 +69,19 @@ public class ImportAndExport {
 
     public Account readAccount(String address) {
         try {
-            FileReader fileReader = new FileReader(address);
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            var fileReader = new FileReader(address);
+            var gsonBuilder = new GsonBuilder();
+            var gson = gsonBuilder.create();
+            var bufferedReader = new BufferedReader(fileReader);
             return gson.fromJson(bufferedReader, Account.class);
-        } catch (Exception FileNotFoundException) {
+        } catch (Exception fileNotFoundException) {
             return null;
         }
     }
 
     public ArrayList<GameDeck> readAllDecks(String address) {
         ArrayList<GameDeck> gameDecks = new ArrayList<>();
-        File folder = new File(address);
+        var folder = new File(address);
         for (File file : Objects.requireNonNull(folder.listFiles()))
             gameDecks.add(readDeck(address + file.getName()));
         return gameDecks;
@@ -89,43 +89,69 @@ public class ImportAndExport {
 
     public GameDeck readDeck(String address) {
         try {
-            FileReader fileReader = new FileReader(address);
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            var fileReader = new FileReader(address);
+            var gsonBuilder = new GsonBuilder();
+            var gson = gsonBuilder.create();
+            var bufferedReader = new BufferedReader(fileReader);
             return gson.fromJson(bufferedReader, GameDeck.class);
-        } catch (Exception FileNotFoundException) {
+        } catch (Exception fileNotFoundException) {
             return null;
         }
     }
 
+    public Card readCard(String cardName) {
+        var monsterCard = readMonsterCard("src/main/resources/monsters/" + cardName + ".JSON");
+        var spellAndTrapCard = readSpellAndTrapCard("src/main/resources/spellandtraps/" + cardName + ".JSON");
+        if (monsterCard == null && spellAndTrapCard != null) return spellAndTrapCard;
+        if (monsterCard != null && spellAndTrapCard == null) return monsterCard;
+        return null;
+    }
+
+    public ArrayList<Card> readAllCards() {
+        ArrayList<Card> cards = new ArrayList<>();
+        var folder = new File("src/main/resources/monsters/");
+        MonsterCard monsterCard;
+        for (File file : Objects.requireNonNull(folder.listFiles())) {
+            if ((monsterCard = readMonsterCard(file.getPath())) == null) continue;
+            monsterCard.reset();
+            cards.add(monsterCard);
+        }
+        SpellAndTrapCard spellAndTrapCard;
+        folder = new File("src/main/resources/spellandtraps/");
+        for (File file : Objects.requireNonNull(folder.listFiles())) {
+            if ((spellAndTrapCard = readSpellAndTrapCard(file.getPath())) == null) continue;
+            cards.add(spellAndTrapCard);
+        }
+        return cards;
+    }
+
     public MonsterCard readMonsterCard(String address) {
         try {
-            FileReader fileReader = new FileReader(address);
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            var fileReader = new FileReader(address);
+            var gsonBuilder = new GsonBuilder();
+            var gson = gsonBuilder.create();
+            var bufferedReader = new BufferedReader(fileReader);
             return gson.fromJson(bufferedReader, MonsterCard.class);
-        } catch (Exception FileNotFoundException) {
+        } catch (Exception fileNotFoundException) {
             return null;
         }
     }
 
     public SpellAndTrapCard readSpellAndTrapCard(String address) {
         try {
-            FileReader fileReader = new FileReader(address);
-            GsonBuilder gsonBuilder = new GsonBuilder();
-            Gson gson = gsonBuilder.create();
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            var fileReader = new FileReader(address);
+            var gsonBuilder = new GsonBuilder();
+            var gson = gsonBuilder.create();
+            var bufferedReader = new BufferedReader(fileReader);
             return gson.fromJson(bufferedReader, SpellAndTrapCard.class);
-        } catch (Exception FileNotFoundException) {
+        } catch (Exception fileNotFoundException) {
             return null;
         }
     }
 
     public void writeToJson(String address, Object object) {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        Gson gson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
+        var gsonBuilder = new GsonBuilder();
+        var gson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
         FileWriter fileWriter;
         try {
             fileWriter = new FileWriter(address);

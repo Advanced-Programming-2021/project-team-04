@@ -1,41 +1,41 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class PlayerDeck {
 
-    private HashMap<String, Integer> mainDeckCards, sideDeckCards;
+    private HashMap<String, Short> mainDeckCards;
+    private HashMap<String, Short> sideDeckCards;
+    private String deckName;
 
-    public HashMap<String, Integer> getMainDeckCards() {
+    public PlayerDeck(String deckName) {
+        mainDeckCards = new HashMap<>();
+        sideDeckCards = new HashMap<>();
+        this.deckName = deckName;
+    }
+
+    public HashMap<String, Short> getMainDeckCards() {
         return mainDeckCards;
     }
 
-    public void setMainDeckCards(HashMap<String, Integer> mainDeckCards) {
+    public void setMainDeckCards(HashMap<String, Short> mainDeckCards) {
         this.mainDeckCards = mainDeckCards;
     }
 
-    public HashMap<String, Integer> getSideDeckCards() {
+    public String getDeckName() {
+        return deckName;
+    }
+
+    public void setDeckName(String deckName) {
+        this.deckName = deckName;
+    }
+
+    public HashMap<String, Short> getSideDeckCards() {
         return sideDeckCards;
     }
 
-    public void setSideDeckCards(HashMap<String, Integer> sideDeckCards) {
+    public void setSideDeckCards(HashMap<String, Short> sideDeckCards) {
         this.sideDeckCards = sideDeckCards;
-    }
-
-    public PlayerDeck(GameDeck gameDeck) {
-        mainDeckCards = new HashMap<>();
-        sideDeckCards = new HashMap<>();
-//        for (Card card : gameDeck.getMainDeck()) {
-//            if (mainDeckCards.containsKey(card.getName()))
-//                mainDeckCards.replace(card.getName(), mainDeckCards.get(card.getName()) + 1);
-//            else mainDeckCards.put(card.getName(), 1);
-//        }
-//        for (Card card : gameDeck.getSideDeck()) {
-//            if (sideDeckCards.containsKey(card.getName()))
-//                sideDeckCards.replace(card.getName(), sideDeckCards.get(card.getName()) + 1);
-//            else sideDeckCards.put(card.getName(), 1);
-//        } //TODO is this part even necessary? WTF was I thinking?
     }
 
 }

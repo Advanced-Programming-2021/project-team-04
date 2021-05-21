@@ -12,20 +12,24 @@ public class GameDeck {
     private ArrayList<Card> sideDeck = new ArrayList<>();
     @Expose(serialize = true, deserialize = true)
     private String deckName;
-    private boolean isMainDeckFull, isSideDeckFull;
 
     public GameDeck(String deckName) {
         setDeckName(deckName);
     }
 
-//    public GameDeck(PlayerDeck playerDeck) {
-//        playerDeck.getMainDeckCards().keySet().forEach(n -> {
-//            for (int i = 0; i < playerDeck.getMainDeckCards().get(n); i++) {
-                /*TODO somehow convert the fucking PlayerDeck to a motherfucking GameDeck
-                   a method which shows whether a card is monster or spell or trap would be USEFUL*/
-//            }
-//        });
-//    }
+    public GameDeck(PlayerDeck playerDeck) {
+        deckName = playerDeck.getDeckName();
+        playerDeck.getMainDeckCards().keySet().forEach(n -> {
+            for (var i = 0; i < playerDeck.getMainDeckCards().get(n); i++) {
+                mainDeck.add(ImportAndExport.getInstance().readCard(n));
+            }
+        });
+        playerDeck.getSideDeckCards().keySet().forEach(n -> {
+            for (var i = 0; i < playerDeck.getSideDeckCards().get(n); i++) {
+                mainDeck.add(ImportAndExport.getInstance().readCard(n));
+            }
+        });
+    }
 
     public String getDeckName() {
         return deckName;
@@ -35,11 +39,13 @@ public class GameDeck {
         this.deckName = deckName;
     }
 
-    public boolean mainDeckHasCard(String cardName) { //TODO still doubt
+    public boolean mainDeckHasCard(String cardName) {
+        //TODO still doubt
         return mainDeck.contains(Card.getCardByName(cardName));
     }
 
-    public boolean sideDeckHasCard(String cardName) { //TODO still doubt
+    public boolean sideDeckHasCard(String cardName) {
+        //TODO still doubt
         return sideDeck.contains(Card.getCardByName(cardName));
     }
 
@@ -48,18 +54,13 @@ public class GameDeck {
     }
 
     public boolean isAddingCardValid(String cardName) {
-        Card card = Card.getCardByName(cardName);
+        var card = Card.getCardByName(cardName);
         if (card instanceof SpellAndTrapCard) {
-            SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) card;
+            var spellAndTrapCard = (SpellAndTrapCard) card;
             if (spellAndTrapCard.isLimited()) spellAndTrapCard.setAllowedNumber(1);
         }
-        int count = 0;
-        for (Card thisCard : getMainDeck())
-            if (thisCard.getName().equals(cardName))
-                count++;
-        for (Card thisCard : getSideDeck())
-            if (thisCard.getName().equals(cardName))
-                count++;
+        var count = getMainDeck().stream().filter(m -> m.getName().equals(cardName)).count() +
+                getSideDeck().stream().filter(m -> m.getName().equals(cardName)).count();
         return count != 3 && Card.getCardByName(cardName).getAllowedNumber() != count;
     }
 
@@ -72,13 +73,11 @@ public class GameDeck {
     }
 
     public boolean isMainDeckFull() {
-        isMainDeckFull = mainDeck.size() == 60;
-        return isMainDeckFull;
+        return mainDeck.size() == 60;
     }
 
     public boolean isSideDeckFull() {
-        isSideDeckFull = sideDeck.size() == 15;
-        return isSideDeckFull;
+        return sideDeck.size() == 15;
     }
 
     @Override
