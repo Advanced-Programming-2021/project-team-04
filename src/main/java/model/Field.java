@@ -91,11 +91,11 @@ public class Field {
     }
 
     public String showGraveyard() {
-        String toPrint = "";
+        var toPrint = new StringBuilder();
         for (Card card : graveyard)
-            toPrint += card.getName() + ":" + card.getDescription() + "\n";
-        toPrint = toPrint.substring(0, toPrint.length() - 1);
-        return toPrint;
+            toPrint.append(card.getName()).append(":").append(card.getDescription()).append("\n");
+        toPrint.setLength(toPrint.length() - 1);
+        return toPrint.toString();
     }
 
     public ArrayList<MonsterCard> ritualMonsterCards() {

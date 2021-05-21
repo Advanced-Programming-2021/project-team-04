@@ -39,6 +39,16 @@ public class ImportAndExport {
 //            }
 //    }
 
+    public static void main(String[] args) {
+        Account account = new Account("BoJack Horseman", "the password", "BoJack");
+        GameDeck deck = new GameDeck("First AI Deck");
+        MainController.getInstance().setLoggedIn(account);
+        account.addDeck(deck);
+        account.setActiveDeck(deck);
+        deck.setMainDeck(getInstance().readAllCards());
+        getInstance().writeAllUsers();
+    }
+
     public void writeAllUsers() {
         ArrayList<Account> allAccounts = Account.getAllAccounts();
         for (Account account : allAccounts)

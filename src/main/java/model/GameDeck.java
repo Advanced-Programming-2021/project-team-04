@@ -44,6 +44,14 @@ public class GameDeck {
         return mainDeck.contains(Card.getCardByName(cardName));
     }
 
+    public void setMainDeck(ArrayList<Card> mainDeck) {
+        this.mainDeck = mainDeck;
+    }
+
+    public void setSideDeck(ArrayList<Card> sideDeck) {
+        this.sideDeck = sideDeck;
+    }
+
     public boolean sideDeckHasCard(String cardName) {
         //TODO still doubt
         return sideDeck.contains(Card.getCardByName(cardName));
@@ -68,16 +76,8 @@ public class GameDeck {
         return mainDeck;
     }
 
-    public void setMainDeck(ArrayList<Card> mainDeck) {
-        this.mainDeck = mainDeck;
-    }
-
     public ArrayList<Card> getSideDeck() {
         return sideDeck;
-    }
-
-    public void setSideDeck(ArrayList<Card> sideDeck) {
-        this.sideDeck = sideDeck;
     }
 
     public boolean isMainDeckFull() {

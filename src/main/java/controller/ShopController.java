@@ -28,7 +28,7 @@ public class ShopController {
         var toPrint = new StringBuilder();
         for (Card card : allCards)
             toPrint.append(card.getName()).append(":").append(card.getPrice()).append("\n");
-        toPrint = new StringBuilder(toPrint.substring(0, toPrint.length() - 2));
+        toPrint.setLength(toPrint.length() - 1);
         IO.getInstance().printString(toPrint.toString());
     }
 

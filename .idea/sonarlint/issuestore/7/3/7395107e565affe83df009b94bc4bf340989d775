@@ -1,0 +1,107 @@
+
+Œ
+java:S1319µ"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(™ß•ñüÿÿÿÿ
+Œ
+java:S1319³"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(„ÏîÃúÿÿÿÿ
+v
+java:S1192Œ"ZDefine a constant instead of duplicating this literal "Sword of dark destruction" 3 times.(‡ÎŸ®øÿÿÿÿ
+e
+java:S1192á"NDefine a constant instead of duplicating this literal "Twin Twisters" 3 times.(¡™íÃ
+e
+java:S1192’"NDefine a constant instead of duplicating this literal "Magnum Shield" 3 times.(ÖòáÙ
+n
+java:S1192Ú"WDefine a constant instead of duplicating this literal "Mystical space typhoon" 3 times.(Ì³çÕ
+l
+java:S1192º"PDefine a constant instead of duplicating this literal "Exploder Dragon" 3 times.(»Şüûÿÿÿÿ
+c
+java:S1192"NDefine a constant instead of duplicating this literal "s(?:cissors)?" 4 times.(¡§Ó+
+^
+java:S1192Ü"GDefine a constant instead of duplicating this literal "Ritual" 3 times.(Æ´ìæ
+o
+java:S1192w"TDefine a constant instead of duplicating this literal "Call of The Haunted" 4 times.(Ü­îÛøÿÿÿÿ
+d
+java:S1192"NDefine a constant instead of duplicating this literal "Black Pendant" 3 times.(ÙØz
+d
+java:S1192"NDefine a constant instead of duplicating this literal "Closed Forest" 3 times.(”Áñf
+f
+java:S1192~"KDefine a constant instead of duplicating this literal "Mind Crush" 5 times.(Ùõåøÿÿÿÿ
+`
+java:S1192—"IDefine a constant instead of duplicating this literal "Umiiruka" 3 times.(¡Ë™“
+_
+java:S1192"JDefine a constant instead of duplicating this literal "r(?:ock)?" 4 times.(¡§Ó+
+l
+java:S1192"PDefine a constant instead of duplicating this literal "United We Stand" 3 times.(ş²Ò®şÿÿÿÿ
+j
+java:S1192¥"SDefine a constant instead of duplicating this literal "Messenger of peace" 3 times.(Ÿ–Çƒ
+a
+java:S1192"KDefine a constant instead of duplicating this literal "p(?:aper)?" 4 times.(´şÓ­
+a
+java:S1192…"JDefine a constant instead of duplicating this literal "Time Seal" 5 times.(·Á’¡
+^
+java:S1192š"GDefine a constant instead of duplicating this literal "Forest" 3 times.(÷ŞºÊ
+v
+java:S1192–"ZDefine a constant instead of duplicating this literal "Swords of Revealing Light" 3 times.(¦ÉÇ¨ùÿÿÿÿ
+H
+java:S1128
+"-Remove this unused import 'java.util.Random'.(èøÉ›ùÿÿÿÿ
+h
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(ûÎ ö
+i
+java:S3776–"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(÷æÂÙ
+N
+java:S1135µ"2Complete the task associated to this TODO comment.(ºä„‘øÿÿÿÿ
+N
+java:S1135Ä"2Complete the task associated to this TODO comment.(ºä„‘øÿÿÿÿ
+N
+java:S1135Ö"2Complete the task associated to this TODO comment.(ºä„‘øÿÿÿÿ
+F
+java:S6212ç"/Declare this local variable with "var" instead.(Ş¶Œ±
+N
+java:S1135¦"2Complete the task associated to this TODO comment.(ÊØø¹ıÿÿÿÿ
+N
+java:S1135ı"2Complete the task associated to this TODO comment.(şŸ³«üÿÿÿÿ
+N
+java:S1135"2Complete the task associated to this TODO comment.(Óèóñùÿÿÿÿ
+F
+java:S6212†"/Declare this local variable with "var" instead.(ËõÔ¦
+F
+java:S6212Ó"/Declare this local variable with "var" instead.(ËõÔ¦
+N
+java:S1135õ"2Complete the task associated to this TODO comment.(úá¬‡úÿÿÿÿ
+I
+java:S1135ç"2Complete the task associated to this TODO comment.(şì—®
+H
+java:S1135ë"2Complete the task associated to this TODO comment.(Ñ‹
+8	java:S131Ê""Add a default case to this switch.(Öşòä
+I
+java:S1135å"2Complete the task associated to this TODO comment.(Ÿ´Ùİ
+F
+java:S6212û"/Declare this local variable with "var" instead.(öÅç
+I
+java:S1135Í"2Complete the task associated to this TODO comment.(ˆ˜š¼
+F
+java:S6212Ç
+"/Declare this local variable with "var" instead.(ÆÁÑ
+F
+java:S6212Ï
+"/Declare this local variable with "var" instead.(ÆÁÑ
+F
+java:S6212â
+"/Declare this local variable with "var" instead.(ÇŞ”¡
+F
+java:S6212ñ
+"/Declare this local variable with "var" instead.(â¬”®
+F
+java:S6212ó
+"/Declare this local variable with "var" instead.(ÀÈ¶ã
+K
+java:S6212ÿ
+"/Declare this local variable with "var" instead.(ô°ş¨øÿÿÿÿ
+K
+java:S6212’"/Declare this local variable with "var" instead.(ô°ş¨øÿÿÿÿ
+7	java:S131Ä""Add a default case to this switch.(½¿ª`
+z
+java:S2234î"cParameters to chainForOnePerson have the same names but not the same order as the method arguments.(÷½÷
+=	java:S131ª""Add a default case to this switch.(¦©ãŒùÿÿÿÿ
+X
+java:S1144Õ	"ARemove this unused private "errorAfterChoosingRitualCard" method.(¨”ú

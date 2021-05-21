@@ -17,7 +17,7 @@ public class DeckController {
 
     public void createDeck(String deckName) {
         if (errorForCreation(deckName)) {
-            GameDeck thisGameDeck = new GameDeck(deckName);
+            var thisGameDeck = new GameDeck(deckName);
             MainController.getInstance().getLoggedIn().addDeck(thisGameDeck);
             IO.getInstance().deckCreated();
         }
@@ -43,7 +43,7 @@ public class DeckController {
     public void addCardToDeck(String deckName, String cardName, boolean isMainDeck) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorForAddingCard(deckName, cardName, isMainDeck)) {
-            Card card = thisPlayer.getCardByName(cardName);
+            var card = thisPlayer.getCardByName(cardName);
             if (isMainDeck)
                 thisPlayer.getDeckByName(deckName).getMainDeck().add(card);
             else
@@ -63,22 +63,23 @@ public class DeckController {
 
     public void printAllDecks() {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
-        StringBuilder toPrint = new StringBuilder("Decks:\nActive deck:\n");
-        String isValid = "invalid";
+        var toPrint = new StringBuilder("Decks:\nActive deck:\n");
         if (thisPlayer.getActiveDeck() != null) {
-            GameDeck activeGameDeck = thisPlayer.getActiveDeck();
-            if (activeGameDeck.isDeckValid()) isValid = "valid";
-            toPrint.append(activeGameDeck.getDeckName()).append(": main deck ").append(activeGameDeck.getMainDeck().size()).append(", side deck ").append(activeGameDeck.getSideDeck().size()).append(", ").append(isValid).append("\n");
+            var activeGameDeck = thisPlayer.getActiveDeck();
+            toPrint.append(activeGameDeck.getDeckName()).append(": main deck ").append(activeGameDeck.getMainDeck().size()).append(", side deck ").append(activeGameDeck.getSideDeck().size()).append(", ").append(activeGameDeck.isDeckValid() ? "valid" : "invalid").append("\n");
         }
+        //TODO isn't active deck an object of all decks? is this method tested?
         toPrint.append("Other decks: \n");
         if (!thisPlayer.getAllDecks().isEmpty()) {
             sortedDecks();
+            //TODO test this two commented lines, they could do better
+//            StringBuilder finalToPrint = toPrint;
+//            thisPlayer.getAllDecks().forEach(d -> finalToPrint.append(d.getDeckName()).append(": main deck ").append(d.getMainDeck().size()).append(", side deck ").append(d.getSideDeck().size()).append(", ").append(d.isDeckValid() ? "valid" : "invalid").append("\n"));
             for (GameDeck gameDeck : thisPlayer.getAllDecks()) {
-                if (gameDeck.isDeckValid()) isValid = "valid";
-                toPrint.append(gameDeck.getDeckName()).append(": main deck ").append(gameDeck.getMainDeck().size()).append(", side deck ").append(gameDeck.getSideDeck().size()).append(", ").append(isValid).append("\n");
+                toPrint.append(gameDeck.getDeckName()).append(": main deck ").append(gameDeck.getMainDeck().size()).append(", side deck ").append(gameDeck.getSideDeck().size()).append(", ").append(gameDeck.isDeckValid() ? "valid" : "invalid").append("\n");
             }
         }
-        toPrint = new StringBuilder(toPrint.substring(0, toPrint.length() - 1));
+        toPrint.setLength(toPrint.length() - 1);
         IO.getInstance().printString(toPrint.toString());
     }
 
@@ -92,21 +93,27 @@ public class DeckController {
         if (errorForDeletingOrActivating(deckName)) {
             ArrayList<Card> monsterCards = new ArrayList<>();
             ArrayList<Card> spellAndTrap = new ArrayList<>();
-            StringBuilder toPrint = new StringBuilder("Deck: " + deckName + "\n");
+            var toPrint = new StringBuilder("Deck: " + deckName + "\n");
             sortedCards(deckName);
             if (isMain) {
                 toPrint.append("Main deck:\n");
-                for (Card card : thisPlayer.getDeckByName(deckName).getMainDeck())
-                    if (card instanceof MonsterCard) monsterCards.add(card);
-                    else spellAndTrap.add(card);
+                thisPlayer.getDeckByName(deckName).getMainDeck().forEach(c -> {
+                    if (c instanceof MonsterCard) monsterCards.add(c);
+                    else spellAndTrap.add(c);
+                });
                 toPrint.append("Monsters:\n");
+                //TODO won't this do better?
+//                StringBuilder finalToPrint = toPrint;
+//                monsterCards.forEach(c -> finalToPrint.append(c.getName()).append(": ").append(c.getDescription()).append("\n"));
+//                toPrint.append("Spell and Traps:\n");
+//                spellAndTrap.forEach(c -> finalToPrint.append(c.getName()).append(": ").append(c.getDescription()).append("\n"));
                 for (Card card : monsterCards)
                     toPrint.append(card.getName()).append(": ").append(card.getDescription()).append("\n");
                 toPrint.append("Spell and Traps:\n");
                 for (Card card : spellAndTrap)
                     toPrint.append(card.getName()).append(": ").append(card.getDescription()).append("\n");
             }
-            toPrint = new StringBuilder(toPrint.substring(0, toPrint.length() - 2));
+            toPrint.setLength(toPrint.length() - 1);
             IO.getInstance().printString(toPrint.toString());
         }
     }
@@ -119,11 +126,14 @@ public class DeckController {
 
     public void printAllCards() {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
-        StringBuilder toPrint = new StringBuilder();
+        var toPrint = new StringBuilder();
         sortAllCards();
+        //TODO won't this do better?
+//        StringBuilder finalToPrint = toPrint;
+//        thisPlayer.getAllCards().forEach(c -> finalToPrint.append(c.getName()).append(":").append(c.getDescription()).append("\n"));
         for (Card card : thisPlayer.getAllCards())
             toPrint.append(card.getName()).append(":").append(card.getDescription()).append("\n");
-        toPrint = new StringBuilder(toPrint.substring(0, toPrint.length() - 2));
+        toPrint.setLength(toPrint.length() - 1);
         IO.getInstance().printString(toPrint.toString());
     }
 
