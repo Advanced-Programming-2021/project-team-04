@@ -2061,6 +2061,8 @@ public class DuelTest {
         theOtherPlayer.getField().setHand(new ArrayList<>());
         DuelController.getInstance().nextPhase();
         Assertions.assertEquals(Phases.DRAW_PHASE, DuelController.getInstance().getGame().getCurrentPhase());
+        DuelController.getInstance().getGame().setCurrentPlayer(thisPlayer);
+        DuelController.getInstance().getGame().setTheOtherPlayer(theOtherPlayer);
         thisPlayer.getField().setHand(myCards);
         theOtherPlayer.getField().setHand(opponentCards);
     }
@@ -2084,5 +2086,148 @@ public class DuelTest {
         System.setIn(backup);
         thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
         thisPlayer.setLP(LP);
+    }
+
+    @Test
+    public void handleHeraldOfCreationTest() {
+        MonsterCard heraldOfCreation = (MonsterCard) Card.getCardByName("Herald of Creation");
+        heraldOfCreation.setOwner(thisPlayer);
+        ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(heraldOfCreation);
+        heraldOfCreation.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
+        ArrayList<Card> hand = thisPlayer.getField().getHand();
+        MonsterCard slutMachine = (MonsterCard) Card.getCardByName("Slot Machine");
+        thisPlayer.getField().setHand(new ArrayList<>());
+        thisPlayer.getField().getHand().add(slutMachine);
+        MonsterCard hornymp = (MonsterCard) Card.getCardByName("Horn Imp");
+        ArrayList<Card> GY = thisPlayer.getField().getGraveyard();
+        thisPlayer.getField().setGraveyard(new ArrayList<>());
+        thisPlayer.getField().getGraveyard().add(hornymp);
+        InputStream backup = System.in;
+        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n".getBytes());
+        System.setIn(input);
+        IO.getInstance().resetScanner();
+        DuelController.getInstance().handleCommandKnightAndHeraldOfCreation(thisPlayer.getField(), theOtherPlayer.getField());
+        Assertions.assertTrue(heraldOfCreation.isHasBeenUsedInThisTurn());
+        System.setIn(backup);
+        heraldOfCreation.setHasBeenUsedInThisTurn(false);
+        thisPlayer.getField().setMonsterCards(monsterCards);
+        thisPlayer.getField().setHand(hand);
+        thisPlayer.getField().setGraveyard(GY);
+    }
+
+    @Test
+    public void handleCommandKnightTest() {
+        CommandKnight commandKnight = (CommandKnight) Card.getCardByName("Command Knight");
+        commandKnight.setOwner(thisPlayer);
+        commandKnight.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
+        ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        thisPlayer.getField().getMonsterCards().add(commandKnight);
+        MonsterCard slutMachine = (MonsterCard) Card.getCardByName("Slot Machine");
+        thisPlayer.getField().getMonsterCards().add(slutMachine);
+        DuelController.getInstance().handleCommandKnightAndHeraldOfCreation(thisPlayer.getField(), theOtherPlayer.getField());
+        Assertions.assertEquals(1400, commandKnight.getThisCardAttackPower());
+        thisPlayer.getField().setMonsterCards(monsterCards);
+    }
+
+    @Test
+    public void swordOfRevealingLightTest() {
+        SwordsOfRevealingLight swordsOfRevealingLight = (SwordsOfRevealingLight) Card.getCardByName("Swords of Revealing Light");
+        swordsOfRevealingLight.setOwner(theOtherPlayer);
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = theOtherPlayer.getField().getTrapAndSpell();
+        ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
+        thisPlayer.getField().setMonsterCards(new ArrayList<>());
+        theOtherPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        theOtherPlayer.getField().getTrapAndSpell().add(swordsOfRevealingLight);
+        swordsOfRevealingLight.setActive(true);
+        MonsterCard heraldOfCreation = (MonsterCard) Card.getCardByName("Herald of Creation");
+        thisPlayer.getField().getMonsterCards().add(heraldOfCreation);
+        heraldOfCreation.setOwner(thisPlayer);
+        heraldOfCreation.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_DOWN);
+        DuelController.getInstance().handleSwordOfRevealingLight();
+        Assertions.assertEquals(MonsterCardModeInField.DEFENSE_FACE_UP, heraldOfCreation.getMonsterCardModeInField());
+        thisPlayer.getField().setMonsterCards(monsterCards);
+        theOtherPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+    }
+
+    @Test
+    public void exchangeWithSideDeckTest() {
+        ArrayList<Card> deckZone = thisPlayer.getField().getDeckZone();
+        ArrayList<Card> sideDeck = thisPlayer.getField().getSideDeck();
+        thisPlayer.getField().setDeckZone(new ArrayList<>());
+        thisPlayer.getField().setSideDeck(new ArrayList<>());
+        MonsterCard slutMachine = (MonsterCard) Card.getCardByName("Slot Machine");
+        slutMachine.setOwner(thisPlayer);
+        thisPlayer.getField().getDeckZone().add(slutMachine);
+        SpellAndTrapCard inTheCloset = (SpellAndTrapCard) Card.getCardByName("Closed Forest");
+        inTheCloset.setOwner(thisPlayer);
+        thisPlayer.getField().getSideDeck().add(inTheCloset);
+        InputStream backup = System.in;
+        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\nClosed Forest*Slot Machine\r\n".getBytes());
+        System.setIn(input);
+        IO.getInstance().resetScanner();
+        DuelController.getInstance().exchangeCardsWithSideDeck(thisPlayer);
+        Assertions.assertTrue(thisPlayer.getField().getSideDeck().contains(slutMachine));
+        System.setIn(backup);
+        thisPlayer.getField().setDeckZone(deckZone);
+        thisPlayer.getField().setSideDeck(sideDeck);
+    }
+
+    @Test
+    public void canMakeChainTest() {
+        SpellAndTrapCard adam = (SpellAndTrapCard) Card.getCardByName("Call of The Haunted");
+        adam.setOwner(thisPlayer);
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
+        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        thisPlayer.getField().getTrapAndSpell().add(adam);
+        Assertions.assertTrue(DuelController.getInstance().canMakeChain(thisPlayer));
+        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+    }
+
+    @Test
+    public void activateCards() {
+        SpellAndTrapCard adam = (SpellAndTrapCard) Card.getCardByName("Call of The Haunted");
+        adam.setOwner(thisPlayer);
+        MonsterCard tadashi = (MonsterCard) Card.getCardByName("Flame manipulator");
+        tadashi.setOwner(thisPlayer);
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
+        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        thisPlayer.getField().getTrapAndSpell().add(adam);
+        ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
+        ArrayList<Card> GY = thisPlayer.getField().getGraveyard();
+        thisPlayer.getField().setGraveyard(new ArrayList<>());
+        thisPlayer.getField().getGraveyard().add(tadashi);
+        DuelController.getInstance().getForChain().add(adam);
+        InputStream backup = System.in;
+        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n0\r\n".getBytes());
+        System.setIn(input);
+        IO.getInstance().resetScanner();
+        DuelController.getInstance().activateCards();
+        Assertions.assertTrue(thisPlayer.getField().getMonsterCards().contains(tadashi));
+        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        System.setIn(backup);
+        thisPlayer.getField().setMonsterCards(monsterCards);
+        thisPlayer.getField().setGraveyard(GY);
+    }
+
+    @Test
+    public void fromFieldZoneTest() {
+        SpellAndTrapCard adam = (SpellAndTrapCard) Card.getCardByName("Call of The Haunted");
+        adam.setOwner(thisPlayer);
+        thisPlayer.getField().setFieldZone(adam);
+        DuelController.getInstance().moveSpellOrTrapToGYFromFieldZone(adam);
+        Assertions.assertNull(thisPlayer.getField().getFieldZone());
+    }
+
+    @Test
+    public void cancelTest() {
+        InputStream backup = System.in;
+        ByteArrayInputStream input = new ByteArrayInputStream("cancel\r\n".getBytes());
+        System.setIn(input);
+        IO.getInstance().resetScanner();
+        Assertions.assertTrue(DuelController.getInstance().actionForChain(thisPlayer));
+        System.setIn(backup);
     }
 }
