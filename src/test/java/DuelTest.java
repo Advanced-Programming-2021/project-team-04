@@ -23,12 +23,12 @@ public class DuelTest {
     public static void setup() {
         ShopController.getInstance();
         MainController.getInstance().setLoggedIn(thisPlayer);
-        card = (SpellAndTrapCard) Card.getCardByName("Dark Hole");
-        GameDeck gameDeck = new GameDeck("Damaged");
+        var cardName = "Dark Hole";
+        PlayerDeck playerDeck = new PlayerDeck("Damaged");
         for (int i = 0; i < 40; i++)
-            gameDeck.getMainDeck().add(card);
-        thisPlayer.setActiveDeck(gameDeck);
-        theOtherPlayer.setActiveDeck(gameDeck);
+            playerDeck.addCardToMainDeck(cardName);
+        thisPlayer.setActiveDeck(playerDeck);
+        theOtherPlayer.setActiveDeck(playerDeck);
         DuelController.getInstance().setGame(new Game(thisPlayer, theOtherPlayer, 3, false));
     }
 

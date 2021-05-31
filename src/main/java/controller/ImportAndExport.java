@@ -16,39 +16,6 @@ public class ImportAndExport {
         return singleInstance;
     }
 
-//    public static void main(String[] args) {
-//        Account account = new Account("BoJack Horseman", "the password", "BoJack");
-//        Deck deck = new Deck("First AI Deck");
-//        MainController.getInstance().setLoggedIn(account);
-//        account.addDeck(deck);
-//        account.setActiveDeck(deck);
-//        getInstance().readAllMonsterCards(account, deck);
-//        getInstance().writeToJson("src/main/resources/decks/First AI Deck.JSON", deck);
-//        Deck deck = getInstance().readDeck("src/main/resources/decks/First AI Deck.JSON");
-//        System.out.println(deck.isDeckValid());
-//    }
-//
-//    public void readAllMonsterCards(Account account, Deck deck) {
-//        File folder = new File("src/main/resources/monsters");
-//        MonsterCard monsterCard;
-//        for (File file : Objects.requireNonNull(folder.listFiles()))
-//            for (int i = 0; i < 2; i++) {
-//                monsterCard = readMonsterCard("src/main/resources/monsters/" + file.getName());
-//                account.addCard(monsterCard);
-//                DeckController.getInstance().addCardToDeck(deck.getDeckName(), monsterCard.getName(), !deck.isMainDeckFull());
-//            }
-//    }
-
-    public static void main(String[] args) {
-        Account account = new Account("BoJack Horseman", "the password", "BoJack");
-        GameDeck deck = new GameDeck("First AI Deck");
-        MainController.getInstance().setLoggedIn(account);
-        account.addDeck(deck);
-        account.setActiveDeck(deck);
-        deck.setMainDeck(getInstance().readAllCards());
-        getInstance().writeAllUsers();
-    }
-
     public void writeAllUsers() {
         ArrayList<Account> allAccounts = Account.getAllAccounts();
         for (Account account : allAccounts)
@@ -89,21 +56,21 @@ public class ImportAndExport {
         }
     }
 
-    public ArrayList<GameDeck> readAllDecks(String address) {
-        ArrayList<GameDeck> gameDecks = new ArrayList<>();
+    public ArrayList<PlayerDeck> readAllDecks(String address) {
+        ArrayList<PlayerDeck> playerDecks = new ArrayList<>();
         var folder = new File(address);
         for (File file : Objects.requireNonNull(folder.listFiles()))
-            gameDecks.add(readDeck(address + file.getName()));
-        return gameDecks;
+            playerDecks.add(readDeck(address + file.getName()));
+        return playerDecks;
     }
 
-    public GameDeck readDeck(String address) {
+    public PlayerDeck readDeck(String address) {
         try {
             var fileReader = new FileReader(address);
             var gsonBuilder = new GsonBuilder();
             var gson = gsonBuilder.create();
             var bufferedReader = new BufferedReader(fileReader);
-            return gson.fromJson(bufferedReader, GameDeck.class);
+            return gson.fromJson(bufferedReader, PlayerDeck.class);
         } catch (Exception fileNotFoundException) {
             return null;
         }

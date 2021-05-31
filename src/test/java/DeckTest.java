@@ -11,7 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
-class GameDeckTest {
+public class DeckTest {
     public static Account thisAccount = new Account("Gerard Keay", "bean$le", "Erard Ke");
 
     @BeforeAll
@@ -54,9 +54,9 @@ class GameDeckTest {
     void addCardTest() {
         DeckController.getInstance().createDeck("Speck of Dust");
         ShopController.getInstance().buyCard("Mind Crush");
-        Card card = thisAccount.getAllCards().get(thisAccount.getAllCards().size() - 1);
+        var cardName = thisAccount.getAllCards().get(thisAccount.getAllCards().size() - 1).getName();
         DeckController.getInstance().addCardToDeck("Speck of Dust", "Mind Crush", true);
-        Assertions.assertTrue(thisAccount.getDeckByName("Speck of Dust").getMainDeck().contains(card));
+        Assertions.assertTrue(thisAccount.getDeckByName("Speck of Dust").getMainDeckCards().containsKey(cardName));
     }
 
     @Test
@@ -81,10 +81,10 @@ class GameDeckTest {
     void fullMainDeckTest() {
         ShopController.getInstance().buyCard("Magic Cylinder");
         DeckController.getInstance().createDeck("Sleeping Beauty Syndrome");
-        GameDeck gameDeck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
-        Card card = Card.getCardByName("Mind Crush");
+        PlayerDeck playerDeck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
+        var cardName = "Mind Crush";
         for (int i = 0; i < 60; i++)
-            gameDeck.getMainDeck().add(card);
+            playerDeck.addCardToMainDeck(cardName);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().addCardToDeck("Sleeping Beauty Syndrome", "Magic Cylinder", true);
@@ -95,10 +95,10 @@ class GameDeckTest {
     void fullSideDeckTest() {
         ShopController.getInstance().buyCard("Magic Cylinder");
         DeckController.getInstance().createDeck("Sleeping Beauty Syndrome");
-        GameDeck gameDeck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
-        Card card = Card.getCardByName("Mind Crush");
+        PlayerDeck playerDeck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
+        var cardName = "Mind Crush";
         for (int i = 0; i < 15; i++)
-            gameDeck.getSideDeck().add(card);
+            playerDeck.addCardToSideDeck(cardName);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().addCardToDeck("Sleeping Beauty Syndrome", "Magic Cylinder", false);
@@ -109,11 +109,11 @@ class GameDeckTest {
     void repeatedCardsTest() {
         ShopController.getInstance().buyCard("Mind Crush");
         DeckController.getInstance().createDeck("Save Me");
-        GameDeck gameDeck = thisAccount.getDeckByName("Save Me");
-        Card card = Card.getCardByName("Mind Crush");
-        gameDeck.getMainDeck().add(card);
-        gameDeck.getMainDeck().add(card);
-        gameDeck.getMainDeck().add(card);
+        PlayerDeck playerDeck = thisAccount.getDeckByName("Save Me");
+        var cardName = "Mind Crush";
+        playerDeck.addCardToMainDeck(cardName);
+        playerDeck.addCardToMainDeck(cardName);
+        playerDeck.addCardToMainDeck(cardName);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().addCardToDeck("Save Me", "Mind Crush", true);
@@ -124,11 +124,11 @@ class GameDeckTest {
     void removeCardTest() {
         ShopController.getInstance().buyCard("Slot Machine");
         DeckController.getInstance().createDeck("Virkelighetens Etterklang");
-        GameDeck gameDeck = thisAccount.getDeckByName("Virkelighetens Etterklang");
-        Card card = Card.getCardByName("Slot Machine");
-        gameDeck.getMainDeck().add(card);
+        PlayerDeck playerDeck = thisAccount.getDeckByName("Virkelighetens Etterklang");
+        var cardName = "Slot Machine";
+        playerDeck.addCardToMainDeck(cardName);
         DeckController.getInstance().removeCardFromDeck("Virkelighetens Etterklang", "Slot Machine", true);
-        Assertions.assertFalse(gameDeck.getMainDeck().contains(card));
+        Assertions.assertFalse(playerDeck.getMainDeckCards().containsKey(cardName));;
     }
 
     @Test

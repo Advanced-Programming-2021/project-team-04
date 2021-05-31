@@ -57,35 +57,12 @@ public class GameDeck {
         return sideDeck.contains(Card.getCardByName(cardName));
     }
 
-    public boolean isDeckValid() {
-        return mainDeck.size() >= 40 && mainDeck.size() <= 60 && sideDeck.size() <= 15;
-    }
-
-    public boolean isAddingCardValid(String cardName) {
-        var card = Card.getCardByName(cardName);
-        if (card instanceof SpellAndTrapCard) {
-            var spellAndTrapCard = (SpellAndTrapCard) card;
-            if (spellAndTrapCard.isLimited()) spellAndTrapCard.setAllowedNumber(1);
-        }
-        var count = getMainDeck().stream().filter(m -> m.getName().equals(cardName)).count() +
-                getSideDeck().stream().filter(m -> m.getName().equals(cardName)).count();
-        return count != 3 && Card.getCardByName(cardName).getAllowedNumber() != count;
-    }
-
     public ArrayList<Card> getMainDeck() {
         return mainDeck;
     }
 
     public ArrayList<Card> getSideDeck() {
         return sideDeck;
-    }
-
-    public boolean isMainDeckFull() {
-        return mainDeck.size() == 60;
-    }
-
-    public boolean isSideDeckFull() {
-        return sideDeck.size() == 15;
     }
 
     @Override
