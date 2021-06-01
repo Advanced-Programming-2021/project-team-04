@@ -1,25 +1,26 @@
 package model;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Objects;
 
 public class PlayerDeck {
 
-    private HashMap<String, Short> mainDeckCards;
-    private HashMap<String, Short> sideDeckCards;
+    private LinkedHashMap<String, Short> mainDeckCards;
+    private LinkedHashMap<String, Short> sideDeckCards;
     private String deckName;
 
     public PlayerDeck(String deckName) {
-        mainDeckCards = new HashMap<>();
-        sideDeckCards = new HashMap<>();
+        mainDeckCards = new LinkedHashMap<>();
+        sideDeckCards = new LinkedHashMap<>();
         this.deckName = deckName;
     }
 
-    public HashMap<String, Short> getMainDeckCards() {
+    public LinkedHashMap<String, Short> getMainDeckCards() {
         return mainDeckCards;
     }
 
-    public void setMainDeckCards(HashMap<String, Short> mainDeckCards) {
+    public void setMainDeckCards(LinkedHashMap<String, Short> mainDeckCards) {
         this.mainDeckCards = mainDeckCards;
     }
 
@@ -31,11 +32,11 @@ public class PlayerDeck {
         this.deckName = deckName;
     }
 
-    public HashMap<String, Short> getSideDeckCards() {
+    public LinkedHashMap<String, Short> getSideDeckCards() {
         return sideDeckCards;
     }
 
-    public void setSideDeckCards(HashMap<String, Short> sideDeckCards) {
+    public void setSideDeckCards(LinkedHashMap<String, Short> sideDeckCards) {
         this.sideDeckCards = sideDeckCards;
     }
 
@@ -47,16 +48,25 @@ public class PlayerDeck {
         return sideDeckCards.containsKey(cardName);
     }
 
+    public int getMainDeckSize() {
+        return mainDeckCards.keySet().stream().mapToInt(c -> mainDeckCards.get(c)).sum();
+    }
+
+    public int getSideDeckSize() {
+        return sideDeckCards.keySet().stream().mapToInt(c -> sideDeckCards.get(c)).sum();
+    }
+
     public boolean isDeckValid() {
-        return mainDeckCards.size() >= 40 && mainDeckCards.size() <= 60 && sideDeckCards.size() <= 15;
+        var mainDeckSize = getMainDeckSize();
+        return mainDeckSize >= 40 && mainDeckSize <= 60 && getSideDeckSize() <= 15;
     }
 
     public boolean isMainDeckFull() {
-        return mainDeckCards.size() == 60;
+        return getMainDeckSize() == 60;
     }
 
     public boolean isSideDeckFull() {
-        return sideDeckCards.size() == 15;
+        return getSideDeckSize() == 15;
     }
 
     public boolean isAddingCardValid(String cardName) {

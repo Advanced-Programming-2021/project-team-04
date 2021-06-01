@@ -163,7 +163,7 @@ public abstract class Duelist {
     }
 
     private boolean hasActiveDeck() {
-        return activeGameDeck != null;
+        return activePlayerDeck != null;
     }
 
     private boolean hasEnoughCardInHand(int amount) { //TODO check while writing the code

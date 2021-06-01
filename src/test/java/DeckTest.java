@@ -169,7 +169,7 @@ public class DeckTest {
         Assertions.assertEquals("Deck: Woods of Ypres\n" +
                 "Main deck:\n" +
                 "Monsters:\n" +
-                "Spell and Traps\r\n", outputStream.toString());
+                "Spell and Traps:\r\n", outputStream.toString());
     }
 
     @Test
@@ -202,7 +202,7 @@ public class DeckTest {
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().printAllCards();
         Assertions.assertEquals("Curtain of the dark ones:A curtain that a spellcaster made, it is said to raise a dark power.\n" +
-                "Harpie's Feather Duster:Destroy all Spells and Traps your opponent controls\r\n", outputStream.toString());
+                "Harpie's Feather Duster:Destroy all Spells and Traps your opponent controls.\r\n", outputStream.toString());
         MainController.getInstance().setLoggedIn(thisAccount);
     }
 

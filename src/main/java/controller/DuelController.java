@@ -7,7 +7,6 @@ import view.IO;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
 public class DuelController {
     private static DuelController singleInstance = null;
@@ -479,7 +478,7 @@ public class DuelController {
         } else if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
             IO.getInstance().monsterZoneFull();
             return false;
-        } else if (game.isHasSummonedInThisTurn()) {
+        } else if (game.hasSummonedInThisTurn()) {
             IO.getInstance().alreadySummonedOrSet();
             return false;
         } else if (((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) && game.getCurrentPlayer().getField().getMonsterCards().isEmpty()) ||
@@ -529,7 +528,7 @@ public class DuelController {
             IO.getInstance().monsterZoneFull();
             return false;
         }
-        if (game.isHasSummonedInThisTurn()) {
+        if (game.hasSummonedInThisTurn()) {
             IO.getInstance().alreadySummonedOrSet();
             return false;
         }

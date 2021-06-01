@@ -12,7 +12,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 public class DuelTest {
     static Account thisPlayer = new Account("Bad Decisions", "The Strokes", "Why Do I Exist");
@@ -2016,7 +2015,7 @@ public class DuelTest {
         thisPlayer.getField().getHand().add(fireyarou);
         DuelController.getInstance().getGame().setCurrentPhase(Phases.FIRST_MAIN_PHASE);
         DuelController.getInstance().summon();
-        Assertions.assertTrue(DuelController.getInstance().getGame().isHasSummonedInThisTurn());
+        Assertions.assertTrue(DuelController.getInstance().getGame().hasSummonedInThisTurn());
         thisPlayer.getField().setHand(handBackUp);
         thisPlayer.getField().setMonsterCards(monsterCardsBackUp);
         DuelController.getInstance().getGame().setSelectedCard(null);

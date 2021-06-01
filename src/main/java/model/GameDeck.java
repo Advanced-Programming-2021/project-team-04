@@ -4,6 +4,8 @@ import com.google.gson.annotations.Expose;
 import controller.ImportAndExport;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 public class GameDeck {
     @Expose(serialize = true, deserialize = true)
@@ -24,11 +26,13 @@ public class GameDeck {
                 mainDeck.add(ImportAndExport.getInstance().readCard(n));
             }
         });
+        Collections.shuffle(mainDeck);
         playerDeck.getSideDeckCards().keySet().forEach(n -> {
             for (var i = 0; i < playerDeck.getSideDeckCards().get(n); i++) {
-                mainDeck.add(ImportAndExport.getInstance().readCard(n));
+                sideDeck.add(ImportAndExport.getInstance().readCard(n));
             }
         });
+        Collections.shuffle(sideDeck);
     }
 
     public String getDeckName() {

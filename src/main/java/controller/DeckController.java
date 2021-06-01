@@ -70,16 +70,16 @@ public class DeckController {
         var toPrint = new StringBuilder("Decks:\nActive deck:\n");
         if (thisPlayer.getActiveDeck() != null) {
             var activePlayerDeck = thisPlayer.getActiveDeck();
-            toPrint.append(activePlayerDeck.getDeckName()).append(": main deck ").append(activePlayerDeck.getMainDeckCards().size())
-                    .append(", side deck ").append(activePlayerDeck.getSideDeckCards().size()).append(", ")
+            toPrint.append(activePlayerDeck.getDeckName()).append(": main deck ").append(activePlayerDeck.getMainDeckSize())
+                    .append(", side deck ").append(activePlayerDeck.getSideDeckSize()).append(", ")
                     .append(activePlayerDeck.isDeckValid() ? "valid" : "invalid").append("\n");
         }
         //TODO isn't active deck an object of all decks? is this method tested?
         toPrint.append("Other decks: \n");
         if (!thisPlayer.getAllDecks().isEmpty()) {
             sortDecks();
-            thisPlayer.getAllDecks().stream().filter(d -> !d.equals(thisPlayer.getActiveDeck())).forEach(d -> toPrint.append(d.getDeckName()).append(": main deck ").append(d.getMainDeckCards().size())
-                    .append(", side deck ").append(d.getSideDeckCards().size()).append(", ")
+            thisPlayer.getAllDecks().stream().filter(d -> !d.equals(thisPlayer.getActiveDeck())).forEach(d -> toPrint.append(d.getDeckName()).append(": main deck ").append(d.getMainDeckSize())
+                    .append(", side deck ").append(d.getSideDeckSize()).append(", ")
                     .append(d.isDeckValid() ? "valid" : "invalid").append("\n"));
         }
         toPrint.setLength(toPrint.length() - 1);
