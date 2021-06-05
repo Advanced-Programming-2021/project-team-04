@@ -37,6 +37,7 @@ public class DeckTest {
     @Test
     void deleteDeckTest() {
         DeckController.getInstance().createDeck("The Frozen Moment");
+        DeckController.getInstance().activateDeck("The Frozen Moment");
         Assertions.assertNotNull(thisAccount.getDeckByName("The Frozen Moment"));
         DeckController.getInstance().deleteDeck("The Frozen Moment");
         Assertions.assertNull(thisAccount.getDeckByName("The Frozen Moment"));
@@ -189,7 +190,6 @@ public class DeckTest {
                 "Reverie: main deck 0, side deck 0, invalid\n" +
                 "There Is A Light That Never Goes Out: main deck 0, side deck 0, invalid\r\n", outputStream.toString());
         MainController.getInstance().setLoggedIn(thisAccount);
-
     }
 
     @Test
