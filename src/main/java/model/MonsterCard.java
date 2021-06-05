@@ -142,7 +142,7 @@ public class MonsterCard extends Card {
         this.canBeRemoved = true;
         this.hasChangedPosition = false;
         this.hasAttacked = false;
-        this.ownerUsername = MainController.getInstance().getLoggedIn().getUsername();
+//        this.ownerUsername = MainController.getInstance().getLoggedIn().getUsername();
         //TODO is it enough?
     }
 

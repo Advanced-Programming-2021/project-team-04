@@ -1,5 +1,6 @@
 import controller.ImportAndExport;
 import controller.ShopController;
+import model.Card;
 import view.LoginView;
 
 public class Main {

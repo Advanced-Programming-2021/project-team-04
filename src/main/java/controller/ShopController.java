@@ -24,6 +24,13 @@ public class ShopController {
         return singleInstance;
     }
 
+    public boolean showCard(String cardName) {
+        Card card = Card.getCardByName(cardName);
+        if (card == null) return false;
+        IO.getInstance().printString(card.toString());
+        return true;
+    }
+
     public void showAllCards() {
         var toPrint = new StringBuilder();
         for (Card card : allCards)
