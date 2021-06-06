@@ -26,7 +26,7 @@ public class MainController {
 
     public boolean newDuel(String username, int rounds) {
         if (errorForNewGame(username, rounds)) {
-            new Game(loggedIn, Account.getAccountByUsername(username), rounds, false);
+            DuelController.getInstance().setGame(new Game(loggedIn, Account.getAccountByUsername(username), rounds, false));
             return true;
         }
         return false;

@@ -1,0 +1,18 @@
+{
+  "password": "snake",
+  "score": 0,
+  "money": 100000,
+  "allPlayerDecks": [{
+    "mainDeckCards": {
+      "Axe Raider": 1,
+      "Bitron": 39,
+      "Skull Guardian": 3
+    },
+    "sideDeckCards": {},
+    "deckName": "infinity"
+  }],
+  "allCards": [],
+  "activePlayerDeck": "infinity",
+  "username": "Tadashi",
+  "nickname": "puppy"
+}
