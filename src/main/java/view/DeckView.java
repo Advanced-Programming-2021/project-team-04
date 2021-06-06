@@ -14,9 +14,9 @@ public class DeckView extends ViewMenu {
     private final Pattern activateDeckPattern = Pattern.compile("(?:deck )?" +
             "(?:(?:set)|(?:activate)|(?:set-activ(?:at)?e)) (?<name>\\S+)");
     private final Pattern addCardToDeckPattern = Pattern.compile("^(?:deck )?a(?:dd)?[- ]c(?:ard) " +
-            "(?=.*(?:-(?:(?:-card)|(?:c))) (?<cardName>.+))(?=.*(?:-(?:(?:-deck)|(?:d))) (?<deckName>\\S+)).+$");
+            "(?=.*(?:-(?:(?:-card)|(?:c))) (?<cardName>[^-]+))(?=.*(?:-(?:(?:-deck)|(?:d))) (?<deckName>\\S+)).+$");
     private final Pattern removeCardFromDeckPattern = Pattern.compile("^(?:deck )?r(?:m)?[- ]c(?:ard) " +
-            "(?=.*(?:-(?:(?:-card)|(?:c))) (?<cardName>.+))(?=.*(?:-(?:(?:-deck)|(?:d))) (?<deckName>\\S+)).+$");
+            "(?=.*(?:-(?:(?:-card)|(?:c))) (?<cardName>[^-]+))(?=.*(?:-(?:(?:-deck)|(?:d))) (?<deckName>\\S+)).+$");
     private final Pattern showDeckPattern = Pattern.compile("^(?:deck )??show " +
             "(?=.*(?:-(?:(?:-deck)|(?:d))) (?<deckName>\\S+)).+$");
 
@@ -69,23 +69,23 @@ public class DeckView extends ViewMenu {
     }
 
     private void createDeck(Matcher matcher) {
-        DeckController.getInstance().createDeck(matcher.group("name"));
+        DeckController.getInstance().createDeck(matcher.group("name").trim());
     }
 
     private void deleteDeck(Matcher matcher) {
-        DeckController.getInstance().deleteDeck(matcher.group("name"));
+        DeckController.getInstance().deleteDeck(matcher.group("name").trim());
     }
 
     private void activateDeck(Matcher matcher) {
-        DeckController.getInstance().activateDeck(matcher.group("name"));
+        DeckController.getInstance().activateDeck(matcher.group("name").trim());
     }
 
     private void addCardToDeck(Matcher matcher, boolean isMainDeck) {
-        DeckController.getInstance().addCardToDeck(matcher.group("deckName"), matcher.group("cardName"), isMainDeck);
+        DeckController.getInstance().addCardToDeck(matcher.group("deckName").trim(), matcher.group("cardName").trim(), isMainDeck);
     }
 
     private void removeCardFromDeck(Matcher matcher, boolean isMainDeck) {
-        DeckController.getInstance().removeCardFromDeck(matcher.group("deckName"), matcher.group("cardName"), isMainDeck);
+        DeckController.getInstance().removeCardFromDeck(matcher.group("deckName").trim(), matcher.group("cardName").trim(), isMainDeck);
     }
 
     private void printAllDecks() {
@@ -93,7 +93,7 @@ public class DeckView extends ViewMenu {
     }
 
     private void printDeck(Matcher matcher, boolean isMainDeck) {
-        DeckController.getInstance().printDeck(matcher.group("deckName"), isMainDeck);
+        DeckController.getInstance().printDeck(matcher.group("deckName").trim(), isMainDeck);
     }
 
     private void printAllCards() {

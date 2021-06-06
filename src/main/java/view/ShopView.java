@@ -10,7 +10,7 @@ public class ShopView extends ViewMenu {
 
     private static ShopView singleInstance = null;
 
-    private final Pattern buyCardPattern = Pattern.compile("(?:shop )?b(?:uy)? (?<name>.+)");
+    private final Pattern buyCardPattern = Pattern.compile("(?:shop )?b(?:uy)? (?<name>[^-]+)");
 
     private ShopView() {}
 

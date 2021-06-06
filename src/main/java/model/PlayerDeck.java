@@ -1,13 +1,18 @@
 package model;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
 public class PlayerDeck {
 
+    @Expose(serialize = true, deserialize = true)
     private LinkedHashMap<String, Short> mainDeckCards;
+    @Expose(serialize = true, deserialize = true)
     private LinkedHashMap<String, Short> sideDeckCards;
+    @Expose(serialize = true, deserialize = true)
     private String deckName;
 
     public PlayerDeck(String deckName) {

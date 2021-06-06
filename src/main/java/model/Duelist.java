@@ -11,6 +11,7 @@ public abstract class Duelist {
     protected ArrayList<PlayerDeck> allPlayerDecks = new ArrayList<>();
     @Expose(serialize = true, deserialize = true)
     protected ArrayList<Card> allCards = new ArrayList<Card>();
+    @Expose(serialize = true, deserialize = true)
     protected PlayerDeck activePlayerDeck;
     @Expose(serialize = true, deserialize = true)
     protected String username;
