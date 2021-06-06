@@ -1,0 +1,101 @@
+{
+  "password": "sk8",
+  "score": 0,
+  "money": 42900,
+  "allPlayerDecks": [
+    {
+      "mainDeckCards": {},
+      "sideDeckCards": {},
+      "deckName": "Langa"
+    }
+  ],
+  "allCards": [
+    {
+      "name": "Skull Guardian",
+      "price": 7900,
+      "description": "This monster can only be Ritual Summoned with the Ritual Spell Card, \u0027Novox\u0027s Prayer\u0027. You must also offer monsters whose total Level Stars equal 7 or more as a Tribute from the field or your hand."
+    },
+    {
+      "name": "Spiral Serpent",
+      "price": 11700,
+      "description": "When huge whirlpools lay cities asunder, it is the hunger of this sea serpent at work. No one has ever escaped its dreaded Spiral Wave to accurately describe the terror they experienced."
+    },
+    {
+      "name": "Slot Machine",
+      "price": 7500,
+      "description": "The machine\u0027s ability is said to vary according to its slot results."
+    },
+    {
+      "name": "The Tricky",
+      "price": 4300,
+      "description": "You can Special Summon this card (from your hand) by discarding 1 card."
+    },
+    {
+      "name": "Wattkid",
+      "price": 1300,
+      "description": "A creature that electrocutes opponents with bolts of lightning."
+    },
+    {
+      "name": "Yomi Ship",
+      "price": 1700,
+      "description": "If this card is destroyed by battle and sent to the GY: Destroy the monster that destroyed this card."
+    },
+    {
+      "name": "Texchanger",
+      "price": 200,
+      "description": "Once per turn, when your monster is targeted for an attack: You can negate that attack, then Special Summon 1 Cyberse Normal Monster from your hand, Deck, or GY."
+    },
+    {
+      "name": "Silver Fang",
+      "price": 1700,
+      "description": "A snow wolf that\u0027s beautiful to the eye, but absolutely vicious in battle."
+    },
+    {
+      "name": "Marshmallon",
+      "price": 700,
+      "description": "Cannot be destroyed by battle. After damage calculation, if this card was attacked, and was face-down at the start of the Damage Step: The attacking player takes 1000 damage."
+    },
+    {
+      "name": "Dark magician",
+      "price": 8300,
+      "description": "The ultimate wizard in terms of attack and defense."
+    },
+    {
+      "name": "Dark Blade",
+      "price": 3500,
+      "description": "They say he is a dragon-manipulating warrior from the dark world. His attack is tremendous, using his great swords with vicious power."
+    },
+    {
+      "name": "Haniwa",
+      "price": 600,
+      "description": "An earthen figure that protects the tomb of an ancient ruler."
+    },
+    {
+      "name": "Curtain of the dark ones",
+      "price": 700,
+      "description": "A curtain that a spellcaster made, it is said to raise a dark power."
+    },
+    {
+      "name": "Axe Raider",
+      "price": 3100,
+      "description": "An axe-wielding monster of tremendous strength and agility."
+    },
+    {
+      "name": "Battle OX",
+      "price": 2900,
+      "description": "A monster with tremendous power, it destroys enemies with a swing of its axe."
+    },
+    {
+      "name": "Bitron",
+      "price": 1000,
+      "description": "A new species found in electronic space. There\u0027s not much information on it."
+    }
+  ],
+  "activePlayerDeck": {
+    "mainDeckCards": {},
+    "sideDeckCards": {},
+    "deckName": "Langa"
+  },
+  "username": "Adam",
+  "nickname": "muderer"
+}
