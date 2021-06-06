@@ -1,17 +1,17 @@
 import controller.DeckController;
+import controller.ImportAndExport;
 import controller.MainController;
 import controller.ShopController;
-import model.Account;
-import model.Card;
-import model.GameDeck;
+import model.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
-public class GameDeckTest {
+public class DeckTest {
     public static Account thisAccount = new Account("Gerard Keay", "bean$le", "Erard Ke");
 
     @BeforeAll
@@ -20,13 +20,13 @@ public class GameDeckTest {
     }
 
     @Test
-    public void createDeckTest() {
+    void createDeckTest() {
         DeckController.getInstance().createDeck("Speck of Dust");
         Assertions.assertNotNull(thisAccount.getDeckByName("Speck of Dust"));
     }
 
     @Test
-    public void errorForCreatingDeckTest() {
+    void errorForCreatingDeckTest() {
         DeckController.getInstance().createDeck("The Return of Thunder");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
@@ -35,15 +35,16 @@ public class GameDeckTest {
     }
 
     @Test
-    public void deleteDeckTest() {
+    void deleteDeckTest() {
         DeckController.getInstance().createDeck("The Frozen Moment");
+        DeckController.getInstance().activateDeck("The Frozen Moment");
         Assertions.assertNotNull(thisAccount.getDeckByName("The Frozen Moment"));
         DeckController.getInstance().deleteDeck("The Frozen Moment");
         Assertions.assertNull(thisAccount.getDeckByName("The Frozen Moment"));
     }
 
     @Test
-    public void activateDeckTest() {
+    void activateDeckTest() {
         DeckController.getInstance().createDeck("Despair");
         DeckController.getInstance().activateDeck("Despair");
         Assertions.assertNotNull(thisAccount.getActiveDeck());
@@ -51,16 +52,16 @@ public class GameDeckTest {
     }
 
     @Test
-    public void addCardTest() {
+    void addCardTest() {
         DeckController.getInstance().createDeck("Speck of Dust");
         ShopController.getInstance().buyCard("Mind Crush");
-        Card card = thisAccount.getAllCards().get(thisAccount.getAllCards().size() - 1);
+        var cardName = thisAccount.getAllCards().get(thisAccount.getAllCards().size() - 1).getName();
         DeckController.getInstance().addCardToDeck("Speck of Dust", "Mind Crush", true);
-        Assertions.assertTrue(thisAccount.getDeckByName("Speck of Dust").getMainDeck().contains(card));
+        Assertions.assertTrue(thisAccount.getDeckByName("Speck of Dust").getMainDeckCards().containsKey(cardName));
     }
 
     @Test
-    public void cardDoesntExistTest() {
+    void cardDoesntExistTest() {
         DeckController.getInstance().createDeck("your wave caresses me");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
@@ -69,7 +70,7 @@ public class GameDeckTest {
     }
 
     @Test
-    public void deckDoesntExist() {
+    void deckDoesntExist() {
         ShopController.getInstance().buyCard("Magic Cylinder");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
@@ -78,13 +79,13 @@ public class GameDeckTest {
     }
 
     @Test
-    public void fullMainDeckTest() {
+    void fullMainDeckTest() {
         ShopController.getInstance().buyCard("Magic Cylinder");
         DeckController.getInstance().createDeck("Sleeping Beauty Syndrome");
-        GameDeck gameDeck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
-        Card card = Card.getCardByName("Mind Crush");
+        PlayerDeck playerDeck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
+        var cardName = "Mind Crush";
         for (int i = 0; i < 60; i++)
-            gameDeck.getMainDeck().add(card);
+            playerDeck.addCardToMainDeck(cardName);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().addCardToDeck("Sleeping Beauty Syndrome", "Magic Cylinder", true);
@@ -92,13 +93,13 @@ public class GameDeckTest {
     }
 
     @Test
-    public void fullSideDeckTest() {
+    void fullSideDeckTest() {
         ShopController.getInstance().buyCard("Magic Cylinder");
         DeckController.getInstance().createDeck("Sleeping Beauty Syndrome");
-        GameDeck gameDeck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
-        Card card = Card.getCardByName("Mind Crush");
+        PlayerDeck playerDeck = thisAccount.getDeckByName("Sleeping Beauty Syndrome");
+        var cardName = "Mind Crush";
         for (int i = 0; i < 15; i++)
-            gameDeck.getSideDeck().add(card);
+            playerDeck.addCardToSideDeck(cardName);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().addCardToDeck("Sleeping Beauty Syndrome", "Magic Cylinder", false);
@@ -106,14 +107,14 @@ public class GameDeckTest {
     }
 
     @Test
-    public void repeatedCardsTest() {
+    void repeatedCardsTest() {
         ShopController.getInstance().buyCard("Mind Crush");
         DeckController.getInstance().createDeck("Save Me");
-        GameDeck gameDeck = thisAccount.getDeckByName("Save Me");
-        Card card = Card.getCardByName("Mind Crush");
-        gameDeck.getMainDeck().add(card);
-        gameDeck.getMainDeck().add(card);
-        gameDeck.getMainDeck().add(card);
+        PlayerDeck playerDeck = thisAccount.getDeckByName("Save Me");
+        var cardName = "Mind Crush";
+        playerDeck.addCardToMainDeck(cardName);
+        playerDeck.addCardToMainDeck(cardName);
+        playerDeck.addCardToMainDeck(cardName);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().addCardToDeck("Save Me", "Mind Crush", true);
@@ -121,18 +122,18 @@ public class GameDeckTest {
     }
 
     @Test
-    public void removeCardTest() {
+    void removeCardTest() {
         ShopController.getInstance().buyCard("Slot Machine");
         DeckController.getInstance().createDeck("Virkelighetens Etterklang");
-        GameDeck gameDeck = thisAccount.getDeckByName("Virkelighetens Etterklang");
-        Card card = Card.getCardByName("Slot Machine");
-        gameDeck.getMainDeck().add(card);
+        PlayerDeck playerDeck = thisAccount.getDeckByName("Virkelighetens Etterklang");
+        var cardName = "Slot Machine";
+        playerDeck.addCardToMainDeck(cardName);
         DeckController.getInstance().removeCardFromDeck("Virkelighetens Etterklang", "Slot Machine", true);
-        Assertions.assertFalse(gameDeck.getMainDeck().contains(card));
+        Assertions.assertFalse(playerDeck.getMainDeckCards().containsKey(cardName));;
     }
 
     @Test
-    public void deckDoesntExistTest() {
+    void deckDoesntExistTest() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().removeCardFromDeck("Virkelighetens Etterklang", "Slot Machine", true);
@@ -140,7 +141,7 @@ public class GameDeckTest {
     }
 
     @Test
-    public void cardDoesntExistInMainTest() {
+    void cardDoesntExistInMainTest() {
         DeckController.getInstance().createDeck("The Last Shadow Puppets");
         thisAccount.getDeckByName("The Last Shadow Puppets");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -150,7 +151,7 @@ public class GameDeckTest {
     }
 
     @Test
-    public void cardDoesntExistInSideTest() {
+    void cardDoesntExistInSideTest() {
         DeckController.getInstance().createDeck("Woods of Ypres");
         thisAccount.getDeckByName("Woods of Ypres");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -160,7 +161,7 @@ public class GameDeckTest {
     }
 
     @Test
-    public void printDeckTest() {
+    void printDeckTest() {
         DeckController.getInstance().createDeck("Woods of Ypres");
         thisAccount.getDeckByName("Woods of Ypres");
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -169,11 +170,11 @@ public class GameDeckTest {
         Assertions.assertEquals("Deck: Woods of Ypres\n" +
                 "Main deck:\n" +
                 "Monsters:\n" +
-                "Spell and Traps\r\n", outputStream.toString());
+                "Spell and Traps:\r\n", outputStream.toString());
     }
 
     @Test
-    public void printAllDecksTest() {
+    void printAllDecksTest() {
         Account bifrost = new Account("Losing Track", "Cold Green Wlatz", "The Void Sings");
         MainController.getInstance().setLoggedIn(bifrost);
         DeckController.getInstance().createDeck("Fragile Dreams");
@@ -189,11 +190,10 @@ public class GameDeckTest {
                 "Reverie: main deck 0, side deck 0, invalid\n" +
                 "There Is A Light That Never Goes Out: main deck 0, side deck 0, invalid\r\n", outputStream.toString());
         MainController.getInstance().setLoggedIn(thisAccount);
-
     }
 
     @Test
-    public void printAllCardsTest() {
+    void printAllCardsTest() {
         Account bloodOrange = new Account("Champagne Coast", "Cold Green Wlatz", "tamino");
         MainController.getInstance().setLoggedIn(bloodOrange);
         ShopController.getInstance().buyCard("Curtain of the dark ones");
@@ -202,7 +202,23 @@ public class GameDeckTest {
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().printAllCards();
         Assertions.assertEquals("Curtain of the dark ones:A curtain that a spellcaster made, it is said to raise a dark power.\n" +
-                "Harpie's Feather Duster:Destroy all Spells and Traps your opponent controls\r\n", outputStream.toString());
+                "Harpie's Feather Duster:Destroy all Spells and Traps your opponent controls.\r\n", outputStream.toString());
         MainController.getInstance().setLoggedIn(thisAccount);
     }
+
+    //TODO actually ImportExportTest would be a nice idea
+    @Test
+    void readCardTest() {
+        Card crabTurtle = ImportAndExport.getInstance().readCard("Crab Turtle");
+        Assertions.assertTrue(crabTurtle instanceof MonsterCard);
+        Card closedForest = ImportAndExport.getInstance().readCard("Closed Forest");
+        Assertions.assertTrue(closedForest instanceof SpellAndTrapCard);
+    }
+
+    @Test
+    void readAllCardsTest() {
+        ArrayList<Card> cards = ImportAndExport.getInstance().readAllCards();
+        Assertions.assertEquals(64, cards.size());
+    }
+
 }

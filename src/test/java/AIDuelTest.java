@@ -12,12 +12,12 @@ public class AIDuelTest {
     public static void setup() {
         ShopController.getInstance();
         MainController.getInstance().setLoggedIn(thisAccount);
-        card = (SpellAndTrapCard) Card.getCardByName("Dark Hole");
-        GameDeck gameDeck = new GameDeck("Damaged");
+        var cardName = "Dark Hole";
+        PlayerDeck playerDeck = new PlayerDeck("Damaged");
         for (int i = 0; i < 40; i++)
-            gameDeck.getMainDeck().add(card);
-        thisAccount.setActiveDeck(gameDeck);
-        thisAccount.setActiveDeck(gameDeck);
+            playerDeck.addCardToMainDeck(cardName);
+        thisAccount.setActiveDeck(playerDeck);
+        thisAccount.setActiveDeck(playerDeck);
         MainController.getInstance().newAIDuel(1);
     }
 

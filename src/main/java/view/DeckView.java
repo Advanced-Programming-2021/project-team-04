@@ -14,9 +14,9 @@ public class DeckView extends ViewMenu {
     private final Pattern activateDeckPattern = Pattern.compile("(?:deck )?" +
             "(?:(?:set)|(?:activate)|(?:set-activ(?:at)?e)) (?<name>\\S+)");
     private final Pattern addCardToDeckPattern = Pattern.compile("^(?:deck )?a(?:dd)?[- ]c(?:ard) " +
-            "(?=.*(?:-(?:(?:-card)|(?:c))) (?<cardName>\\S+))(?=.*(?:-(?:(?:-deck)|(?:d))) (?<deckName>\\S+)).+$");
+            "(?=.*(?:-(?:(?:-card)|(?:c))) (?<cardName>.+))(?=.*(?:-(?:(?:-deck)|(?:d))) (?<deckName>\\S+)).+$");
     private final Pattern removeCardFromDeckPattern = Pattern.compile("^(?:deck )?r(?:m)?[- ]c(?:ard) " +
-            "(?=.*(?:-(?:(?:-card)|(?:c))) (?<cardName>\\S+))(?=.*(?:-(?:(?:-deck)|(?:d))) (?<deckName>\\S+)).+$");
+            "(?=.*(?:-(?:(?:-card)|(?:c))) (?<cardName>.+))(?=.*(?:-(?:(?:-deck)|(?:d))) (?<deckName>\\S+)).+$");
     private final Pattern showDeckPattern = Pattern.compile("^(?:deck )??show " +
             "(?=.*(?:-(?:(?:-deck)|(?:d))) (?<deckName>\\S+)).+$");
 

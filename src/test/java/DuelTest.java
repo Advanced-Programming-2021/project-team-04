@@ -12,7 +12,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.TreeMap;
 
 public class DuelTest {
     static Account thisPlayer = new Account("Bad Decisions", "The Strokes", "Why Do I Exist");
@@ -23,12 +22,12 @@ public class DuelTest {
     public static void setup() {
         ShopController.getInstance();
         MainController.getInstance().setLoggedIn(thisPlayer);
-        card = (SpellAndTrapCard) Card.getCardByName("Dark Hole");
-        GameDeck gameDeck = new GameDeck("Damaged");
+        var cardName = "Dark Hole";
+        PlayerDeck playerDeck = new PlayerDeck("Damaged");
         for (int i = 0; i < 40; i++)
-            gameDeck.getMainDeck().add(card);
-        thisPlayer.setActiveDeck(gameDeck);
-        theOtherPlayer.setActiveDeck(gameDeck);
+            playerDeck.addCardToMainDeck(cardName);
+        thisPlayer.setActiveDeck(playerDeck);
+        theOtherPlayer.setActiveDeck(playerDeck);
         DuelController.getInstance().setGame(new Game(thisPlayer, theOtherPlayer, 3, false));
     }
 
@@ -2016,7 +2015,7 @@ public class DuelTest {
         thisPlayer.getField().getHand().add(fireyarou);
         DuelController.getInstance().getGame().setCurrentPhase(Phases.FIRST_MAIN_PHASE);
         DuelController.getInstance().summon();
-        Assertions.assertTrue(DuelController.getInstance().getGame().isHasSummonedInThisTurn());
+        Assertions.assertTrue(DuelController.getInstance().getGame().hasSummonedInThisTurn());
         thisPlayer.getField().setHand(handBackUp);
         thisPlayer.getField().setMonsterCards(monsterCardsBackUp);
         DuelController.getInstance().getGame().setSelectedCard(null);

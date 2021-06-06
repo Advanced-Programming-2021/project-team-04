@@ -34,7 +34,7 @@ public class ShopTest {
                 "Closed Forest:4300\n" +
                 "Command Knight:2100\n" +
                 "Crab Turtle:10200\n" +
-                "Crab Turtle:10200\n" +
+                "Crawling dragon:3900\n" +
                 "Curtain of the dark ones:700\n" +
                 "Dark Blade:3500\n" +
                 "Dark Hole:2500\n" +
@@ -94,7 +94,7 @@ public class ShopTest {
                 "Wattaildragon:5800\n" +
                 "Wattkid:1300\n" +
                 "Yami:4300\n" +
-                "Yomi Ship:170\r\n", outputStream.toString());
+                "Yomi Ship:1700\r\n", outputStream.toString());
     }
 
     @Test

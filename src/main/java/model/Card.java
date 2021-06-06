@@ -29,6 +29,10 @@ public class Card {
         return hasBeenSetOrSummoned;
     }
 
+    public static ArrayList<Card> getAllCards() {
+        return allCards;
+    }
+
     public void setHasBeenSetOrSummoned(boolean hasBeenSetOrSummoned) {
         this.hasBeenSetOrSummoned = hasBeenSetOrSummoned;
     }

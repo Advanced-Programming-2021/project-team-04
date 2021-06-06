@@ -1,0 +1,30 @@
+
+†
+java:S1319\"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(÷È‡§
+’
+java:S1319x"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(‘½ÌÀÿÿÿÿÿ8 øİô˜/
+c
+java:S2095f"HUse try-with-resources or close this "FileReader" in a "finally" clause.(ÛÈ×øÿÿÿÿ
+c
+java:S2095R"HUse try-with-resources or close this "FileReader" in a "finally" clause.(ÛÈ×øÿÿÿÿ
+d
+java:S2095˜"HUse try-with-resources or close this "FileReader" in a "finally" clause.(ÛÈ×øÿÿÿÿ
+d
+java:S2095§"HUse try-with-resources or close this "FileWriter" in a "finally" clause.(Ü÷ÎŒıÿÿÿÿ
+d
+java:S2095Œ"HUse try-with-resources or close this "FileReader" in a "finally" clause.(ÛÈ×øÿÿÿÿ
+
+java:S1192B"dDefine a constant instead of duplicating this literal "src/main/resources/importandexport/" 3 times.(Ä©äíøÿÿÿÿ
+\
+java:S11927"FDefine a constant instead of duplicating this literal ".JSON" 6 times.(”ˆÛ°
+N
+java:S1128"1Remove this unused import 'com.google.gson.Gson'.(–§8®Íõô˜/
+V	java:S125"<This block of commented-out lines of code should be removed.(»•ûÿÿÿÿ
+L
+java:S6212+"/Declare this local variable with "var" instead.(ı¿¢ÿ8Ş¾Ãö˜/
+L
+java:S6212,"/Declare this local variable with "var" instead.(µœº8ß¾Ãö˜/
+>	java:S108ª")Either remove or fill this block of code.(”ã‰G
+R	java:S125®"<This block of commented-out lines of code should be removed.(šÈ¾·
+N
+java:S1135¯"2Complete the task associated to this TODO comment.(­š’Ëıÿÿÿÿ

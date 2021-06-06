@@ -1,6 +1,7 @@
 package view;
 
 import controller.ShopController;
+import model.Card;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,7 +10,7 @@ public class ShopView extends ViewMenu {
 
     private static ShopView singleInstance = null;
 
-    private final Pattern buyCardPattern = Pattern.compile("(?:shop )?b(?:uy)? (?<name>\\S+)");
+    private final Pattern buyCardPattern = Pattern.compile("(?:shop )?b(?:uy)? (?<name>.+)");
 
     private ShopView() {}
 
@@ -33,6 +34,8 @@ public class ShopView extends ViewMenu {
                 showAllCards();
             else if (buyCardMatcher.matches())
                 buyCard(buyCardMatcher);
+            else if (command.startsWith("card show"))
+                showCard(command);
             else IO.getInstance().printInvalidCommand();
         }
     }
@@ -47,7 +50,8 @@ public class ShopView extends ViewMenu {
     }
 
     private void showCard(String input) {
-        //TODO check the doc. is this method necessary?
+        String cardName = input.substring(10);
+        if (!ShopController.getInstance().showCard(cardName)) IO.getInstance().printInvalidCommand();
     }
 
     private void buyCard(Matcher matcher) {

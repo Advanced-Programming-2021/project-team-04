@@ -2,11 +2,10 @@ package model;
 
 import controller.DuelController;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.*;
 
 public class Game {
+    boolean isGameFinished = false;
     private HashMap<Duelist, Integer> maxLifePoint;
     private Duelist currentPlayer, theOtherPlayer;
     private int rounds;
@@ -19,7 +18,6 @@ public class Game {
     private ArrayList<Duelist> roundWinners;
     private Card lastSetCard;
     private ArrayList<Card> cardsWhichAttacked;
-    boolean isGameFinished = false;
     private Duelist[] winnerOfEachRound = new Duelist[3];
     private boolean isAI;
 
@@ -57,7 +55,7 @@ public class Game {
         this.lastSetCard = lastSetCard;
     }
 
-    public boolean isHasSummonedInThisTurn() {
+    public boolean hasSummonedInThisTurn() {
         return hasSummonedInThisTurn;
     }
 
@@ -130,9 +128,10 @@ public class Game {
     }
 
     private void initializeGame() {
-        currentPlayer.setField(new Field(currentPlayer.getActiveDeck()));
-        theOtherPlayer.setField(new Field(theOtherPlayer.getActiveDeck()));
-        shuffleDeck();
+//        shuffleDeck();
+//        added the shuffle to GameDeck constructor so it should be ok.
+        currentPlayer.setField(new Field(new GameDeck(currentPlayer.getActiveDeck())));
+        theOtherPlayer.setField(new Field(new GameDeck(theOtherPlayer.getActiveDeck())));
         for (int i = 0; i < 5; i++) {
             currentPlayer.getField().getHand().add(currentPlayer.getField().getDeckZone().get(i));
             theOtherPlayer.getField().getHand().add(theOtherPlayer.getField().getDeckZone().get(i));
@@ -140,10 +139,20 @@ public class Game {
         currentRound++;
     }
 
-    public void shuffleDeck() {
-        Collections.shuffle(currentPlayer.getActiveDeck().getMainDeck());
-        Collections.shuffle(theOtherPlayer.getActiveDeck().getMainDeck());
-    }
+//    public void shuffleDeck() {
+//        LinkedHashMap<String , Short> temp;
+//        ArrayList<String> list;
+//        list = new ArrayList<>(currentPlayer.getActiveDeck().getMainDeckCards().keySet());
+//        Collections.shuffle(list);
+//        temp = new LinkedHashMap<>();
+//        list.forEach(c -> temp.put(c, currentPlayer.getActiveDeck().getMainDeckCards().get(c)));
+//        currentPlayer.getActiveDeck().setMainDeckCards(new LinkedHashMap<>(temp));
+//        list = new ArrayList<>(currentPlayer.getActiveDeck().getSideDeckCards().keySet());
+//        Collections.shuffle(list);
+//        temp = new LinkedHashMap<>();
+//        list.forEach(c -> temp.put(c, currentPlayer.getActiveDeck().getSideDeckCards().get(c)));
+//        currentPlayer.getActiveDeck().setSideDeckCards(new LinkedHashMap<>(temp));
+//    }
 
     public void changeTurn() {
         Duelist temp = currentPlayer;
