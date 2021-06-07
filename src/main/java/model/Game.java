@@ -33,6 +33,8 @@ public class Game {
         initializeGame();
         setCurrentPhase(Phases.DRAW_PHASE);
         setCurrentRound(1);
+        firstPlayer.reset();
+        secondPlayer.reset();
     }
 
     private void initializeGame() {
@@ -93,8 +95,8 @@ public class Game {
         else if (loser instanceof Account)
             ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
         isGameFinished = true;
-        winner.reset();
-        loser.reset();
+//        winner.reset();
+//        loser.reset();
         loser.deleteField();
         winner.deleteField();
     }
@@ -127,8 +129,8 @@ public class Game {
         if (loser instanceof Account)
             DuelController.getInstance().exchangeCardsWithSideDeck((Account) loser);
         DuelController.getInstance().chooseStarter(winner.getUsername());
-        winner.reset();
-        loser.reset();
+//        winner.reset();
+//        loser.reset();
         initializeGame();
     }
 
@@ -143,8 +145,8 @@ public class Game {
         isGameFinished = true;
         loser.deleteField();
         winner.deleteField();
-        winner.reset();
-        loser.reset();
+//        winner.reset();
+//        loser.reset();
     }
 
     public void finishGame(Duelist loser) {

@@ -41,8 +41,8 @@ public class Field {
 
     public String showGraveyard() {
         var toPrint = new StringBuilder();
-        graveyard.forEach(c -> toPrint.append(c.getName()).append(":").append(c.getDescription()).append("\n"));
-        toPrint.setLength(toPrint.length() - 1);
+        graveyard.forEach(c -> toPrint.append(c.getName()).append(": ").append(c.getDescription()).append("\n"));
+//        toPrint.setLength(toPrint.length() - 1);
         return toPrint.toString();
     }
 
