@@ -59,7 +59,6 @@ public class SpellAndTrapCard extends Card {
     @Override
     public void reset() {
         hasBeenUsedInThisTurn = false;
-        this.setOwner(MainController.getInstance().getLoggedIn());
         if (Owner.getField().getGraveyard().contains(this))
             isActive = false;
     }

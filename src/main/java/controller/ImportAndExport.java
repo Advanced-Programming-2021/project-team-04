@@ -80,7 +80,10 @@ public class ImportAndExport {
         var monsterCard = readMonsterCard("src/main/resources/monsters/" + cardName + ".JSON");
         var spellAndTrapCard = readSpellAndTrapCard("src/main/resources/spellandtraps/" + cardName + ".JSON");
         if (monsterCard == null && spellAndTrapCard != null) return spellAndTrapCard;
-        if (monsterCard != null && spellAndTrapCard == null) return monsterCard;
+        if (monsterCard != null && spellAndTrapCard == null) {
+            monsterCard.reset();
+            return monsterCard;
+        }
         return null;
     }
 
