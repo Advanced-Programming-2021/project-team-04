@@ -130,13 +130,30 @@ public class Game {
     private void initializeGame() {
 //        shuffleDeck();
 //        added the shuffle to GameDeck constructor so it should be ok.
-        currentPlayer.setField(new Field(new GameDeck(currentPlayer.getActiveDeck())));
-        theOtherPlayer.setField(new Field(new GameDeck(theOtherPlayer.getActiveDeck())));
+        Field currentPlayerField = new Field(new GameDeck(currentPlayer.getActiveDeck()));
+        Field theOtherPlayerField = new Field(new GameDeck(theOtherPlayer.getActiveDeck()));
+        currentPlayer.setField(currentPlayerField);
+        theOtherPlayer.setField(theOtherPlayerField);
+        initializeCards(currentPlayer);
+        initializeCards(theOtherPlayer);
         for (int i = 0; i < 5; i++) {
-            currentPlayer.getField().getHand().add(currentPlayer.getField().getDeckZone().get(i));
-            theOtherPlayer.getField().getHand().add(theOtherPlayer.getField().getDeckZone().get(i));
+            currentPlayer.getField().getHand().add(currentPlayer.getField().getDeckZone().get(0));
+            currentPlayer.getField().getDeckZone().remove(0);
+            theOtherPlayer.getField().getHand().add(theOtherPlayer.getField().getDeckZone().get(0));
+            theOtherPlayer.getField().getDeckZone().remove(0);
         }
         currentRound++;
+    }
+
+    private void initializeCards(Duelist duelist) {
+        duelist.getField().getDeckZone().forEach(c -> {
+            if (c instanceof MonsterCard) c.setOwner(duelist);
+            c.reset();
+        });
+        duelist.getField().getSideDeck().forEach(c -> {
+            if (c instanceof MonsterCard) c.setOwner(duelist);
+            c.reset();
+        });
     }
 
 //    public void shuffleDeck() {

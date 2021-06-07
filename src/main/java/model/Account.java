@@ -1,7 +1,12 @@
 package model;
 
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.annotations.Expose;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class Account extends Duelist {
@@ -30,6 +35,7 @@ public class Account extends Duelist {
         allAccounts.add(this);
         allUsernames.add(username);
         allNicknames.add(nickname);
+        System.out.println(".");
     }
 
     public static void addAccount(Account account) {
@@ -38,13 +44,12 @@ public class Account extends Duelist {
         allNicknames.add(account.getNickname());
     }
 
-
     public void setAllCards(ArrayList<Card> allCards) {
         this.allCards = allCards;
     }
 
     public void setActiveDeck(PlayerDeck activePlayerDeck) {
-        this.activePlayerDeck = activePlayerDeck;
+        this.activePlayerDeck = activePlayerDeck.getDeckName();
     }
 
     public void setPassword(String password) {
@@ -97,8 +102,6 @@ public class Account extends Duelist {
         allUsernames.remove(account.getUsername());
     }
 
-
-
     public static Account getAccountByUsername(String username) {
         for (Account account : allAccounts)
             if (account.getUsername().equals(username))
@@ -106,5 +109,11 @@ public class Account extends Duelist {
         return null;
     }
 
-
+//    class AccountDeserializer implements JsonDeserializer<Account> {
+//
+//        @Override
+//        public Account deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
+//            return new Account(jsonElement.getAsJsonObject().keySet().stream().findAny(o -> (String) o));
+//        }
+//    } //TODO fix this sexy son of a bitch, remove the current solution to false canDraw() problem, in readAccount in ImportAndExport
 }

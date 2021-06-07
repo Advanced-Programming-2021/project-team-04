@@ -15,15 +15,13 @@ public class GameDeck {
     @Expose(serialize = true, deserialize = true)
     private String deckName;
 
-    public GameDeck(String deckName) {
-        setDeckName(deckName);
-    }
 
     public GameDeck(PlayerDeck playerDeck) {
         deckName = playerDeck.getDeckName();
         playerDeck.getMainDeckCards().keySet().forEach(n -> {
             for (var i = 0; i < playerDeck.getMainDeckCards().get(n); i++) {
-                mainDeck.add(ImportAndExport.getInstance().readCard(n));
+                Card card = ImportAndExport.getInstance().readCard(n);
+                mainDeck.add(card);
             }
         });
         Collections.shuffle(mainDeck);

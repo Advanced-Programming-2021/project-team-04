@@ -38,9 +38,10 @@ public class MainView extends ViewMenu {
             Matcher newDuelAIMatcher = newDuelAIPattern.matcher(command);
             if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
                 showCurrentMenu();
-            else if (command.matches("(?:user )?logout"))
+            else if (command.matches("(?:user )?logout")) {
                 logout();
-            else if (enterMenuMatcher.matches())
+                return;
+            }else if (enterMenuMatcher.matches())
                 enterMenu(enterMenuMatcher);
             else if (newDuelMatcher.matches())
                 newDuel(newDuelMatcher);

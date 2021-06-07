@@ -12,7 +12,7 @@ public abstract class Duelist {
     @Expose(serialize = true, deserialize = true)
     protected ArrayList<Card> allCards = new ArrayList<Card>();
     @Expose(serialize = true, deserialize = true)
-    protected PlayerDeck activePlayerDeck;
+    protected String activePlayerDeck;
     @Expose(serialize = true, deserialize = true)
     protected String username;
     @Expose(serialize = true, deserialize = true)
@@ -93,7 +93,7 @@ public abstract class Duelist {
     }
 
     public PlayerDeck getActiveDeck() {
-        return activePlayerDeck;
+        return getDeckByName(activePlayerDeck);
     }
 
     public String getUsername() {
@@ -160,7 +160,7 @@ public abstract class Duelist {
     }
 
     private void activateDeck(String deckName) {
-        activePlayerDeck = getDeckByName(deckName);
+        activePlayerDeck = deckName;
     }
 
     private boolean hasActiveDeck() {

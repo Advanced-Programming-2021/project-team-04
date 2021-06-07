@@ -5,7 +5,9 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Bitron": 40
+        "Axe Raider": 1,
+        "Bitron": 39,
+        "Skull Guardian": 3
       },
       "sideDeckCards": {},
       "deckName": "Langa"
@@ -93,11 +95,7 @@
       "description": "A new species found in electronic space. There\u0027s not much information on it."
     }
   ],
-  "activePlayerDeck": {
-    "mainDeckCards": {},
-    "sideDeckCards": {},
-    "deckName": "Langa"
-  },
+  "activePlayerDeck": "Langa",
   "username": "Adam",
   "nickname": "muderer"
 }
