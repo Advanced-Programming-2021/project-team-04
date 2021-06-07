@@ -2,17 +2,21 @@ package model;
 
 import controller.DuelController;
 import controller.ImportAndExport;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
+@Getter
+@Setter
 public class AI extends Duelist {
 
     private static AI singleInstance = null;
 
     private AI() {
         username = "AI";
-        setAllDecks(ImportAndExport.getInstance().readAllDecks("src/main/resources/decks/"));
+        setAllPlayerDecks(ImportAndExport.getInstance().readAllDecks("src/main/resources/decks/"));
     }
 
     public static AI getInstance() {
@@ -47,7 +51,7 @@ public class AI extends Duelist {
     public MonsterCard getStrongestMonsterCardInZone() {
         return getField().getMonsterCards().stream()
                 .filter(m -> m.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP))
-                .filter(MonsterCard::canAttack).max(Comparator.comparing(m -> m.thisCardAttackPower)).orElse(null);
+                .filter(MonsterCard::isAbleToAttack).max(Comparator.comparing(m -> m.thisCardAttackPower)).orElse(null);
     }
 
     public MonsterCard getOpponentsWeakestAttackCard(Duelist opponent) {

@@ -1,6 +1,6 @@
 package model;
 
-public enum gameRounds {
+public enum GameRounds {
     ONE,
     THREE
 }

@@ -26,8 +26,8 @@ public class DuelTest {
         PlayerDeck playerDeck = new PlayerDeck("Damaged");
         for (int i = 0; i < 40; i++)
             playerDeck.addCardToMainDeck(cardName);
-        thisPlayer.setActiveDeck(playerDeck);
-        theOtherPlayer.setActiveDeck(playerDeck);
+        thisPlayer.setActivePlayerDeck("Damaged");
+        theOtherPlayer.setActivePlayerDeck("Damaged");
         DuelController.getInstance().setGame(new Game(thisPlayer, theOtherPlayer, 3, false));
     }
 
@@ -45,7 +45,7 @@ public class DuelTest {
 
     @Test
     public void drawTest() {
-        thisPlayer.setCanDraw(true);
+        thisPlayer.setAbleToDraw(true);
         DuelController.getInstance().drawPhase();
         Assertions.assertEquals(6, thisPlayer.getField().getHand().size());
         Assertions.assertEquals(39, thisPlayer.getField().getDeckZone().size());
@@ -54,9 +54,9 @@ public class DuelTest {
     @Test
     public void battlePhaseTest() {
         DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
-        thisPlayer.setCanPlayerAttack(false);
+        thisPlayer.setAbleToAttack(false);
         DuelController.getInstance().battlePhase();
-        Assertions.assertTrue(thisPlayer.canPlayerAttack());
+        Assertions.assertTrue(thisPlayer.isAbleToAttack());
         Assertions.assertEquals(Phases.SECOND_MAIN_PHASE, DuelController.getInstance().getGame().getCurrentPhase());
     }
 
@@ -64,9 +64,9 @@ public class DuelTest {
     public void resetTest() {
         card.setOwner(thisPlayer);
         card.setHasBeenUsedInThisTurn(true);
-        thisPlayer.getField().getTrapAndSpell().add(card);
+        thisPlayer.getField().getSpellAndTrapCards().add(card);
         DuelController.getInstance().endPhase();
-        thisPlayer.getField().getTrapAndSpell().remove(card);
+        thisPlayer.getField().getSpellAndTrapCards().remove(card);
         card.setOwner(null);
         Assertions.assertFalse(card.isHasBeenUsedInThisTurn());
     }
@@ -91,7 +91,7 @@ public class DuelTest {
 
     @Test
     public void selectErrorsSpellTest() {
-        int number = thisPlayer.getField().getTrapAndSpell().size() + 1;
+        int number = thisPlayer.getField().getSpellAndTrapCards().size() + 1;
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().selectCard(true, CardStatusInField.SPELL_FIELD, number);
@@ -291,7 +291,7 @@ public class DuelTest {
         ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
         ArrayList<Card> myGY = thisPlayer.getField().getGraveyard();
         ArrayList<Card> deck = thisPlayer.getField().getDeckZone();
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getSpellAndTrapCards();
         ArrayList<Card> hand = thisPlayer.getField().getHand();
         thisPlayer.getField().setHand(new ArrayList<>());
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
@@ -304,14 +304,14 @@ public class DuelTest {
         MonsterCard toDie = (MonsterCard) Card.getCardByName("Dark magician");
         toDie.setOwner(thisPlayer);
         thisPlayer.getField().getMonsterCards().add(toDie);
-        thisPlayer.getField().getTrapAndSpell().add(spellAndTrapCard);
+        thisPlayer.getField().getSpellAndTrapCards().add(spellAndTrapCard);
         thisPlayer.getField().getDeckZone().add(monsterCard);
         DuelController.getInstance().handleSupplySquad(toDie, thisPlayer.getField());
         Assertions.assertTrue(thisPlayer.getField().getHand().contains(monsterCard));
         thisPlayer.getField().setMonsterCards(monsterCards);
         thisPlayer.getField().setGraveyard(myGY);
         thisPlayer.getField().setDeckZone(deck);
-        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        thisPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
         thisPlayer.getField().setHand(hand);
     }
 
@@ -560,7 +560,7 @@ public class DuelTest {
         DuelController.getInstance().getGame().setCurrentPhase(Phases.FIRST_MAIN_PHASE);
         ArrayList<MonsterCard> monsterBackUp = thisPlayer.getField().getMonsterCards();
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
-        DuelController.getInstance().getGame().setHasSummonedInThisTurn(false);
+        DuelController.getInstance().getGame().setSummonedInThisTurn(false);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().set();
@@ -578,29 +578,29 @@ public class DuelTest {
         thisPlayer.getField().getHand().add(vanity);
         DuelController.getInstance().getGame().setSelectedCard(vanity);
         DuelController.getInstance().getGame().setCurrentPhase(Phases.FIRST_MAIN_PHASE);
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        DuelController.getInstance().getGame().setHasSummonedInThisTurn(false);
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getSpellAndTrapCards();
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        DuelController.getInstance().getGame().setSummonedInThisTurn(false);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().set();
         Assertions.assertEquals("set successfully\r\n", outputStream.toString());
         thisPlayer.getField().setHand(hand);
-        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        thisPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
     }
 
     @Test
     public void monsterRebornTest() {
         SpellAndTrapCard monsterReborn = (SpellAndTrapCard) Card.getCardByName("Monster Reborn");
         monsterReborn.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> spellZone = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> spellZone = thisPlayer.getField().getSpellAndTrapCards();
         ArrayList<Card> GY = thisPlayer.getField().getGraveyard();
         MonsterCard marshmallon = (MonsterCard) Card.getCardByName("Marshmallon");
         marshmallon.setOwner(thisPlayer);
         thisPlayer.getField().setGraveyard(new ArrayList<>());
         thisPlayer.getField().getGraveyard().add(marshmallon);
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(monsterReborn);
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        thisPlayer.getField().getSpellAndTrapCards().add(monsterReborn);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n0\r\n".getBytes());
         System.setIn(input);
@@ -608,7 +608,7 @@ public class DuelTest {
         System.setIn(backup);
         DuelController.getInstance().monsterReborn(monsterReborn);
         Assertions.assertTrue(thisPlayer.getField().getGraveyard().contains(monsterReborn));
-        thisPlayer.getField().setTrapAndSpell(spellZone);
+        thisPlayer.getField().setSpellAndTrapCards(spellZone);
         thisPlayer.getField().setGraveyard(GY);
     }
 
@@ -665,7 +665,7 @@ public class DuelTest {
         reki.setOwner(thisPlayer);
         ArrayList<MonsterCard> opponentMonsterCards = theOtherPlayer.getField().getMonsterCards();
         ArrayList<Card> myGY = thisPlayer.getField().getGraveyard();
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getSpellAndTrapCards();
         MonsterCard spiralSerpent = (MonsterCard) Card.getCardByName("Spiral Serpent");
         spiralSerpent.setOwner(theOtherPlayer);
         MonsterCard hornImp = (MonsterCard) Card.getCardByName("Horn Imp");
@@ -677,33 +677,33 @@ public class DuelTest {
         Assertions.assertTrue(theOtherPlayer.getField().getMonsterCards().isEmpty());
         theOtherPlayer.getField().setMonsterCards(opponentMonsterCards);
         thisPlayer.getField().setGraveyard(myGY);
-        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        thisPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
     }
 
     @Test
     public void harpiesFeatherDusterTest() {
         SpellAndTrapCard harpie = (SpellAndTrapCard) Card.getCardByName("Harpie's Feather Duster");
         harpie.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> spellCards = theOtherPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> spellCards = theOtherPlayer.getField().getSpellAndTrapCards();
         ArrayList<Card> myGY = thisPlayer.getField().getGraveyard();
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getSpellAndTrapCards();
         SpellAndTrapCard solemnWarning = (SpellAndTrapCard) Card.getCardByName("Solemn Warning");
         solemnWarning.setOwner(theOtherPlayer);
         SpellAndTrapCard timeSeal = (SpellAndTrapCard) Card.getCardByName("Time Seal");
         timeSeal.setOwner(theOtherPlayer);
-        theOtherPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        theOtherPlayer.getField().getTrapAndSpell().add(solemnWarning);
-        theOtherPlayer.getField().getTrapAndSpell().add(timeSeal);
+        theOtherPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        theOtherPlayer.getField().getSpellAndTrapCards().add(solemnWarning);
+        theOtherPlayer.getField().getSpellAndTrapCards().add(timeSeal);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("no\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
         DuelController.getInstance().harpiesFeatherDuster(harpie);
-        Assertions.assertTrue(theOtherPlayer.getField().getTrapAndSpell().isEmpty());
-        theOtherPlayer.getField().setTrapAndSpell(spellCards);
+        Assertions.assertTrue(theOtherPlayer.getField().getSpellAndTrapCards().isEmpty());
+        theOtherPlayer.getField().setSpellAndTrapCards(spellCards);
         thisPlayer.getField().setGraveyard(myGY);
-        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        thisPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
     }
 
     @Test
@@ -739,18 +739,18 @@ public class DuelTest {
         mystical.setOwner(thisPlayer);
         SpellAndTrapCard umiiruka = (SpellAndTrapCard) Card.getCardByName("Umiiruka");
         umiiruka.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getSpellAndTrapCards();
         ArrayList<Card> GY = thisPlayer.getField().getGraveyard();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(umiiruka);
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        thisPlayer.getField().getSpellAndTrapCards().add(umiiruka);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n0\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
         DuelController.getInstance().mysticalSpaceTyphoon(mystical);
-        Assertions.assertTrue(thisPlayer.getField().getTrapAndSpell().isEmpty());
-        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        Assertions.assertTrue(thisPlayer.getField().getSpellAndTrapCards().isEmpty());
+        thisPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
         thisPlayer.getField().setGraveyard(GY);
     }
 
@@ -862,25 +862,25 @@ public class DuelTest {
         twinTwister.setOwner(thisPlayer);
         cardFromHand.setOwner(thisPlayer);
         toRemove.setOwner(theOtherPlayer);
-        ArrayList<SpellAndTrapCard> thisPlayerSpells = thisPlayer.getField().getTrapAndSpell();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(twinTwister);
+        ArrayList<SpellAndTrapCard> thisPlayerSpells = thisPlayer.getField().getSpellAndTrapCards();
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        thisPlayer.getField().getSpellAndTrapCards().add(twinTwister);
         ArrayList<Card> hand = thisPlayer.getField().getHand();
         thisPlayer.getField().setHand(new ArrayList<>());
         thisPlayer.getField().getHand().add(cardFromHand);
-        ArrayList<SpellAndTrapCard> opponentSpells = theOtherPlayer.getField().getTrapAndSpell();
-        theOtherPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        theOtherPlayer.getField().getTrapAndSpell().add(toRemove);
+        ArrayList<SpellAndTrapCard> opponentSpells = theOtherPlayer.getField().getSpellAndTrapCards();
+        theOtherPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        theOtherPlayer.getField().getSpellAndTrapCards().add(toRemove);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("no\r\nno\r\n0\r\n1\r\nno\r\n0\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
         DuelController.getInstance().twinTwisters(twinTwister);
-        Assertions.assertFalse(theOtherPlayer.getField().getTrapAndSpell().contains(toRemove));
-        thisPlayer.getField().setTrapAndSpell(thisPlayerSpells);
+        Assertions.assertFalse(theOtherPlayer.getField().getSpellAndTrapCards().contains(toRemove));
+        thisPlayer.getField().setSpellAndTrapCards(thisPlayerSpells);
         thisPlayer.getField().setHand(hand);
-        theOtherPlayer.getField().setTrapAndSpell(opponentSpells);
+        theOtherPlayer.getField().setSpellAndTrapCards(opponentSpells);
     }
 
     @Test
@@ -889,16 +889,16 @@ public class DuelTest {
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Curtain of the dark ones");
         mirrorForce.setOwner(thisPlayer);
         monsterCard.setOwner(theOtherPlayer);
-        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getSpellAndTrapCards();
         ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(mirrorForce);
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        thisPlayer.getField().getSpellAndTrapCards().add(mirrorForce);
         theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
         theOtherPlayer.getField().getMonsterCards().add(monsterCard);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         DuelController.getInstance().mirrorForce(mirrorForce, theOtherPlayer);
         Assertions.assertFalse(theOtherPlayer.getField().getMonsterCards().contains(monsterCard));
-        thisPlayer.getField().setTrapAndSpell(mySpells);
+        thisPlayer.getField().setSpellAndTrapCards(mySpells);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
     }
 
@@ -908,10 +908,10 @@ public class DuelTest {
         MonsterCard attacker = (MonsterCard) Card.getCardByName("Feral Imp");
         magicCylinder.setOwner(thisPlayer);
         attacker.setOwner(theOtherPlayer);
-        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getSpellAndTrapCards();
         ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(magicCylinder);
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        thisPlayer.getField().getSpellAndTrapCards().add(magicCylinder);
         theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
         theOtherPlayer.getField().getMonsterCards().add(attacker);
         InputStream backup = System.in;
@@ -922,7 +922,7 @@ public class DuelTest {
         theOtherPlayer.setLP(8000);
         DuelController.getInstance().magicCylinder(attacker, magicCylinder);
         Assertions.assertEquals(8000 - attacker.getThisCardAttackPower(), theOtherPlayer.getLP());
-        thisPlayer.getField().setTrapAndSpell(mySpells);
+        thisPlayer.getField().setSpellAndTrapCards(mySpells);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
     }
 
@@ -932,11 +932,11 @@ public class DuelTest {
         MonsterCard hornImp = (MonsterCard) Card.getCardByName("Horn Imp");
         swordOfDarkDestruction.setOwner(thisPlayer);
         hornImp.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getSpellAndTrapCards();
         ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(swordOfDarkDestruction);
+        thisPlayer.getField().getSpellAndTrapCards().add(swordOfDarkDestruction);
         thisPlayer.getField().getMonsterCards().add(hornImp);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0\r\n".getBytes());
@@ -946,7 +946,7 @@ public class DuelTest {
         DuelController.getInstance().equipMonster(swordOfDarkDestruction);
         Assertions.assertEquals(400 + hornImp.getClassAttackPower(), hornImp.getThisCardAttackPower());
         hornImp.reset();
-        thisPlayer.getField().setTrapAndSpell(mySpells);
+        thisPlayer.getField().setSpellAndTrapCards(mySpells);
         thisPlayer.getField().setMonsterCards(myMonsters);
     }
 
@@ -956,11 +956,11 @@ public class DuelTest {
         MonsterCard hornImp = (MonsterCard) Card.getCardByName("Horn Imp");
         blackPendant.setOwner(thisPlayer);
         hornImp.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getSpellAndTrapCards();
         ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(blackPendant);
+        thisPlayer.getField().getSpellAndTrapCards().add(blackPendant);
         thisPlayer.getField().getMonsterCards().add(hornImp);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0\r\n".getBytes());
@@ -970,7 +970,7 @@ public class DuelTest {
         DuelController.getInstance().equipMonster(blackPendant);
         Assertions.assertEquals(500 + hornImp.getClassAttackPower(), hornImp.getThisCardAttackPower());
         hornImp.reset();
-        thisPlayer.getField().setTrapAndSpell(mySpells);
+        thisPlayer.getField().setSpellAndTrapCards(mySpells);
         thisPlayer.getField().setMonsterCards(myMonsters);
     }
 
@@ -978,15 +978,15 @@ public class DuelTest {
     public void unitedWeStandTest() {
         SpellAndTrapCard unitedWeStand = (SpellAndTrapCard) Card.getCardByName("United We Stand");
         MonsterCard hornImp = (MonsterCard) Card.getCardByName("Horn Imp");
-        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Dark Blade") ;
+        MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Dark Blade");
         unitedWeStand.setOwner(thisPlayer);
         hornImp.setOwner(thisPlayer);
         monsterCard.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getSpellAndTrapCards();
         ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(unitedWeStand);
+        thisPlayer.getField().getSpellAndTrapCards().add(unitedWeStand);
         thisPlayer.getField().getMonsterCards().add(hornImp);
         thisPlayer.getField().getMonsterCards().add(monsterCard);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
@@ -998,7 +998,7 @@ public class DuelTest {
         DuelController.getInstance().equipMonster(unitedWeStand);
         Assertions.assertEquals(1600 + hornImp.getClassAttackPower(), hornImp.getThisCardAttackPower());
         monsterCard.reset();
-        thisPlayer.getField().setTrapAndSpell(mySpells);
+        thisPlayer.getField().setSpellAndTrapCards(mySpells);
         thisPlayer.getField().setMonsterCards(myMonsters);
     }
 
@@ -1008,11 +1008,11 @@ public class DuelTest {
         MonsterCard darkBlade = (MonsterCard) Card.getCardByName("Dark Blade");
         magnumShield.setOwner(thisPlayer);
         darkBlade.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getSpellAndTrapCards();
         ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(magnumShield);
+        thisPlayer.getField().getSpellAndTrapCards().add(magnumShield);
         thisPlayer.getField().getMonsterCards().add(darkBlade);
         darkBlade.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         InputStream backup = System.in;
@@ -1022,7 +1022,7 @@ public class DuelTest {
         System.setIn(backup);
         DuelController.getInstance().equipMonster(magnumShield);
         Assertions.assertEquals(darkBlade.getClassAttackPower() + darkBlade.getClassDefensePower(), darkBlade.getThisCardAttackPower());
-        thisPlayer.getField().setTrapAndSpell(mySpells);
+        thisPlayer.getField().setSpellAndTrapCards(mySpells);
         thisPlayer.getField().setMonsterCards(myMonsters);
     }
 
@@ -1035,9 +1035,9 @@ public class DuelTest {
         ArrayList<Card> opponentHand = theOtherPlayer.getField().getHand();
         theOtherPlayer.getField().setHand(new ArrayList<>());
         theOtherPlayer.getField().getHand().add(opponentCard);
-        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getTrapAndSpell();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(mindCrush);
+        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getSpellAndTrapCards();
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        thisPlayer.getField().getSpellAndTrapCards().add(mindCrush);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("yes\r\nClosed Forest\r\n".getBytes());
         System.setIn(input);
@@ -1045,7 +1045,7 @@ public class DuelTest {
         System.setIn(backup);
         DuelController.getInstance().mindCrush(mindCrush, theOtherPlayer);
         theOtherPlayer.getField().setHand(opponentHand);
-        thisPlayer.getField().setTrapAndSpell(mySpells);
+        thisPlayer.getField().setSpellAndTrapCards(mySpells);
     }
 
     @Test
@@ -1062,9 +1062,9 @@ public class DuelTest {
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Dark magician");
         torrential.setOwner(theOtherPlayer);
         monsterCard.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> opponentSpells = theOtherPlayer.getField().getTrapAndSpell();
-        theOtherPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        theOtherPlayer.getField().getTrapAndSpell().add(torrential);
+        ArrayList<SpellAndTrapCard> opponentSpells = theOtherPlayer.getField().getSpellAndTrapCards();
+        theOtherPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        theOtherPlayer.getField().getSpellAndTrapCards().add(torrential);
         ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
         thisPlayer.getField().getMonsterCards().add(monsterCard);
@@ -1075,7 +1075,7 @@ public class DuelTest {
         System.setIn(backup);
         DuelController.getInstance().torrentialTribute();
         Assertions.assertTrue(thisPlayer.getField().getMonsterCards().isEmpty());
-        theOtherPlayer.getField().setTrapAndSpell(opponentSpells);
+        theOtherPlayer.getField().setSpellAndTrapCards(opponentSpells);
         thisPlayer.getField().setMonsterCards(myMonsters);
     }
 
@@ -1089,8 +1089,8 @@ public class DuelTest {
         IO.getInstance().resetScanner();
         System.setIn(backup);
         DuelController.getInstance().timeSeal(timeSeal, theOtherPlayer);
-        Assertions.assertFalse(theOtherPlayer.canDraw());
-        theOtherPlayer.setCanDraw(true);
+        Assertions.assertFalse(theOtherPlayer.isAbleToDraw());
+        theOtherPlayer.setAbleToDraw(true);
     }
 
     @Test
@@ -1101,13 +1101,13 @@ public class DuelTest {
         magicJamamer.setOwner(theOtherPlayer);
         Card toRemove = Card.getCardByName("Fireyarou");
         toRemove.setOwner(theOtherPlayer);
-        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getTrapAndSpell();
-        ArrayList<SpellAndTrapCard> opponentSpells = theOtherPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getSpellAndTrapCards();
+        ArrayList<SpellAndTrapCard> opponentSpells = theOtherPlayer.getField().getSpellAndTrapCards();
         ArrayList<Card> opponentHand = theOtherPlayer.getField().getHand();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(spellAndTrapCard);
-        theOtherPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        theOtherPlayer.getField().getTrapAndSpell().add(magicJamamer);
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        thisPlayer.getField().getSpellAndTrapCards().add(spellAndTrapCard);
+        theOtherPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        theOtherPlayer.getField().getSpellAndTrapCards().add(magicJamamer);
         theOtherPlayer.getField().setHand(new ArrayList<>());
         theOtherPlayer.getField().getHand().add(toRemove);
         InputStream backup = System.in;
@@ -1117,8 +1117,8 @@ public class DuelTest {
         System.setIn(backup);
         DuelController.getInstance().magicJamamer(spellAndTrapCard);
         Assertions.assertTrue(thisPlayer.getField().getGraveyard().contains(spellAndTrapCard));
-        thisPlayer.getField().setTrapAndSpell(mySpells);
-        theOtherPlayer.getField().setTrapAndSpell(opponentSpells);
+        thisPlayer.getField().setSpellAndTrapCards(mySpells);
+        theOtherPlayer.getField().setSpellAndTrapCards(opponentSpells);
         theOtherPlayer.getField().setHand(opponentHand);
     }
 
@@ -1129,11 +1129,11 @@ public class DuelTest {
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Exploder Dragon");
         solemnWarning.setOwner(theOtherPlayer);
         monsterCard.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> opponentSpells = theOtherPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> opponentSpells = theOtherPlayer.getField().getSpellAndTrapCards();
         ArrayList<Card> myHand = thisPlayer.getField().getHand();
-        theOtherPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        theOtherPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
         thisPlayer.getField().setHand(new ArrayList<>());
-        theOtherPlayer.getField().getTrapAndSpell().add(solemnWarning);
+        theOtherPlayer.getField().getSpellAndTrapCards().add(solemnWarning);
         thisPlayer.getField().getHand().add(monsterCard);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n".getBytes());
@@ -1142,7 +1142,7 @@ public class DuelTest {
         System.setIn(backup);
         DuelController.getInstance().solemnWarning(monsterCard);
         Assertions.assertEquals(6000, theOtherPlayer.getLP());
-        theOtherPlayer.getField().setTrapAndSpell(opponentSpells);
+        theOtherPlayer.getField().setSpellAndTrapCards(opponentSpells);
         thisPlayer.getField().setHand(myHand);
     }
 
@@ -1152,11 +1152,11 @@ public class DuelTest {
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Wattkid");
         callOfTheHaunted.setOwner(thisPlayer);
         monsterCard.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> mySpells = thisPlayer.getField().getSpellAndTrapCards();
         ArrayList<Card> myGY = thisPlayer.getField().getGraveyard();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
         thisPlayer.getField().setGraveyard(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(callOfTheHaunted);
+        thisPlayer.getField().getSpellAndTrapCards().add(callOfTheHaunted);
         thisPlayer.getField().getGraveyard().add(monsterCard);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n0\r\n".getBytes());
@@ -1165,7 +1165,7 @@ public class DuelTest {
         System.setIn(backup);
         DuelController.getInstance().callOfTheHaunted(callOfTheHaunted, thisPlayer.getField(), true);
         Assertions.assertTrue(thisPlayer.getField().getMonsterCards().contains(monsterCard));
-        thisPlayer.getField().setTrapAndSpell(mySpells);
+        thisPlayer.getField().setSpellAndTrapCards(mySpells);
         thisPlayer.getField().setGraveyard(myGY);
     }
 
@@ -1176,13 +1176,13 @@ public class DuelTest {
         callOfTheHaunted.setActive(true);
         int LP = thisPlayer.getLP();
         thisPlayer.setLP(8000);
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(callOfTheHaunted);
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getSpellAndTrapCards();
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        thisPlayer.getField().getSpellAndTrapCards().add(callOfTheHaunted);
         DuelController.getInstance().selfAbsorption();
         Assertions.assertEquals(8500, thisPlayer.getLP());
         thisPlayer.setLP(LP);
-        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        thisPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
         callOfTheHaunted.reset();
     }
 
@@ -1242,13 +1242,13 @@ public class DuelTest {
         Phases phase = DuelController.getInstance().getGame().getCurrentPhase();
         DuelController.getInstance().getGame().setCurrentPhase(Phases.FIRST_MAIN_PHASE);
         ArrayList<Card> handBackUp = thisPlayer.getField().getHand();
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getSpellAndTrapCards();
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
         thisPlayer.getField().setHand(new ArrayList<>());
         for (int i = 0; i < 5; i++) {
             SpellAndTrapCard reki = (SpellAndTrapCard) Card.getCardByName("Raigeki");
             reki.setOwner(thisPlayer);
-            thisPlayer.getField().getTrapAndSpell().add(reki);
+            thisPlayer.getField().getSpellAndTrapCards().add(reki);
         }
         thisPlayer.getField().getHand().add(callOfTheHaunted);
         DuelController.getInstance().getGame().setSelectedCard(callOfTheHaunted);
@@ -1258,7 +1258,7 @@ public class DuelTest {
         Assertions.assertEquals("spell card zone is full\r\n", outputStream.toString());
         DuelController.getInstance().getGame().setCurrentPhase(phase);
         thisPlayer.getField().setHand(handBackUp);
-        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        thisPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
         DuelController.getInstance().getGame().setSelectedCard(null);
     }
 
@@ -1324,7 +1324,7 @@ public class DuelTest {
     public void directAttackError4() {
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Wattkid");
         monsterCard.setOwner(thisPlayer);
-        monsterCard.setHasAttacked(true);
+        monsterCard.setAttacked(true);
         Phases phase = DuelController.getInstance().getGame().getCurrentPhase();
         DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
         DuelController.getInstance().getGame().setSelectedCard(monsterCard);
@@ -1337,7 +1337,7 @@ public class DuelTest {
         Assertions.assertEquals("this card already attacked\r\n", outputStream.toString());
         DuelController.getInstance().getGame().setCurrentPhase(phase);
         thisPlayer.getField().setMonsterCards(monsterCards);
-        monsterCard.setHasAttacked(false);
+        monsterCard.setAttacked(false);
     }
 
     @Test
@@ -1369,7 +1369,7 @@ public class DuelTest {
         theOtherPlayer.setLP(8000);
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Wattkid");
         monsterCard.setOwner(thisPlayer);
-        monsterCard.setHasAttacked(false);
+        monsterCard.setAttacked(false);
         Phases phase = DuelController.getInstance().getGame().getCurrentPhase();
         DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
         DuelController.getInstance().getGame().setSelectedCard(monsterCard);
@@ -1427,7 +1427,7 @@ public class DuelTest {
         ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
         thisPlayer.getField().getMonsterCards().add(monsterCard);
-        monsterCard.setHasAttacked(true);
+        monsterCard.setAttacked(true);
         DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
@@ -1435,7 +1435,7 @@ public class DuelTest {
         Assertions.assertEquals("this card already attacked\r\n", outputStream.toString());
         DuelController.getInstance().getGame().setSelectedCard(null);
         thisPlayer.getField().setMonsterCards(myMonsters);
-        monsterCard.setHasAttacked(false);
+        monsterCard.setAttacked(false);
     }
 
     @Test
@@ -1460,7 +1460,7 @@ public class DuelTest {
     @Test
     public void attackError6() {
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Slot Machine");
-        MonsterCard attacked = (MonsterCard) Card.getCardByName("Spiral Serpent") ;
+        MonsterCard attacked = (MonsterCard) Card.getCardByName("Spiral Serpent");
         DuelController.getInstance().getGame().setSelectedCard(monsterCard);
         ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
@@ -1471,10 +1471,10 @@ public class DuelTest {
         ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
         theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
         theOtherPlayer.getField().getMonsterCards().add(attacked);
-        attacked.setCanBeRemoved(false);
+        attacked.setAbleToBeRemoved(false);
         DuelController.getInstance().attack(1);
         Assertions.assertEquals("you can’t attack this card\r\n", outputStream.toString());
-        attacked.setCanBeRemoved(true);
+        attacked.setAbleToBeRemoved(true);
         DuelController.getInstance().getGame().setSelectedCard(null);
         thisPlayer.getField().setMonsterCards(myMonsters);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
@@ -1483,7 +1483,7 @@ public class DuelTest {
     @Test
     public void attackError7() {
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Slot Machine");
-        MonsterCard attacked = (MonsterCard) Card.getCardByName("Spiral Serpent") ;
+        MonsterCard attacked = (MonsterCard) Card.getCardByName("Spiral Serpent");
         DuelController.getInstance().getGame().setSelectedCard(monsterCard);
         ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
@@ -1494,10 +1494,10 @@ public class DuelTest {
         ArrayList<MonsterCard> opponentMonsters = theOtherPlayer.getField().getMonsterCards();
         theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
         theOtherPlayer.getField().getMonsterCards().add(attacked);
-        monsterCard.setCanAttack(false);
+        monsterCard.setAbleToAttack(false);
         DuelController.getInstance().attack(1);
         Assertions.assertEquals("you can’t attack with this card\r\n", outputStream.toString());
-        monsterCard.setCanAttack(true);
+        monsterCard.setAbleToAttack(true);
         DuelController.getInstance().getGame().setSelectedCard(null);
         thisPlayer.getField().setMonsterCards(myMonsters);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
@@ -1782,7 +1782,7 @@ public class DuelTest {
         DuelController.getInstance().getGame().setCurrentPhase(Phases.SECOND_MAIN_PHASE);
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
-        monsterCard.setHasChangedPosition(true);
+        monsterCard.setChangedPosition(true);
         ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
         thisPlayer.getField().getMonsterCards().add(monsterCard);
@@ -1800,7 +1800,7 @@ public class DuelTest {
         DuelController.getInstance().getGame().setCurrentPhase(Phases.SECOND_MAIN_PHASE);
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
-        monsterCard.setHasChangedPosition(false);
+        monsterCard.setChangedPosition(false);
         monsterCard.setHasBeenSetOrSummoned(true);
         ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
@@ -1819,7 +1819,7 @@ public class DuelTest {
         DuelController.getInstance().getGame().setCurrentPhase(Phases.SECOND_MAIN_PHASE);
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Axe Raider");
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
-        monsterCard.setHasChangedPosition(false);
+        monsterCard.setChangedPosition(false);
         monsterCard.setHasBeenSetOrSummoned(false);
         ArrayList<MonsterCard> myMonsters = thisPlayer.getField().getMonsterCards();
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
@@ -1943,7 +1943,7 @@ public class DuelTest {
         MonsterCard slotMachine = (MonsterCard) Card.getCardByName("Slot Machine");
         slotMachine.setOwner(thisPlayer);
         DuelController.getInstance().getGame().setSelectedCard(slotMachine);
-        MonsterCard  warriorDaiGrepher = (MonsterCard) Card.getCardByName("Warrior Dai Grepher");
+        MonsterCard warriorDaiGrepher = (MonsterCard) Card.getCardByName("Warrior Dai Grepher");
         MonsterCard yomi = (MonsterCard) Card.getCardByName("Yomi Ship");
         warriorDaiGrepher.setOwner(thisPlayer);
         yomi.setOwner(thisPlayer);
@@ -1979,12 +1979,12 @@ public class DuelTest {
         silverFag.setOwner(thisPlayer);
         SpellAndTrapCard trapHole = (SpellAndTrapCard) Card.getCardByName("Trap Hole");
         trapHole.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = theOtherPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = theOtherPlayer.getField().getSpellAndTrapCards();
         ArrayList<Card> handBackUp = thisPlayer.getField().getHand();
         thisPlayer.getField().setHand(handBackUp);
         thisPlayer.getField().getHand().add(trapHole);
-        theOtherPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        theOtherPlayer.getField().getTrapAndSpell().add(trapHole);
+        theOtherPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        theOtherPlayer.getField().getSpellAndTrapCards().add(trapHole);
         ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
         ArrayList<Card> GY = thisPlayer.getField().getGraveyard();
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
@@ -1998,7 +1998,7 @@ public class DuelTest {
         System.setIn(backup);
         thisPlayer.getField().setGraveyard(GY);
         thisPlayer.getField().setMonsterCards(monsterCards);
-        theOtherPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        theOtherPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
         thisPlayer.getField().setHand(handBackUp);
     }
 
@@ -2006,7 +2006,7 @@ public class DuelTest {
     public void summonTest() {
         MonsterCard fireyarou = (MonsterCard) Card.getCardByName("Fireyarou");
         fireyarou.setOwner(thisPlayer);
-        DuelController.getInstance().getGame().setHasSummonedInThisTurn(false);
+        DuelController.getInstance().getGame().setSummonedInThisTurn(false);
         DuelController.getInstance().getGame().setSelectedCard(fireyarou);
         ArrayList<Card> handBackUp = thisPlayer.getField().getHand();
         ArrayList<MonsterCard> monsterCardsBackUp = thisPlayer.getField().getMonsterCards();
@@ -2015,12 +2015,11 @@ public class DuelTest {
         thisPlayer.getField().getHand().add(fireyarou);
         DuelController.getInstance().getGame().setCurrentPhase(Phases.FIRST_MAIN_PHASE);
         DuelController.getInstance().summon();
-        Assertions.assertTrue(DuelController.getInstance().getGame().hasSummonedInThisTurn());
+        Assertions.assertTrue(DuelController.getInstance().getGame().isSummonedInThisTurn());
         thisPlayer.getField().setHand(handBackUp);
         thisPlayer.getField().setMonsterCards(monsterCardsBackUp);
         DuelController.getInstance().getGame().setSelectedCard(null);
-        DuelController.getInstance().getGame().setHasSummonedInThisTurn(false);
-
+        DuelController.getInstance().getGame().setSummonedInThisTurn(false);
     }
 
     @Test
@@ -2073,9 +2072,9 @@ public class DuelTest {
         MessengerOfPeace messengerOfPiss = new MessengerOfPeace();
         messengerOfPiss.setOwner(thisPlayer);
         messengerOfPiss.setActive(true);
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(messengerOfPiss);
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getSpellAndTrapCards();
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        thisPlayer.getField().getSpellAndTrapCards().add(messengerOfPiss);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("no\r\n".getBytes());
         System.setIn(input);
@@ -2083,7 +2082,7 @@ public class DuelTest {
         DuelController.getInstance().handleMessengerOfPeace();
         Assertions.assertEquals(7900, thisPlayer.getLP());
         System.setIn(backup);
-        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        thisPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
         thisPlayer.setLP(LP);
     }
 
@@ -2135,11 +2134,11 @@ public class DuelTest {
     public void swordOfRevealingLightTest() {
         SwordsOfRevealingLight swordsOfRevealingLight = (SwordsOfRevealingLight) Card.getCardByName("Swords of Revealing Light");
         swordsOfRevealingLight.setOwner(theOtherPlayer);
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = theOtherPlayer.getField().getTrapAndSpell();
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = theOtherPlayer.getField().getSpellAndTrapCards();
         ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
         thisPlayer.getField().setMonsterCards(new ArrayList<>());
-        theOtherPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        theOtherPlayer.getField().getTrapAndSpell().add(swordsOfRevealingLight);
+        theOtherPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        theOtherPlayer.getField().getSpellAndTrapCards().add(swordsOfRevealingLight);
         swordsOfRevealingLight.setActive(true);
         MonsterCard heraldOfCreation = (MonsterCard) Card.getCardByName("Herald of Creation");
         thisPlayer.getField().getMonsterCards().add(heraldOfCreation);
@@ -2148,7 +2147,7 @@ public class DuelTest {
         DuelController.getInstance().handleSwordOfRevealingLight();
         Assertions.assertEquals(MonsterCardModeInField.DEFENSE_FACE_UP, heraldOfCreation.getMonsterCardModeInField());
         thisPlayer.getField().setMonsterCards(monsterCards);
-        theOtherPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        theOtherPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
     }
 
     @Test
@@ -2178,11 +2177,11 @@ public class DuelTest {
     public void canMakeChainTest() {
         SpellAndTrapCard adam = (SpellAndTrapCard) Card.getCardByName("Call of The Haunted");
         adam.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(adam);
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getSpellAndTrapCards();
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        thisPlayer.getField().getSpellAndTrapCards().add(adam);
         Assertions.assertTrue(DuelController.getInstance().canMakeChain(thisPlayer));
-        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        thisPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
     }
 
     @Test
@@ -2191,9 +2190,9 @@ public class DuelTest {
         adam.setOwner(thisPlayer);
         MonsterCard tadashi = (MonsterCard) Card.getCardByName("Flame manipulator");
         tadashi.setOwner(thisPlayer);
-        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getTrapAndSpell();
-        thisPlayer.getField().setTrapAndSpell(new ArrayList<>());
-        thisPlayer.getField().getTrapAndSpell().add(adam);
+        ArrayList<SpellAndTrapCard> spellAndTrapCards = thisPlayer.getField().getSpellAndTrapCards();
+        thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
+        thisPlayer.getField().getSpellAndTrapCards().add(adam);
         ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
         ArrayList<Card> GY = thisPlayer.getField().getGraveyard();
         thisPlayer.getField().setGraveyard(new ArrayList<>());
@@ -2205,7 +2204,7 @@ public class DuelTest {
         IO.getInstance().resetScanner();
         DuelController.getInstance().activateCards();
         Assertions.assertTrue(thisPlayer.getField().getMonsterCards().contains(tadashi));
-        thisPlayer.getField().setTrapAndSpell(spellAndTrapCards);
+        thisPlayer.getField().setSpellAndTrapCards(spellAndTrapCards);
         System.setIn(backup);
         thisPlayer.getField().setMonsterCards(monsterCards);
         thisPlayer.getField().setGraveyard(GY);

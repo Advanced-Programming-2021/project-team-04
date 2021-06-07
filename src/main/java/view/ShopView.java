@@ -26,11 +26,11 @@ public class ShopView extends ViewMenu {
         while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
                 !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
             Matcher buyCardMatcher = buyCardPattern.matcher(command);
-            if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
+            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
                 showCurrentMenu();
             else if (command.matches("(?:menu )?enter \\S+"))
                 IO.getInstance().printMenuNavigationImpossible();
-            else if (command.matches("(?:shop )?s(?:how)? -(?:(?:-all)|(?:a))"))
+            else if (command.matches("(?:shop )?s(?:how)? -(?:-all|a)"))
                 showAllCards();
             else if (buyCardMatcher.matches())
                 buyCard(buyCardMatcher);

@@ -5,6 +5,7 @@ import controller.DuelController;
 import java.util.ArrayList;
 
 public class CommandKnight extends MonsterCard {
+
     public CommandKnight() {
         super();
         setName("Command Knight");
@@ -41,13 +42,14 @@ public class CommandKnight extends MonsterCard {
         if (!thisPlayer.getField().getMonsterCards().isEmpty()) {
             if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP)
                     || this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
-                this.canBeRemoved = false;
+                this.isAbleToBeRemoved = false;
         }
-        else this.canBeRemoved = true;
+        else this.isAbleToBeRemoved = true;
     }
+
     @Override
-    public boolean canBeRemoved() {
+    public boolean isAbleToBeRemoved() {
         isRemovable();
-        return canBeRemoved;
+        return isAbleToBeRemoved;
     }
 }

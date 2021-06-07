@@ -10,11 +10,11 @@ public class ProfileView extends ViewMenu {
     private static ProfileView singleInstance = null;
 
     private final Pattern changeNicknamePattern = Pattern.compile("^(?:profile )?change " +
-            "(?=.*(?:-(?:(?:-nickname)|(?:n))) (?<nickname>\\S+)).+$");
-    private final Pattern changePasswordPattern = Pattern.compile("^(?:profile )?change (?=.*(?:-(?:(?:-password)|(?:p))))" +
-            "(?=.*(?:-(?:(?:-current)|(?:c))) (?<currentPassword>\\S+))(?=.*(?:-(?:(?:-new)|(?:n))) (?<newPassword>\\S+)).+$");
+            "(?=.*-(?:-nickname|n) (?<nickname>\\S+)).+$");
+    private final Pattern changePasswordPattern = Pattern.compile("^(?:profile )?change (?=.*-(?:-password|p))" +
+            "(?=.*-(?:-current|c) (?<currentPassword>\\S+))(?=.*-(?:-new|n) (?<newPassword>\\S+)).+$");
 
-    private ProfileView() {}
+    private ProfileView() { }
 
     public static ProfileView getInstance() {
         if (singleInstance == null)
@@ -29,7 +29,7 @@ public class ProfileView extends ViewMenu {
                 !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
             Matcher changeNicknameMatcher = changeNicknamePattern.matcher(command);
             Matcher changePasswordMatcher = changePasswordPattern.matcher(command);
-            if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
+            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
                 showCurrentMenu();
             else if (command.matches("(?:menu )?enter \\S+"))
                 IO.getInstance().printMenuNavigationImpossible();

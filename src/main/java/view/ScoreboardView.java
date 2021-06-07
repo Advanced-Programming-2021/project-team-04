@@ -5,9 +5,7 @@ import controller.ScoreboardController;
 public class ScoreboardView extends ViewMenu {
     private static ScoreboardView singleInstance = null;
 
-    private ScoreboardView() {
-
-    }
+    private ScoreboardView() { }
 
     public static ScoreboardView getInstance() {
         if (singleInstance == null)
@@ -20,7 +18,7 @@ public class ScoreboardView extends ViewMenu {
         String command;
         while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
                 !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
-            if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
+            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
                 showCurrentMenu();
             else if (command.matches("(?:scoreboard )?show"))
                 showScoreboard();

@@ -9,10 +9,10 @@ public class LoginView extends ViewMenu {
 
     private static LoginView singleInstance = null;
 
-    private final Pattern createUserPattern = Pattern.compile("^(?:user )?create (?=.*(?:-(?:(?:-username)|(?:u))) (?<username>\\S+))" +
-            "(?=.*(?:-(?:(?:-password)|(?:p))) (?<password>\\S+))(?=.*(?:-(?:(?:-nickname)|(?:n))) (?<nickname>\\S+)).+$");
-    private final Pattern loginUserPattern = Pattern.compile("^(?:user )?login (?=.*(?:-(?:(?:-username)|(?:u))) (?<username>\\S+))" +
-            "(?=.*(?:-(?:(?:-password)|(?:p))) (?<password>\\S+)).+$");
+    private final Pattern createUserPattern = Pattern.compile("^(?:user )?create (?=.*-(?:-username|u) (?<username>\\S+))" +
+            "(?=.*-(?:-password|p) (?<password>\\S+))(?=.*-(?:-nickname|n) (?<nickname>\\S+)).+$");
+    private final Pattern loginUserPattern = Pattern.compile("^(?:user )?login (?=.*-(?:-username|u) (?<username>\\S+))" +
+            "(?=.*-(?:-password|p) (?<password>\\S+)).+$");
 
     private LoginView() {}
 
@@ -27,7 +27,7 @@ public class LoginView extends ViewMenu {
         String command;
         while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit")) {
             Matcher createUserMatcher = createUserPattern.matcher(command), loginUserMatcher = loginUserPattern.matcher(command);
-            if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
+            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
                 showCurrentMenu();
             else if (createUserMatcher.matches())
                 createUser(createUserMatcher);

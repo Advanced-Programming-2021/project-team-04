@@ -1,48 +1,28 @@
 package model;
 
 import com.google.gson.annotations.Expose;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
+@Getter
+@Setter
 public class PlayerDeck {
 
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     private LinkedHashMap<String, Short> mainDeckCards;
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     private LinkedHashMap<String, Short> sideDeckCards;
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     private String deckName;
 
     public PlayerDeck(String deckName) {
         mainDeckCards = new LinkedHashMap<>();
         sideDeckCards = new LinkedHashMap<>();
         this.deckName = deckName;
-    }
-
-    public LinkedHashMap<String, Short> getMainDeckCards() {
-        return mainDeckCards;
-    }
-
-    public void setMainDeckCards(LinkedHashMap<String, Short> mainDeckCards) {
-        this.mainDeckCards = mainDeckCards;
-    }
-
-    public String getDeckName() {
-        return deckName;
-    }
-
-    public void setDeckName(String deckName) {
-        this.deckName = deckName;
-    }
-
-    public LinkedHashMap<String, Short> getSideDeckCards() {
-        return sideDeckCards;
-    }
-
-    public void setSideDeckCards(LinkedHashMap<String, Short> sideDeckCards) {
-        this.sideDeckCards = sideDeckCards;
     }
 
     public boolean mainDeckContainsCard(String cardName) {

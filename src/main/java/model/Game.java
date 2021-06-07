@@ -1,9 +1,13 @@
 package model;
 
 import controller.DuelController;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.*;
 
+@Getter
+@Setter
 public class Game {
     boolean isGameFinished = false;
     private HashMap<Duelist, Integer> maxLifePoint;
@@ -11,9 +15,9 @@ public class Game {
     private int rounds;
     private int currentRound = 0;
     private Phases currentPhase;
-    private gameRounds totalRounds;
+    private GameRounds totalRounds;
     private Card selectedCard;
-    private boolean hasSummonedInThisTurn;
+    private boolean summonedInThisTurn;
     private ArrayList<Card> cardsWithChangedPositions;
     private ArrayList<Duelist> roundWinners;
     private Card lastSetCard;
@@ -29,102 +33,6 @@ public class Game {
         initializeGame();
         setCurrentPhase(Phases.DRAW_PHASE);
         setCurrentRound(1);
-    }
-
-    public Phases getCurrentPhase() {
-        return currentPhase;
-    }
-
-    public void setCurrentPhase(Phases currentPhase) {
-        this.currentPhase = currentPhase;
-    }
-
-    public gameRounds getTotalRounds() {
-        return totalRounds;
-    }
-
-    public void setTotalRounds(gameRounds totalRounds) {
-        this.totalRounds = totalRounds;
-    }
-
-    public Card getLastSetCard() {
-        return lastSetCard;
-    }
-
-    public void setLastSetCard(Card lastSetCard) {
-        this.lastSetCard = lastSetCard;
-    }
-
-    public boolean hasSummonedInThisTurn() {
-        return hasSummonedInThisTurn;
-    }
-
-    public void setHasSummonedInThisTurn(boolean hasSummonedInThisTurn) {
-        this.hasSummonedInThisTurn = hasSummonedInThisTurn;
-    }
-
-    public ArrayList<Duelist> getRoundWinners() {
-        return roundWinners;
-    }
-
-    public void setRoundWinners(ArrayList<Duelist> roundWinners) {
-        this.roundWinners = roundWinners;
-    }
-
-    public Card getSelectedCard() {
-        return selectedCard;
-    }
-
-    public void setSelectedCard(Card selectedCard) {
-        this.selectedCard = selectedCard;
-    }
-
-    public int getCurrentRound() {
-        return currentRound;
-    }
-
-    public void setCurrentRound(int currentRound) {
-        this.currentRound = currentRound;
-    }
-
-    public HashMap<Duelist, Integer> getMaxLifePoint() {
-        return maxLifePoint;
-    }
-
-    public void setMaxLifePoint(HashMap<Duelist, Integer> maxLifePoint) {
-        this.maxLifePoint = maxLifePoint;
-    }
-
-    public Duelist getCurrentPlayer() {
-        return currentPlayer;
-    }
-
-    public void setCurrentPlayer(Duelist currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    public Duelist getTheOtherPlayer() {
-        return theOtherPlayer;
-    }
-
-    public void setTheOtherPlayer(Duelist theOtherPlayer) {
-        this.theOtherPlayer = theOtherPlayer;
-    }
-
-    public int getRounds() {
-        return rounds;
-    }
-
-    public void setRounds(int rounds) {
-        this.rounds = rounds;
-    }
-
-    public boolean isAI() {
-        return isAI;
-    }
-
-    public void setAI(boolean AI) {
-        isAI = AI;
     }
 
     private void initializeGame() {
@@ -173,11 +81,7 @@ public class Game {
         Duelist temp = currentPlayer;
         currentPlayer = theOtherPlayer;
         theOtherPlayer = temp;
-        hasSummonedInThisTurn = false;
-    }
-
-    public boolean isGameFinished() {
-        return isGameFinished;
+        summonedInThisTurn = false;
     }
 
     public void finishWithOneRound(Duelist loser, Duelist winner) {

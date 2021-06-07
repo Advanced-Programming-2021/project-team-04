@@ -25,16 +25,16 @@ public class MessengerOfPeace extends SpellAndTrapCard{
         cards.addAll(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
         cards.addAll(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards());
         for (MonsterCard monsterCard : cards)
-            if (monsterCard.classAttackPower >= 1500 && monsterCard.canAttack)
+            if (monsterCard.classAttackPower >= 1500 && monsterCard.isAbleToAttack)
             {
-                monsterCard.canAttack = false;
+                monsterCard.isAbleToAttack = false;
                 deactivatedCards.add(monsterCard);
             }
     }
 
     public void reset() {
         for (MonsterCard monsterCard : deactivatedCards)
-            monsterCard.canAttack = true;
+            monsterCard.isAbleToAttack = true;
         deactivatedCards = new ArrayList<>();
     }
 

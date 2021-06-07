@@ -48,7 +48,7 @@ public class DeckTest {
         DeckController.getInstance().createDeck("Despair");
         DeckController.getInstance().activateDeck("Despair");
         Assertions.assertNotNull(thisAccount.getActiveDeck());
-        thisAccount.setActiveDeck(null);
+        thisAccount.setActivePlayerDeck(null);
     }
 
     @Test
@@ -129,7 +129,8 @@ public class DeckTest {
         var cardName = "Slot Machine";
         playerDeck.addCardToMainDeck(cardName);
         DeckController.getInstance().removeCardFromDeck("Virkelighetens Etterklang", "Slot Machine", true);
-        Assertions.assertFalse(playerDeck.getMainDeckCards().containsKey(cardName));;
+        Assertions.assertFalse(playerDeck.getMainDeckCards().containsKey(cardName));
+        ;
     }
 
     @Test
@@ -220,5 +221,4 @@ public class DeckTest {
         ArrayList<Card> cards = ImportAndExport.getInstance().readAllCards();
         Assertions.assertEquals(64, cards.size());
     }
-
 }

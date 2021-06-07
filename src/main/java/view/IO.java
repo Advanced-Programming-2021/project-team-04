@@ -8,9 +8,7 @@ public class IO {
 
     private Scanner scanner = new Scanner(System.in);
 
-    private IO() {
-
-    }
+    private IO() { }
 
     public static IO getInstance() {
         if (singleInstance == null)

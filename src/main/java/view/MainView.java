@@ -10,11 +10,11 @@ public class MainView extends ViewMenu {
     private static MainView singleInstance = null;
 
     private final Pattern enterMenuPattern = Pattern.compile("(?:menu )?enter (?<name>\\S+)");
-    private final Pattern newDuelPattern = Pattern.compile("^d(?:uel)? (?=.*(?:-(?:(?:-new)|(?:n))))" +
-            "(?=.*(?:-(?:(?:-second-player)|(?:s)|(?:s-p)) (?<secondPlayerUsername>\\S+)))" +
-            "(?=.*(?:-(?:(?:-round(?:s)?)|(?:r)) (?<roundsNumber>\\d+))).+$");
-    private final Pattern newDuelAIPattern = Pattern.compile("^d(?:uel)? (?=.*(?:-(?:(?:-new)|(?:n))))" +
-            "(?=.*(?:--ai))(?=.*(?:-(?:(?:-round(?:s)?)|(?:r)) (?<roundsNumber>\\d+))).+$");
+    private final Pattern newDuelPattern = Pattern.compile("^d(?:uel)? (?=.*-(?:-new|n))" +
+            "(?=.*-(?:-second-player|s|s-p) (?<secondPlayerUsername>\\S+))" +
+            "(?=.*-(?:-rounds?|r) (?<roundsNumber>\\d+)).+$");
+    private final Pattern newDuelAIPattern = Pattern.compile("^d(?:uel)? (?=.*-(?:-new|n))" +
+            "(?=.*--ai)(?=.*-(?:-rounds?|r) (?<roundsNumber>\\d+)).+$");
 
     private boolean continueLoop = true;
 
@@ -36,7 +36,7 @@ public class MainView extends ViewMenu {
             Matcher enterMenuMatcher = enterMenuPattern.matcher(command);
             Matcher newDuelMatcher = newDuelPattern.matcher(command);
             Matcher newDuelAIMatcher = newDuelAIPattern.matcher(command);
-            if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
+            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
                 showCurrentMenu();
             else if (command.matches("(?:user )?logout")) {
                 logout();

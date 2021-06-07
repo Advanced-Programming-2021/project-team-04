@@ -2,19 +2,23 @@ package model;
 
 import com.google.gson.annotations.Expose;
 import controller.ImportAndExport;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+@Getter
+@Setter
 public class GameDeck {
-    @Expose(serialize = true, deserialize = true)
-    private ArrayList<Card> mainDeck = new ArrayList<>();
-    @Expose(serialize = true, deserialize = true)
-    private ArrayList<Card> sideDeck = new ArrayList<>();
-    @Expose(serialize = true, deserialize = true)
-    private String deckName;
 
+    @Expose()
+    private ArrayList<Card> mainDeck = new ArrayList<>();
+    @Expose()
+    private ArrayList<Card> sideDeck = new ArrayList<>();
+    @Expose()
+    private String deckName;
 
     public GameDeck(PlayerDeck playerDeck) {
         deckName = playerDeck.getDeckName();
@@ -26,19 +30,10 @@ public class GameDeck {
         });
         Collections.shuffle(mainDeck);
         playerDeck.getSideDeckCards().keySet().forEach(n -> {
-            for (var i = 0; i < playerDeck.getSideDeckCards().get(n); i++) {
+            for (var i = 0; i < playerDeck.getSideDeckCards().get(n); i++)
                 sideDeck.add(ImportAndExport.getInstance().readCard(n));
-            }
         });
         Collections.shuffle(sideDeck);
-    }
-
-    public String getDeckName() {
-        return deckName;
-    }
-
-    public void setDeckName(String deckName) {
-        this.deckName = deckName;
     }
 
     public boolean mainDeckHasCard(String cardName) {
@@ -46,25 +41,9 @@ public class GameDeck {
         return mainDeck.contains(Card.getCardByName(cardName));
     }
 
-    public void setMainDeck(ArrayList<Card> mainDeck) {
-        this.mainDeck = mainDeck;
-    }
-
-    public void setSideDeck(ArrayList<Card> sideDeck) {
-        this.sideDeck = sideDeck;
-    }
-
     public boolean sideDeckHasCard(String cardName) {
         //TODO still doubt
         return sideDeck.contains(Card.getCardByName(cardName));
-    }
-
-    public ArrayList<Card> getMainDeck() {
-        return mainDeck;
-    }
-
-    public ArrayList<Card> getSideDeck() {
-        return sideDeck;
     }
 
     @Override

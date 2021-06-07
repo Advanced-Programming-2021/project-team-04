@@ -5,14 +5,21 @@ import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.annotations.Expose;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
+@Getter
+@Setter
 public class Account extends Duelist {
 
+    @Getter
     private static ArrayList<Account> allAccounts;
+    @Getter
     private static ArrayList<String> allUsernames;
+    @Getter
     private static ArrayList<String> allNicknames;
 
     static {
@@ -21,11 +28,11 @@ public class Account extends Duelist {
         allUsernames = new ArrayList<>();
     }
 
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     private String password;
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     private int score;
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     private int money = 100000;
 
     public Account(String username, String password, String nickname) {
@@ -44,54 +51,6 @@ public class Account extends Duelist {
         allNicknames.add(account.getNickname());
     }
 
-    public void setAllCards(ArrayList<Card> allCards) {
-        this.allCards = allCards;
-    }
-
-    public void setActiveDeck(PlayerDeck activePlayerDeck) {
-        this.activePlayerDeck = activePlayerDeck.getDeckName();
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
-    }
-
-    public static ArrayList<Account> getAllAccounts() {
-        return allAccounts;
-    }
-
-    public static ArrayList<String> getAllUsernames() {
-        return allUsernames;
-    }
-
-    public static ArrayList<String> getAllNicknames() {
-        return allNicknames;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
     public boolean hasEnoughMoney(int price) {
         return this.money >= price;
     }
@@ -103,10 +62,7 @@ public class Account extends Duelist {
     }
 
     public static Account getAccountByUsername(String username) {
-        for (Account account : allAccounts)
-            if (account.getUsername().equals(username))
-                return account;
-        return null;
+        return allAccounts.stream().filter(a -> a.getUsername().equals(username)).findAny().orElse(null);
     }
 
 //    class AccountDeserializer implements JsonDeserializer<Account> {

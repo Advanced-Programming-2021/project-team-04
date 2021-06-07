@@ -2,59 +2,31 @@ package model;
 
 import com.google.gson.annotations.Expose;
 import controller.DuelController;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
+@Getter
+@Setter
 public abstract class Duelist {
 
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     protected ArrayList<PlayerDeck> allPlayerDecks = new ArrayList<>();
-    @Expose(serialize = true, deserialize = true)
-    protected ArrayList<Card> allCards = new ArrayList<Card>();
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
+    protected ArrayList<Card> allCards = new ArrayList<>();
+    @Expose()
     protected String activePlayerDeck;
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     protected String username;
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     protected String nickname;
     protected Field field;
     protected int LP, countForRPS;
     protected int maxLPofThreeRounds;
     protected int countOfRoundsWon; //TODO should reset this
-    protected boolean canDraw = true; //TODO should reset this
-    protected boolean canPlayerAttack = true;
-
-    public boolean canPlayerAttack() {
-        return canPlayerAttack;
-    }
-
-    public void setCanPlayerAttack(boolean canPlayerAttack) {
-        this.canPlayerAttack = canPlayerAttack;
-    }
-
-    public boolean canDraw() {
-        return canDraw;
-    }
-
-    public void setCanDraw(boolean canDraw) {
-        this.canDraw = canDraw;
-    }
-
-    public int getCountForRPS() {
-        return countForRPS;
-    }
-
-    public void setCountForRPS(int countForRPS) {
-        this.countForRPS = countForRPS;
-    }
-
-    public int getMaxLPofThreeRounds() {
-        return maxLPofThreeRounds;
-    }
-
-    public void setMaxLPofThreeRounds(int LP) {
-        maxLPofThreeRounds = LP;
-    }
+    protected boolean isAbleToDraw = true; //TODO should reset this
+    protected boolean isAbleToAttack = true;
 
     public void checkMaxLPofThreeRounds() {
         if (maxLPofThreeRounds < LP) maxLPofThreeRounds = LP;
@@ -64,60 +36,16 @@ public abstract class Duelist {
         this.countForRPS++;
     }
 
-    public void setCountOfRoundsWon(int countOfRoundsWon) {
-        this.countOfRoundsWon = countOfRoundsWon;
-    }
-
-    public void setLP(int LP) {
-        this.LP = LP;
-    }
-
-    public int getCountOfRoundsWon() {
-        return countOfRoundsWon;
-    }
-
-    public int getLP() {
-        return LP;
-    }
-
-    public void setField(Field field) {
-        this.field = field;
-    }
-
-    public ArrayList<PlayerDeck> getAllDecks() {
-        return allPlayerDecks;
-    }
-
-    public ArrayList<Card> getAllCards() {
-        return allCards;
-    }
-
     public PlayerDeck getActiveDeck() {
         return getDeckByName(activePlayerDeck);
     }
 
-    public String getUsername() {
-        return username;
+    public boolean getCardInHand(String cardName) {
+        return field.getHand().stream().anyMatch(c -> c.getName().equals(cardName));
     }
 
-    public String getNickname() {
-        return nickname;
-    }
-
-    public Field getField() {
-        return field;
-    }
-
-    public boolean hasCardInHand(String cardName) {
-        for (Card card : field.getHand())
-            if (card.getName().equals(cardName)) return true;
-        return false;
-    }
-
-    public MonsterCard hasMirageDragon() {
-        for (MonsterCard monsterCard : field.getMonsterCards())
-            if (monsterCard.getName().equals("Mirage Dragon")) return monsterCard;
-        return null;
+    public MonsterCard getMirageDragon() {
+        return field.getMonsterCards().stream().filter(m -> m.getName().equals("Mirage Dragon")).findAny().orElse(null);
     }
 
     public PlayerDeck getDeckByName(String deckName) {
@@ -125,22 +53,15 @@ public abstract class Duelist {
     }
 
     public Card getCardByName(String cardName) {
-        for (Card card : allCards)
-            if (card.getName().equals(cardName))
-                return card;
-        return null;
-    }
-
-    public void setAllDecks(ArrayList<PlayerDeck> allPlayerDecks) {
-        this.allPlayerDecks = allPlayerDecks;
+        return allCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null);
     }
 
     public void addDeck(PlayerDeck playerDeck) {
-        this.getAllDecks().add(playerDeck);
+        this.getAllPlayerDecks().add(playerDeck);
     }
 
     public void deleteDeck(PlayerDeck playerDeck) {
-        this.getAllDecks().remove(playerDeck);
+        this.getAllPlayerDecks().remove(playerDeck);
     }
 
     public void addCard(Card card) {
@@ -152,11 +73,8 @@ public abstract class Duelist {
         return allPlayerDecks.stream().anyMatch(d -> d.getDeckName().equals(deckName));
     }
 
-    public boolean hasCard(String card) {
-        for (Card thisCard : allCards)
-            if (thisCard.getName().equals(card))
-                return true;
-        return false;
+    public boolean hasCard(String cardName) {
+        return allCards.stream().anyMatch(c -> c.getName().equals(cardName));
     }
 
     private void activateDeck(String deckName) {

@@ -22,14 +22,12 @@ public class DuelView extends ViewMenu {
     private final Random random = new Random();
 
     private final Pattern selectCardPattern = Pattern.compile("^s(?:elect)? " +
-            "(?=.*(?:(?:-(?:(?:-(?:monster)|(?:spell)|(?:hand))|(?:[msh])) (?<number>\\d+)?)|(?:-(?:(?:-field)|(?:f))))).+");
+            "(?=.*(?:-(?:(?:-monster|-spell|-hand)|[msh])|-(?:-field|f)))(?=.*(?<number>\\d+)).+");
     private final Pattern attackPattern = Pattern.compile("att(?:ack)? (?<number>\\d+)");
     private final Pattern cheatDecreaseLPPattern = Pattern.compile("Death(?: to)?(?: the)? Mechanisms (?<number>\\d+)");
     private final Pattern cheatIncreaseLPPattern = Pattern.compile("Underworld Blues (?<number>\\d+)");
 
-    private DuelView() {
-
-    }
+    private DuelView() { }
 
     @Override
     public void run() {
@@ -51,7 +49,7 @@ public class DuelView extends ViewMenu {
                 DuelController.getInstance().summon();
             else if (command.matches("set?"))
                 DuelController.getInstance().set();
-            else if (command.matches("set -(?:(?:-position)|(?:p)) (?:att(?:ack)?|def(?:ense)?)"))
+            else if (command.matches("set -(?:-position|p) (?:att(?:ack)?|def(?:ense)?)"))
                 DuelController.getInstance().setPosition(command.contains("att"));
             else if (command.matches("f(?:lip)?-sum(?:mon)?"))
                 DuelController.getInstance().flipSummon();
@@ -63,7 +61,7 @@ public class DuelView extends ViewMenu {
                 DuelController.getInstance().activateSpell();
             else if (command.matches("(?:show )?grave(?:yard)?"))
                 showGraveyard();
-            else if (command.matches("(?:c(?:ard)? )?show -(?:(?:-select(?:ed)?)|(?:s))"))
+            else if (command.matches("(?:c(?:ard)? )?show -(?:-select(?:ed)?|s)"))
                 DuelController.getInstance().showSelectedCard();
             else if (command.matches("sur(?:render)?"))
                 DuelController.getInstance().surrender();
@@ -75,7 +73,7 @@ public class DuelView extends ViewMenu {
                 DuelController.getInstance().cheatIncreaseLP(Integer.parseInt(cheatIncreaseLPMatcher.group("number")));
             else if (command.matches("Person(?: of)? Interest"))
                 DuelController.getInstance().cheatSeeMyDeck();
-            else if (command.matches("Conspiracy(?: to) Commit Treason"))
+            else if (command.matches("Conspiracy(?: to)? Commit Treason"))
                 DuelController.getInstance().cheatSetWinner();
             else if (command.matches("Drunk Space Pirate"))
                 DuelController.getInstance().cheatShowRivalHand();
@@ -326,14 +324,14 @@ public class DuelView extends ViewMenu {
         IO.getInstance().chooseSpell();
         String spellNumber = IO.getInstance().getInputMessage();
         if (spellNumber.matches("cancel")) return null;
-        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getTrapAndSpell().get(Integer.parseInt(spellNumber));
+        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber));
     }
 
     public SpellAndTrapCard getFromOpponentField() {
         IO.getInstance().chooseSpell();
         String spellNumber = IO.getInstance().getInputMessage();
         if (spellNumber.matches("cancel")) return null;
-        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getTrapAndSpell().get(Integer.parseInt(spellNumber));
+        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber));
     }
 
     public int whereToSummonFrom() {

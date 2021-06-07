@@ -1,11 +1,15 @@
 package controller;
 
+import lombok.Getter;
+import lombok.Setter;
 import model.*;
 import view.IO;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 
+@Getter
+@Setter
 public class ShopController {
     private static ShopController singleInstance = null;
     private static ArrayList<Card> allCards;
