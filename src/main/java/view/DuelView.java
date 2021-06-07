@@ -17,7 +17,7 @@ public class DuelView extends ViewMenu {
 
     private boolean isRPSDone = false;
 
-    private final String[] rps = {"r", "p", "s"};
+    private static final String[] RPS = {"r", "p", "s"};
 
     private final Random random = new Random();
 
@@ -41,15 +41,15 @@ public class DuelView extends ViewMenu {
             Matcher attackMatcher = attackPattern.matcher(command);
             Matcher cheatDecreaseLPMatcher = cheatDecreaseLPPattern.matcher(command);
             Matcher cheatIncreaseLPMatcher = cheatIncreaseLPPattern.matcher(command);
-            if (command.matches("(?:menu )?(?:s(?:how)?)-(?:c(?:urrent)?)"))
+            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
                 showCurrentMenu();
-            else if (command.matches("(?:(?:select -d)|(?:deselect))"))
+            else if (command.matches("select -d|deselect"))
                 DuelController.getInstance().deselectCard();
             else if (selectCardMatcher.matches())
-                selectCard(selectCardMatcher, command.contains("-o"), CardStatusInField.getCardStatusInField(command));
+                selectCard(selectCardMatcher, !command.contains("-o"), CardStatusInField.getCardStatusInField(command));
             else if (command.matches("sum(?:mon)?"))
                 DuelController.getInstance().summon();
-            else if (command.matches("se(?:t)?"))
+            else if (command.matches("set?"))
                 DuelController.getInstance().set();
             else if (command.matches("set -(?:(?:-position)|(?:p)) (?:att(?:ack)?|def(?:ense)?)"))
                 DuelController.getInstance().setPosition(command.contains("att"));
@@ -100,7 +100,7 @@ public class DuelView extends ViewMenu {
     public void runForRPSAgainstAI() {
         while (!isRPSDone) {
             String playersChoice = getRPSInput();
-            String AIsChoice = rps[random.nextInt(3)];
+            String AIsChoice = RPS[random.nextInt(3)];
             IO.getInstance().printAIsRPS(AIsChoice);
             DuelController.getInstance().rockPaperScissor(playersChoice, AIsChoice);
         }
@@ -139,7 +139,7 @@ public class DuelView extends ViewMenu {
 
     private void selectCard(Matcher matcher, boolean isPlayersCard, CardStatusInField cardStatusInField) {
         DuelController.getInstance().selectCard(isPlayersCard, cardStatusInField,
-                cardStatusInField == CardStatusInField.FIELD_ZONE ? 0 : Integer.parseInt(matcher.group("number")));
+                cardStatusInField == CardStatusInField.FIELD_ZONE ? 0 : Integer.parseInt(matcher.group("number")) - 1);
     }
 
     private void showGraveyard() {

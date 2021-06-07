@@ -50,7 +50,10 @@ public class ImportAndExport {
             var gsonBuilder = new GsonBuilder();
             var gson = gsonBuilder.create();
             var bufferedReader = new BufferedReader(fileReader);
-            return gson.fromJson(bufferedReader, Account.class);
+            var account = gson.fromJson(bufferedReader, Account.class);
+            account.setCanDraw(true);
+            account.setCanPlayerAttack(true);
+            return account;
         } catch (Exception fileNotFoundException) {
             return null;
         }

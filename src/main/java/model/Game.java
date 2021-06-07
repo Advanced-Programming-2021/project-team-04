@@ -134,22 +134,24 @@ public class Game {
         Field theOtherPlayerField = new Field(new GameDeck(theOtherPlayer.getActiveDeck()));
         currentPlayer.setField(currentPlayerField);
         theOtherPlayer.setField(theOtherPlayerField);
-        initializeCards(currentPlayerField);
-        initializeCards(theOtherPlayerField);
+        initializeCards(currentPlayer);
+        initializeCards(theOtherPlayer);
         for (int i = 0; i < 5; i++) {
-            currentPlayer.getField().getHand().add(currentPlayer.getField().getDeckZone().get(i));
-            theOtherPlayer.getField().getHand().add(theOtherPlayer.getField().getDeckZone().get(i));
+            currentPlayer.getField().getHand().add(currentPlayer.getField().getDeckZone().get(0));
+            currentPlayer.getField().getDeckZone().remove(0);
+            theOtherPlayer.getField().getHand().add(theOtherPlayer.getField().getDeckZone().get(0));
+            theOtherPlayer.getField().getDeckZone().remove(0);
         }
         currentRound++;
     }
 
-    private void initializeCards(Field field) {
-        field.getDeckZone().forEach(c -> {
-            if (c instanceof MonsterCard) c.setOwner(currentPlayer);
+    private void initializeCards(Duelist duelist) {
+        duelist.getField().getDeckZone().forEach(c -> {
+            if (c instanceof MonsterCard) c.setOwner(duelist);
             c.reset();
         });
-        field.getSideDeck().forEach(c -> {
-            if (c instanceof MonsterCard) c.setOwner(currentPlayer);
+        duelist.getField().getSideDeck().forEach(c -> {
+            if (c instanceof MonsterCard) c.setOwner(duelist);
             c.reset();
         });
     }

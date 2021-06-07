@@ -13,8 +13,6 @@ K
 ,src/main/java/controller/ShopController.java,e\1\e173a55c6b85d775a8f49f9081a521eb0f59ed87
 V
 &src/main/java/model/ChangeOfHeart.java,0\8\08541e5d4421bbe101f96d0797a167035b2f7ac2
-O
-src/test/java/GameDeckTest.java,6\c\6cd085763044c4873da6ee125c14c0618c500bed
 ]
 -src/main/java/controller/ImportAndExport.java,f\2\f284d1ad6c64f74f8d6a84566cd30f6575b077f0
 K
