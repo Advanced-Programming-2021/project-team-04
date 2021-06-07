@@ -26,7 +26,7 @@ public class MonsterCard extends Card {
     protected boolean isAbleToBeRemoved = true;
     protected boolean isAbleToAttack = true;
     protected boolean isChangedPosition = false;
-    protected boolean isAttacked = false;
+    protected boolean attacked = false;
 
     public MonsterCard() {
         super();
@@ -48,7 +48,7 @@ public class MonsterCard extends Card {
         this.hasBeenUsedInThisTurn = false;
         this.isAbleToBeRemoved = true;
         this.isChangedPosition = false;
-        this.isAttacked = false;
+        this.attacked = false;
 //        this.ownerUsername = MainController.getInstance().getLoggedIn().getUsername();
         //TODO is it enough?
     }

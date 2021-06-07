@@ -703,6 +703,7 @@ public class DuelController {
                 int damage = attacked.getThisCardAttackPower() - attacker.getThisCardAttackPower();
                 game.getTheOtherPlayer().changeLP(damage);
                 IO.getInstance().wonAttackInAttack(-damage);
+                System.out.println("1." + attacked.getOwner().getField() + " " + attacker.getOwner().getField());
             } else IO.getInstance().lostInAttack(0);
             return;
         }
@@ -748,7 +749,7 @@ public class DuelController {
             IO.getInstance().cannotAttackThisCard();
             return false;
         }
-        if (!selectedCard.isAttacked()) { //TODO this also
+        if (selectedCard.isAttacked()) { //TODO this also
             IO.getInstance().cannotAttack();
             return false;
         }
