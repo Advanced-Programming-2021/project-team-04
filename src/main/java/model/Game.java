@@ -136,12 +136,10 @@ public class Game {
         theOtherPlayer.setField(theOtherPlayerField);
         initializeCards(currentPlayer);
         initializeCards(theOtherPlayer);
-        for (int i = 0; i < 5; i++) {
-            currentPlayer.getField().getHand().add(currentPlayer.getField().getDeckZone().get(0));
-            currentPlayer.getField().getDeckZone().remove(0);
-            theOtherPlayer.getField().getHand().add(theOtherPlayer.getField().getDeckZone().get(0));
-            theOtherPlayer.getField().getDeckZone().remove(0);
-        }
+        currentPlayer.getField().setHand((ArrayList<Card>) currentPlayer.getField().getDeckZone().subList(0, 5));
+        currentPlayer.getField().getDeckZone().removeAll(currentPlayer.getField().getDeckZone().subList(0, 5));
+        theOtherPlayer.getField().setHand((ArrayList<Card>) theOtherPlayer.getField().getDeckZone().subList(0, 5));
+        theOtherPlayer.getField().getDeckZone().removeAll(theOtherPlayer.getField().getDeckZone().subList(0, 5));
         currentRound++;
     }
 

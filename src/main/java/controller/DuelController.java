@@ -310,17 +310,17 @@ public class DuelController {
 
     private boolean errorForSelecting(Duelist thisPlayer, int number, CardStatusInField cardStatusInField) {
         if (cardStatusInField.equals(CardStatusInField.HAND) &&
-                (number >= thisPlayer.getField().getHand().size() || number < 1)) {
+                (number >= thisPlayer.getField().getHand().size() || number < 0)) {
             IO.getInstance().invalidSelection();
             return false;
         }
         if (cardStatusInField.equals(CardStatusInField.MONSTER_FIELD) &&
-                (number >= thisPlayer.getField().getMonsterCards().size() || number < 1)) {
+                (number >= thisPlayer.getField().getMonsterCards().size() || number < 0)) {
             IO.getInstance().invalidSelection();
             return false;
         }
         if (cardStatusInField.equals(CardStatusInField.SPELL_FIELD) &&
-                (number >= thisPlayer.getField().getTrapAndSpell().size() || number < 1)) {
+                (number >= thisPlayer.getField().getTrapAndSpell().size() || number < 0)) {
             IO.getInstance().invalidSelection();
             return false;
         }
@@ -396,8 +396,10 @@ public class DuelController {
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
+
     private boolean handleSpecialCases() {
         //TODO is it ok that this if and the next if have different return true; positions?
+        if (getGame().getCurrentPlayer() instanceof Account && !isSummonValid()) return true;
         if (game.getSelectedCard().getName().equals("The Tricky") && DuelView.getInstance().ordinaryOrSpecial()) {
                 theTricky();
                 return true;
@@ -415,7 +417,6 @@ public class DuelController {
                 return true;
             }
         }
-        if (getGame().getCurrentPlayer() instanceof Account && !isSummonValid()) return true;
         if (solemnWarning((MonsterCard) game.getSelectedCard())) {
             game.setSelectedCard(null);
             return true;
