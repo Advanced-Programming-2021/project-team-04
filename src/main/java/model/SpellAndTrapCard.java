@@ -2,50 +2,26 @@ package model;
 
 import com.google.gson.annotations.Expose;
 import controller.MainController;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 
+@Getter
+@Setter
 public class SpellAndTrapCard extends Card {
     protected static ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
     protected boolean isActive = false;
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     protected boolean isSpell;
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     protected String property;
-    @Expose(serialize = true, deserialize = true)
+    @Expose()
     protected boolean isLimited;
 
     public SpellAndTrapCard() {
         super();
         spellAndTrapCards.add(this);
-    }
-
-    public boolean isLimited() {
-        return isLimited;
-    }
-
-    public String getProperty() {
-        return property;
-    }
-
-    public void setProperty(String property) {
-        this.property = property;
-    }
-
-    public boolean isSpell() {
-        return isSpell;
-    }
-
-    public void setSpell(boolean spell) {
-        isSpell = spell;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
     }
 
     @Override

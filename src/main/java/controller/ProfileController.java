@@ -1,5 +1,7 @@
 package controller;
 
+import lombok.Getter;
+import lombok.Setter;
 import model.Account;
 import view.IO;
 

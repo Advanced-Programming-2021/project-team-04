@@ -16,9 +16,7 @@ public class AIDuelTest {
         PlayerDeck playerDeck = new PlayerDeck("Damaged");
         for (int i = 0; i < 40; i++)
             playerDeck.addCardToMainDeck(cardName);
-        thisAccount.setActiveDeck(playerDeck);
-        thisAccount.setActiveDeck(playerDeck);
+        thisAccount.setActivePlayerDeck("Damaged");
         MainController.getInstance().newAIDuel(1);
     }
-
 }

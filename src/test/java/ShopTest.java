@@ -115,6 +115,7 @@ public class ShopTest {
         ShopController.getInstance().isCardNameValid("Crime Scene");
         Assertions.assertEquals("there is no card with this name\r\n", outputStream.toString());
     }
+
     @Test
     public void buyCardTest() {
         Account account = new Account("Timothy Stoker", "stalker", "smoothie");

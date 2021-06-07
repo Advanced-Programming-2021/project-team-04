@@ -1,6 +1,7 @@
 package model;
 
 public class BlackPendant extends SpellAndTrapCard {
+
     private MonsterCard equippedMonster = null;
 
     public BlackPendant() {

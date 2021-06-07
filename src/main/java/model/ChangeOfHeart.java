@@ -36,7 +36,7 @@ public class ChangeOfHeart extends SpellAndTrapCard {
                 hijackedCard = null;
                 originalOwner = null;
             }
-            this.getOwner().getField().getTrapAndSpell().remove(this);
+            this.getOwner().getField().getSpellAndTrapCards().remove(this);
             this.getOwner().getField().getGraveyard().add(this);
         }
     }

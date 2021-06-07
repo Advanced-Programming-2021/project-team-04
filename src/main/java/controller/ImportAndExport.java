@@ -1,11 +1,14 @@
 package controller;
 
-import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import model.*;
+
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ImportAndExport {
     private static ImportAndExport singleInstance = null;
@@ -17,15 +20,12 @@ public class ImportAndExport {
     }
 
     public void writeAllUsers() {
-        ArrayList<Account> allAccounts = Account.getAllAccounts();
-        for (Account account : allAccounts)
-            writeToJson("src/main/resources/users/" + account.getUsername() + ".JSON", account);
+        Account.getAllAccounts().forEach(a -> writeToJson("src/main/resources/users/" + a.getUsername() + ".JSON", a));
     }
 
     public void readAllUsers() {
-        var folder = new File("src/main/resources/users");
-        for (File file : Objects.requireNonNull(folder.listFiles()))
-            Account.addAccount(readAccount("src/main/resources/users/" + file.getName()));
+        Arrays.stream(Objects.requireNonNull(new File("src/main/resources/users").listFiles())).filter(Objects::nonNull)
+                .forEach(f -> Account.addAccount(readAccount("src/main/resources/users/" + f.getName())));
     }
 
     public void importCard(String cardName, String type) {
@@ -51,8 +51,8 @@ public class ImportAndExport {
             var gson = gsonBuilder.create();
             var bufferedReader = new BufferedReader(fileReader);
             var account = gson.fromJson(bufferedReader, Account.class);
-            account.setCanDraw(true);
-            account.setCanPlayerAttack(true);
+            account.setAbleToDraw(true);
+            account.setAbleToAttack(true);
             return account;
         } catch (Exception fileNotFoundException) {
             return null;
@@ -60,11 +60,8 @@ public class ImportAndExport {
     }
 
     public ArrayList<PlayerDeck> readAllDecks(String address) {
-        ArrayList<PlayerDeck> playerDecks = new ArrayList<>();
-        var folder = new File(address);
-        for (File file : Objects.requireNonNull(folder.listFiles()))
-            playerDecks.add(readDeck(address + file.getName()));
-        return playerDecks;
+        return (ArrayList<PlayerDeck>) Arrays.stream(Objects.requireNonNull(new File(address).listFiles()))
+                .filter(Objects::nonNull).map(f -> readDeck(address + f.getName())).collect(Collectors.toList());
     }
 
     public PlayerDeck readDeck(String address) {
@@ -91,21 +88,12 @@ public class ImportAndExport {
     }
 
     public ArrayList<Card> readAllCards() {
-        ArrayList<Card> cards = new ArrayList<>();
-        var folder = new File("src/main/resources/monsters/");
-        MonsterCard monsterCard;
-        for (File file : Objects.requireNonNull(folder.listFiles())) {
-            if ((monsterCard = readMonsterCard(file.getPath())) == null) continue;
-            monsterCard.reset();
-            cards.add(monsterCard);
-        }
-        SpellAndTrapCard spellAndTrapCard;
-        folder = new File("src/main/resources/spellandtraps/");
-        for (File file : Objects.requireNonNull(folder.listFiles())) {
-            if ((spellAndTrapCard = readSpellAndTrapCard(file.getPath())) == null) continue;
-            cards.add(spellAndTrapCard);
-        }
-        return cards;
+        return Stream.concat(
+                Arrays.stream(Objects.requireNonNull(new File("src/main/resources/monsters/").listFiles()))
+                        .map(f -> readMonsterCard(f.getPath())).filter(Objects::nonNull).peek(MonsterCard::reset),
+                Arrays.stream(Objects.requireNonNull(new File("src/main/resources/spellandtraps/").listFiles()))
+                        .map(f -> readSpellAndTrapCard(f.getPath())).filter(Objects::nonNull))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public MonsterCard readMonsterCard(String address) {

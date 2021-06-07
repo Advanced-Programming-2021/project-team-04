@@ -1,5 +1,7 @@
 package controller;
 
+import lombok.Getter;
+import lombok.Setter;
 import model.Account;
 import model.Card;
 import model.MonsterCard;
@@ -33,7 +35,7 @@ public class DeckController {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorForDeletingOrActivating(deckName)) {
             IO.getInstance().deckDeleted();
-            if (thisPlayer.getActiveDeck().getDeckName().equals(deckName)) thisPlayer.setActiveDeck(null);
+            if (thisPlayer.getActiveDeck().getDeckName().equals(deckName)) thisPlayer.setActivePlayerDeck(null);
             thisPlayer.deleteDeck(thisPlayer.getDeckByName(deckName));
         }
     }
@@ -41,7 +43,7 @@ public class DeckController {
     public void activateDeck(String deckName) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorForDeletingOrActivating(deckName)) {
-            thisPlayer.setActiveDeck(thisPlayer.getDeckByName(deckName));
+            thisPlayer.setActivePlayerDeck(deckName);
             IO.getInstance().deckActivated();
         }
     }
@@ -76,9 +78,9 @@ public class DeckController {
         }
         //TODO isn't active deck an object of all decks? is this method tested?
         toPrint.append("Other decks: \n");
-        if (!thisPlayer.getAllDecks().isEmpty()) {
+        if (!thisPlayer.getAllPlayerDecks().isEmpty()) {
             sortDecks();
-            thisPlayer.getAllDecks().stream().filter(d -> !d.equals(thisPlayer.getActiveDeck())).forEach(d -> toPrint.append(d.getDeckName()).append(": main deck ").append(d.getMainDeckSize())
+            thisPlayer.getAllPlayerDecks().stream().filter(d -> !d.equals(thisPlayer.getActiveDeck())).forEach(d -> toPrint.append(d.getDeckName()).append(": main deck ").append(d.getMainDeckSize())
                     .append(", side deck ").append(d.getSideDeckSize()).append(", ")
                     .append(d.isDeckValid() ? "valid" : "invalid").append("\n"));
         }
@@ -87,7 +89,7 @@ public class DeckController {
     }
 
     private void sortDecks() {
-        MainController.getInstance().getLoggedIn().getAllDecks().sort(Comparator.comparing(PlayerDeck::getDeckName));
+        MainController.getInstance().getLoggedIn().getAllPlayerDecks().sort(Comparator.comparing(PlayerDeck::getDeckName));
     }
 
     public void printDeck(String deckName, boolean isMain) {

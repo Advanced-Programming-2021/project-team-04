@@ -1,22 +1,19 @@
 package controller;
 
+import lombok.Getter;
+import lombok.Setter;
 import model.AI;
 import model.Account;
 import model.Game;
 import view.IO;
 
+@Getter
+@Setter
 public class MainController {
-    private Account loggedIn;
+
     private static MainController singleInstance = null;
 
-    public Account getLoggedIn() {
-        return loggedIn;
-    }
-
-    public void setLoggedIn(Account loggedIn) {
-        this.loggedIn = loggedIn;
-    }
-
+    private Account loggedIn;
 
     public static MainController getInstance() {
         if (singleInstance == null)

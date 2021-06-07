@@ -1,11 +1,20 @@
 package model;
 
-import java.util.ArrayList;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+@Getter
+@Setter
 public class Field {
+
     private ArrayList<Card> graveyard = new ArrayList<>();
     private ArrayList<Card> deckZone = new ArrayList<>();
-    private ArrayList<SpellAndTrapCard> trapAndSpell = new ArrayList<>();
+    private ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
     private ArrayList<MonsterCard> monsterCards = new ArrayList<>();
     private ArrayList<Card> hand = new ArrayList<>();
     private SpellAndTrapCard fieldZone;
@@ -17,67 +26,7 @@ public class Field {
     }
 
     public ArrayList<Scanner> getActiveScanners() {
-        ArrayList<Scanner> scanners = new ArrayList<>();
-        for (MonsterCard monsterCard : monsterCards)
-            if (monsterCard.getName().equals("Scanner"))
-                scanners.add((Scanner) monsterCard);
-        return scanners;
-    }
-
-    public ArrayList<Card> getSideDeck() {
-        return sideDeck;
-    }
-
-    public void setSideDeck(ArrayList<Card> sideDeck) {
-        this.sideDeck = sideDeck;
-    }
-
-    public ArrayList<Card> getGraveyard() {
-        return graveyard;
-    }
-
-    public void setGraveyard(ArrayList<Card> graveyard) {
-        this.graveyard = graveyard;
-    }
-
-    public ArrayList<Card> getDeckZone() {
-        return deckZone;
-    }
-
-    public void setDeckZone(ArrayList<Card> deckZone) {
-        this.deckZone = deckZone;
-    }
-
-    public ArrayList<SpellAndTrapCard> getTrapAndSpell() {
-        return trapAndSpell;
-    }
-
-    public void setTrapAndSpell(ArrayList<SpellAndTrapCard> trapAndSpell) {
-        this.trapAndSpell = trapAndSpell;
-    }
-
-    public ArrayList<MonsterCard> getMonsterCards() {
-        return monsterCards;
-    }
-
-    public void setMonsterCards(ArrayList<MonsterCard> monsterCards) {
-        this.monsterCards = monsterCards;
-    }
-
-    public ArrayList<Card> getHand() {
-        return hand;
-    }
-
-    public void setHand(ArrayList<Card> hand) {
-        this.hand = hand;
-    }
-
-    public SpellAndTrapCard getFieldZone() {
-        return fieldZone;
-    }
-
-    public void setFieldZone(SpellAndTrapCard fieldZone) {
-        this.fieldZone = fieldZone;
+        return (ArrayList<Scanner>) monsterCards.stream().filter(m -> m.getName().equals("Scanner")).map(m -> (Scanner) m).collect(Collectors.toList());
     }
 
     public boolean isTributesLevelSumValid(int sum, int n) {
@@ -92,78 +41,42 @@ public class Field {
 
     public String showGraveyard() {
         var toPrint = new StringBuilder();
-        for (Card card : graveyard)
-            toPrint.append(card.getName()).append(":").append(card.getDescription()).append("\n");
+        graveyard.forEach(c -> toPrint.append(c.getName()).append(":").append(c.getDescription()).append("\n"));
         toPrint.setLength(toPrint.length() - 1);
         return toPrint.toString();
     }
 
     public ArrayList<MonsterCard> ritualMonsterCards() {
-        ArrayList<MonsterCard> rituals = new ArrayList<>();
-        for (Card card : hand)
-            if (card instanceof MonsterCard) {
-                MonsterCard thisMonster = (MonsterCard) card;
-                if (thisMonster.cardType.equals("Ritual"))
-                    rituals.add(thisMonster);
-            }
-        return rituals;
+        return (ArrayList<MonsterCard>) hand.stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
+                .filter(m -> m.getMonsterType().equals("Ritual")).collect(Collectors.toList());
     }
 
     public ArrayList<MonsterCard> ordinaryLowLevelCards() {
-        ArrayList<MonsterCard> thisCards = new ArrayList<>();
-        for (Card monsterCard : hand)
-            if (monsterCard instanceof MonsterCard) {
-                MonsterCard monsterCard1 = (MonsterCard) monsterCard;
-                if (monsterCard1.getLevel() <= 4 && monsterCard1.cardType.equals("Normal"))
-                    thisCards.add(monsterCard1);
-            }
-        return thisCards;
+        return (ArrayList<MonsterCard>) hand.stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
+                .filter(m -> m.getLevel() <= 4 && m.cardType.equals("Normal")).collect(Collectors.toList());
     }
 
-    public SpellAndTrapCard hasThisCardActivated(String cardName) {
-        for (SpellAndTrapCard spellAndTrapCard : trapAndSpell)
-            if (spellAndTrapCard.getName().equals(cardName) && spellAndTrapCard.isActive())
-                return spellAndTrapCard;
-        return null;
+    public SpellAndTrapCard getThisActivatedCard(String cardName) {
+        return spellAndTrapCards.stream().filter(c -> c.isActive && c.getName().equals(cardName)).findAny().orElse(null);
     }
 
-    public SpellAndTrapCard hasTrapCard(String cardName) {
-        for (SpellAndTrapCard spellAndTrapCard : trapAndSpell)
-            if (spellAndTrapCard.getName().equals(cardName))
-                return spellAndTrapCard;
-        return null;
+    public SpellAndTrapCard getSpellAndTrapCard(String cardName) {
+        return spellAndTrapCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null);
     }
 
     public void resetAllCards() {
-        ArrayList<Card> allCards = new ArrayList<>();
-        allCards.addAll(monsterCards);
-        allCards.addAll(trapAndSpell);
-        allCards.add(fieldZone);
-        for (Card card : allCards)
-            if (card != null)
-                card.reset();
-
+        monsterCards.stream().filter(Objects::nonNull).forEach(Card::reset);
+        Stream.concat(spellAndTrapCards.stream(), Stream.of(fieldZone)).filter(Objects::nonNull).forEach(Card::reset);
     }
 
-    public SpellAndTrapCard isSet(String name) {
-        for (SpellAndTrapCard spellAndTrapCard : trapAndSpell)
-            if (spellAndTrapCard.getName().equals(name)) return spellAndTrapCard;
-        return null;
+    public SpellAndTrapCard getSetSpellAndTrapCard(String cardName) {
+        return spellAndTrapCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null);
     }
 
     public void exchangeCards(String fromSide, String fromMain) {
-        Card cardFromMain = null;
-        Card cardFromSide = null;
-        for (Card card : deckZone)
-            if (card.getName().equals(fromMain)) {
-                cardFromMain = card;
-                break;
-            }
-        for (Card card : sideDeck)
-            if (card.getName().equals(fromSide)) {
-                cardFromSide = card;
-                break;
-            }
+        var cardFromMain = deckZone.stream().filter(c -> c.getName().equals(fromMain)).findAny().orElse(null);
+        var cardFromSide = sideDeck.stream().filter(c -> c.getName().equals(fromSide)).findAny().orElse(null);
+        if (cardFromMain == null || cardFromSide == null) return;
         deckZone.add(cardFromSide);
         deckZone.remove(cardFromMain);
         sideDeck.add(cardFromMain);
