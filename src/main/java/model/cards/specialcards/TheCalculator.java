@@ -13,6 +13,7 @@ public class TheCalculator extends MonsterCard {
         setClassDefensePower(0);
         setThisCardDefensePower(0);
         setMonsterType("Thunder");
+        setCardType("Effect");
         setPrice(8000);
         setDescription();
     }

@@ -386,6 +386,7 @@ public class DuelController {
         if (handleSpecialCases()) return;
         summonWithTribute();
         var monsterCard = (MonsterCard) game.getSelectedCard();
+        monsterCard.getOwner().getField().getHand().remove(monsterCard);
         if (handleTrapHole(monsterCard)) return;
         game.getCurrentPlayer().getField().getMonsterCards().add(monsterCard);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);

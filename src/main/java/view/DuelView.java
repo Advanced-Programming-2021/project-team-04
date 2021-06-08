@@ -263,7 +263,7 @@ public class DuelView extends ViewMenu {
         String monsterCardNumber = IO.getInstance().getInputMessage();
         if (monsterCardNumber.equals("cancel")) return null;
         int number = Integer.parseInt(monsterCardNumber);
-        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(number);
+        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(number - 1);
     }
 
     public boolean wantsToActivateTrap(String name) {
