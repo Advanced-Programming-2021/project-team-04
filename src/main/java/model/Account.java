@@ -42,7 +42,6 @@ public class Account extends Duelist {
         allAccounts.add(this);
         allUsernames.add(username);
         allNicknames.add(nickname);
-        System.out.println(".");
     }
 
     public static void addAccount(Account account) {

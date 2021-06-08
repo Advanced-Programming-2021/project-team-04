@@ -1,0 +1,23 @@
+{
+  "password": "mechs",
+  "score": 0,
+  "money": 100000,
+  "allPlayerDecks": [
+    {
+      "mainDeckCards": {
+        "The Calculator": 5,
+        "Bitron": 20,
+        "Mirage Dragon": 5,
+        "Marshmallon": 5,
+        "Herald of Creation": 5,
+        "Exploder Dragon": 5
+      },
+      "sideDeckCards": {},
+      "deckName": "Cinder"
+    }
+  ],
+  "allCardsHashMap": {},
+  "activePlayerDeck": "Cinder",
+  "username": "TheAuroraStrikes",
+  "nickname": "OurBoyJack"
+}
