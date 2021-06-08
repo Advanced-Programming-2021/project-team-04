@@ -1,0 +1,25 @@
+{
+  "password": "mechs",
+  "score": 0,
+  "money": 100000,
+  "allPlayerDecks": [
+    {
+      "mainDeckCards": {
+        "Command Knight": 5,
+        "Bitron": 20,
+        "Yomi Ship": 5,
+        "Suijin": 5,
+        "Crab Turtle": 5,
+        "Man-Eater Bug": 5,
+        "Terratiger, the Empowered Warrior": 2,
+        "The Tricky": 2
+      },
+      "sideDeckCards": {},
+      "deckName": "Cinder"
+    }
+  ],
+  "allCardsHashMap": {},
+  "activePlayerDeck": "Cinder",
+  "username": "CindersSong",
+  "nickname": "TheTwins"
+}
