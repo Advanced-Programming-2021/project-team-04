@@ -54,11 +54,11 @@ public class Game {
     }
 
     private void initializeCards(Duelist duelist) {
-        duelist.getField().getDeckZone().forEach(c -> {
+        duelist.getField().getDeckZone().stream().filter(Objects::nonNull).forEach(c -> {
             if (c instanceof MonsterCard) c.setOwner(duelist);
             c.reset();
         });
-        duelist.getField().getSideDeck().forEach(c -> {
+        duelist.getField().getSideDeck().stream().filter(Objects::nonNull).forEach(c -> {
             if (c instanceof MonsterCard) c.setOwner(duelist);
             c.reset();
         });
