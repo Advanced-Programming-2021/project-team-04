@@ -1,7 +1,5 @@
 package controller;
 
-import lombok.Getter;
-import lombok.Setter;
 import model.Account;
 import model.Card;
 import model.MonsterCard;
@@ -130,14 +128,17 @@ public class DeckController {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         var toPrint = new StringBuilder();
         sortAllCards();
-        thisPlayer.getAllCards().forEach(c -> toPrint.append(c.getName()).append(":").append(c.getDescription()).append("\n"));
-        toPrint.setLength(toPrint.length() - 1);
+        thisPlayer.getAllCardsHashMap().keySet().forEach(n -> {
+            for (var i = 0; i < thisPlayer.getAllCardsHashMap().get(n); i++)
+                toPrint.append(n).append(": ").append(Card.getDescriptionByName(n)).append("\n");
+        });
         IO.getInstance().printString(toPrint.toString());
     }
 
     private void sortAllCards() {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
-        thisPlayer.getAllCards().sort(Comparator.comparing(Card::getName));
+        thisPlayer.setAllCardsHashMap(thisPlayer.getAllCardsHashMap().entrySet().stream().sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (c1, c2) -> c1, LinkedHashMap::new)));
     }
 
     private boolean errorForCreation(String deckName) {

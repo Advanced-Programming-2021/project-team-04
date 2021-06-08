@@ -66,29 +66,7 @@ public class ShopController {
 
     public void buyCard(String cardName) {
         if (isCardNameValid(cardName) && hasEnoughMoney(cardName)) {
-            switch (cardName) {
-                case "Change of Heart" -> MainController.getInstance().getLoggedIn().addCard(new ChangeOfHeart());
-                case "Command Knight" -> MainController.getInstance().getLoggedIn().addCard(new CommandKnight());
-                case "Man-Eater Bug" -> MainController.getInstance().getLoggedIn().addCard(new ManEaterBug());
-                case "Messenger of peace" -> MainController.getInstance().getLoggedIn().addCard(new MessengerOfPeace());
-                case "Scanner" -> MainController.getInstance().getLoggedIn().addCard(new Scanner());
-                case "Suijin" -> MainController.getInstance().getLoggedIn().addCard(new Suijin());
-                case "The Calculator" -> MainController.getInstance().getLoggedIn().addCard(new TheCalculator());
-                case "Swords of Revealing Light" -> MainController.getInstance().getLoggedIn().addCard(new SwordsOfRevealingLight());
-                case "United We Stand" -> MainController.getInstance().getLoggedIn().addCard(new UnitedWeStand());
-                case "Sword of dark destruction" -> MainController.getInstance().getLoggedIn().addCard(new SwordOfDarkDestruction());
-                case "Magnum Shield" -> MainController.getInstance().getLoggedIn().addCard(new MagnumShield());
-                case "Black Pendant" -> MainController.getInstance().getLoggedIn().addCard(new BlackPendant());
-                default -> {
-                    var monsterCard = ImportAndExport.getInstance().readMonsterCard("src/main/resources/monsters/" + cardName + ".JSON");
-                    if (monsterCard != null)
-                        MainController.getInstance().getLoggedIn().addCard(monsterCard);
-                    else {
-                        var spellAndTrapCard = ImportAndExport.getInstance().readSpellAndTrapCard("src/main/resources/spellandtraps/" + cardName + ".JSON");
-                        MainController.getInstance().getLoggedIn().addCard(spellAndTrapCard);
-                    }
-                }
-            }
+            MainController.getInstance().getLoggedIn().addCard(cardName);
             MainController.getInstance().getLoggedIn().setMoney(MainController.getInstance().getLoggedIn().getMoney() - Card.getCardByName(cardName).getPrice());
         }
     }
