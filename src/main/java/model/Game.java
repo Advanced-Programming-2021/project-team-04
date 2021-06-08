@@ -54,8 +54,8 @@ public class Game {
     }
 
     private void initializeCards(Duelist duelist) {
-        duelist.getField().getDeckZone().stream().filter(Objects::nonNull).forEach(Card::reset);
-        duelist.getField().getSideDeck().stream().filter(Objects::nonNull).forEach(Card::reset);
+        duelist.getField().getDeckZone().stream().filter(Objects::nonNull).peek(c -> c.setOwnerUsername(duelist.getUsername())).forEach(Card::reset);
+        duelist.getField().getSideDeck().stream().filter(Objects::nonNull).peek(c -> c.setOwnerUsername(duelist.getUsername())).forEach(Card::reset);
     }
 
 //    public void shuffleDeck() {

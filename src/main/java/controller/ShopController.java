@@ -11,6 +11,7 @@ import java.util.Comparator;
 @Getter
 @Setter
 public class ShopController {
+
     private static ShopController singleInstance = null;
     private static ArrayList<Card> allCards;
 
