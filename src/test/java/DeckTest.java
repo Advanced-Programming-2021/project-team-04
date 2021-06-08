@@ -55,9 +55,9 @@ public class DeckTest {
     void addCardTest() {
         DeckController.getInstance().createDeck("Speck of Dust");
         ShopController.getInstance().buyCard("Mind Crush");
-        var cardName = thisAccount.getAllCards().get(thisAccount.getAllCards().size() - 1).getName();
+//        var cardName = thisAccount.getAllCardsArrayList().get(thisAccount.getAllCardsArrayList().size() - 1).getName();
         DeckController.getInstance().addCardToDeck("Speck of Dust", "Mind Crush", true);
-        Assertions.assertTrue(thisAccount.getDeckByName("Speck of Dust").getMainDeckCards().containsKey(cardName));
+        Assertions.assertTrue(thisAccount.getDeckByName("Speck of Dust").getMainDeckCards().containsKey("Mind Crush"));
     }
 
     @Test

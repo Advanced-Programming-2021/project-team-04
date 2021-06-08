@@ -1,16 +1,19 @@
 package model;
 
 import com.google.gson.annotations.Expose;
+import controller.ImportAndExport;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 @Getter
 @Setter
 public class Card {
 
-    protected static ArrayList<Card> allCards = new ArrayList<>();
+    protected static ArrayList<Card> allCards;
+    protected static TreeMap<String, String> nameToDescriptionMap;
 
     @Expose()
     protected String name;
@@ -25,7 +28,10 @@ public class Card {
     protected boolean hasBeenUsedInThisTurn = false;
     protected boolean hasBeenSetOrSummoned = false;
 
-    //TODO NEED a fucking method that takes the card name as input and shows whether it is a monster card or a spell or trap
+    static {
+        allCards = new ArrayList<>();
+        nameToDescriptionMap = ImportAndExport.getInstance().readCardNameToDescriptionMap();
+    }
 
     public Card() {
         allCards.add(this);
@@ -38,6 +44,10 @@ public class Card {
 
     public static Card getCardByName(String name) {
         return allCards.stream().filter(c -> c.getName().equals(name)).findFirst().orElse(null);
+    }
+
+    public static String getDescriptionByName(String name) {
+        return nameToDescriptionMap.get(name);
     }
 
     public void reset() { }

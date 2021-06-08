@@ -157,11 +157,11 @@ public class DuelTest {
         theOtherPlayer.getField().getMonsterCards().add((MonsterCard) Card.getCardByName("Baby dragon"));
         MonsterCard barbaros = (MonsterCard) Card.getCardByName("Beast King Barbaros");
         DuelController.getInstance().getGame().setSelectedCard(barbaros);
-        ArrayList<Card> backupCards = thisPlayer.getAllCards();
-        thisPlayer.setAllCards(new ArrayList<>());
+        ArrayList<Card> backupCards = thisPlayer.getAllCardsArrayList();
+        thisPlayer.setAllCardsArrayList(new ArrayList<>());
         for (int i = 0; i < 3; i++) {
             ShopController.getInstance().buyCard("Baby dragon");
-            thisPlayer.getField().getMonsterCards().add((MonsterCard) thisPlayer.getAllCards().get(0));
+            thisPlayer.getField().getMonsterCards().add((MonsterCard) thisPlayer.getAllCardsArrayList().get(0));
         }
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n0\r\n".getBytes());
@@ -169,7 +169,7 @@ public class DuelTest {
         IO.getInstance().resetScanner();
         DuelController.getInstance().barbaros(3);
         System.setIn(backup);
-        thisPlayer.setAllCards(backupCards);
+        thisPlayer.setAllCardsArrayList(backupCards);
         Assertions.assertEquals(0, theOtherPlayer.getField().getMonsterCards().size());
     }
 
@@ -179,11 +179,11 @@ public class DuelTest {
         MonsterCard gateGuardian = (MonsterCard) Card.getCardByName("Gate Guardian");
         gateGuardian.setOwner(thisPlayer);
         DuelController.getInstance().getGame().setSelectedCard(gateGuardian);
-        ArrayList<Card> backupCards = thisPlayer.getAllCards();
-        thisPlayer.setAllCards(new ArrayList<>());
+        ArrayList<Card> backupCards = thisPlayer.getAllCardsArrayList();
+        thisPlayer.setAllCardsArrayList(new ArrayList<>());
         for (int i = 0; i < 3; i++) {
             ShopController.getInstance().buyCard("Baby dragon");
-            thisPlayer.getField().getMonsterCards().add((MonsterCard) thisPlayer.getAllCards().get(0));
+            thisPlayer.getField().getMonsterCards().add((MonsterCard) thisPlayer.getAllCardsArrayList().get(0));
         }
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n0\r\n".getBytes());
@@ -191,7 +191,7 @@ public class DuelTest {
         IO.getInstance().resetScanner();
         DuelController.getInstance().gateGuardian();
         System.setIn(backup);
-        thisPlayer.setAllCards(backupCards);
+        thisPlayer.setAllCardsArrayList(backupCards);
         Assertions.assertNull(DuelController.getInstance().getGame().getSelectedCard());
     }
 
@@ -199,20 +199,20 @@ public class DuelTest {
     public void theTrickyTest() {
         MonsterCard theTricky = (MonsterCard) Card.getCardByName("The Tricky");
         theTricky.setOwner(thisPlayer);
-        ArrayList<Card> backupCards = thisPlayer.getAllCards();
+        ArrayList<Card> backupCards = thisPlayer.getAllCardsArrayList();
         ArrayList<Card> hand = thisPlayer.getField().getHand();
         thisPlayer.getField().setHand(new ArrayList<>());
-        thisPlayer.setAllCards(new ArrayList<>());
+        thisPlayer.setAllCardsArrayList(new ArrayList<>());
         DuelController.getInstance().getGame().setSelectedCard(theTricky);
         ShopController.getInstance().buyCard("Baby dragon");
-        thisPlayer.getField().getHand().add(thisPlayer.getAllCards().get(0));
+        thisPlayer.getField().getHand().add(thisPlayer.getAllCardsArrayList().get(0));
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().theTricky();
         System.setIn(backup);
-        thisPlayer.setAllCards(backupCards);
+        thisPlayer.setAllCardsArrayList(backupCards);
         thisPlayer.getField().setHand(hand);
         Assertions.assertNull(DuelController.getInstance().getGame().getSelectedCard());
     }
@@ -222,14 +222,14 @@ public class DuelTest {
         MonsterCard spiralSerpent = (MonsterCard) Card.getCardByName("Spiral Serpent");
         spiralSerpent.setOwner(thisPlayer);
         ArrayList<Card> graveyardBackUp = thisPlayer.getField().getGraveyard();
-        ArrayList<Card> backupCards = thisPlayer.getAllCards();
+        ArrayList<Card> backupCards = thisPlayer.getAllCardsArrayList();
         ArrayList<Card> hand = thisPlayer.getField().getHand();
         thisPlayer.getField().setHand(new ArrayList<>());
-        thisPlayer.setAllCards(new ArrayList<>());
+        thisPlayer.setAllCardsArrayList(new ArrayList<>());
         thisPlayer.getField().setGraveyard(new ArrayList<>());
         thisPlayer.getField().getGraveyard().add(spiralSerpent);
         ShopController.getInstance().buyCard("Baby dragon");
-        thisPlayer.getField().getHand().add((MonsterCard) thisPlayer.getAllCards().get(0));
+        thisPlayer.getField().getHand().add((MonsterCard) thisPlayer.getAllCardsArrayList().get(0));
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n".getBytes());
         System.setIn(input);
@@ -237,7 +237,7 @@ public class DuelTest {
         DuelController.getInstance().heraldOfCreation();
         System.setIn(backup);
         boolean hasCard = thisPlayer.getField().getHand().contains(spiralSerpent);
-        thisPlayer.setAllCards(backupCards);
+        thisPlayer.setAllCardsArrayList(backupCards);
         thisPlayer.getField().setHand(hand);
         thisPlayer.getField().setGraveyard(graveyardBackUp);
         Assertions.assertTrue(hasCard);

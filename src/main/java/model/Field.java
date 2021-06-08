@@ -67,13 +67,12 @@ public class Field {
     public void resetAllCards() {
         monsterCards.stream().filter(Objects::nonNull).forEach(MonsterCard::reset);
         Stream.concat(spellAndTrapCards.stream(), Stream.of(fieldZone)).filter(Objects::nonNull).forEach(SpellAndTrapCard::reset);
-        for (MonsterCard monsterCard : monsterCards)
-            monsterCard.setHasBeenUsedInThisTurn(false);
-        for (SpellAndTrapCard spellAndTrapCard : spellAndTrapCards)
-            spellAndTrapCard.setHasBeenUsedInThisTurn(false);
-        for (MonsterCard monsterCard : monsterCards)
-            System.out.println(monsterCard.isHasBeenSetOrSummoned());
-
+//        for (MonsterCard monsterCard : monsterCards)
+//            monsterCard.setHasBeenUsedInThisTurn(false);
+//        for (SpellAndTrapCard spellAndTrapCard : spellAndTrapCards)
+//            spellAndTrapCard.setHasBeenUsedInThisTurn(false);
+//        for (MonsterCard monsterCard : monsterCards)
+//            System.out.println(monsterCard.isHasBeenSetOrSummoned());
     }
 
     public SpellAndTrapCard getSetSpellAndTrapCard(String cardName) {
