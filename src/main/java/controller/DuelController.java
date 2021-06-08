@@ -877,7 +877,6 @@ public class DuelController {
             case "Advanced Ritual Art" -> advancedRitualArt(card);
             case "Twin Twisters" -> twinTwisters(card);
             case "Swords of Revealing Light" -> ((SwordsOfRevealingLight) card).specialMethod(game.getTheOtherPlayer());
-            default -> IO.getInstance().preparationsNotDone();
         }
     }
 
