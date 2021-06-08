@@ -500,6 +500,7 @@ public class DuelController {
         }
         summonWithTribute();
         game.getCurrentPlayer().getField().getMonsterCards().add(selectedCard);
+        game.getCurrentPlayer().getField().getHand().remove(selectedCard);
         selectedCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_DOWN);
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
