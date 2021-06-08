@@ -3,8 +3,9 @@ package model;
 import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
+import model.cards.Card;
+import model.cards.SpellAndTrapCard;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 

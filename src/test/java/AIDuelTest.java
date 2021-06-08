@@ -1,6 +1,7 @@
 import controller.MainController;
 import controller.ShopController;
 import model.*;
+import model.cards.SpellAndTrapCard;
 import org.junit.jupiter.api.BeforeAll;
 
 public class AIDuelTest {

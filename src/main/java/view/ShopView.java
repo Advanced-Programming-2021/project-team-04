@@ -1,7 +1,6 @@
 package view;
 
 import controller.ShopController;
-import model.Card;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

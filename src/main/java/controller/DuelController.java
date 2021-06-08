@@ -3,6 +3,10 @@ package controller;
 import lombok.Getter;
 import lombok.Setter;
 import model.*;
+import model.cards.Card;
+import model.cards.MonsterCard;
+import model.cards.SpellAndTrapCard;
+import model.cards.specialcards.*;
 import view.DuelView;
 import view.IO;
 
@@ -10,6 +14,7 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -1303,7 +1308,7 @@ public class DuelController {
 
     public void cheatSeeMyDeck() {
         var toPrint = new StringBuilder();
-        game.getCurrentPlayer().getField().getDeckZone().forEach(c -> toPrint.append(c.getName()).append("\n"));
+        game.getCurrentPlayer().getField().getDeckZone().stream().filter(Objects::nonNull).forEach(c -> toPrint.append(c.getName()).append("\n"));
         toPrint.setLength(toPrint.length() - 1);
         IO.getInstance().printString(toPrint.toString());
     }

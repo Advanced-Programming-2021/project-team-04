@@ -2,7 +2,8 @@ package controller;
 
 import lombok.Getter;
 import lombok.Setter;
-import model.*;
+import model.cards.Card;
+import model.cards.specialcards.*;
 import view.IO;
 
 import java.util.ArrayList;

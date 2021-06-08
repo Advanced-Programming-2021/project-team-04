@@ -3,12 +3,16 @@ import controller.ImportAndExport;
 import controller.MainController;
 import controller.ShopController;
 import model.*;
+import model.cards.Card;
+import model.cards.MonsterCard;
+import model.cards.SpellAndTrapCard;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class DeckTest {
@@ -209,7 +213,7 @@ public class DeckTest {
 
     //TODO actually ImportExportTest would be a nice idea
     @Test
-    void readCardTest() {
+    void readCardTest() throws Exception {
         Card crabTurtle = ImportAndExport.getInstance().readCard("Crab Turtle");
         Assertions.assertTrue(crabTurtle instanceof MonsterCard);
         Card closedForest = ImportAndExport.getInstance().readCard("Closed Forest");

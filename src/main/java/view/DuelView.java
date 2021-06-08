@@ -1,10 +1,10 @@
 package view;
 
 import controller.DuelController;
-import model.Card;
+import model.cards.Card;
 import model.CardStatusInField;
-import model.MonsterCard;
-import model.SpellAndTrapCard;
+import model.cards.MonsterCard;
+import model.cards.SpellAndTrapCard;
 
 import java.util.ArrayList;
 import java.util.Random;

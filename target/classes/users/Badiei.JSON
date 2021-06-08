@@ -1,0 +1,18 @@
+{
+  "password": "aaa",
+  "score": 0,
+  "money": 100000,
+  "allPlayerDecks": [
+    {
+      "mainDeckCards": {
+        "Scanner": 40
+      },
+      "sideDeckCards": {},
+      "deckName": "Langa"
+    }
+  ],
+  "allCardsHashMap": {},
+  "activePlayerDeck": "Langa",
+  "username": "Badiei",
+  "nickname": "Puti"
+}

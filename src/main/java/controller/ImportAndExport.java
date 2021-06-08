@@ -1,9 +1,14 @@
 package controller;
 
 import com.google.gson.GsonBuilder;
-import model.*;
+import model.Account;
+import model.PlayerDeck;
+import model.cards.Card;
+import model.cards.MonsterCard;
+import model.cards.SpellAndTrapCard;
 
 import java.io.*;
+import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -11,7 +16,7 @@ import java.util.stream.Stream;
 public class ImportAndExport {
     private static ImportAndExport singleInstance = null;
 
-//    public static void main(String[] args) {
+    public static void main(String[] args) {
 //        LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<>();
 //        linkedHashMap.put("Change of Heart", "Target 1 monster your opponent controls; take control of it until the End Phase.");
 //        linkedHashMap.put("Command Knight", "All Warrior-Type monsters you control gain 400 ATK. " +
@@ -40,8 +45,17 @@ public class ImportAndExport {
 //                "If this card is removed from the field while this effect is applied, remove it from play.");
 //        getInstance().readAllCards().forEach(c -> linkedHashMap.put(c.getName(), c.getDescription()));
 //        TreeMap<String, String> cardNameToDescriptionTreeMap = new TreeMap<>(linkedHashMap);
-//        getInstance().writeToJson("src/main/resources/utils/MapCardNameToCardDescription.JSON", cardNameToDescriptionTreeMap);
-//    }
+        HashMap<String, String> map = new HashMap<>();
+        map.put("Change of Heart", "ChangeOfHeart");
+        map.put("Command Knight", "CommandKnight");
+        map.put("Man-Eater Bug", "ManEaterBug");
+        map.put("Messenger of peace", "MessengerOfPeace");
+        map.put("Suijin", "Suijin");
+        map.put("The Calculator", "TheCalculator");
+        map.put("United We Stand", "UnitedWeStand");
+        map.put("Swords of Revealing Light", "SwordsOfRevealingLight");
+        getInstance().writeToJson("src/main/resources/utils/MapSpecialCardNameToClassName.JSON", map);
+    }
 
     public static ImportAndExport getInstance() {
         if (singleInstance == null)
@@ -106,7 +120,9 @@ public class ImportAndExport {
         }
     }
 
-    public Card readCard(String cardName) {
+    public Card readCard(String cardName) throws Exception {
+        if (Card.isCardSpecial(cardName))
+            return (Card) Class.forName(Card.getSpecialCardClassName(cardName)).getConstructor().newInstance();
         var monsterCard = readMonsterCard("src/main/resources/monsters/" + cardName + ".JSON");
         var spellAndTrapCard = readSpellAndTrapCard("src/main/resources/spellandtraps/" + cardName + ".JSON");
         if (monsterCard == null && spellAndTrapCard != null) return spellAndTrapCard;
@@ -157,6 +173,18 @@ public class ImportAndExport {
             var gson = gsonBuilder.create();
             var bufferedReader = new BufferedReader(fileReader);
             return gson.fromJson(bufferedReader, TreeMap.class);
+        } catch (Exception fileNotFoundException) {
+            return null;
+        }
+    }
+
+    public HashMap<String, String> readSpecialCardNameToClassNameMap() {
+        try {
+            var fileReader = new FileReader("src/main/resources/utils/MapSpecialCardNameToClassName.JSON");
+            var gsonBuilder = new GsonBuilder();
+            var gson = gsonBuilder.create();
+            var bufferedReader = new BufferedReader(fileReader);
+            return gson.fromJson(bufferedReader, HashMap.class);
         } catch (Exception fileNotFoundException) {
             return null;
         }

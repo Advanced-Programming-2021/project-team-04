@@ -2,6 +2,10 @@ package model;
 
 import lombok.Getter;
 import lombok.Setter;
+import model.cards.Card;
+import model.cards.MonsterCard;
+import model.cards.SpellAndTrapCard;
+import model.cards.specialcards.Scanner;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -53,11 +57,11 @@ public class Field {
 
     public ArrayList<MonsterCard> ordinaryLowLevelCards() {
         return (ArrayList<MonsterCard>) hand.stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
-                .filter(m -> m.getLevel() <= 4 && m.cardType.equals("Normal")).collect(Collectors.toList());
+                .filter(m -> m.getLevel() <= 4 && m.getCardType().equals("Normal")).collect(Collectors.toList());
     }
 
     public SpellAndTrapCard getThisActivatedCard(String cardName) {
-        return spellAndTrapCards.stream().filter(c -> c.isActive && c.getName().equals(cardName)).findAny().orElse(null);
+        return spellAndTrapCards.stream().filter(c -> c.isActive() && c.getName().equals(cardName)).findAny().orElse(null);
     }
 
     public SpellAndTrapCard getSpellAndTrapCard(String cardName) {

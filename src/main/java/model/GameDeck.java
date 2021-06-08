@@ -4,9 +4,10 @@ import com.google.gson.annotations.Expose;
 import controller.ImportAndExport;
 import lombok.Getter;
 import lombok.Setter;
+import model.cards.Card;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 @Getter
@@ -24,14 +25,20 @@ public class GameDeck {
         deckName = playerDeck.getDeckName();
         playerDeck.getMainDeckCards().keySet().forEach(n -> {
             for (var i = 0; i < playerDeck.getMainDeckCards().get(n); i++) {
-                Card card = ImportAndExport.getInstance().readCard(n);
+                Card card = null;
+                try {
+                    card = ImportAndExport.getInstance().readCard(n);
+                } catch (Exception ignored) { }
                 mainDeck.add(card);
             }
         });
         Collections.shuffle(mainDeck);
         playerDeck.getSideDeckCards().keySet().forEach(n -> {
-            for (var i = 0; i < playerDeck.getSideDeckCards().get(n); i++)
-                sideDeck.add(ImportAndExport.getInstance().readCard(n));
+            for (var i = 0; i < playerDeck.getSideDeckCards().get(n); i++) {
+                try {
+                    sideDeck.add(ImportAndExport.getInstance().readCard(n));
+                } catch (Exception ignored) { }
+            }
         });
         Collections.shuffle(sideDeck);
     }

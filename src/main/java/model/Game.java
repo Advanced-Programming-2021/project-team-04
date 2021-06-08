@@ -3,6 +3,7 @@ package model;
 import controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;
+import model.cards.Card;
 
 import java.util.*;
 

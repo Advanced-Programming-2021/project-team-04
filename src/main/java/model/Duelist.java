@@ -2,9 +2,10 @@ package model;
 
 import com.google.gson.annotations.Expose;
 import controller.DuelController;
-import controller.ImportAndExport;
 import lombok.Getter;
 import lombok.Setter;
+import model.cards.Card;
+import model.cards.MonsterCard;
 
 import java.util.*;
 

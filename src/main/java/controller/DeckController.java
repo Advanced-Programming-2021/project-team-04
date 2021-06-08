@@ -1,11 +1,12 @@
 package controller;
 
 import model.Account;
-import model.Card;
-import model.MonsterCard;
+import model.cards.Card;
+import model.cards.MonsterCard;
 import model.PlayerDeck;
 import view.IO;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -100,7 +101,10 @@ public class DeckController {
             if (isMain) {
                 toPrint.append("Main deck:\n");
                 thisPlayer.getDeckByName(deckName).getMainDeckCards().keySet().forEach(c -> {
-                    var card = ImportAndExport.getInstance().readCard(c);
+                    Card card = null;
+                    try {
+                        card = ImportAndExport.getInstance().readCard(c);
+                    } catch (Exception ignored) { }
                     if (card instanceof MonsterCard) monsterCards.add(card);
                     else spellAndTrap.add(card);
                 });
