@@ -684,6 +684,7 @@ public class DuelController {
     }
 
     private void attackInDefense(MonsterCard attacked, MonsterCard attacker) {
+        if (attacked.getName().equals("Marshmallon")) game.getCurrentPlayer().changeLP(-1000);
         if (attacked.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN)
             IO.getInstance().revealCard(attacked.getName());
         if (attacked.getThisCardDefensePower() < attacker.getThisCardAttackPower()) {
@@ -1322,6 +1323,7 @@ public class DuelController {
     }
 
     private void moveToGraveyardAfterAttack(MonsterCard toBeRemoved, MonsterCard remover) {
+        if (toBeRemoved.getName().equals("Marshmallon")) return;
         addMonsterToGYFromMonsterZone(toBeRemoved);
         if (toBeRemoved.getName().equals("Exploder Dragon") ||
                 toBeRemoved.getName().equals("Yomi Ship")) {
