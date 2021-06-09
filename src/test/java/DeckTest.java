@@ -173,7 +173,7 @@ public class DeckTest {
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().printDeck("Woods of Ypres", true);
         Assertions.assertEquals("Deck: Woods of Ypres\n" +
-                "Main deck:\n" +
+                "view.Main deck:\n" +
                 "Monsters:\n" +
                 "Spell and Traps:\r\n", outputStream.toString());
     }

@@ -99,6 +99,7 @@ public class ImportAndExport {
             account.setAbleToAttack(true);
             return account;
         } catch (Exception fileNotFoundException) {
+            fileNotFoundException.printStackTrace();
             return null;
         }
     }
