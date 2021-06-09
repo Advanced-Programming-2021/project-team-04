@@ -32,6 +32,7 @@ public class Account extends Duelist {
     private String password;
     @Expose()
     private int score;
+
     @Expose()
     private int money = 100000;
 
