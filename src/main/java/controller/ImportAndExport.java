@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 public class ImportAndExport {
     private static ImportAndExport singleInstance = null;
 
-    public static void main(String[] args) {
+//    public static void main(String[] args) {
 //        LinkedHashMap<String, String> linkedHashMap = new LinkedHashMap<>();
 //        linkedHashMap.put("Change of Heart", "Target 1 monster your opponent controls; take control of it until the End Phase.");
 //        linkedHashMap.put("Command Knight", "All Warrior-Type monsters you control gain 400 ATK. " +
@@ -45,17 +45,17 @@ public class ImportAndExport {
 //                "If this card is removed from the field while this effect is applied, remove it from play.");
 //        getInstance().readAllCards().forEach(c -> linkedHashMap.put(c.getName(), c.getDescription()));
 //        TreeMap<String, String> cardNameToDescriptionTreeMap = new TreeMap<>(linkedHashMap);
-        HashMap<String, String> map = new HashMap<>();
-        map.put("Change of Heart", "ChangeOfHeart");
-        map.put("Command Knight", "CommandKnight");
-        map.put("Man-Eater Bug", "ManEaterBug");
-        map.put("Messenger of peace", "MessengerOfPeace");
-        map.put("Suijin", "Suijin");
-        map.put("The Calculator", "TheCalculator");
-        map.put("United We Stand", "UnitedWeStand");
-        map.put("Swords of Revealing Light", "SwordsOfRevealingLight");
-        getInstance().writeToJson("src/main/resources/utils/MapSpecialCardNameToClassName.JSON", map);
-    }
+//        HashMap<String, String> map = new HashMap<>();
+//        map.put("Change of Heart", "ChangeOfHeart");
+//        map.put("Command Knight", "CommandKnight");
+//        map.put("Man-Eater Bug", "ManEaterBug");
+//        map.put("Messenger of peace", "MessengerOfPeace");
+//        map.put("Suijin", "Suijin");
+//        map.put("The Calculator", "TheCalculator");
+//        map.put("United We Stand", "UnitedWeStand");
+//        map.put("Swords of Revealing Light", "SwordsOfRevealingLight");
+//        getInstance().writeToJson("src/main/resources/utils/MapSpecialCardNameToClassName.JSON", map);
+//    }
 
     public static ImportAndExport getInstance() {
         if (singleInstance == null)
