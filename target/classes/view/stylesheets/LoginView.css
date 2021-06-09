@@ -1,0 +1,39 @@
+.root {
+    -fx-background-color: transparent;
+    -fx-background-image: url("background.gif");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 480 528;
+    -fx-background-position: center center;
+}
+
+#greetings {
+    -fx-font-size: 37;
+    -fx-font-family: "Edwardian Script ITC";
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( one-pass-box , #d80368, 0, 0.5, 5, 5);
+}
+
+.label {
+    -fx-font-size: 22;
+    -fx-font-family: "Kunstler Script";
+    -fx-effect: dropshadow( one-pass-box , #d80368, 0, 0.5, 5, 5);
+}
+
+.text-field {
+    -fx-pref-height: 30;
+    -fx-translate-y: +10;
+}
+
+.button {
+    -fx-font-family: "Kunstler Script";
+    -fx-pref-height: 20;
+    -fx-pref-width: 100;
+    -fx-background-color: #d80368;
+    -fx-font-size: 22;
+    -fx-translate-y: +20;
+}
+
+.button:hover {
+    -fx-border-color: #d80368;
+    -fx-background-color: #a187e2;
+}
