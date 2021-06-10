@@ -2,38 +2,51 @@
     -fx-background-color: transparent;
     -fx-background-image: url("background.jpg");
     -fx-background-repeat: stretch;
-    -fx-background-size: 1600 1222;
+    -fx-background-size: 1120 855.4;
     -fx-background-position: center center;
 }
 
 #greetings {
-    -fx-font-size: 70;
+    -fx-font-size: 49;
     -fx-font-family: "Edwardian Script ITC";
     -fx-font-weight: bold;
     -fx-effect: dropshadow( one-pass-box , #ff02d5, 0, 0.5, 5, 5);
+    -fx-translate-x: -37;
 }
 
 .label {
-    -fx-font-size: 36;
+    -fx-font-size: 25.2;
     -fx-font-family: "Kunstler Script";
     -fx-effect: dropshadow( one-pass-box , #ff02d5, 0, 0.5, 5, 5);
+    -fx-translate-x: -37;
 }
 
 .text-field {
-    -fx-pref-height: 30;
+    -fx-pref-height: 21;
     -fx-translate-y: +10;
+    -fx-translate-x: -37;
 }
 
 .button {
     -fx-font-family: "Kunstler Script";
-    -fx-pref-height: 20;
-    -fx-pref-width: 150;
+    -fx-pref-height: 14;
+    -fx-pref-width: 105;
     -fx-background-color: #ff02d5;
-    -fx-font-size: 36;
+    -fx-font-size: 25.2;
     -fx-translate-y: +20;
+    -fx-translate-x: -37;
 }
 
 .button:hover {
     -fx-border-color: #ff02d5;
     -fx-background-color: #7b49ff;
+    -fx-translate-x: -37;
+}
+
+#mute {
+    -fx-background-color: transparent;
+    -fx-background-image: url("mute.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 45 45;
+    -fx-background-position: center center;
 }

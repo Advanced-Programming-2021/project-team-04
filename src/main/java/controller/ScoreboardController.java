@@ -3,6 +3,8 @@ package controller;
 import model.Account;
 import view.IO;
 
+import java.util.ArrayList;
+
 public class ScoreboardController {
 
 private static ScoreboardController singleInstance = null;
@@ -12,9 +14,10 @@ private static ScoreboardController singleInstance = null;
             singleInstance = new ScoreboardController();
         return singleInstance;
     }
-    public void run() {
+
+    public ArrayList<String> getSortedUsers() {
         sortedAccounts();
-        StringBuilder sorted = new StringBuilder();
+        ArrayList<String> sortedUsers = new ArrayList<>();
         int count = 0;
         int countForEquals = 0;
         int previousScore = -1;
@@ -22,14 +25,14 @@ private static ScoreboardController singleInstance = null;
             count++;
             if (previousScore != account.getScore()) {
                 countForEquals = count;
-                sorted.append(count).append("- ").append(account.getNickname()).append(": ").append(account.getScore()).append("\n");
+                sortedUsers.add(count + ". " + account.getNickname() + " ) " + account.getScore());
             }
-            else{
-                sorted.append(countForEquals).append("- ").append(account.getNickname()).append(": ").append(account.getScore()).append("\n");
+            else {
+                sortedUsers.add(countForEquals + ". " + account.getNickname() + " ) " + account.getScore());
             }
             previousScore = account.getScore();
         }
-        IO.getInstance().printString(sorted.toString());
+        return sortedUsers;
     }
 
     private void sortedAccounts() {

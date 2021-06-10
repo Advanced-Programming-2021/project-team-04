@@ -2,10 +2,13 @@ package view;
 
 import controller.LoginController;
 import javafx.application.Application;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Popup;
@@ -16,6 +19,7 @@ import java.io.IOException;
 public class LoginView extends Application {
     public static Stage stage;
     public static Scene loginScene;
+    public static Scene signUpScene;
     public static MediaPlayer IntroMusic;
 
     public static void run(String[] args) {
@@ -26,16 +30,26 @@ public class LoginView extends Application {
     public void start(Stage stage) throws Exception {
         playIntroMusic();
         LoginView.stage = stage;
-        changeScene("SignupView.fxml", "Sign Up");
+        setSignupScene();
         stage.show();
     }
 
-    private static void changeScene(String fileName, String title) throws Exception{
-        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource(fileName));
-        Scene scene = new Scene(fxmlLoader.load());
-        LoginView.loginScene = scene;
-        stage.setScene(scene);
-        stage.setTitle(title);
+    private static void setLoginScene() throws Exception{
+        if (loginScene == null) {
+            FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("LoginView.fxml"));
+            LoginView.loginScene = new Scene(fxmlLoader.load());
+        }
+        stage.setScene(loginScene);
+        stage.setTitle("Log In");
+    }
+
+    private static void setSignupScene() throws Exception{
+        if (signUpScene == null) {
+            FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("SignupView.fxml"));
+            LoginView.signUpScene = new Scene(fxmlLoader.load());
+        }
+        stage.setScene(signUpScene);
+        stage.setTitle("Sign Up");
     }
 
     public void createUser() {
@@ -46,11 +60,11 @@ public class LoginView extends Application {
     }
 
     public void loginScene() throws Exception{
-        changeScene("LoginView.fxml", "Login");
+       setLoginScene();
     }
 
     public void signupScene() throws Exception{
-        changeScene("SignupView.fxml", "Sign Up");
+        setSignupScene();
     }
 
     public void login() throws IOException {
@@ -72,4 +86,14 @@ public class LoginView extends Application {
         IntroMusic.play();
     }
 
+    public void muteLogin() {
+        if (((ToggleButton) loginScene.lookup("#mute")).isSelected()) IntroMusic.stop();
+        else IntroMusic.play();
+    }
+
+    public void muteSignup() {
+        System.out.println("heh");
+        if (((ToggleButton) signUpScene.lookup("#mute")).isSelected()) IntroMusic.stop();
+        else IntroMusic.play();
+    }
 }
