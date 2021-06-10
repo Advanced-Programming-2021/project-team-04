@@ -1,5 +1,15 @@
 package view;
 
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Popup;
+
+
 import java.util.Scanner;
 
 public class IO {
@@ -7,8 +17,17 @@ public class IO {
     private static IO singleInstance = null;
 
     private Scanner scanner = new Scanner(System.in);
+    private final Popup popup = new Popup();
+    private final Label label = new Label();
 
-    private IO() { }
+    private IO() {
+        Button cancelButton = new Button();
+        cancelButton.setText("cancel");
+        addFunctionButton(cancelButton, popup);
+        HBox hBox = new HBox();
+        GridPane gridPane = new GridPane();
+        configureErrors(popup, gridPane, label, hBox, cancelButton);
+    }
 
     public static IO getInstance() {
         if (singleInstance == null)
@@ -297,34 +316,40 @@ public class IO {
     }
 
     public void enterANewPassword() {
-        System.out.println("please enter a new password");
+        label.setText("please enter a new password");
+        popup.show(LoginView.stage);
     }
 
     public void invalidCurrentPassword() {
-        System.out.println("current password is invalid");
+        label.setText("current password is invalid");
+        popup.show(LoginView.stage);
     }
 
     public void passwordChanged() {
-        System.out.println("password changed successfully!");
+        label.setText("password changed successfully!");
+        popup.show(LoginView.stage);
     }
 
     public void nicknameChanged() {
-        System.out.println("nickname changed successfully!");
+        label.setText("nickname changed successfully!");
+        popup.show(LoginView.stage);
     }
 
     public void cheatIncreaseScore() {
-        System.out.println("The space pirate crew of the Aurora\n" +
-                "Known as the Mechanisms\n" +
-                "Had been watching all this time, fascinated\n" +
-                "For when you're immortal\n" +
-                "A good war is a very pleasant distraction, indeed");
+        System.out.println("""
+                The space pirate crew of the Aurora
+                Known as the Mechanisms
+                Had been watching all this time, fascinated
+                For when you're immortal
+                A good war is a very pleasant distraction, indeed""");
     }
 
     public void cheatIncreaseMoney() {
-        System.out.println("Deep within the depth of the station\n" +
-                "You’d find the key that brings your salvation\n" +
-                "Ornate and hidden past pain and privation\n" +
-                "It’s clutched in the Captain’s cold hands");
+        System.out.println("""
+                Deep within the depth of the station
+                You’d find the key that brings your salvation
+                Ornate and hidden past pain and privation
+                It’s clutched in the Captain’s cold hands""");
     }
 
     public void invalidDeck(String username) {
@@ -340,26 +365,32 @@ public class IO {
     }
 
     public void playerDoesntExist() {
-        System.out.println("there is no player with this username");
+        label.setText("there is no player with this username");
+        popup.show(LoginView.stage);
     }
 
     public void passwordDoesntMatch() {
-        System.out.println("Username and password didn’t match!");
+        label.setText("Username and password didn’t match!");
+        popup.show(LoginView.stage);
     }
 
     public void userWithNicknameExists(String nickname) {
-        System.out.println("user with nickname " + nickname + " already exists");
+        label.setText("user with nickname " + nickname + " already exists");
+        popup.show(LoginView.stage);
     }
 
     public void userWithUsernameExists(String username) {
-        System.out.println("user with username " + username + " already exists");
+        label.setText("user with username " + username + " already exists");
+        popup.show(LoginView.stage);
     }
 
     public void userCreated() {
-        System.out.println("user created successfully!");
+        label.setText("user created successfully!");
+        popup.show(LoginView.stage);
     }
     public void loggedIn() {
-        System.out.println("user logged in successfully!");
+        label.setText("user logged in successfully!");
+        popup.show(LoginView.stage);
     }
 
     public void noCardSelected() {
@@ -494,4 +525,24 @@ public class IO {
         System.out.println("not enough money");
     }
 
+    private void addFunctionButton(Button cancelButton, Popup popup) {
+        cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                popup.hide();
+            }
+        });
+    }
+
+    private void configureErrors(Popup popup, GridPane gridPane, Label label, HBox hBox, Button button) {
+        popup.getContent().add(gridPane);
+        gridPane.add(hBox, 0, 0);
+        hBox.setSpacing(10);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.getChildren().add(label);
+        hBox.getChildren().add(button);
+        gridPane.setStyle("-fx-background-color: #6a006e; -fx-padding: 20px;");
+        label.setStyle("-fx-text-fill: #ffffff; -fx-padding: 10px; -fx-font-size: 14px; -fx-font-weight: bold;");
+        button.setStyle("-fx-background-color: #ff00f2; -fx-opacity: 50;");
+    }
 }

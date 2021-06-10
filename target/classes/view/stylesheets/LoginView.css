@@ -1,22 +1,22 @@
 .root {
     -fx-background-color: transparent;
-    -fx-background-image: url("background.gif");
+    -fx-background-image: url("background.jpg");
     -fx-background-repeat: stretch;
-    -fx-background-size: 480 528;
+    -fx-background-size: 1600 1222;
     -fx-background-position: center center;
 }
 
 #greetings {
-    -fx-font-size: 37;
+    -fx-font-size: 70;
     -fx-font-family: "Edwardian Script ITC";
     -fx-font-weight: bold;
-    -fx-effect: dropshadow( one-pass-box , #d80368, 0, 0.5, 5, 5);
+    -fx-effect: dropshadow( one-pass-box , #ff02d5, 0, 0.5, 5, 5);
 }
 
 .label {
-    -fx-font-size: 22;
+    -fx-font-size: 36;
     -fx-font-family: "Kunstler Script";
-    -fx-effect: dropshadow( one-pass-box , #d80368, 0, 0.5, 5, 5);
+    -fx-effect: dropshadow( one-pass-box , #ff02d5, 0, 0.5, 5, 5);
 }
 
 .text-field {
@@ -27,13 +27,13 @@
 .button {
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 20;
-    -fx-pref-width: 100;
-    -fx-background-color: #d80368;
-    -fx-font-size: 22;
+    -fx-pref-width: 150;
+    -fx-background-color: #ff02d5;
+    -fx-font-size: 36;
     -fx-translate-y: +20;
 }
 
 .button:hover {
-    -fx-border-color: #d80368;
-    -fx-background-color: #a187e2;
+    -fx-border-color: #ff02d5;
+    -fx-background-color: #7b49ff;
 }

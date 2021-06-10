@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -11,7 +8,7 @@
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="view.LoginView"
-          prefHeight="528" prefWidth="480" alignment="CENTER" hgap="10" vgap="10" styleClass="root">
+          prefHeight="1222" prefWidth="1600" alignment="CENTER" hgap="10" vgap="10" styleClass="root">
 
     <padding>
         <Insets top="25" right="25" bottom="25" left="25"/>
@@ -35,8 +32,8 @@
 
     <HBox spacing="10" alignment="CENTER"
           GridPane.rowIndex="5" GridPane.columnSpan="2">
-        <Button text="LogIn" fx:id="login" onMouseClicked="#login"/>
-        <Button text="Signup" fx:id="signup" onMouseClicked="#signupScene"/>
+        <Button text="Log In" fx:id="login" onMouseClicked="#login"/>
+        <Button text="Sign Up" fx:id="signup" onMouseClicked="#signupScene"/>
     </HBox>
 
     <stylesheets>

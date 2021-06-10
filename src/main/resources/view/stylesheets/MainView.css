@@ -1,0 +1,33 @@
+.root {
+    -fx-background-color: transparent;
+    -fx-background-image: url("mainbackground.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 1600 1112;
+    -fx-background-position: center center;
+}
+
+#heading {
+    -fx-font-size: 70;
+    -fx-font-family: "Edwardian Script ITC";
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( one-pass-box , #0023ff, 0, 0.5, 5, 5);
+}
+
+.text-field {
+    -fx-pref-height: 30;
+    -fx-translate-y: +10;
+}
+
+.button {
+    -fx-font-family: "Kunstler Script";
+    -fx-pref-height: 20;
+    -fx-pref-width: 250;
+    -fx-background-color: #ffffff;
+    -fx-font-size: 37;
+    -fx-translate-y: +20;
+}
+
+.button:hover {
+    -fx-border-color: #ffffff;
+    -fx-background-color: #0023ff;
+}
