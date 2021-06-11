@@ -63,6 +63,10 @@ public class Card {
         return specialCardNameToClassNameMap.get(cardName);
     }
 
+    public static ArrayList<Card> getAllCards() {
+        return allCards;
+    }
+
     public void reset() { }
 
 }

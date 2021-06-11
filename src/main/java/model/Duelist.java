@@ -31,12 +31,6 @@ public abstract class Duelist {
     protected boolean isAbleToDraw = true; //TODO should reset this
     protected boolean isAbleToAttack = true;
 
-//    public Duelist() {
-//        allCardsHashMap.keySet().forEach(n -> {
-//            for (var i = 0; i < allCardsHashMap.get(n); i++)
-//                allCardsArrayList.add(Objects.requireNonNull(ImportAndExport.getInstance().readCard(n)));
-//        });
-//    }
 
     public void checkMaxLPofThreeRounds() {
         if (maxLPofThreeRounds < LP) maxLPofThreeRounds = LP;

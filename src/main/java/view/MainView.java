@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -21,7 +22,7 @@ public class MainView {
     @FXML
     public void enterShopMenu() {
         LoginView.stage.setScene(LoginView.shopScene);
-        ShopView.getInstance().run();
+        ShopView.run();
     }
 
     @FXML
@@ -64,7 +65,7 @@ public class MainView {
         MainController.getInstance().setLoggedIn(null);
         try {
             mainMusic.stop();
-            LoginView.IntroMusic.play();
+//            LoginView.IntroMusic.play(); //TODO uncomment
             LoginView.stage.setScene(LoginView.loginScene);
         } catch (Exception e) {
             e.printStackTrace();
@@ -94,7 +95,7 @@ public class MainView {
         Media main = new Media(MainView.class.getResource("OurBoyJack.mp3").toExternalForm());
         mainMusic = new MediaPlayer(main);
         mainMusic.setCycleCount(MediaPlayer.INDEFINITE);
-        mainMusic.play();
+//        mainMusic.play(); //TODO uncomment
     }
 
     public void mute() {

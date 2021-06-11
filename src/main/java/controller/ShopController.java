@@ -67,7 +67,7 @@ public class ShopController {
     }
 
     public void buyCard(String cardName) {
-        if (isCardNameValid(cardName) && hasEnoughMoney(cardName)) {
+        if (isCardNameValid(cardName) && hasEnoughMoney(cardName)) { //TODO we probably dont need to check these anymore
             MainController.getInstance().getLoggedIn().addCard(cardName);
             MainController.getInstance().getLoggedIn().setMoney(MainController.getInstance().getLoggedIn().getMoney() - Card.getCardByName(cardName).getPrice());
         }

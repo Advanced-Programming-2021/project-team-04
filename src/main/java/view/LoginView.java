@@ -49,10 +49,10 @@ public class LoginView extends Application {
         signUpScene = sceneCreator("SignupView.fxml");
         scoreboardScene = sceneCreator("ScoreboardView.fxml");
         mainScene = sceneCreator("MainView.fxml");
+        shopScene = sceneCreator("ShopView.fxml");
 //        deckScene = sceneCreator("DeckView.fxml");
 //        duelScene = sceneCreator("DuelView.fxml");
 //        importAndExportScene = sceneCreator("ImportAndExportView.fxml");
-//        shopScene = sceneCreator("ShopView.fxml");
 //        creatorScene = sceneCreator("CreatorView.fxml");
 //        profileScene = sceneCreator("ProfileView.fxml");
     }
@@ -96,7 +96,7 @@ public class LoginView extends Application {
         Media main = new Media(LoginView.class.getResource("TheAuroraStrikes.mp3").toExternalForm());
         IntroMusic = new MediaPlayer(main);
         IntroMusic.setCycleCount(MediaPlayer.INDEFINITE);
-        IntroMusic.play();
+//        IntroMusic.play(); //TODO uncomment
     }
 
     public void muteLogin() {

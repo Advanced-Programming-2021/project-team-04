@@ -1,60 +1,94 @@
 package view;
 
+import controller.MainController;
 import controller.ShopController;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import model.cards.Card;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ShopView extends ViewMenu {
+public class ShopView {
+    private static Card firstCard;
+    private static Card secondCard;
+    private static int navigate;
+    private static ArrayList<Card> allCards = Card.getAllCards();
 
-    private static ShopView singleInstance = null;
-
-    private final Pattern buyCardPattern = Pattern.compile("(?:shop )?b(?:uy)? (?<name>[^-]+)");
-
-    private ShopView() {}
-
-    public static ShopView getInstance() {
-        if (singleInstance == null)
-            singleInstance = new ShopView();
-        return singleInstance;
+    public static void run() {
+        showCards();
+        LoginView.shopScene.lookup("#back").setDisable(true);
     }
 
-    @Override
-    public void run() {
-        String command;
-        while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
-                !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
-            Matcher buyCardMatcher = buyCardPattern.matcher(command);
-            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
-                showCurrentMenu();
-            else if (command.matches("(?:menu )?enter \\S+"))
-                IO.getInstance().printMenuNavigationImpossible();
-            else if (command.matches("(?:shop )?s(?:how)? -(?:-all|a)"))
-                showAllCards();
-            else if (buyCardMatcher.matches())
-                buyCard(buyCardMatcher);
-            else if (command.startsWith("card show"))
-                showCard(command);
-            else IO.getInstance().printInvalidCommand();
-        }
+    private static void showCards() {
+        firstCard = allCards.get(navigate * 2);
+        secondCard = allCards.get(navigate * 2 + 1);
+        setImages();
+        checkAmount();
+        checkMoney();
     }
 
-    @Override
-    public void showCurrentMenu() {
-        IO.getInstance().printShopMenuName();
+    private static void setImages() {
+        ImageView first = (ImageView) LoginView.shopScene.lookup("#first");
+        ImageView second = (ImageView) LoginView.shopScene.lookup("#second");
+        Image firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+        Image secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+        first.setImage(firstImage);
+        second.setImage(secondImage);
     }
 
-    private void showAllCards() {
-        ShopController.getInstance().showAllCards();
+    private static void checkAmount() {
+        LinkedHashMap<String, Short> userCards = MainController.getInstance().getLoggedIn().getAllCardsHashMap();
+        if (userCards.containsKey(firstCard.getName())) {
+            int firstAmount = userCards.get(firstCard.getName());
+            ((Label) LoginView.shopScene.lookup("#firstAmount")).setText(firstAmount + "");
+        } else ((Label) LoginView.shopScene.lookup("#firstAmount")).setText("0");
+        if (userCards.containsKey(secondCard.getName())) {
+            int secondAmount = userCards.get(secondCard.getName());
+            ((Label) LoginView.shopScene.lookup("#secondAmount")).setText(secondAmount + "");
+        } else ((Label) LoginView.shopScene.lookup("#secondAmount")).setText("0");
     }
 
-    private void showCard(String input) {
-        String cardName = input.substring(10);
-        if (!ShopController.getInstance().showCard(cardName)) IO.getInstance().printInvalidCommand();
+    private static void checkMoney() {
+        int userMoney = MainController.getInstance().getLoggedIn().getMoney();
+        LoginView.shopScene.lookup("#firstBuy").setDisable(userMoney < firstCard.getPrice());
+        LoginView.shopScene.lookup("#secondBuy").setDisable(userMoney < secondCard.getPrice());
     }
 
-    private void buyCard(Matcher matcher) {
-        ShopController.getInstance().buyCard(matcher.group("name"));
+    public void buyFirstCard() {
+        buyCard(firstCard.getName());
     }
 
+    public void buySecondCard() {
+        buyCard(secondCard.getName());
+    }
+
+    private void buyCard(String cardName) {
+        ShopController.getInstance().buyCard(cardName);
+        checkMoney();
+        checkAmount();
+    }
+
+    public void back() {
+        if (navigate == 37) LoginView.shopScene.lookup("#next").setDisable(false);
+        if (navigate == 1) LoginView.shopScene.lookup("#back").setDisable(true);
+        navigate--;
+        showCards();
+    }
+
+    public void next() {
+        if (navigate == 0) LoginView.shopScene.lookup("#back").setDisable(false);
+        if (navigate == 36) LoginView.shopScene.lookup("#next").setDisable(true);
+        navigate++;
+        showCards();
+    }
+
+    public void mainMenu() {
+        LoginView.stage.setScene(LoginView.mainScene);
+    }
 }

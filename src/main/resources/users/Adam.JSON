@@ -1,7 +1,7 @@
 {
   "password": "sk8",
   "score": 0,
-  "money": 42900,
+  "money": 500,
   "allPlayerDecks": [
     {
       "mainDeckCards": {
@@ -13,6 +13,13 @@
       "deckName": "Langa"
     }
   ],
+  "allCardsHashMap": {
+    "Suijin": 2,
+    "The Calculator": 1,
+    "Man-Eater Bug": 1,
+    "Bitron": 2,
+    "Swords of Revealing Light": 1
+  },
   "activePlayerDeck": "Langa",
   "username": "Adam",
   "nickname": "murderer"
