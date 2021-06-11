@@ -17,7 +17,6 @@
     Then we will fight, we will fight, fight for our boy Jack&#10;
     When the giants, they come a-rolling&#10;If he can slay them, so can we"
            textAlignment="CENTER" GridPane.rowIndex="0" GridPane.columnSpan="2" fx:id="heading"/>
-    <ToggleButton fx:id="mute" onMouseClicked="#mute"/>
     <HBox spacing="10" alignment="CENTER"
           GridPane.rowIndex="1" GridPane.columnSpan="2">
         <Button text="Shop Menu" alignment="CENTER"
@@ -42,8 +41,9 @@
 
     <HBox spacing="10" alignment="CENTER"
           GridPane.rowIndex="4" GridPane.columnSpan="2">
-    <Button text="Log Out" alignment="CENTER"
+    <Button text="Log Out" alignment="CENTER_LEFT"
             onMouseClicked="#logout"/>
+    <ToggleButton fx:id="mute" onMouseClicked="#mute" alignment="CENTER_RIGHT"/>
     </HBox>
 
     <stylesheets>

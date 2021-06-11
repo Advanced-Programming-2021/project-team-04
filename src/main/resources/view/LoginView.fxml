@@ -13,8 +13,10 @@
     <padding>
         <Insets top="25" right="25" bottom="25" left="25"/>
     </padding>
-
+    <HBox spacing="10" alignment="CENTER"
+          GridPane.rowIndex="8" GridPane.columnSpan="2">
     <ToggleButton fx:id="mute" onMouseClicked="#muteLogin"/>
+    </HBox>
 
     <Label text="YU GI OH!&#10;For when you're immortal&#10;A good war is a very pleasant distraction, indeed"
            textAlignment="CENTER" GridPane.rowIndex="0" GridPane.columnSpan="2" fx:id="greetings"/>

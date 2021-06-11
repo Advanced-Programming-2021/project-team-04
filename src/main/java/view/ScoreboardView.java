@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class ScoreboardView{
 
     public static void run() {
-        VBox vBox = (VBox)  MainView.scoreboardScene.lookup("#scoreboard");
+        VBox vBox = (VBox)  LoginView.scoreboardScene.lookup("#scoreboard");
         ArrayList<String> sortedUsers = ScoreboardController.getInstance().getSortedUsers();
         int min = Math.min(sortedUsers.size(), 20);
         for (int i = 0; i < min; i++) {
@@ -25,4 +25,9 @@ public class ScoreboardView{
             vBox.getChildren().add(label);
         }
     }
+
+    public void backButton() {
+        LoginView.stage.setScene(LoginView.mainScene);
+    }
+
 }

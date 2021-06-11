@@ -8,62 +8,60 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import lombok.extern.java.Log;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MainView {
 
-    public static Scene mainScene;
     private static MediaPlayer mainMusic;
-    public static Scene scoreboardScene;
 
 
     @FXML
     public void enterShopMenu() {
+        LoginView.stage.setScene(LoginView.shopScene);
         ShopView.getInstance().run();
-        //TODO change scene
     }
 
     @FXML
     public void enterProfileMenu() {
+        LoginView.stage.setScene(LoginView.profileScene);
         ProfileView.getInstance().run();
-        //TODO change scene
     }
 
     @FXML
-    public void enterScoreboard() throws Exception{
-        FXMLLoader fxmlLoader = new FXMLLoader(MainView.class.getResource("ScoreboardView.fxml"));
-        scoreboardScene = new Scene(fxmlLoader.load());
-        LoginView.stage.setScene(scoreboardScene);
+    public void enterScoreboard() {
+        LoginView.stage.setScene(LoginView.scoreboardScene);
         ScoreboardView.run();
     }
 
     @FXML
     public void enterDeckMenu() {
+        LoginView.stage.setScene(LoginView.deckScene);
         DeckView.getInstance().run();
-        //TODO change scene
     }
 
     @FXML
     public void playWithAI() {
+        LoginView.stage.setScene(LoginView.duelScene);
         mainMusic.stop();
         DuelView.getInstance().runForRPSAgainstAI();
         DuelView.getInstance().run();
-        //TODO change scene and rps and rounds
+        //TODO change rps and rounds
     }
 
     @FXML
     public void playWithRival() {
+        LoginView.stage.setScene(LoginView.duelScene);
         mainMusic.stop();
         DuelView.getInstance().runForRPS();
         DuelView.getInstance().run();
-        //TODO change scene and rps and rounds
+        //TODO change rps and rounds
     }
     @FXML
     public void logout() {
         MainController.getInstance().setLoggedIn(null);
-        IO.getInstance().printUserLoggedOut();
         try {
             mainMusic.stop();
             LoginView.IntroMusic.play();
@@ -100,7 +98,7 @@ public class MainView {
     }
 
     public void mute() {
-        if (((ToggleButton) mainScene.lookup("#mute")).isSelected()) mainMusic.pause();
+        if (((ToggleButton) LoginView.mainScene.lookup("#mute")).isSelected()) mainMusic.pause();
         else mainMusic.play();
     }
 }

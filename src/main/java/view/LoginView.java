@@ -20,6 +20,14 @@ public class LoginView extends Application {
     public static Stage stage;
     public static Scene loginScene;
     public static Scene signUpScene;
+    public static Scene mainScene;
+    public static Scene scoreboardScene;
+    public static Scene deckScene;
+    public static Scene duelScene;
+    public static Scene shopScene;
+    public static Scene importAndExportScene;
+    public static Scene profileScene;
+    public static Scene creatorScene;
     public static MediaPlayer IntroMusic;
 
     public static void run(String[] args) {
@@ -27,29 +35,36 @@ public class LoginView extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
+        createAllScenes();
         playIntroMusic();
         LoginView.stage = stage;
-        setSignupScene();
+        stage.setTitle("YO GI OH");
+        stage.setScene(signUpScene);
         stage.show();
     }
 
-    private static void setLoginScene() throws Exception{
-        if (loginScene == null) {
-            FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("LoginView.fxml"));
-            LoginView.loginScene = new Scene(fxmlLoader.load());
-        }
-        stage.setScene(loginScene);
-        stage.setTitle("Log In");
+    private static void createAllScenes() {
+        loginScene = sceneCreator("LoginView.fxml");
+        signUpScene = sceneCreator("SignupView.fxml");
+        scoreboardScene = sceneCreator("ScoreboardView.fxml");
+        mainScene = sceneCreator("MainView.fxml");
+//        deckScene = sceneCreator("DeckView.fxml");
+//        duelScene = sceneCreator("DuelView.fxml");
+//        importAndExportScene = sceneCreator("ImportAndExportView.fxml");
+//        shopScene = sceneCreator("ShopView.fxml");
+//        creatorScene = sceneCreator("CreatorView.fxml");
+//        profileScene = sceneCreator("ProfileView.fxml");
     }
 
-    private static void setSignupScene() throws Exception{
-        if (signUpScene == null) {
-            FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("SignupView.fxml"));
-            LoginView.signUpScene = new Scene(fxmlLoader.load());
+    private static Scene sceneCreator(String resource) {
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource(resource));
+        try {
+            return new Scene(fxmlLoader.load());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        stage.setScene(signUpScene);
-        stage.setTitle("Sign Up");
+        return null;
     }
 
     public void createUser() {
@@ -59,23 +74,21 @@ public class LoginView extends Application {
         LoginController.getInstance().createUser(username, password, nickname);
     }
 
-    public void loginScene() throws Exception{
-       setLoginScene();
+    public void loginScene() {
+       stage.setScene(loginScene);
     }
 
-    public void signupScene() throws Exception{
-        setSignupScene();
+    public void signupScene() {
+        stage.setScene(signUpScene);
     }
 
-    public void login() throws IOException {
+    public void login() {
         String username = ((TextField) loginScene.lookup("#username")).getText();
         String password = ((PasswordField) loginScene.lookup("#password")).getText();
         if (LoginController.getInstance().loginUser(username, password)){
             IntroMusic.stop();
             MainView.playMainMusic();
-            FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("MainView.fxml"));
-            MainView.mainScene = new Scene(fxmlLoader.load());
-            stage.setScene(MainView.mainScene);
+            stage.setScene(mainScene);
         }
     }
 
