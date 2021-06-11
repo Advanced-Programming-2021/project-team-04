@@ -1,0 +1,14 @@
+.root {
+    -fx-background-color: transparent;
+    -fx-background-image: url("scoreboard.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 613.2 834.4;
+    -fx-background-position: center center;
+}
+
+.label {
+    -fx-font-size: 27;
+    -fx-font-family: "Script MT Bold";
+    -fx-translate-x: -145;
+    -fx-translate-y: -200;
+}

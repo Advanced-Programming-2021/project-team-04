@@ -1,40 +1,28 @@
 package view;
 
+import controller.LoginController;
+import controller.MainController;
 import controller.ScoreboardController;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
-public class ScoreboardView extends ViewMenu {
-    private static ScoreboardView singleInstance = null;
+import java.util.ArrayList;
 
-    private ScoreboardView() { }
+public class ScoreboardView{
 
-    public static ScoreboardView getInstance() {
-        if (singleInstance == null)
-            singleInstance = new ScoreboardView();
-        return singleInstance;
-    }
-
-    @Override
-    public void run() {
-        String command;
-        while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
-                !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
-            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
-                showCurrentMenu();
-            else if (command.matches("(?:scoreboard )?show"))
-                showScoreboard();
-            else if (command.matches("(?:menu )?enter \\S+"))
-                IO.getInstance().printMenuNavigationImpossible();
-            else IO.getInstance().printInvalidCommand();
+    public static void run() {
+        VBox vBox = (VBox)  MainView.scoreboardScene.lookup("#scoreboard");
+        ArrayList<String> sortedUsers = ScoreboardController.getInstance().getSortedUsers();
+        int min = Math.min(sortedUsers.size(), 20);
+        for (int i = 0; i < min; i++) {
+            String thisLine = sortedUsers.get(i);
+            Label label = new Label(thisLine);
+            if (thisLine.contains(MainController.getInstance().getLoggedIn().getNickname()))
+                label.setStyle("-fx-text-fill: #FF00C8");
+            else
+                label.setStyle("-fx-text-fill: #00F2FF");
+            vBox.getChildren().add(label);
         }
     }
-
-    @Override
-    public void showCurrentMenu() {
-        IO.getInstance().printScoreboardMenuName();
-    }
-
-    private void showScoreboard() {
-        ScoreboardController.getInstance().run();
-    }
-
 }
