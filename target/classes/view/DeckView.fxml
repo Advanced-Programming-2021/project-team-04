@@ -6,9 +6,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.DeckView"
-            prefHeight="400.0" prefWidth="600.0">
+<?import java.net.URL?>
+<?import javafx.scene.image.ImageView?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="view.DeckView"
+          prefHeight="763" prefWidth="1246" alignment="CENTER" hgap="10" vgap="10" styleClass="root">
 
-</AnchorPane>
+    <HBox GridPane.rowIndex="0" GridPane.columnSpan="4"/>
+
+    <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back"/>
+
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" spacing="10" alignment="CENTER">
+        <Label alignment="CENTER" fx:id="deckName"/>
+        <HBox spacing="10" alignment="CENTER">
+            <Button text="edit" styleClass="action" fx:id="edit" />
+            <Button text="delete" styleClass="action" fx:id="delete" />
+            <Button text="activate" styleClass="action" fx:id="activate" />
+        </HBox>
+        <VBox>
+            <TextField fx:id="textField" styleClass="text-field" />
+            <Button text="create deck" styleClass="action" fx:id="create" alignment="CENTER"/>
+        </VBox>
+    </VBox>
+    <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="2" fx:id="next"/>
+    <Button text="Main Menu" fx:id="mainMenu" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
+
+    <stylesheets>
+        <URL value="@stylesheets/DeckView.css"/>
+    </stylesheets>
+</GridPane>

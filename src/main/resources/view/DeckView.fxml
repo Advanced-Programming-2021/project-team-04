@@ -33,6 +33,6 @@
     <Button text="Main Menu" fx:id="mainMenu" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
 
     <stylesheets>
-        <URL value="@stylesheets/ShopView.css"/>
+        <URL value="@stylesheets/DeckView.css"/>
     </stylesheets>
 </GridPane>
