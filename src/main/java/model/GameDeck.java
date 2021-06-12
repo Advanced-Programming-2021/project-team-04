@@ -14,11 +14,11 @@ import java.util.Collections;
 @Setter
 public class GameDeck {
 
-    @Expose()
+    @Expose
     private ArrayList<Card> mainDeck = new ArrayList<>();
-    @Expose()
+    @Expose
     private ArrayList<Card> sideDeck = new ArrayList<>();
-    @Expose()
+    @Expose
     private String deckName;
 
     public GameDeck(PlayerDeck playerDeck) {

@@ -19,15 +19,15 @@ public class Card {
     protected static TreeMap<String, String> nameToDescriptionMap;
     protected static HashMap<String, String> specialCardNameToClassNameMap;
 
-    @Expose()
+    @Expose
     protected String name;
-    @Expose()
+    @Expose
     protected int price;
-    @Expose()
+    @Expose
     protected String description;
     protected int allowedNumber = 3;
     protected Duelist Owner;
-    @Expose()
+    @Expose
     protected String ownerUsername;
     protected boolean hasBeenUsedInThisTurn = false;
     protected boolean hasBeenSetOrSummoned = false;

@@ -10,19 +10,19 @@ import model.cards.Card;
 @Setter
 public class MonsterCard extends Card {
 
-    @Expose()
+    @Expose
     protected int classAttackPower;
-    @Expose()
+    @Expose
     protected int classDefensePower;
     protected int thisCardAttackPower;
     protected int thisCardDefensePower;
-    @Expose()
+    @Expose
     protected int level;
-    @Expose()
+    @Expose
     protected String monsterType;
-    @Expose()
+    @Expose
     protected String cardType;
-    @Expose()
+    @Expose
     protected String attribute;
     protected MonsterCardModeInField monsterCardModeInField;
     protected boolean isAbleToBeRemoved = true;

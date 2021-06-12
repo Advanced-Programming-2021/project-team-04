@@ -28,11 +28,11 @@ public class Account extends Duelist {
         allUsernames = new ArrayList<>();
     }
 
-    @Expose()
+    @Expose
     private String password;
-    @Expose()
+    @Expose
     private int score;
-    @Expose()
+    @Expose
     private int money = 100000;
 
     public Account(String username, String password, String nickname) {

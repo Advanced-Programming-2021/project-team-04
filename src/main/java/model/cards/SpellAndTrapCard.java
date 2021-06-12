@@ -12,11 +12,11 @@ public class SpellAndTrapCard extends Card {
 
     protected static ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
     protected boolean isActive = false;
-    @Expose()
+    @Expose
     protected boolean isSpell;
-    @Expose()
+    @Expose
     protected String property;
-    @Expose()
+    @Expose
     protected boolean isLimited;
 
     public SpellAndTrapCard() {
@@ -47,5 +47,4 @@ public class SpellAndTrapCard extends Card {
         }
         else return 2;
     }
-
 }
