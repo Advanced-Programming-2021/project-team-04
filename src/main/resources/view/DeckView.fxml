@@ -11,26 +11,24 @@
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="view.DeckView"
-          prefHeight="763" prefWidth="1246" alignment="CENTER" hgap="10" vgap="10" styleClass="root">
+          prefHeight="897" prefWidth="844" alignment="CENTER" hgap="10" vgap="10" styleClass="root">
 
-    <HBox GridPane.rowIndex="0" GridPane.columnSpan="4"/>
+    <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back" onMouseClicked="#back"/>
 
-    <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back"/>
-
-    <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" spacing="10" alignment="CENTER">
+    <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" spacing="10" alignment="CENTER">
         <Label alignment="CENTER" fx:id="deckName"/>
         <HBox spacing="10" alignment="CENTER">
-            <Button text="edit" styleClass="action" fx:id="edit" />
-            <Button text="delete" styleClass="action" fx:id="delete" />
-            <Button text="activate" styleClass="action" fx:id="activate" />
+            <Button text="Edit" styleClass="action" fx:id="edit" onMouseClicked="#delete" />
+            <Button text="Delete" styleClass="action" fx:id="delete" onMouseClicked="#delete"/>
+            <Button text="Activate" styleClass="action" fx:id="activate" onMouseClicked="#activate"/>
         </HBox>
-        <VBox>
+        <VBox alignment="CENTER">
             <TextField fx:id="textField" styleClass="text-field" />
-            <Button text="create deck" styleClass="action" fx:id="create" alignment="CENTER"/>
+            <Button text="Create Deck" styleClass="create" fx:id="create" onMouseClicked="#create"/>
         </VBox>
     </VBox>
-    <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="2" fx:id="next"/>
-    <Button text="Main Menu" fx:id="mainMenu" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
+    <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="2" fx:id="next" onMouseClicked="#next"/>
+    <Button text="Main Menu" fx:id="mainMenu" GridPane.columnIndex="1" GridPane.rowIndex="2" onMouseClicked="#mainMenu"/>
 
     <stylesheets>
         <URL value="@stylesheets/DeckView.css"/>

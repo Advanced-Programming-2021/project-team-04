@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class DeckView {
 
-    public static Label deckName;
+    public static Label deckName = new Label();
     private static final ArrayList<PlayerDeck> allDecks = MainController.getInstance().getLoggedIn().getAllPlayerDecks();
     private static int count;
     public static TextField textField;
@@ -31,49 +31,57 @@ public class DeckView {
         else deckName.setStyle("-fx-text-fill: #ffffff");
     }
 
-    public static void next() {
+    public void next() {
         if (count == 0) LoginView.deckScene.lookup("#back").setDisable(false);
         if (count == allDecks.size() - 1) LoginView.deckScene.lookup("#next").setDisable(true);
         count++;
         showDetails();
     }
 
-    public static void back() {
+    public void mainMenu() {
+        LoginView.stage.setScene(LoginView.mainScene);
+    }
+
+    public void back() {
         if (count == 0) LoginView.deckScene.lookup("#back").setDisable(false);
         if (count == allDecks.size() - 1) LoginView.deckScene.lookup("#next").setDisable(true);
         count--;
         showDetails();
     }
 
-    public static void edit() {
+    public void edit() {
         //TODO create fxml for new scene
     }
 
-    public static void delete() {
+    public void delete() {
         DeckController.getInstance().deleteDeck(allDecks.get(count).getDeckName());
         count++;
         showDetails();
     }
 
-    public static void activate() {
+    public void activate() {
         DeckController.getInstance().activateDeck(allDecks.get(count).getDeckName());
         showDetails();
     }
 
-    public static void create() {
+    public void create() {
         String deckName = textField.getText();
         DeckController.getInstance().createDeck(deckName);
     }
 
-    public static void details() {
+    public void details() {
         //TODO show deck scene
     }
 
-    public static void addCard() {
+    public void addCard() {
 
     }
 
-    public static void removeCard() {
+    public void removeCard() {
+
+    }
+
+    private void deckScene() {
 
     }
 

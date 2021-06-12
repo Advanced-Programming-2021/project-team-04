@@ -2,12 +2,13 @@
     -fx-background-color: transparent;
     -fx-background-image: url("deckbackground.png");
     -fx-background-repeat: stretch;
-    -fx-background-size: 1246 763;
+    -fx-background-size: 844 897;
     -fx-background-position: center center;
 }
 
 .navi {
     -fx-translate-x: -100;
+    -fx-translate-y: -300;
     -fx-background-color: #000000;
     -fx-font-size: 50;
     -fx-text-fill: #ffffff;
@@ -20,30 +21,40 @@
 }
 
 #mainMenu {
-    -fx-translate-y: 80;
-    -fx-translate-x: 37;
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
-    -fx-background-color: #ffffff;
-    -fx-font-size: 25.4;
+    -fx-background-color: #0023ff;
+    -fx-font-size: 30;
+    -fx-translate-x: 85;
+    -fx-translate-y: -200;
 }
 
 .action {
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
-    -fx-background-color: #ffffff;
-    -fx-font-size: 25.4;
+    -fx-background-color: #0023ff;
+    -fx-font-size: 30;
     -fx-translate-x: -100;
+    -fx-translate-y: -130;
 }
 
-#mainMenu:hover, .buy:hover {
-    -fx-border-color: #ffffff;
-    -fx-background-color: #0023ff;
+#mainMenu:hover, .action:hover, #create:hover {
+    -fx-border-color: #0023ff;
+    -fx-background-color: #ffffff;
 }
 
 .text-field {
-
+    -fx-translate-x: -100;
+    -fx-translate-y: -130;
 }
-
+#create {
+    -fx-font-family: "Kunstler Script";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-background-color: #0023ff;
+    -fx-font-size: 30;
+    -fx-translate-x: -100;
+    -fx-translate-y: -120;
+}
