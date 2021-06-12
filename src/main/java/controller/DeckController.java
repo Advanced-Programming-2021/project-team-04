@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DeckController {
+
     private static DeckController singleInstance = null;
 
     public static DeckController getInstance() {
