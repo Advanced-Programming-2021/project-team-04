@@ -311,10 +311,6 @@ public class IO {
         System.out.println("no card is selected yet");
     }
 
-    public void summoned() {
-        System.out.println("summoned successfully");
-    }
-
     public void enterANewPassword() {
         label.setText("please enter a new password");
         popup.show(LoginView.stage);
@@ -381,15 +377,6 @@ public class IO {
 
     public void userWithUsernameExists(String username) {
         label.setText("user with username " + username + " already exists");
-        popup.show(LoginView.stage);
-    }
-
-    public void userCreated() {
-        label.setText("user created successfully!");
-        popup.show(LoginView.stage);
-    }
-    public void loggedIn() {
-        label.setText("user logged in successfully!");
         popup.show(LoginView.stage);
     }
 

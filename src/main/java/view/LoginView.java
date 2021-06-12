@@ -50,14 +50,13 @@ public class LoginView extends Application {
         scoreboardScene = sceneCreator("ScoreboardView.fxml");
         mainScene = sceneCreator("MainView.fxml");
         shopScene = sceneCreator("ShopView.fxml");
-//        deckScene = sceneCreator("DeckView.fxml");
 //        duelScene = sceneCreator("DuelView.fxml");
 //        importAndExportScene = sceneCreator("ImportAndExportView.fxml");
 //        creatorScene = sceneCreator("CreatorView.fxml");
 //        profileScene = sceneCreator("ProfileView.fxml");
     }
 
-    private static Scene sceneCreator(String resource) {
+    public static Scene sceneCreator(String resource) {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource(resource));
         try {
             return new Scene(fxmlLoader.load());

@@ -396,7 +396,6 @@ public class DuelController {
         game.setSelectedCard(null);
         torrentialTribute();
         game.setSummonedInThisTurn(true);
-        IO.getInstance().summoned();
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
@@ -1210,7 +1209,6 @@ public class DuelController {
         }
         moveSpellOrTrapToGYFromSpellZone((SpellAndTrapCard) game.getSelectedCard());
         game.setSelectedCard(null);
-        IO.getInstance().summoned();
     }
 
     private void chooseMonsterMode(MonsterCard monsterCard) {

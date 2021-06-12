@@ -1,103 +1,112 @@
 package view;
 
+
 import controller.DeckController;
+import controller.MainController;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import javafx.scene.control.TextField;
+import model.PlayerDeck;
 
-public class DeckView extends ViewMenu {
+import java.util.ArrayList;
 
-    private static DeckView singleInstance = null;
+public class DeckView {
 
-    private final Pattern createDeckPattern = Pattern.compile("(?:deck )?create (?<name>\\S+)");
-    private final Pattern deleteDeckPattern = Pattern.compile("(?:deck )?delete (?<name>\\S+)");
-    private final Pattern activateDeckPattern = Pattern.compile("(?:deck )?" +
-            "(?:set|activate|set-activ(?:at)?e) (?<name>\\S+)");
-    private final Pattern addCardToDeckPattern = Pattern.compile("^(?:deck )?a(?:dd)?[- ]c(?:ard)? " +
-            "(?=.*-(?:-card|c) (?<cardName>[^-]+))(?=.*-(?:-deck|d) (?<deckName>\\S+)).+$");
-    private final Pattern removeCardFromDeckPattern = Pattern.compile("^(?:deck )?rm?[- ]c(?:ard)? " +
-            "(?=.*-(?:-card|c) (?<cardName>[^-]+))(?=.*-(?:-deck|d) (?<deckName>\\S+)).+$");
-    private final Pattern showDeckPattern = Pattern.compile("^(?:deck )?show " +
-            "(?=.*-(?:-deck|d) (?<deckName>\\S+)).+$");
+    public static Label deckName;
+    private static final ArrayList<PlayerDeck> allDecks = MainController.getInstance().getLoggedIn().getAllPlayerDecks();
+    private static int count;
+    public static TextField textField;
+    public static Scene scene;
 
-    private DeckView() {}
-
-    public static DeckView getInstance() {
-        if (singleInstance == null)
-            singleInstance = new DeckView();
-        return singleInstance;
+    public static void run() {
+        showDetails();
+        LoginView.deckScene.lookup("#back").setDisable(true);
     }
 
-    @Override
-    public void run() {
-        String command;
-        while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
-                !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
-            Matcher createDeckMatcher = createDeckPattern.matcher(command);
-            Matcher deleteDeckMatcher = deleteDeckPattern.matcher(command);
-            Matcher activateDeckMatcher = activateDeckPattern.matcher(command);
-            Matcher addCardToDeckMatcher = addCardToDeckPattern.matcher(command);
-            Matcher removeCardFromDeckMatcher = removeCardFromDeckPattern.matcher(command);
-            Matcher showDeckMatcher = showDeckPattern.matcher(command);
-            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
-                showCurrentMenu();
-            else if (command.matches("(?:menu )?enter \\S+"))
-                IO.getInstance().printMenuNavigationImpossible();
-            else if (command.matches("(?:deck )?show -(?:-all|a)"))
-                printAllDecks();
-            else if (showDeckMatcher.matches())
-                printDeck(showDeckMatcher, !command.contains("-s"));
-            else if (command.matches("(?:deck )?show -(?:-cards|c)"))
-                printAllCards();
-            else if (createDeckMatcher.matches())
-                createDeck(createDeckMatcher);
-            else if (deleteDeckMatcher.matches())
-                deleteDeck(deleteDeckMatcher);
-            else if (activateDeckMatcher.matches())
-                activateDeck(activateDeckMatcher);
-            else if (addCardToDeckMatcher.matches())
-                addCardToDeck(addCardToDeckMatcher, !command.contains("-s"));
-            else if (removeCardFromDeckMatcher.matches())
-                removeCardFromDeck(removeCardFromDeckMatcher, !command.contains("-s"));
-            else IO.getInstance().printInvalidCommand();
-        }
+    private static void showDetails() {
+        deckName.setText(allDecks.get(count).getDeckName() + " " + allDecks.get(0).getMainDeckSize());
+        if (allDecks.get(count).equals(MainController.getInstance().getLoggedIn().getActiveDeck()))
+            deckName.setStyle("-fx-text-fill: #0040ff");
+        else deckName.setStyle("-fx-text-fill: #ffffff");
     }
 
-    @Override
-    public void showCurrentMenu() {
-        IO.getInstance().printDeckMenuName();
+    public static void next() {
+        if (count == 0) LoginView.deckScene.lookup("#back").setDisable(false);
+        if (count == allDecks.size() - 1) LoginView.deckScene.lookup("#next").setDisable(true);
+        count++;
+        showDetails();
     }
 
-    private void createDeck(Matcher matcher) {
-        DeckController.getInstance().createDeck(matcher.group("name").trim());
+    public static void back() {
+        if (count == 0) LoginView.deckScene.lookup("#back").setDisable(false);
+        if (count == allDecks.size() - 1) LoginView.deckScene.lookup("#next").setDisable(true);
+        count--;
+        showDetails();
     }
 
-    private void deleteDeck(Matcher matcher) {
-        DeckController.getInstance().deleteDeck(matcher.group("name").trim());
+    public static void edit() {
+        //TODO create fxml for new scene
     }
 
-    private void activateDeck(Matcher matcher) {
-        DeckController.getInstance().activateDeck(matcher.group("name").trim());
+    public static void delete() {
+        DeckController.getInstance().deleteDeck(allDecks.get(count).getDeckName());
+        count++;
+        showDetails();
     }
 
-    private void addCardToDeck(Matcher matcher, boolean isMainDeck) {
-        DeckController.getInstance().addCardToDeck(matcher.group("deckName").trim(), matcher.group("cardName").trim(), isMainDeck);
+    public static void activate() {
+        DeckController.getInstance().activateDeck(allDecks.get(count).getDeckName());
+        showDetails();
     }
 
-    private void removeCardFromDeck(Matcher matcher, boolean isMainDeck) {
-        DeckController.getInstance().removeCardFromDeck(matcher.group("deckName").trim(), matcher.group("cardName").trim(), isMainDeck);
+    public static void create() {
+        String deckName = textField.getText();
+        DeckController.getInstance().createDeck(deckName);
     }
 
-    private void printAllDecks() {
-        DeckController.getInstance().printAllDecks();
+    public static void details() {
+        //TODO show deck scene
     }
 
-    private void printDeck(Matcher matcher, boolean isMainDeck) {
-        DeckController.getInstance().printDeck(matcher.group("deckName").trim(), isMainDeck);
+    public static void addCard() {
+
     }
 
-    private void printAllCards() {
-        DeckController.getInstance().printAllCards();
+    public static void removeCard() {
+
     }
+
+//    private void createDeck(Matcher matcher) {
+//        DeckController.getInstance().createDeck(matcher.group("name").trim());
+//    }
+//
+//    private void deleteDeck(Matcher matcher) {
+//        DeckController.getInstance().deleteDeck(matcher.group("name").trim());
+//    }
+//
+//    private void activateDeck(Matcher matcher) {
+//        DeckController.getInstance().activateDeck(matcher.group("name").trim());
+//    }
+//
+//    private void addCardToDeck(Matcher matcher, boolean isMainDeck) {
+//        DeckController.getInstance().addCardToDeck(matcher.group("deckName").trim(), matcher.group("cardName").trim(), isMainDeck);
+//    }
+//
+//    private void removeCardFromDeck(Matcher matcher, boolean isMainDeck) {
+//        DeckController.getInstance().removeCardFromDeck(matcher.group("deckName").trim(), matcher.group("cardName").trim(), isMainDeck);
+//    }
+//
+//    private void printAllDecks() {
+//        DeckController.getInstance().printAllDecks();
+//    }
+//
+//    private void printDeck(Matcher matcher, boolean isMainDeck) {
+//        DeckController.getInstance().printDeck(matcher.group("deckName").trim(), isMainDeck);
+//    }
+//
+//    private void printAllCards() {
+//        DeckController.getInstance().printAllCards();
+//    }
 
 }

@@ -14,6 +14,8 @@ import lombok.extern.java.Log;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static view.LoginView.sceneCreator;
+
 public class MainView {
 
     private static MediaPlayer mainMusic;
@@ -39,8 +41,9 @@ public class MainView {
 
     @FXML
     public void enterDeckMenu() {
+        LoginView.deckScene = sceneCreator("DeckView.fxml");
         LoginView.stage.setScene(LoginView.deckScene);
-        DeckView.getInstance().run();
+        DeckView.run();
     }
 
     @FXML
