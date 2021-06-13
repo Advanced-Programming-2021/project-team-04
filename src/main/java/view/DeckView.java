@@ -24,7 +24,7 @@ public class DeckView {
     private static int countForMain;
     private static int countForSide;
 
-    public static TextField textField;
+    public static TextField textField = new TextField();
     private static Card firstCard;
     private static Card secondCard;
     private static Scene scene;
