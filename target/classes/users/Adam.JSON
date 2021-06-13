@@ -4,13 +4,9 @@
   "money": 500,
   "allPlayerDecks": [
     {
-      "mainDeckCards": {
-        "Axe Raider": 1,
-        "Bitron": 39,
-        "Skull Guardian": 3
-      },
+      "mainDeckCards": {},
       "sideDeckCards": {},
-      "deckName": "Langa"
+      "deckName": "Bb"
     }
   ],
   "allCardsHashMap": {
@@ -20,7 +16,6 @@
     "Bitron": 2,
     "Swords of Revealing Light": 1
   },
-  "activePlayerDeck": "Langa",
   "username": "Adam",
   "nickname": "Dead"
 }

@@ -15,47 +15,61 @@ import model.cards.Card;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class DeckView {
 
-    public static Label deckName = new Label();
     private static final ArrayList<PlayerDeck> allDecks = MainController.getInstance().getLoggedIn().getAllPlayerDecks();
     private static int count;
+    private static ArrayList<String> mainCards = new ArrayList<>(allDecks.get(count).getMainDeckCards().keySet()); //TODO when a card count reaches 0 remove it
+    private static LinkedHashMap<String, Short> mainCardsHashMap = allDecks.get(count).getMainDeckCards();
+    private static ArrayList<String> sideCards = new ArrayList<>(allDecks.get(count).getSideDeckCards().keySet());
+    private static LinkedHashMap<String, Short> sideCardsHashMap = allDecks.get(count).getSideDeckCards();
     private static int countForMain;
     private static int countForSide;
-
-    public static TextField textField;
     private static Card firstCard;
     private static Card secondCard;
     private static Scene scene;
 
     public static void run() {
+        count = 0;
         showDetails();
-        LoginView.deckScene.lookup("#back").setDisable(true);
+        handleButtons();
+    }
+
+    private static void handleButtons() {
+        LoginView.deckScene.lookup("#back").setDisable(count == 0);
+        LoginView.deckScene.lookup("#next").setDisable(count == allDecks.size() - 1);
+        if (count == 0 && allDecks.isEmpty()) LoginView.deckScene.lookup("#next").setDisable(true);
     }
 
     private static void showDetails() {
+        Label deckName = ((Label) LoginView.deckScene.lookup("#deckName"));
+        if (allDecks.isEmpty()) {
+            deckName.setText("Empty");
+            count = 0;
+            return;
+        }
         deckName.setText(allDecks.get(count).getDeckName() + " " + allDecks.get(count).getMainDeckSize());
         if (allDecks.get(count).equals(MainController.getInstance().getLoggedIn().getActiveDeck()))
-            deckName.setStyle("-fx-text-fill: #0040ff");
+            deckName.setStyle("-fx-text-fill: #4a78ff");
         else deckName.setStyle("-fx-text-fill: #ffffff");
     }
 
     public void next() {
-        if (count == 0) LoginView.deckScene.lookup("#back").setDisable(false);
-        if (count == allDecks.size() - 1) LoginView.deckScene.lookup("#next").setDisable(true);
         count++;
+        handleButtons();
         showDetails();
     }
 
     public void mainMenu() {
         LoginView.stage.setScene(LoginView.mainScene);
+        LoginView.stage.centerOnScreen();
     }
 
     public void back() {
-        if (count == 0) LoginView.deckScene.lookup("#back").setDisable(false);
-        if (count == allDecks.size() - 1) LoginView.deckScene.lookup("#next").setDisable(true);
         count--;
+        handleButtons();
         showDetails();
     }
 
@@ -65,8 +79,10 @@ public class DeckView {
 
     public void delete() {
         DeckController.getInstance().deleteDeck(allDecks.get(count).getDeckName());
-        count++;
+        if (count == allDecks.size())
+            count --;
         showDetails();
+        handleButtons();
     }
 
     public void activate() {
@@ -75,8 +91,12 @@ public class DeckView {
     }
 
     public void create() {
+        TextField textField = ((TextField) LoginView.deckScene.lookup("#textField"));
         String deckName = textField.getText();
         DeckController.getInstance().createDeck(deckName);
+        textField.clear();
+        showDetails();
+        handleButtons();
     }
 
     public void details() {
