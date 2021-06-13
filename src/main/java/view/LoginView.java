@@ -9,6 +9,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
@@ -47,13 +48,24 @@ public class LoginView extends Application {
         stage.centerOnScreen();
     }
 
+    private static void setSize(Scene scene, int picHeight, int picWidth) {
+        double height = Screen.getPrimary().getVisualBounds().getHeight() - 20;
+        ((GridPane) scene.getRoot()).setPrefHeight(height);
+        ((GridPane) scene.getRoot()).setPrefWidth(picWidth * height / picHeight);
+    }
+
     private static void createAllScenes() {
         loginScene = sceneCreator("LoginView.fxml");
+        setSize(loginScene, 1222, 1954);
         signUpScene = sceneCreator("SignupView.fxml");
-        scoreboardScene = sceneCreator("ScoreboardView.fxml");
+        setSize(signUpScene, 1222, 1954);
         mainScene = sceneCreator("MainView.fxml");
-        shopScene = sceneCreator("ShopView.fxml");
+        setSize(mainScene, 1112, 1954);
         profileScene = sceneCreator("ProfileView.fxml");
+        setSize(profileScene, 1213, 1280);
+        scoreboardScene = sceneCreator("ScoreboardView.fxml");
+        setSize(scoreboardScene, 1192, 876);
+        shopScene = sceneCreator("ShopView.fxml");
 //        duelScene = sceneCreator("DuelView.fxml");
 //        importAndExportScene = sceneCreator("ImportAndExportView.fxml");
 //        creatorScene = sceneCreator("CreatorView.fxml");

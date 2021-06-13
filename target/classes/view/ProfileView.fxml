@@ -10,7 +10,7 @@
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="view.ProfileView"
-          prefHeight="788.45" prefWidth="832" hgap="10" vgap="30" styleClass="root">
+          hgap="10" vgap="30" styleClass="root">
 
 
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="5" styleClass="box1">
