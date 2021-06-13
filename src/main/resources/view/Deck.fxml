@@ -34,10 +34,10 @@
     </VBox>
 
     <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="3" fx:id="next" onMouseClicked="#next"/>
-
+    <Button text="Add Card" styleClass="add" GridPane.rowIndex="2" GridPane.columnIndex="3" fx:id="add"/>
     <Button text="Main Menu" fx:id="mainMenu" GridPane.columnIndex="4" GridPane.rowIndex="2" onMouseClicked="#mainMenu"/>
 
     <stylesheets>
-        <URL value="@stylesheets/ShopView.css"/>
+        <URL value="@stylesheets/Deck.css"/>
     </stylesheets>
 </GridPane>

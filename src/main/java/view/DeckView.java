@@ -3,12 +3,17 @@ package view;
 
 import controller.DeckController;
 import controller.MainController;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import model.PlayerDeck;
+import model.cards.Card;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DeckView {
@@ -16,8 +21,13 @@ public class DeckView {
     public static Label deckName = new Label();
     private static final ArrayList<PlayerDeck> allDecks = MainController.getInstance().getLoggedIn().getAllPlayerDecks();
     private static int count;
+    private static int countForMain;
+    private static int countForSide;
+
     public static TextField textField;
-    public static Scene scene;
+    private static Card firstCard;
+    private static Card secondCard;
+    private static Scene scene;
 
     public static void run() {
         showDetails();
@@ -25,7 +35,7 @@ public class DeckView {
     }
 
     private static void showDetails() {
-        deckName.setText(allDecks.get(count).getDeckName() + " " + allDecks.get(0).getMainDeckSize());
+        deckName.setText(allDecks.get(count).getDeckName() + " " + allDecks.get(count).getMainDeckSize());
         if (allDecks.get(count).equals(MainController.getInstance().getLoggedIn().getActiveDeck()))
             deckName.setStyle("-fx-text-fill: #0040ff");
         else deckName.setStyle("-fx-text-fill: #ffffff");
@@ -82,7 +92,41 @@ public class DeckView {
     }
 
     private void deckScene() {
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("Deck.fxml"));
+        try {
+            DeckView.scene = new Scene(fxmlLoader.load());
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showDeckCards() {
+        PlayerDeck playerDeck = allDecks.get(count);
+
+
+        ImageView first = (ImageView) scene.lookup("#first");
+        ImageView second = (ImageView) scene.lookup("#second");
+        Image firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+        Image secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+        first.setImage(firstImage);
+        second.setImage(secondImage);
+    }
+
+    public void nextForDeck() {
+        if (countForMain == allDecks.get(count).getMainDeckSize()) LoginView.shopScene.lookup("#next").setDisable(false);
+        if (countForMain == 0) LoginView.shopScene.lookup("#back").setDisable(true);
+        countForMain++;
+        countForSide++;
+        showDeckCards();
+    }
+
+    public void backForDeck() {
+        if (countForMain == allDecks.get(count).getMainDeckSize()) LoginView.shopScene.lookup("#next").setDisable(false);
+        if (countForMain == 0) LoginView.shopScene.lookup("#back").setDisable(true);
+        countForMain--;
+        countForSide--;
+        showDeckCards();
     }
 
 //    private void createDeck(Matcher matcher) {
