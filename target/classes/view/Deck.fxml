@@ -15,7 +15,7 @@
 
     <HBox GridPane.rowIndex="0" GridPane.columnSpan="4"/>
 
-    <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back" onMouseClicked="#back"/>
+    <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back" onMouseClicked="#backForDeck"/>
 
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" spacing="10" alignment="CENTER">
         <ImageView fx:id="first" fitHeight="400" fitWidth="300"/>
@@ -33,7 +33,7 @@
         </HBox>
     </VBox>
 
-    <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="3" fx:id="next" onMouseClicked="#next"/>
+    <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="3" fx:id="next" onMouseClicked="#nextForDeck"/>
     <Button text="Add Card" styleClass="add" GridPane.rowIndex="2" GridPane.columnIndex="3" fx:id="add"/>
     <Button text="Main Menu" fx:id="mainMenu" GridPane.columnIndex="4" GridPane.rowIndex="2" onMouseClicked="#mainMenu"/>
 

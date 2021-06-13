@@ -16,7 +16,7 @@
     <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back" onMouseClicked="#back"/>
 
     <VBox GridPane.rowIndex="0" GridPane.columnIndex="1" spacing="10" alignment="CENTER">
-        <Label alignment="CENTER" fx:id="deckName"/>
+        <Label alignment="CENTER" fx:id="deckName" onMouseClicked="#deckScene"/>
         <HBox spacing="10" alignment="CENTER">
             <Button text="Edit" styleClass="action" fx:id="edit" onMouseClicked="#delete" />
             <Button text="Delete" styleClass="action" fx:id="delete" onMouseClicked="#delete"/>
