@@ -6,17 +6,10 @@
     -fx-background-position: center center;
 }
 
-.box1 {
+.box1, .box2 {
     -fx-border-color: #f11728;
     -fx-translate-x: 30;
     -fx-translate-y: 27;
-    -fx-padding: 15;
-}
-
-.box2 {
-    -fx-border-color: #f11728;
-    -fx-translate-x: 30;
-    -fx-translate-y: 47;
     -fx-padding: 15;
 }
 
@@ -50,5 +43,5 @@
 
 #mainMenu {
     -fx-pref-width: 150;
-    -fx-translate-y: 140;
+    -fx-translate-y: 120;
 }
