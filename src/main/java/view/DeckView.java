@@ -30,6 +30,7 @@ public class DeckView {
     private static Card firstCard;
     private static Card secondCard;
     private static Scene scene;
+    private static final Card emptyCard = new Card();
 
     public static void run() {
         count = 0;
@@ -80,7 +81,7 @@ public class DeckView {
     public void delete() {
         DeckController.getInstance().deleteDeck(allDecks.get(count).getDeckName());
         if (count == allDecks.size())
-            count --;
+            count--;
         showDetails();
         handleButtons();
     }
@@ -99,53 +100,72 @@ public class DeckView {
         handleButtons();
     }
 
-    public void details() {
-        //TODO show deck scene
-    }
-
     public void addCard() {
 
     }
 
-    public void removeCard() {
-
+    public void removeCardFromMain() {
+        DeckController.getInstance().removeCardFromDeck(allDecks.get(count).getDeckName(), mainCards.get(countForMain), true);
+        if (countForMain == mainCards.size())
+            countForMain--;
+        showDeckCards();
+        handleButtonForCards();
     }
 
-    private void deckScene() {
+    public void removeCardFromSide() {
+        DeckController.getInstance().removeCardFromDeck(allDecks.get(count).getDeckName(), sideCards.get(countForSide), false);
+        if (countForSide == sideCards.size())
+            countForSide--;
+        showDeckCards();
+        handleButtonForCards();
+    }
+
+    public void deckScene() {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("Deck.fxml"));
         try {
-            DeckView.scene = new Scene(fxmlLoader.load());
-
+            scene = new Scene(fxmlLoader.load());
+            showDeckCards();
+            LoginView.stage.setScene(scene);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private void showDeckCards() {
-        PlayerDeck playerDeck = allDecks.get(count);
-
-
+        firstCard = Card.getCardByName(mainCards.get(countForMain));
+        if (!sideCards.isEmpty()) {
+            secondCard = Card.getCardByName(sideCards.get(countForSide));
+            ImageView second = (ImageView) scene.lookup("#second");
+            Image secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+            second.setImage(secondImage);
+        } else {
+            secondCard = emptyCard;
+            ImageView second = (ImageView) scene.lookup("#second");
+            Image secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+            second.setImage(secondImage);
+        }
         ImageView first = (ImageView) scene.lookup("#first");
-        ImageView second = (ImageView) scene.lookup("#second");
         Image firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
-        Image secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
         first.setImage(firstImage);
-        second.setImage(secondImage);
+    }
+
+    private static void handleButtonForCards() {
+        LoginView.deckScene.lookup("#back").setDisable(countForMain == 0);
+        LoginView.deckScene.lookup("#next").setDisable(countForMain == allDecks.size() - 1);
+        if (countForMain == 0 && allDecks.isEmpty()) LoginView.deckScene.lookup("#next").setDisable(true);
     }
 
     public void nextForDeck() {
-        if (countForMain == allDecks.get(count).getMainDeckSize()) LoginView.shopScene.lookup("#next").setDisable(false);
-        if (countForMain == 0) LoginView.shopScene.lookup("#back").setDisable(true);
         countForMain++;
         countForSide++;
+        handleButtonForCards();
         showDeckCards();
     }
 
     public void backForDeck() {
-        if (countForMain == allDecks.get(count).getMainDeckSize()) LoginView.shopScene.lookup("#next").setDisable(false);
-        if (countForMain == 0) LoginView.shopScene.lookup("#back").setDisable(true);
         countForMain--;
         countForSide--;
+        handleButtonForCards();
         showDeckCards();
     }
 
