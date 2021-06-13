@@ -51,6 +51,7 @@
 .text-field {
     -fx-translate-x: -100;
     -fx-translate-y: -130;
+    -fx-font-size: 15;
 }
 #create {
     -fx-font-family: "Kunstler Script";
@@ -63,3 +64,12 @@
     -fx-translate-x: -100;
     -fx-translate-y: -120;
 }
+
+.label {
+    -fx-translate-y: -140;
+    -fx-translate-x: -100;
+    -fx-font-family: "Kunstler Script";
+    -fx-font-size: 47;
+    -fx-font-weight: bold;
+}
+
