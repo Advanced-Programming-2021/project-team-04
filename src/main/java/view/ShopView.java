@@ -90,5 +90,6 @@ public class ShopView {
 
     public void mainMenu() {
         LoginView.stage.setScene(LoginView.mainScene);
+        LoginView.stage.centerOnScreen();
     }
 }

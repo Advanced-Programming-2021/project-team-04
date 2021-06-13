@@ -16,7 +16,7 @@ public class ProfileController {
 
     public void changeNickname(String name) {
         if (isChangingNicknameValid(name)) {
-            MainController.getInstance().getLoggedIn().setNickname(name);
+            MainController.getInstance().getLoggedIn().changeNickname(name);
             IO.getInstance().nicknameChanged();
         }
     }

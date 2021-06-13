@@ -1,5 +1,5 @@
 .root {
-    -fx-background-color: transparent;
+    -fx-background-color: #000000;
     -fx-background-image: url("mainbackground.png");
     -fx-background-repeat: stretch;
     -fx-background-size: 1120 855.4;
@@ -23,18 +23,26 @@
     -fx-pref-height: 14;
     -fx-pref-width: 175;
     -fx-background-color: #ffffff;
+    -fx-border-color: #ffffff;
     -fx-font-size: 25.4;
     -fx-translate-y: +20;
+    -fx-text-alignment: center;
 }
 
 .button:hover {
     -fx-border-color: #ffffff;
     -fx-background-color: #0023ff;
+    -fx-text-alignment: center;
 }
+
 #mute {
     -fx-background-color: transparent;
     -fx-background-image: url("mute.jpg");
     -fx-background-repeat: stretch;
     -fx-background-size: 45 45;
     -fx-background-position: center center;
+}
+
+#mute:selected {
+    -fx-background-image: url("unmute.jpg");
 }

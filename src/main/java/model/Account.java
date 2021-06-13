@@ -61,6 +61,12 @@ public class Account extends Duelist {
         allUsernames.remove(account.getUsername());
     }
 
+    public void changeNickname(String newNickname) {
+        allNicknames.remove(nickname);
+        allNicknames.add(newNickname);
+        nickname = newNickname;
+    }
+
     public static Account getAccountByUsername(String username) {
         return allAccounts.stream().filter(a -> a.getUsername().equals(username)).findAny().orElse(null);
     }

@@ -6,9 +6,44 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="view.ProfileView"
-            prefHeight="400.0" prefWidth="600.0">
+<?import java.net.URL?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="view.ProfileView"
+          prefHeight="788.45" prefWidth="832" hgap="10" vgap="30" styleClass="root">
 
-</AnchorPane>
+
+    <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="5" styleClass="box1">
+        <Label text="Username"/>
+        <Label fx:id="username"/>
+    </VBox>
+
+
+    <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="5" styleClass="box1">
+        <Label text="Nickname"/>
+        <Label fx:id="nickname"/>
+    </VBox>
+
+
+    <VBox GridPane.columnIndex="0" GridPane.rowIndex="2" spacing="10" styleClass="box2">
+        <Label text="New Nickname:"/>
+        <TextField fx:id="newNickname"/>
+        <Button text="Change" onMouseClicked="#changeNickname"/>
+    </VBox>
+
+
+    <VBox GridPane.columnIndex="0" GridPane.rowIndex="3" spacing="10" styleClass="box2">
+        <Label text="Current Password:"/>
+        <TextField fx:id="currentPassword"/>
+        <Label text="New Password"/>
+        <TextField fx:id="newPassword"/>
+        <Button text="Change" onMouseClicked="#changePassword"/>
+    </VBox>
+
+    <Button text="Main Menu" GridPane.columnIndex="1" GridPane.rowIndex="3" fx:id="mainMenu" onMouseClicked="#mainMenu"/>
+
+
+    <stylesheets>
+        <URL value="@stylesheets/ProfileView.css"/>
+    </stylesheets>
+</GridPane>

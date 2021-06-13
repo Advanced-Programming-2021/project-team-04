@@ -1,0 +1,54 @@
+.root {
+    -fx-background-color: #000000;
+    -fx-background-image: url("profilebackground.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 832 788.45;
+    -fx-background-position: center center;
+}
+
+.box1 {
+    -fx-border-color: #f11728;
+    -fx-translate-x: 30;
+    -fx-translate-y: 27;
+    -fx-padding: 15;
+}
+
+.box2 {
+    -fx-border-color: #f11728;
+    -fx-translate-x: 30;
+    -fx-translate-y: 47;
+    -fx-padding: 15;
+}
+
+.label {
+    -fx-font-family: "Monotype Corsiva";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 27;
+}
+
+#nickname, #username {
+    -fx-text-fill: #f11728;
+    -fx-translate-x: 80;
+}
+
+.button {
+    -fx-font-family: "Monotype Corsiva";
+    -fx-font-size: 20;
+    -fx-background-color: #f11728;
+    -fx-text-fill: #000000;
+    -fx-pref-height: 15;
+    -fx-pref-width: 85;
+    -fx-border-color: #f11728;
+    -fx-translate-x: 94;
+}
+
+.button:hover {
+    -fx-text-fill: #f11728;
+    -fx-background-color: #000000;
+    -fx-border-color: #f11728;
+}
+
+#mainMenu {
+    -fx-pref-width: 150;
+    -fx-translate-y: 140;
+}

@@ -11,7 +11,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Popup;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,6 +29,7 @@ public class LoginView extends Application {
     public static Scene profileScene;
     public static Scene creatorScene;
     public static MediaPlayer IntroMusic;
+    public static boolean isMute;
 
     public static void run(String[] args) {
         launch(args);
@@ -42,6 +43,8 @@ public class LoginView extends Application {
         stage.setTitle("YO GI OH");
         stage.setScene(signUpScene);
         stage.show();
+        stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
+        stage.centerOnScreen();
     }
 
     private static void createAllScenes() {
@@ -50,10 +53,10 @@ public class LoginView extends Application {
         scoreboardScene = sceneCreator("ScoreboardView.fxml");
         mainScene = sceneCreator("MainView.fxml");
         shopScene = sceneCreator("ShopView.fxml");
+        profileScene = sceneCreator("ProfileView.fxml");
 //        duelScene = sceneCreator("DuelView.fxml");
 //        importAndExportScene = sceneCreator("ImportAndExportView.fxml");
 //        creatorScene = sceneCreator("CreatorView.fxml");
-//        profileScene = sceneCreator("ProfileView.fxml");
     }
 
     public static Scene sceneCreator(String resource) {
@@ -75,19 +78,26 @@ public class LoginView extends Application {
 
     public void loginScene() {
        stage.setScene(loginScene);
+       stage.centerOnScreen();
+       if (isMute) ((ToggleButton) loginScene.lookup("#mute")).setSelected(true);
     }
 
     public void signupScene() {
         stage.setScene(signUpScene);
+        stage.centerOnScreen();
+        if (isMute) ((ToggleButton) signUpScene.lookup("#mute")).setSelected(true);
     }
 
     public void login() {
         String username = ((TextField) loginScene.lookup("#username")).getText();
         String password = ((PasswordField) loginScene.lookup("#password")).getText();
         if (LoginController.getInstance().loginUser(username, password)){
-            IntroMusic.stop();
-            MainView.playMainMusic();
+            IntroMusic.pause();
+            if (!isMute) MainView.playMainMusic();
+            ((ToggleButton) mainScene.lookup("#mute")).setSelected(isMute);
+            MainView.isMute = isMute;
             stage.setScene(mainScene);
+            stage.centerOnScreen();
         }
     }
 
@@ -95,17 +105,12 @@ public class LoginView extends Application {
         Media main = new Media(LoginView.class.getResource("TheAuroraStrikes.mp3").toExternalForm());
         IntroMusic = new MediaPlayer(main);
         IntroMusic.setCycleCount(MediaPlayer.INDEFINITE);
-//        IntroMusic.play(); //TODO uncomment
+        IntroMusic.play();
     }
 
-    public void muteLogin() {
-        if (((ToggleButton) loginScene.lookup("#mute")).isSelected()) IntroMusic.stop();
-        else IntroMusic.play();
-    }
-
-    public void muteSignup() {
-        System.out.println("heh");
-        if (((ToggleButton) signUpScene.lookup("#mute")).isSelected()) IntroMusic.stop();
+    public void mute(MouseEvent mouseEvent) {
+        isMute = ((ToggleButton) mouseEvent.getTarget()).isSelected();
+        if (isMute) IntroMusic.pause();
         else IntroMusic.play();
     }
 }

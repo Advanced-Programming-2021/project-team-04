@@ -1,5 +1,5 @@
 .root {
-    -fx-background-color: transparent;
+    -fx-background-color: #000000;
     -fx-background-image: url("background.jpg");
     -fx-background-repeat: stretch;
     -fx-background-size: 1120 855.4;
@@ -30,8 +30,9 @@
 .button {
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
-    -fx-pref-width: 105;
+    -fx-pref-width: 120;
     -fx-background-color: #ff02d5;
+    -fx-border-color: #ff02d5;
     -fx-font-size: 25.2;
     -fx-translate-y: +20;
     -fx-translate-x: -37;
@@ -49,4 +50,13 @@
     -fx-background-repeat: stretch;
     -fx-background-size: 45 45;
     -fx-background-position: center center;
+    -fx-translate-x: -30;
+}
+
+#mute:selected {
+    -fx-background-image: url("unmute.jpg");
+}
+
+.text-field {
+    -fx-font-size: 15;
 }

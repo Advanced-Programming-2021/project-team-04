@@ -41,9 +41,12 @@
 
     <HBox spacing="10" alignment="CENTER"
           GridPane.rowIndex="4" GridPane.columnSpan="2">
-    <Button text="Log Out" alignment="CENTER_LEFT"
-            onMouseClicked="#logout"/>
-    <ToggleButton fx:id="mute" onMouseClicked="#mute" alignment="CENTER_RIGHT"/>
+    <Button text="Log Out" onMouseClicked="#logout"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER"
+          GridPane.rowIndex="5" GridPane.columnSpan="2">
+        <ToggleButton fx:id="mute" onMouseClicked="#mute" prefWidth="100" prefHeight="100"/>
     </HBox>
 
     <stylesheets>

@@ -19,23 +19,27 @@ import static view.LoginView.sceneCreator;
 public class MainView {
 
     private static MediaPlayer mainMusic;
+    public static boolean isMute;
 
 
     @FXML
     public void enterShopMenu() {
         LoginView.stage.setScene(LoginView.shopScene);
+        LoginView.stage.centerOnScreen();
         ShopView.run();
     }
 
     @FXML
     public void enterProfileMenu() {
         LoginView.stage.setScene(LoginView.profileScene);
-        ProfileView.getInstance().run();
+        LoginView.stage.centerOnScreen();
+        ProfileView.run();
     }
 
     @FXML
     public void enterScoreboard() {
         LoginView.stage.setScene(LoginView.scoreboardScene);
+        LoginView.stage.centerOnScreen();
         ScoreboardView.run();
     }
 
@@ -67,8 +71,12 @@ public class MainView {
     public void logout() {
         MainController.getInstance().setLoggedIn(null);
         try {
-            mainMusic.stop();
-//            LoginView.IntroMusic.play(); //TODO uncomment
+            if (!isMute) {
+                LoginView.IntroMusic.play();
+                mainMusic.pause();
+            }
+            LoginView.isMute = isMute;
+            ((ToggleButton) LoginView.loginScene.lookup("#mute")).setSelected(isMute);
             LoginView.stage.setScene(LoginView.loginScene);
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,11 +106,13 @@ public class MainView {
         Media main = new Media(MainView.class.getResource("OurBoyJack.mp3").toExternalForm());
         mainMusic = new MediaPlayer(main);
         mainMusic.setCycleCount(MediaPlayer.INDEFINITE);
-//        mainMusic.play(); //TODO uncomment
+        mainMusic.play();
     }
 
-    public void mute() {
-        if (((ToggleButton) LoginView.mainScene.lookup("#mute")).isSelected()) mainMusic.pause();
+    public void mute(MouseEvent mouseEvent) {
+        isMute = ((ToggleButton) mouseEvent.getTarget()).isSelected();
+        if (isMute) mainMusic.pause();
+        else if (mainMusic == null) playMainMusic();
         else mainMusic.play();
     }
 }

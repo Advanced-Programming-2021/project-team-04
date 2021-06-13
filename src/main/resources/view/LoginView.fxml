@@ -15,7 +15,6 @@
     </padding>
     <HBox spacing="10" alignment="CENTER"
           GridPane.rowIndex="8" GridPane.columnSpan="2">
-    <ToggleButton fx:id="mute" onMouseClicked="#muteLogin"/>
     </HBox>
 
     <Label text="YU GI OH!&#10;For when you're immortal&#10;A good war is a very pleasant distraction, indeed"
@@ -39,6 +38,12 @@
         <Button text="Log In" fx:id="login" onMouseClicked="#login"/>
         <Button text="Sign Up" fx:id="signup" onMouseClicked="#signupScene"/>
     </HBox>
+
+    <HBox spacing="10" alignment="CENTER"
+          GridPane.rowIndex="6" GridPane.columnSpan="2">
+        <ToggleButton fx:id="mute" onMouseClicked="#mute" prefWidth="100" prefHeight="100"/>
+    </HBox>
+
 
     <stylesheets>
         <URL value="@stylesheets/LoginView.css"/>

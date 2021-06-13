@@ -1,5 +1,5 @@
 .root {
-    -fx-background-color: transparent;
+    -fx-background-color: #000000;
     -fx-background-image: url("scoreboard.jpg");
     -fx-background-repeat: stretch;
     -fx-background-size: 613.2 834.4;
@@ -9,6 +9,22 @@
 .label {
     -fx-font-size: 27;
     -fx-font-family: "Script MT Bold";
-    -fx-translate-x: -145;
+    -fx-translate-x: -72;
     -fx-translate-y: -200;
+}
+
+.button {
+    -fx-font-family: "Script MT Bold";
+    -fx-pref-width: 150;
+    -fx-translate-y: 300;
+    -fx-translate-x: 60;
+    -fx-font-size: 20;
+    -fx-background-color: #FF00C8;
+    -fx-text-fill: #3c5162;
+    -fx-border-color: #FF00C8;
+}
+
+.button:hover {
+    -fx-text-fill: #FF00C8;
+    -fx-background-color: #3c5162;
 }

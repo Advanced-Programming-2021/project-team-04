@@ -17,8 +17,6 @@
         <Insets top="25" right="25" bottom="25" left="25"/>
     </padding>
 
-    <ToggleButton fx:id="mute" prefWidth="100" prefHeight="100" onMouseClicked="#muteSignup"/>
-
     <Label text="YU GI OH!&#10;For when you're immortal&#10;A good war is a very pleasant distraction, indeed"
            textAlignment="CENTER" GridPane.rowIndex="0" GridPane.columnSpan="2" fx:id="greetings"/>
 
@@ -45,6 +43,11 @@
           GridPane.rowIndex="5" GridPane.columnSpan="2">
         <Button text="LogIn" fx:id="login" onMouseClicked="#loginScene"/>
         <Button text="Signup" fx:id="signup" onMouseClicked="#createUser"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER"
+          GridPane.rowIndex="6" GridPane.columnSpan="2">
+        <ToggleButton fx:id="mute" onMouseClicked="#mute" prefWidth="100" prefHeight="100"/>
     </HBox>
 
     <stylesheets>
