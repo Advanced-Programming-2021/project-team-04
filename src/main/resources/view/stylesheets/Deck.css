@@ -2,7 +2,7 @@
     -fx-background-color: #000000;
     -fx-background-image: url("deck.png");
     -fx-background-repeat: stretch;
-    -fx-background-size: 1246 763;
+    -fx-background-size: cover;
     -fx-background-position: center center;
 }
 
@@ -11,11 +11,15 @@
 }
 
 .navi {
-    -fx-translate-x: -100;
+    -fx-translate-x: -20;
     -fx-background-color: #000000;
     -fx-font-size: 50;
     -fx-text-fill: #ffffff;
     -fx-padding: 0;
+}
+
+.box {
+    -fx-translate-x: 80;
 }
 
 .navi:hover {
@@ -23,9 +27,9 @@
     -fx-background-color: #ffffff;
 }
 
-#mainMenu {
-    -fx-translate-y: 80;
-    -fx-translate-x: 37;
+#Back {
+    -fx-translate-y: 60;
+    -fx-translate-x: 17;
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
@@ -43,10 +47,31 @@
     -fx-border-color: #ffffff;
     -fx-text-fill: #ffffff;
     -fx-font-size: 25.4;
+    -fx-translate-y: 60;
+    -fx-translate-x: 17;
+}
+
+.label {
+    -fx-font-family: "Kunstler Script";
+    -fx-font-size: 25.4;
+    -fx-text-fill: #000000;
+    -fx-translate-x: -93;
+    -fx-padding: 10;
+    -fx-border-color: #000000;
+}
+
+.Delete {
+    -fx-font-family: "Kunstler Script";
+    -fx-pref-height: 14;
+    -fx-pref-width: 120;
+    -fx-background-color: #000000;
+    -fx-border-color: #ffffff;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 25.4;
     -fx-translate-x: -100;
 }
 
-#mainMenu:hover, .add:hover {
+#Back:hover, .add:hover, .Delete:hover {
     -fx-border-color: #000000;
     -fx-background-color: #ffffff;
     -fx-text-fill: #000000;

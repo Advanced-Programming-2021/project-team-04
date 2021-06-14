@@ -22,12 +22,11 @@ public class DeckView {
     private static final ArrayList<PlayerDeck> allDecks = MainController.getInstance().getLoggedIn().getAllPlayerDecks();
     private static final ArrayList<String> allCards = new ArrayList<>(MainController.getInstance().getLoggedIn().getAllCardsHashMap().keySet());
     private static int count;
-    private static ArrayList<String> mainCards = new ArrayList<>(allDecks.get(count).getMainDeckCards().keySet()); //TODO when a card count reaches 0 remove it
+    private static ArrayList<String> mainCards = new ArrayList<>(allDecks.get(count).getMainDeckCards().keySet());
     private static LinkedHashMap<String, Short> mainCardsHashMap = allDecks.get(count).getMainDeckCards();
     private static ArrayList<String> sideCards = new ArrayList<>(allDecks.get(count).getSideDeckCards().keySet());
     private static LinkedHashMap<String, Short> sideCardsHashMap = allDecks.get(count).getSideDeckCards();
-    private static int countForMain;
-    private static int countForSide;
+    private static int countForDeck;
     private static int countForAdd;
     private static Card firstCard;
     private static Card secondCard;
@@ -35,9 +34,12 @@ public class DeckView {
     private static Scene sceneForOneDeck;
     private static final Card emptyCard = new Card();
 
+    //TODO labels for number of cards
+    //TODO test with side deck not empty
+    //TODO add card scene
+
     public static void run() {
-        countForSide = 0;
-        countForMain = 0;
+        countForDeck = 0;
         countForAdd = 0;
         count = 0;
         showDetails();
@@ -111,21 +113,21 @@ public class DeckView {
     }
 
     public void removeCardFromMain() {
-        DeckController.getInstance().removeCardFromDeck(allDecks.get(count).getDeckName(), mainCards.get(countForMain), true);
-        if (mainCardsHashMap.get(mainCards.get(countForMain)) == 0)
-            mainCards.remove(countForMain);
-        if (countForMain == mainCards.size())
-            countForMain--;
+        DeckController.getInstance().removeCardFromDeck(allDecks.get(count).getDeckName(), mainCards.get(countForDeck), true);
+        if (!mainCardsHashMap.containsKey(mainCards.get(countForDeck)))
+            mainCards.remove(countForDeck);
+        if (countForDeck == mainCards.size())
+            countForDeck--;
         showDeckCards();
         handleButtonForCards();
     }
 
     public void removeCardFromSide() {
-        DeckController.getInstance().removeCardFromDeck(allDecks.get(count).getDeckName(), sideCards.get(countForSide), false);
-        if (sideCardsHashMap.get(sideCards.get(countForSide)) == 0)
-            sideCards.remove(countForSide);
-        if (countForSide == sideCards.size())
-            countForSide--;
+        DeckController.getInstance().removeCardFromDeck(allDecks.get(count).getDeckName(), sideCards.get(countForDeck), false);
+        if (!sideCardsHashMap.containsKey(sideCards.get(countForDeck)))
+            sideCards.remove(countForDeck);
+        if (countForDeck == sideCards.size())
+            countForDeck--;
         showDeckCards();
         handleButtonForCards();
     }
@@ -135,7 +137,9 @@ public class DeckView {
         try {
             sceneForAdding = new Scene(fxmlLoader.load());
             showPlayerCards();
+            LoginView.setSize(sceneForAdding, 1424, 2224);
             LoginView.stage.setScene(sceneForAdding);
+            LoginView.stage.centerOnScreen();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -146,7 +150,10 @@ public class DeckView {
         try {
             sceneForOneDeck = new Scene(fxmlLoader.load());
             showDeckCards();
+            LoginView.setSize(sceneForOneDeck, 1098, 1638);
             LoginView.stage.setScene(sceneForOneDeck);
+            LoginView.stage.centerOnScreen();
+            handleButtonForCards();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -171,39 +178,51 @@ public class DeckView {
     }
 
     private void showDeckCards() {
-        firstCard = Card.getCardByName(mainCards.get(countForMain));
-        if (!sideCards.isEmpty()) {
-            secondCard = Card.getCardByName(sideCards.get(countForSide));
-            ImageView second = (ImageView) sceneForOneDeck.lookup("#second");
-            Image secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
-            second.setImage(secondImage);
-        } else {
-            secondCard = emptyCard;
-            ImageView second = (ImageView) sceneForOneDeck.lookup("#second");
-            Image secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
-            second.setImage(secondImage);
-        }
+        if (countForDeck < 0) countForDeck = 0;
         ImageView first = (ImageView) sceneForOneDeck.lookup("#first");
-        Image firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
-        first.setImage(firstImage);
+        first.setImage(mainImage());
+        ImageView second = (ImageView) sceneForOneDeck.lookup("#second");
+        second.setImage(sideImage());
     }
 
+    private Image sideImage() {
+        Image secondImage;
+        if (sideCards.size() > countForDeck) {
+            secondCard = Card.getCardByName(sideCards.get(countForDeck));
+            secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+        } else {
+            secondCard = emptyCard;
+            secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+        }
+        return secondImage;
+    }
+
+    private Image mainImage() {
+        Image firstImage;
+        if (mainCards.size() > countForDeck) {
+            firstCard = Card.getCardByName(mainCards.get(countForDeck));
+            firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+        } else {
+            firstCard = emptyCard;
+            firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+        }
+        return firstImage;
+    }
+
+
     private static void handleButtonForCards() {
-        LoginView.deckScene.lookup("#back").setDisable(countForMain == 0);
-        LoginView.deckScene.lookup("#next").setDisable(countForMain == allDecks.size() - 1);
-        if (countForMain == 0 && allDecks.isEmpty()) LoginView.deckScene.lookup("#next").setDisable(true);
+        sceneForOneDeck.lookup("#back").setDisable(countForDeck == 0);
+        sceneForOneDeck.lookup("#next").setDisable(countForDeck >= mainCards.size() - 1 && countForDeck >= sideCards.size() - 1);
     }
 
     public void nextForDeck() {
-        countForMain++;
-        countForSide++;
+        countForDeck++;
         handleButtonForCards();
         showDeckCards();
     }
 
     public void backForDeck() {
-        countForMain--;
-        countForSide--;
+        countForDeck--;
         handleButtonForCards();
         showDeckCards();
     }
@@ -226,4 +245,13 @@ public class DeckView {
         showPlayerCards();
     }
 
+    public void backToDeck() {
+        LoginView.stage.setScene(LoginView.deckScene);
+        LoginView.stage.centerOnScreen();
+    }
+
+    public void backToEdit() {
+        LoginView.stage.setScene(sceneForOneDeck);
+        LoginView.stage.centerOnScreen();
+    }
 }

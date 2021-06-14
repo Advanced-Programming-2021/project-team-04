@@ -15,27 +15,27 @@
 
     <HBox GridPane.rowIndex="0" GridPane.columnSpan="4"/>
 
-    <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back" onMouseClicked="#backForDeck"/>
+    <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back"
+            onMouseClicked="#backForDeck"/>
 
-    <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" spacing="10" alignment="CENTER">
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" spacing="10" alignment="CENTER" styleClass="box">
+        <Label text="From Main Deck" styleClass="address"/>
         <ImageView fx:id="first" fitHeight="400" fitWidth="300"/>
-        <HBox spacing="10" alignment="CENTER">
-            <Label text="From Main Deck" styleClass="address"/>
-            <Button text="Delete" styleClass="Delete" onMouseClicked="#removeCardFromMain"/>
-        </HBox>
+        <Button text="Delete" styleClass="Delete" onMouseClicked="#removeCardFromMain"/>
     </VBox>
 
-    <VBox GridPane.rowIndex="1" GridPane.columnIndex="2" spacing="10" alignment="CENTER">
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="2" spacing="10" alignment="CENTER" styleClass="box">
+        <Label text="From Side Deck" styleClass="address"/>
         <ImageView fx:id="second" fitHeight="400" fitWidth="300"/>
-        <HBox spacing="10" alignment="CENTER">
-            <Label text="From Side Deck" styleClass="address"/>
-            <Button text="Delete" styleClass="Delete" onMouseClicked="#removeCardFromSide"/>
-        </HBox>
+        <Button text="Delete" styleClass="Delete" onMouseClicked="#removeCardFromSide"/>
     </VBox>
 
-    <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="3" fx:id="next" onMouseClicked="#nextForDeck"/>
-    <Button text="Add Card" styleClass="add" GridPane.rowIndex="2" GridPane.columnIndex="3" fx:id="add" onMouseClicked="#addScene"/>
-    <Button text="Main Menu" fx:id="mainMenu" GridPane.columnIndex="4" GridPane.rowIndex="2" onMouseClicked="#mainMenu"/>
+    <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="3" fx:id="next"
+            onMouseClicked="#nextForDeck"/>
+    <HBox GridPane.columnIndex="4" GridPane.rowIndex="2">
+        <Button text="Add Card" styleClass="add" fx:id="add" onMouseClicked="#addScene"/>
+        <Button text="Back" fx:id="Back"  onMouseClicked="#backToDeck"/>
+    </HBox>
 
     <stylesheets>
         <URL value="@stylesheets/Deck.css"/>

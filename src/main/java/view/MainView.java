@@ -46,7 +46,9 @@ public class MainView {
     @FXML
     public void enterDeckMenu() {
         LoginView.deckScene = sceneCreator("DeckView.fxml");
+        LoginView.setSize(LoginView.deckScene, 976, 1072);
         LoginView.stage.setScene(LoginView.deckScene);
+        LoginView.stage.centerOnScreen();
         DeckView.run();
     }
 
@@ -78,6 +80,7 @@ public class MainView {
             LoginView.isMute = isMute;
             ((ToggleButton) LoginView.loginScene.lookup("#mute")).setSelected(isMute);
             LoginView.stage.setScene(LoginView.loginScene);
+            LoginView.stage.centerOnScreen();
         } catch (Exception e) {
             e.printStackTrace();
         }

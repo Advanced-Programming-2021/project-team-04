@@ -2,7 +2,7 @@
     -fx-background-color: #000000;
     -fx-background-image: url("mainbackground.png");
     -fx-background-repeat: stretch;
-    -fx-background-size: 1120 855.4;
+    -fx-background-size: cover;
     -fx-background-position: center center;
 }
 
