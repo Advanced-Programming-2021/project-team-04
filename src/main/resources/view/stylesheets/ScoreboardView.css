@@ -2,7 +2,7 @@
     -fx-background-color: #000000;
     -fx-background-image: url("scoreboard.jpg");
     -fx-background-repeat: stretch;
-    -fx-background-size: 613.2 834.4;
+    -fx-background-size: cover;
     -fx-background-position: center center;
 }
 

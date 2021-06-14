@@ -22,13 +22,14 @@
             <Button text="Delete" styleClass="action" fx:id="delete" onMouseClicked="#delete"/>
             <Button text="Activate" styleClass="action" fx:id="activate" onMouseClicked="#activate"/>
         </HBox>
-        <VBox alignment="CENTER">
+        <VBox alignment="CENTER" spacing="10">
             <TextField fx:id="textField" styleClass="text-field" />
             <Button text="Create Deck" styleClass="create" fx:id="create" onMouseClicked="#create"/>
+            <Button text="Main Menu" fx:id="mainMenu" onMouseClicked="#mainMenu"/>
         </VBox>
     </VBox>
     <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="2" fx:id="next" onMouseClicked="#next"/>
-    <Button text="Main Menu" fx:id="mainMenu" GridPane.columnIndex="1" GridPane.rowIndex="2" onMouseClicked="#mainMenu"/>
+
 
     <stylesheets>
         <URL value="@stylesheets/DeckView.css"/>

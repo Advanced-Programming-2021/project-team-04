@@ -48,7 +48,7 @@ public class LoginView extends Application {
         stage.centerOnScreen();
     }
 
-    private static void setSize(Scene scene, int picHeight, int picWidth) {
+    public static void setSize(Scene scene, int picHeight, int picWidth) {
         double height = Screen.getPrimary().getVisualBounds().getHeight() - 20;
         ((GridPane) scene.getRoot()).setPrefHeight(height);
         ((GridPane) scene.getRoot()).setPrefWidth(picWidth * height / picHeight);

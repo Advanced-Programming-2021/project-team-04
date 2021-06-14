@@ -5,9 +5,8 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Bitron": 39,
-        "Skull Guardian": 3,
-        "Suijin": 1
+        "Bitron": 37,
+        "Skull Guardian": 2
       },
       "sideDeckCards": {},
       "deckName": "Langa"

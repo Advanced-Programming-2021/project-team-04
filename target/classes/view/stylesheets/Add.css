@@ -2,7 +2,7 @@
     -fx-background-color: #000000;
     -fx-background-image: url("addbackground.png");
     -fx-background-repeat: stretch;
-    -fx-background-size: 1246 763;
+    -fx-background-size: cover;
     -fx-background-position: center center;
 }
 
@@ -23,8 +23,8 @@
     -fx-background-color: #ffffff;
 }
 
-#mainMenu {
-    -fx-translate-y: 80;
+#Back {
+    -fx-translate-y: 40;
     -fx-translate-x: 37;
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
@@ -38,7 +38,7 @@
 .add {
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
-    -fx-pref-width: 175;
+    -fx-pref-width: 237;
     -fx-background-color: #000000;
     -fx-border-color: #ffffff;
     -fx-text-fill: #ffffff;
@@ -46,7 +46,7 @@
     -fx-translate-x: -100;
 }
 
-#mainMenu:hover, .add:hover {
+#Back:hover, .add:hover {
     -fx-border-color: #000000;
     -fx-background-color: #ffffff;
     -fx-text-fill: #000000;
