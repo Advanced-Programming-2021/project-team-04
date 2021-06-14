@@ -37,6 +37,8 @@ public class DeckView {
     //TODO labels for number of cards
     //TODO test with side deck not empty
     //TODO add card scene
+    //TODO profile menu
+    //TODO back button in add scene
 
     public static void run() {
         countForDeck = 0;
