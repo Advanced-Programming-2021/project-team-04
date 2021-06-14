@@ -29,24 +29,28 @@
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
-    -fx-background-color: #ffffff;
+    -fx-background-color: #000000;
     -fx-border-color: #ffffff;
     -fx-font-size: 25.4;
+    -fx-text-fill: #ffffff;
 }
 
 .add {
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
-    -fx-background-color: #ffffff;
+    -fx-background-color: #000000;
     -fx-border-color: #ffffff;
+    -fx-text-fill: #ffffff;
     -fx-font-size: 25.4;
     -fx-translate-x: -100;
 }
 
 #mainMenu:hover, .add:hover {
-    -fx-border-color: #ffffff;
-    -fx-background-color: #0023ff;
+    -fx-border-color: #000000;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
 }
+
 
 

@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 public class DeckView {
 
     private static final ArrayList<PlayerDeck> allDecks = MainController.getInstance().getLoggedIn().getAllPlayerDecks();
+    private static final ArrayList<String> allCards = new ArrayList<>(MainController.getInstance().getLoggedIn().getAllCardsHashMap().keySet());
     private static int count;
     private static ArrayList<String> mainCards = new ArrayList<>(allDecks.get(count).getMainDeckCards().keySet()); //TODO when a card count reaches 0 remove it
     private static LinkedHashMap<String, Short> mainCardsHashMap = allDecks.get(count).getMainDeckCards();
@@ -27,12 +28,17 @@ public class DeckView {
     private static LinkedHashMap<String, Short> sideCardsHashMap = allDecks.get(count).getSideDeckCards();
     private static int countForMain;
     private static int countForSide;
+    private static int countForAdd;
     private static Card firstCard;
     private static Card secondCard;
-    private static Scene scene;
+    private static Scene sceneForAdding;
+    private static Scene sceneForOneDeck;
     private static final Card emptyCard = new Card();
 
     public static void run() {
+        countForSide = 0;
+        countForMain = 0;
+        countForAdd = 0;
         count = 0;
         showDetails();
         handleButtons();
@@ -74,10 +80,6 @@ public class DeckView {
         showDetails();
     }
 
-    public void edit() {
-        //TODO create fxml for new scene
-    }
-
     public void delete() {
         DeckController.getInstance().deleteDeck(allDecks.get(count).getDeckName());
         if (count == allDecks.size())
@@ -100,12 +102,18 @@ public class DeckView {
         handleButtons();
     }
 
-    public void addCard() {
+    public void addCardToMain() {
+        DeckController.getInstance().addCardToDeck(allDecks.get(count).getDeckName(), allCards.get(countForAdd), true);
+    }
 
+    public void addCardToSide() {
+        DeckController.getInstance().addCardToDeck(allDecks.get(count).getDeckName(), allCards.get(countForAdd), false);
     }
 
     public void removeCardFromMain() {
         DeckController.getInstance().removeCardFromDeck(allDecks.get(count).getDeckName(), mainCards.get(countForMain), true);
+        if (mainCardsHashMap.get(mainCards.get(countForMain)) == 0)
+            mainCards.remove(countForMain);
         if (countForMain == mainCards.size())
             countForMain--;
         showDeckCards();
@@ -114,37 +122,68 @@ public class DeckView {
 
     public void removeCardFromSide() {
         DeckController.getInstance().removeCardFromDeck(allDecks.get(count).getDeckName(), sideCards.get(countForSide), false);
+        if (sideCardsHashMap.get(sideCards.get(countForSide)) == 0)
+            sideCards.remove(countForSide);
         if (countForSide == sideCards.size())
             countForSide--;
         showDeckCards();
         handleButtonForCards();
     }
 
-    public void deckScene() {
-        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("Deck.fxml"));
+    public void addScene() {
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("Add.fxml"));
         try {
-            scene = new Scene(fxmlLoader.load());
-            showDeckCards();
-            LoginView.stage.setScene(scene);
+            sceneForAdding = new Scene(fxmlLoader.load());
+            showPlayerCards();
+            LoginView.stage.setScene(sceneForAdding);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void deckScene() {
+        FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("Deck.fxml"));
+        try {
+            sceneForOneDeck = new Scene(fxmlLoader.load());
+            showDeckCards();
+            LoginView.stage.setScene(sceneForOneDeck);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void showPlayerCards() {
+        firstCard = Card.getCardByName(allCards.get(countForAdd));
+        if (countForAdd + 1 == allCards.size()) secondCard = emptyCard;
+        else secondCard = Card.getCardByName(allCards.get(countForAdd + 1));
+        ImageView first = (ImageView) sceneForAdding.lookup("#first");
+        ImageView second = (ImageView) sceneForAdding.lookup("#second");
+        Image firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+        Image secondImage;
+        if (countForAdd + 1 == allCards.size()) {
+            secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+        }
+        else {
+            secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+        }
+        first.setImage(firstImage);
+        second.setImage(secondImage);
     }
 
     private void showDeckCards() {
         firstCard = Card.getCardByName(mainCards.get(countForMain));
         if (!sideCards.isEmpty()) {
             secondCard = Card.getCardByName(sideCards.get(countForSide));
-            ImageView second = (ImageView) scene.lookup("#second");
+            ImageView second = (ImageView) sceneForOneDeck.lookup("#second");
             Image secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
             second.setImage(secondImage);
         } else {
             secondCard = emptyCard;
-            ImageView second = (ImageView) scene.lookup("#second");
+            ImageView second = (ImageView) sceneForOneDeck.lookup("#second");
             Image secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
             second.setImage(secondImage);
         }
-        ImageView first = (ImageView) scene.lookup("#first");
+        ImageView first = (ImageView) sceneForOneDeck.lookup("#first");
         Image firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
         first.setImage(firstImage);
     }
@@ -169,36 +208,22 @@ public class DeckView {
         showDeckCards();
     }
 
-//    private void createDeck(Matcher matcher) {
-//        DeckController.getInstance().createDeck(matcher.group("name").trim());
-//    }
-//
-//    private void deleteDeck(Matcher matcher) {
-//        DeckController.getInstance().deleteDeck(matcher.group("name").trim());
-//    }
-//
-//    private void activateDeck(Matcher matcher) {
-//        DeckController.getInstance().activateDeck(matcher.group("name").trim());
-//    }
-//
-//    private void addCardToDeck(Matcher matcher, boolean isMainDeck) {
-//        DeckController.getInstance().addCardToDeck(matcher.group("deckName").trim(), matcher.group("cardName").trim(), isMainDeck);
-//    }
-//
-//    private void removeCardFromDeck(Matcher matcher, boolean isMainDeck) {
-//        DeckController.getInstance().removeCardFromDeck(matcher.group("deckName").trim(), matcher.group("cardName").trim(), isMainDeck);
-//    }
-//
-//    private void printAllDecks() {
-//        DeckController.getInstance().printAllDecks();
-//    }
-//
-//    private void printDeck(Matcher matcher, boolean isMainDeck) {
-//        DeckController.getInstance().printDeck(matcher.group("deckName").trim(), isMainDeck);
-//    }
-//
-//    private void printAllCards() {
-//        DeckController.getInstance().printAllCards();
-//    }
+    public void handleButtonsForAdd() {
+        sceneForAdding.lookup("#back").setDisable(countForAdd == 0);
+        sceneForAdding.lookup("#next").setDisable(countForAdd == allDecks.size() - 1);
+        if (countForAdd == 0 && allDecks.isEmpty()) sceneForAdding.lookup("#next").setDisable(true);
+    }
+
+    public void nextForAdd() {
+        countForAdd++;
+        handleButtonsForAdd();
+        showPlayerCards();
+    }
+
+    public void backForAdd() {
+        countForAdd--;
+        handleButtonsForAdd();
+        showPlayerCards();
+    }
 
 }
