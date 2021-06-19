@@ -1,10 +1,10 @@
 {
-  "Command Knight": "model.cards.specialcards.CommandKnight",
-  "Messenger of peace": "model.cards.specialcards.MessengerOfPeace",
-  "The Calculator": "model.cards.specialcards.TheCalculator",
-  "Change of Heart": "model.cards.specialcards.ChangeOfHeart",
-  "Man-Eater Bug": "model.cards.specialcards.ManEaterBug",
-  "United We Stand": "model.cards.specialcards.UnitedWeStand",
-  "Suijin": "model.cards.specialcards.Suijin",
-  "Swords of Revealing Light": "model.cards.specialcards.SwordsOfRevealingLight"
+  "Command Knight": "yugioh.model.cards.specialcards.CommandKnight",
+  "Messenger of peace": "yugioh.model.cards.specialcards.MessengerOfPeace",
+  "The Calculator": "yugioh.model.cards.specialcards.TheCalculator",
+  "Change of Heart": "yugioh.model.cards.specialcards.ChangeOfHeart",
+  "Man-Eater Bug": "yugioh.model.cards.specialcards.ManEaterBug",
+  "United We Stand": "yugioh.model.cards.specialcards.UnitedWeStand",
+  "Suijin": "yugioh.model.cards.specialcards.Suijin",
+  "Swords of Revealing Light": "yugioh.model.cards.specialcards.SwordsOfRevealingLight"
 }
