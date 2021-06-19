@@ -1,6 +1,6 @@
 .root {
     -fx-background-color: #000000;
-    -fx-background-image: url("deckbackground.png");
+    -fx-background-image: url("deckbackground.jpg");
     -fx-background-repeat: stretch;
     -fx-background-size: cover;
     -fx-background-position: center center;
