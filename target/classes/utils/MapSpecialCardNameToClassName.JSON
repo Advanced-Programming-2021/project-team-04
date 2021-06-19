@@ -6,5 +6,9 @@
   "Man-Eater Bug": "model.cards.specialcards.ManEaterBug",
   "United We Stand": "model.cards.specialcards.UnitedWeStand",
   "Suijin": "model.cards.specialcards.Suijin",
-  "Swords of Revealing Light": "model.cards.specialcards.SwordsOfRevealingLight"
+  "Swords of Revealing Light": "model.cards.specialcards.SwordsOfRevealingLight",
+  "Sword of dark destruction": "model.cards.specialcards.SwordOfDarkDestruction",
+  "Black Pendant": "model.cards.specialcards.BlackPendant",
+  "Magnum Shield": "model.cards.specialcards.MagnumShield",
+  "Scanner": "model.cards.specialcards.Scanner"
 }

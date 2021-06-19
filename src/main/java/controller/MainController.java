@@ -4,8 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import model.AI;
 import model.Account;
+import model.Field;
 import model.Game;
 import view.IO;
+
+import java.io.File;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -35,6 +39,12 @@ public class MainController {
             return true;
         }
         return false;
+    }
+
+    public void readDuel(String gameName) {
+        DuelController.getInstance().setGame(Objects.requireNonNull(ImportAndExport.getInstance().readGame(gameName)));
+        DuelController.getInstance().getGame().getCurrentPlayer().setField(ImportAndExport.getInstance().readField("first_field"));
+        DuelController.getInstance().getGame().getTheOtherPlayer().setField(ImportAndExport.getInstance().readField("second_field"));
     }
 
     private boolean errorForNewGame(String username, int rounds) {

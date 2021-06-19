@@ -1,8 +1,9 @@
 package view;
 
 import controller.DuelController;
-import model.cards.Card;
+import controller.ImportAndExport;
 import model.CardStatusInField;
+import model.cards.Card;
 import model.cards.MonsterCard;
 import model.cards.SpellAndTrapCard;
 
@@ -13,21 +14,23 @@ import java.util.regex.Pattern;
 
 public class DuelView extends ViewMenu {
 
-    private static DuelView singleInstance = null;
-
-    private boolean isRPSDone = false;
-
     private static final String[] RPS = {"r", "p", "s"};
-
+    private static DuelView singleInstance = null;
     private final Random random = new Random();
-
     private final Pattern selectCardPattern = Pattern.compile("^s(?:elect)? " +
             "(?=.*(?:-(?:(?:-monster|-spell|-hand)|[msh])|-(?:-field|f)))(?=.*(?<number>\\d+)).+");
     private final Pattern attackPattern = Pattern.compile("att(?:ack)? (?<number>\\d+)");
     private final Pattern cheatDecreaseLPPattern = Pattern.compile("Death(?: to)?(?: the)? Mechanisms (?<number>\\d+)");
     private final Pattern cheatIncreaseLPPattern = Pattern.compile("Underworld Blues (?<number>\\d+)");
+    private boolean isRPSDone = false;
 
     private DuelView() { }
+
+    public static DuelView getInstance() {
+        if (singleInstance == null)
+            singleInstance = new DuelView();
+        return singleInstance;
+    }
 
     @Override
     public void run() {
@@ -77,14 +80,18 @@ public class DuelView extends ViewMenu {
                 DuelController.getInstance().cheatSetWinner();
             else if (command.matches("Drunk Space Pirate"))
                 DuelController.getInstance().cheatShowRivalHand();
+            // TODO remove this son of a bitch below
+            else if (command.equals("write"))
+                writeGame();
+            // TODO remove this son of a bitch below
             else IO.getInstance().printInvalidCommand();
         }
     }
 
-    public static DuelView getInstance() {
-        if (singleInstance == null)
-            singleInstance = new DuelView();
-        return singleInstance;
+    private void writeGame() {
+        ImportAndExport.getInstance().writeToJson("src/main/resources/games/first_game.JSON", DuelController.getInstance().getGame());
+        ImportAndExport.getInstance().writeToJson("src/main/resources/fields/first_field.JSON", DuelController.getInstance().getGame().getCurrentPlayer().getField());
+        ImportAndExport.getInstance().writeToJson("src/main/resources/fields/second_field.JSON", DuelController.getInstance().getGame().getTheOtherPlayer().getField());
     }
 
     public void runForRPS() {
@@ -267,7 +274,8 @@ public class DuelView extends ViewMenu {
     }
 
     public boolean wantsToActivateTrap(String name) {
-        if (DuelController.getInstance().handleMirageDragon("")) return false; //TODO name of the person activating this trap
+        if (DuelController.getInstance().handleMirageDragon(""))
+            return false; //TODO name of the person activating this trap
         IO.getInstance().wantToActivate(name);
         String activate = IO.getInstance().getInputMessage();
         return activate.toLowerCase().matches("y(?:es)?");

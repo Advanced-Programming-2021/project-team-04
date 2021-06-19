@@ -25,11 +25,14 @@ public class Card {
     protected int price;
     @Expose
     protected String description;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected int allowedNumber = 3;
     protected Duelist Owner;
     @Expose
     protected String ownerUsername;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean hasBeenUsedInThisTurn = false;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean hasBeenSetOrSummoned = false;
 
     static {

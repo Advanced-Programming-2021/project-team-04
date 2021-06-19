@@ -9,6 +9,7 @@ import model.cards.Card;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -25,18 +26,16 @@ public class GameDeck {
         deckName = playerDeck.getDeckName();
         playerDeck.getMainDeckCards().keySet().forEach(n -> {
             for (var i = 0; i < playerDeck.getMainDeckCards().get(n); i++) {
-                Card card = null;
                 try {
-                    card = ImportAndExport.getInstance().readCard(n);
+                    mainDeck.add(Objects.requireNonNull(ImportAndExport.getInstance().readCard(n)));
                 } catch (Exception ignored) { }
-                mainDeck.add(card);
             }
         });
         Collections.shuffle(mainDeck);
         playerDeck.getSideDeckCards().keySet().forEach(n -> {
             for (var i = 0; i < playerDeck.getSideDeckCards().get(n); i++) {
                 try {
-                    sideDeck.add(ImportAndExport.getInstance().readCard(n));
+                    sideDeck.add(Objects.requireNonNull(ImportAndExport.getInstance().readCard(n)));
                 } catch (Exception ignored) { }
             }
         });

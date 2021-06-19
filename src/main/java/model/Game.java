@@ -1,5 +1,6 @@
 package model;
 
+import com.google.gson.annotations.Expose;
 import controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,26 +11,45 @@ import java.util.*;
 @Getter
 @Setter
 public class Game {
+
+    @Expose
     boolean isGameFinished = false;
+    @Expose
     private HashMap<Duelist, Integer> maxLifePoint;
-    private Duelist currentPlayer, theOtherPlayer;
+    @Expose
+    private String currentPlayerUsername, theOtherPlayerUsername;
+    private Duelist currentPlayer = null, theOtherPlayer = null;
+    @Expose
     private int rounds;
+    @Expose
     private int currentRound = 0;
+    @Expose
     private Phases currentPhase;
+    @Expose
     private GameRounds totalRounds;
+    @Expose
     private Card selectedCard;
+    @Expose
     private boolean summonedInThisTurn;
+    @Expose
     private ArrayList<Card> cardsWithChangedPositions;
+    @Expose
     private ArrayList<Duelist> roundWinners;
+    @Expose
     private Card lastSetCard;
+    @Expose
     private ArrayList<Card> cardsWhichAttacked;
+    @Expose
     private Duelist[] winnerOfEachRound = new Duelist[3];
+    @Expose
     private boolean isAI;
 
     public Game(Duelist firstPlayer, Duelist secondPlayer, int rounds, boolean isAI) {
         setCurrentPlayer(firstPlayer);
+        setCurrentPlayerUsername(firstPlayer.getUsername());
         setRounds(rounds);
         setTheOtherPlayer(secondPlayer);
+        setTheOtherPlayerUsername(secondPlayer.getUsername());
         setAI(isAI);
         initializeGame();
         setCurrentPhase(Phases.DRAW_PHASE);
@@ -152,5 +172,15 @@ public class Game {
             ((Account) winner).setScore(((Account) winner).getScore() + 1000);
         if (rounds == 1) finishWithOneRound(loser, winner);
         else finishWithThreeRounds(loser, winner);
+    }
+
+    public Duelist getCurrentPlayer() {
+        if (Objects.isNull(currentPlayer)) setCurrentPlayer(Account.getAccountByUsername(currentPlayerUsername));
+        return currentPlayer;
+    }
+
+    public Duelist getTheOtherPlayer() {
+        if (Objects.isNull(theOtherPlayer)) setTheOtherPlayer(Account.getAccountByUsername(theOtherPlayerUsername));
+        return theOtherPlayer;
     }
 }

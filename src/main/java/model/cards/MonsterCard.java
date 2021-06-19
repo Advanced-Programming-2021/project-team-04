@@ -14,7 +14,9 @@ public class MonsterCard extends Card {
     protected int classAttackPower;
     @Expose
     protected int classDefensePower;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected int thisCardAttackPower;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected int thisCardDefensePower;
     @Expose
     protected int level;
@@ -24,10 +26,15 @@ public class MonsterCard extends Card {
     protected String cardType;
     @Expose
     protected String attribute;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected MonsterCardModeInField monsterCardModeInField;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean isAbleToBeRemoved = true;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean isAbleToAttack = true;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean isChangedPosition = false;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean attacked = false;
 
     public MonsterCard() {
