@@ -17,8 +17,8 @@ public class DeckView extends ViewMenu {
             "(?=.*-(?:-card|c) (?<cardName>[^-]+))(?=.*-(?:-deck|d) (?<deckName>\\S+)).+$");
     private final Pattern removeCardFromDeckPattern = Pattern.compile("^(?:deck )?rm?[- ]c(?:ard)? " +
             "(?=.*-(?:-card|c) (?<cardName>[^-]+))(?=.*-(?:-deck|d) (?<deckName>\\S+)).+$");
-    private final Pattern showDeckPattern = Pattern.compile("^(?:deck )?show " +
-            "(?=.*-(?:-deck|d) (?<deckName>\\S+)).+$");
+    private final Pattern showDeckPattern =
+            Pattern.compile("^(?:deck )?show (?=.*--d(?:eck)?(?:-n(?:ame)?)? (?<deckName>\\S+)).+$");
 
     private DeckView() {}
 
