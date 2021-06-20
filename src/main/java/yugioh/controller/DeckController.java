@@ -98,7 +98,7 @@ public class DeckController {
             var toPrint = new StringBuilder("Deck: " + deckName + "\n");
             sortCards(deckName);
             if (isMain) {
-                toPrint.append("yogioh.Main deck:\n");
+                toPrint.append("Main deck:\n");
                 thisPlayer.getDeckByName(deckName).getMainDeckCards().keySet().forEach(c -> {
                     Card card = null;
                     try {

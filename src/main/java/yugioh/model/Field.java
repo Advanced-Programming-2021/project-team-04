@@ -1,5 +1,6 @@
 package yugioh.model;
 
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.cards.Card;
@@ -16,12 +17,19 @@ import java.util.stream.Stream;
 @Setter
 public class Field {
 
+    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<Card> graveyard = new ArrayList<>();
+    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<Card> deckZone = new ArrayList<>();
+    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
+    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<MonsterCard> monsterCards = new ArrayList<>();
+    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<Card> hand = new ArrayList<>();
+    @Expose // TODO: 6/19/2021 delete this @Expose
     private SpellAndTrapCard fieldZone;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<Card> sideDeck = new ArrayList<>();
 
     public Field(GameDeck gameDeck) {
@@ -30,23 +38,20 @@ public class Field {
     }
 
     public ArrayList<Scanner> getActiveScanners() {
-        return (ArrayList<Scanner>) monsterCards.stream().filter(m -> m.getName().equals("Scanner")).map(m -> (Scanner) m).collect(Collectors.toList());
+        return (ArrayList<Scanner>) monsterCards.stream().filter(m -> m.getName().equals("Scanner"))
+                .map(m -> (Scanner) m).collect(Collectors.toList());
     }
 
     public boolean isTributesLevelSumValid(int sum, int n) {
-        if (sum < 0) return false;
-        if (sum > 0 && n == 0)
-            return false;
-        if (sum == 0)
-            return true;
-        return isTributesLevelSumValid(sum, n - 1) ||
-                isTributesLevelSumValid(sum - monsterCards.get(n - 1).getLevel(), n - 1);
+        if ((sum < 0) || (sum > 0 && n == 0)) return false;
+        if (sum == 0) return true;
+        return isTributesLevelSumValid(sum, n - 1) || isTributesLevelSumValid(sum - monsterCards.get(n - 1).getLevel(), n - 1);
     }
 
     public String showGraveyard() {
         var toPrint = new StringBuilder();
         graveyard.forEach(c -> toPrint.append(c.getName()).append(": ").append(c.getDescription()).append("\n"));
-//        toPrint.setLength(toPrint.length() - 1);
+        if (!toPrint.isEmpty()) toPrint.setLength(toPrint.length() - 1);
         return toPrint.toString();
     }
 
@@ -69,13 +74,8 @@ public class Field {
     }
 
     public void resetAllCards() {
-        ArrayList<MonsterCard> copyMonsters = monsterCards;
-        ArrayList<SpellAndTrapCard> copySpells = spellAndTrapCards;
-        SpellAndTrapCard copyFieldCard = fieldZone;
-        copyMonsters.stream().filter(Objects::nonNull).forEach(MonsterCard::reset);
-        Stream.concat(copySpells.stream(), Stream.of(copyFieldCard)).filter(Objects::nonNull).forEach(SpellAndTrapCard::reset);
-        monsterCards = copyMonsters;
-        fieldZone = copyFieldCard;
+        monsterCards.stream().filter(Objects::nonNull).forEach(MonsterCard::reset);
+        Stream.concat(spellAndTrapCards.stream(), Stream.of(fieldZone)).filter(Objects::nonNull).forEach(SpellAndTrapCard::reset);
     }
 
     public SpellAndTrapCard getSetSpellAndTrapCard(String cardName) {

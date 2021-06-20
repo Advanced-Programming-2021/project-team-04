@@ -30,7 +30,6 @@ public class DeckView extends ViewMenu {
 
     @Override
     public void run() {
-        System.out.println("wtf");
         String command;
         while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
                 !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {

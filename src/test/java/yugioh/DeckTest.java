@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 public class DeckTest {
@@ -174,7 +175,7 @@ public class DeckTest {
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().printDeck("Woods of Ypres", true);
         Assertions.assertEquals("Deck: Woods of Ypres\n" +
-                "yogioh.Main deck:\n" +
+                "Main deck:\n" +
                 "Monsters:\n" +
                 "Spell and Traps:\r\n", outputStream.toString());
     }
@@ -207,8 +208,8 @@ public class DeckTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DeckController.getInstance().printAllCards();
-        Assertions.assertEquals("Curtain of the dark ones:A curtain that a spellcaster made, it is said to raise a dark power.\n" +
-                "Harpie's Feather Duster:Destroy all Spells and Traps your opponent controls.\r\n", outputStream.toString());
+        Assertions.assertEquals("Curtain of the dark ones: A curtain that a spellcaster made, it is said to raise a dark power.\n" +
+                "Harpie's Feather Duster: Destroy all Spells and Traps your opponent controls.\n\r\n", outputStream.toString());
         MainController.getInstance().setLoggedIn(thisAccount);
     }
 

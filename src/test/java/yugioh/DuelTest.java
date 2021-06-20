@@ -1,6 +1,7 @@
 package yugioh;
 
 import yugioh.controller.DuelController;
+import yugioh.controller.ImportAndExport;
 import yugioh.controller.MainController;
 import yugioh.controller.ShopController;
 import yugioh.model.*;
@@ -24,6 +25,12 @@ public class DuelTest {
     static Account theOtherPlayer = new Account("Delilah", "Jessica", "Ricca");
     static SpellAndTrapCard card;
 
+    static {
+        try {
+            card = (SpellAndTrapCard) ImportAndExport.getInstance().readCard("Dark Hole");
+        } catch (Exception ignored) { }
+    }
+
     @BeforeAll
     public static void setup() {
         ShopController.getInstance();
@@ -32,6 +39,8 @@ public class DuelTest {
         PlayerDeck playerDeck = new PlayerDeck("Damaged");
         for (int i = 0; i < 40; i++)
             playerDeck.addCardToMainDeck(cardName);
+        thisPlayer.addDeck(playerDeck);
+        theOtherPlayer.addDeck(playerDeck);
         thisPlayer.setActivePlayerDeck("Damaged");
         theOtherPlayer.setActivePlayerDeck("Damaged");
         DuelController.getInstance().setGame(new Game(thisPlayer, theOtherPlayer, 3, false));
@@ -160,6 +169,7 @@ public class DuelTest {
 
     @Test
     public void barbarosTestThree() {
+        // TODO: 6/20/2021 Mfing allCards
         theOtherPlayer.getField().getMonsterCards().add((MonsterCard) Card.getCardByName("Baby dragon"));
         MonsterCard barbaros = (MonsterCard) Card.getCardByName("Beast King Barbaros");
         DuelController.getInstance().getGame().setSelectedCard(barbaros);
@@ -181,6 +191,7 @@ public class DuelTest {
 
     @Test
     public void gateGuardianTest() {
+        // TODO: 6/20/2021 Mfing allCards again.
         ShopController.getInstance().buyCard("Gate Guardian");
         MonsterCard gateGuardian = (MonsterCard) Card.getCardByName("Gate Guardian");
         gateGuardian.setOwner(thisPlayer);
@@ -203,6 +214,7 @@ public class DuelTest {
 
     @Test
     public void theTrickyTest() {
+        // TODO: 6/20/2021 Same problem with this mfing allCards. also we don't check if the number we give is a monster card or spell and trap card. should we check it for the number that the player gives in the middle of a game?
         MonsterCard theTricky = (MonsterCard) Card.getCardByName("The Tricky");
         theTricky.setOwner(thisPlayer);
         ArrayList<Card> backupCards = thisPlayer.getAllCardsArrayList();
@@ -235,7 +247,8 @@ public class DuelTest {
         thisPlayer.getField().setGraveyard(new ArrayList<>());
         thisPlayer.getField().getGraveyard().add(spiralSerpent);
         ShopController.getInstance().buyCard("Baby dragon");
-        thisPlayer.getField().getHand().add((MonsterCard) thisPlayer.getAllCardsArrayList().get(0));
+        // TODO: 6/20/2021 Shit got pretty complicated since I used a HashMap<String, Short> instead of ArrayList<Card> for allCards. Change tests and then remove the mfing ArrayList.
+        thisPlayer.getField().getHand().add(thisPlayer.getAllCardsArrayList().get(0));
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n".getBytes());
         System.setIn(input);
@@ -341,46 +354,7 @@ public class DuelTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().cheatSeeMyDeck();
-        Assertions.assertEquals("Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\r\n", outputStream.toString());
+        Assertions.assertEquals(("Dark Hole" + System.lineSeparator()).repeat(DuelController.getInstance().getGame().getCurrentPlayer().getField().getDeckZone().size()), outputStream.toString());
     }
 
     @Test
@@ -482,7 +456,7 @@ public class DuelTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().showGraveyard();
-        Assertions.assertEquals("Spell Absorption:Each time a Spell Card is activated," +
+        Assertions.assertEquals("Spell Absorption: Each time a Spell Card is activated," +
                 " gain 500 Life Points immediately after it resolves.\r\n", outputStream.toString());
         thisPlayer.getField().setGraveyard(GY);
     }
@@ -547,16 +521,19 @@ public class DuelTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().ritualSummon();
-        Assertions.assertEquals("enter the number of the ritual card you choose:\r\n" +
-                "enter the numbers of the card you want to tribute divided by a space:\r\n" +
-                "choose the monster mode (Attack or Defense):\r\n" +
-                "summoned successfully\r\n", outputStream.toString());
+        Assertions.assertEquals("""
+                enter the number of the ritual card you choose:\r
+                enter the numbers of the card you want to tribute divided by a space:\r
+                choose the monster mode (Attack or Defense):\r
+                summoned successfully\r
+                """, outputStream.toString());
         thisPlayer.getField().setHand(handBackUp);
         thisPlayer.getField().setMonsterCards(backUpCards);
     }
 
     @Test
     public void setMonsterTest() {
+        // TODO: 6/20/2021 WTF does happen here? I think hand is empty for some reason. same with drawTest and attackInAttackDrawTest.
         MonsterCard silverFag = (MonsterCard) Card.getCardByName("Silver Fang");
         silverFag.setOwner(thisPlayer);
         ArrayList<Card> hand = thisPlayer.getField().getHand();
@@ -577,6 +554,7 @@ public class DuelTest {
 
     @Test
     public void setTrapSpellTest() {
+        // TODO: 6/20/2021 Map seems weird. Is it ok?
         SpellAndTrapCard vanity = (SpellAndTrapCard) Card.getCardByName("Vanity's Emptiness");
         vanity.setOwner(thisPlayer);
         ArrayList<Card> hand = thisPlayer.getField().getHand();
@@ -1101,6 +1079,7 @@ public class DuelTest {
 
     @Test
     public void magicJamamerTest() {
+        // TODO: 6/20/2021 Empty hand again
         SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) Card.getCardByName("Umiiruka");
         spellAndTrapCard.setOwner(thisPlayer);
         SpellAndTrapCard magicJamamer = (SpellAndTrapCard) Card.getCardByName("Magic Jamamer");
@@ -1270,6 +1249,7 @@ public class DuelTest {
 
     @Test
     public void activateTest() {
+        // TODO: 6/20/2021 Actually this one might have a real problem, but I don't have the brain to find out
         SpellAndTrapCard inTheCloset = (SpellAndTrapCard) Card.getCardByName("Closed Forest");
         inTheCloset.setOwner(thisPlayer);
         DuelController.getInstance().getGame().setSelectedCard(inTheCloset);
@@ -1372,6 +1352,7 @@ public class DuelTest {
 
     @Test
     public void directAttack() {
+        // TODO: 6/20/2021 Again with the empty hand.
         theOtherPlayer.setLP(8000);
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Wattkid");
         monsterCard.setOwner(thisPlayer);
@@ -1385,7 +1366,22 @@ public class DuelTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().directAttack();
-        Assertions.assertEquals("you opponent receives " + monsterCard.getThisCardAttackPower() + " battle damage\r\n", outputStream.toString());
+        Assertions.assertEquals("you opponent receives " + monsterCard.getThisCardAttackPower() + " battle damage\r\n" +
+                "Ricca: 7000\n" +
+                "\tc \tc \tc \tc \tc \n" +
+                "35\n" +
+                "\tE \tE \tE \tE \tE \n" +
+                "\tE \tE \tE \tE \tE \n" +
+                "0\t\t\t\t\t\tE \n" +
+                "\n" +
+                "--------------------------\n" +
+                "\n" +
+                "E \t\t\t\t\t\t0\n" +
+                "\tE \tE \tDH\tE \tE \n" +
+                "\tE \tE \tE \tE \tE \n" +
+                "  \t\t\t\t\t\t35\n" +
+                "c \tc \tc \tc \tc \t\n" +
+                "Why Do I Exist: 8000\r\n", outputStream.toString());
         DuelController.getInstance().getGame().setCurrentPhase(phase);
         thisPlayer.getField().setMonsterCards(monsterCards);
     }
@@ -1488,6 +1484,7 @@ public class DuelTest {
 
     @Test
     public void attackError7() {
+        // TODO: 6/20/2021 This one needs actual controller debugging
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Slot Machine");
         MonsterCard attacked = (MonsterCard) Card.getCardByName("Spiral Serpent");
         DuelController.getInstance().getGame().setSelectedCard(monsterCard);
@@ -1511,6 +1508,7 @@ public class DuelTest {
 
     @Test
     public void attackInAttackWinTest() {
+        // TODO: 6/20/2021 Empty hand
         theOtherPlayer.setLP(8000);
         DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
         MonsterCard attacked = (MonsterCard) Card.getCardByName("Wattkid");
@@ -1581,13 +1579,29 @@ public class DuelTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().attack(1);
-        Assertions.assertEquals("Your monster card is destroyed and you received 200 battle damage\r\n", outputStream.toString());
+        Assertions.assertEquals("Your monster card is destroyed and you received 200 battle damage" + System.lineSeparator() +
+                "Ricca: 8000" + System.lineSeparator() +
+                "\tc \tc \tc \tc \tc " + System.lineSeparator() +
+                "35" + System.lineSeparator() +
+                "\tE \tE \tE \tE \tE " + System.lineSeparator() +
+                "\tE \tE \tOO\tE \tE " + System.lineSeparator() +
+                "0\t\t\t\t\t\tE " + System.lineSeparator() +
+                System.lineSeparator() +
+                "--------------------------" + System.lineSeparator() +
+                System.lineSeparator() +
+                "E \t\t\t\t\t\t1" + System.lineSeparator() +
+                "\tE \tE \tE \tE \tE " + System.lineSeparator() +
+                "\tE \tE \tE \tE \tE " + System.lineSeparator() +
+                "  \t\t\t\t\t\t35" + System.lineSeparator() +
+                "c \tc \tc \tc \tc \t" + System.lineSeparator() +
+                "Why Do I Exist: 7800" + System.lineSeparator(), outputStream.toString());
         thisPlayer.getField().setMonsterCards(myMonsters);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
     }
 
     @Test
     public void attackInDefenseWinTest() {
+        // TODO: 6/20/2021 Map once again
         DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
         MonsterCard attacked = (MonsterCard) Card.getCardByName("Wattkid");
         MonsterCard attacker = (MonsterCard) Card.getCardByName("Baby dragon");
@@ -1613,6 +1627,7 @@ public class DuelTest {
 
     @Test
     public void attackInDefenseDrawTest() {
+        // TODO: 6/20/2021 Again just map
         DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
         MonsterCard attacked = (MonsterCard) Card.getCardByName("Fireyarou");
         MonsterCard attacker = (MonsterCard) Card.getCardByName("Wattkid");
@@ -1638,6 +1653,7 @@ public class DuelTest {
 
     @Test
     public void attackInDefenseLossTest() {
+        // TODO: 6/20/2021 Empty hand
         thisPlayer.setLP(8000);
         DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
         MonsterCard attacker = (MonsterCard) Card.getCardByName("Wattkid");

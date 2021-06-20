@@ -4,8 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.AI;
 import yugioh.model.Account;
+import yugioh.model.Field;
 import yugioh.model.Game;
 import yugioh.view.IO;
+
+import java.io.File;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -37,9 +41,19 @@ public class MainController {
         return false;
     }
 
+//    public void readDuel(String gameName) {
+//        DuelController.getInstance().setGame(Objects.requireNonNull(ImportAndExport.getInstance().readGame(gameName)));
+//        DuelController.getInstance().getGame().getCurrentPlayer().setField(ImportAndExport.getInstance().readField("first_field"));
+//        DuelController.getInstance().getGame().getTheOtherPlayer().setField(ImportAndExport.getInstance().readField("second_field"));
+//    }
+
     private boolean errorForNewGame(String username, int rounds) {
         if (!Account.getAllAccounts().contains(Account.getAccountByUsername(username))) {
             IO.getInstance().playerDoesntExist();
+            return false;
+        }
+        if (rounds != 1 && rounds != 3) {
+            IO.getInstance().invalidNumOfRounds();
             return false;
         }
         Account player2 = Account.getAccountByUsername(username);
@@ -57,10 +71,6 @@ public class MainController {
         }
         if (!player2.getActiveDeck().isDeckValid()) {
             IO.getInstance().invalidDeck(player2.getUsername());
-            return false;
-        }
-        if (rounds != 1 && rounds != 3) {
-            IO.getInstance().invalidNumOfRounds();
             return false;
         }
         return true;
