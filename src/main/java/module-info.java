@@ -1,4 +1,4 @@
-module YoGiOhGame {
+module YuGiOhGame {
     requires javafx.controls;
     requires javafx.fxml;
     requires com.google.gson;

@@ -1,5 +1,6 @@
 package yugioh.model;
 
+import com.google.gson.annotations.Expose;
 import yugioh.controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,26 +11,45 @@ import java.util.*;
 @Getter
 @Setter
 public class Game {
+
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     boolean isGameFinished = false;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private HashMap<Duelist, Integer> maxLifePoint;
-    private Duelist currentPlayer, theOtherPlayer;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
+    private String currentPlayerUsername, theOtherPlayerUsername;
+    private Duelist currentPlayer = null, theOtherPlayer = null;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private int rounds;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private int currentRound = 0;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private Phases currentPhase;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private GameRounds totalRounds;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private Card selectedCard;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private boolean summonedInThisTurn;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private ArrayList<Card> cardsWithChangedPositions;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private ArrayList<Duelist> roundWinners;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private Card lastSetCard;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private ArrayList<Card> cardsWhichAttacked;
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private Duelist[] winnerOfEachRound = new Duelist[3];
+    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private boolean isAI;
 
     public Game(Duelist firstPlayer, Duelist secondPlayer, int rounds, boolean isAI) {
-        setCurrentPlayer(firstPlayer);
         setRounds(rounds);
+        setCurrentPlayer(firstPlayer);
+        setCurrentPlayerUsername(firstPlayer.getUsername());
         setTheOtherPlayer(secondPlayer);
+        setTheOtherPlayerUsername(secondPlayer.getUsername());
         setAI(isAI);
         initializeGame();
         setCurrentPhase(Phases.DRAW_PHASE);
@@ -152,5 +172,15 @@ public class Game {
             ((Account) winner).setScore(((Account) winner).getScore() + 1000);
         if (rounds == 1) finishWithOneRound(loser, winner);
         else finishWithThreeRounds(loser, winner);
+    }
+
+    public Duelist getCurrentPlayer() {
+        if (Objects.isNull(currentPlayer)) setCurrentPlayer(Account.getAccountByUsername(currentPlayerUsername));
+        return currentPlayer;
+    }
+
+    public Duelist getTheOtherPlayer() {
+        if (Objects.isNull(theOtherPlayer)) setTheOtherPlayer(Account.getAccountByUsername(theOtherPlayerUsername));
+        return theOtherPlayer;
     }
 }

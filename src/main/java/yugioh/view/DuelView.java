@@ -1,6 +1,7 @@
 package yugioh.view;
 
 import yugioh.controller.DuelController;
+import yugioh.controller.ImportAndExport;
 import yugioh.model.cards.Card;
 import yugioh.model.CardStatusInField;
 import yugioh.model.cards.MonsterCard;
@@ -13,11 +14,9 @@ import java.util.regex.Pattern;
 
 public class DuelView extends ViewMenu {
 
-    private static DuelView singleInstance = null;
-
-    private boolean isRPSDone = false;
-
     private static final String[] RPS = {"r", "p", "s"};
+
+    private static DuelView singleInstance = null;
 
     private final Random random = new Random();
 
@@ -27,7 +26,15 @@ public class DuelView extends ViewMenu {
     private final Pattern cheatDecreaseLPPattern = Pattern.compile("Death(?: to)?(?: the)? Mechanisms (?<number>\\d+)");
     private final Pattern cheatIncreaseLPPattern = Pattern.compile("Underworld Blues (?<number>\\d+)");
 
+    private boolean isRPSDone = false;
+
     private DuelView() { }
+
+    public static DuelView getInstance() {
+        if (singleInstance == null)
+            singleInstance = new DuelView();
+        return singleInstance;
+    }
 
     @Override
     public void run() {
@@ -77,14 +84,18 @@ public class DuelView extends ViewMenu {
                 DuelController.getInstance().cheatSetWinner();
             else if (command.matches("Drunk Space Pirate"))
                 DuelController.getInstance().cheatShowRivalHand();
+                // TODO remove this son of a bitch below
+            else if (command.equals("write"))
+                writeGame();
+                // TODO remove this son of a bitch above
             else IO.getInstance().printInvalidCommand();
         }
     }
 
-    public static DuelView getInstance() {
-        if (singleInstance == null)
-            singleInstance = new DuelView();
-        return singleInstance;
+    private void writeGame() {
+        ImportAndExport.getInstance().writeToJson("src/main/resources/games/first_game.JSON", DuelController.getInstance().getGame());
+        ImportAndExport.getInstance().writeToJson("src/main/resources/fields/first_field.JSON", DuelController.getInstance().getGame().getCurrentPlayer().getField());
+        ImportAndExport.getInstance().writeToJson("src/main/resources/fields/second_field.JSON", DuelController.getInstance().getGame().getTheOtherPlayer().getField());
     }
 
     public void runForRPS() {

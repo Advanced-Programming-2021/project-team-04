@@ -41,11 +41,12 @@ public class MainController {
         return false;
     }
 
-//    public void readDuel(String gameName) {
-//        DuelController.getInstance().setGame(Objects.requireNonNull(ImportAndExport.getInstance().readGame(gameName)));
-//        DuelController.getInstance().getGame().getCurrentPlayer().setField(ImportAndExport.getInstance().readField("first_field"));
-//        DuelController.getInstance().getGame().getTheOtherPlayer().setField(ImportAndExport.getInstance().readField("second_field"));
-//    }
+    public void readDuel(String gameName) {
+        DuelController.getInstance().setGame(Objects.requireNonNull(ImportAndExport.getInstance().readGame(gameName)));
+        DuelController.getInstance().getGame().getCurrentPlayer().setField(ImportAndExport.getInstance().readField("first_field"));
+        DuelController.getInstance().getGame().getTheOtherPlayer().setField(ImportAndExport.getInstance().readField("second_field"));
+    }
+
 
     private boolean errorForNewGame(String username, int rounds) {
         if (!Account.getAllAccounts().contains(Account.getAccountByUsername(username))) {
