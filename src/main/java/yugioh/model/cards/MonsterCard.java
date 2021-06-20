@@ -9,24 +9,31 @@ import yugioh.model.MonsterCardModeInField;
 @Setter
 public class MonsterCard extends Card {
 
-    @Expose()
+    @Expose
     protected int classAttackPower;
-    @Expose()
+    @Expose
     protected int classDefensePower;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected int thisCardAttackPower;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected int thisCardDefensePower;
-    @Expose()
+    @Expose
     protected int level;
-    @Expose()
+    @Expose
     protected String monsterType;
-    @Expose()
+    @Expose
     protected String cardType;
-    @Expose()
+    @Expose
     protected String attribute;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected MonsterCardModeInField monsterCardModeInField;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean isAbleToBeRemoved = true;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean isAbleToAttack = true;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean isChangedPosition = false;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean attacked = false;
 
     public MonsterCard() {

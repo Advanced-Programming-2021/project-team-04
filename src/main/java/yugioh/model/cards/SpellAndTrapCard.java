@@ -11,12 +11,13 @@ import java.util.ArrayList;
 public class SpellAndTrapCard extends Card {
 
     protected static ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean isActive = false;
-    @Expose()
+    @Expose
     protected boolean isSpell;
-    @Expose()
+    @Expose
     protected String property;
-    @Expose()
+    @Expose
     protected boolean isLimited;
 
     public SpellAndTrapCard() {
@@ -26,9 +27,7 @@ public class SpellAndTrapCard extends Card {
 
     @Override
     public String toString() {
-        var spellAndTrap = "Trap";
-        if (isSpell) spellAndTrap = "Spell";
-        return "Name: " + this.name + "\n" + spellAndTrap + "\nType: " + this.property
+        return "Name: " + this.name + "\n" + (isSpell ? "Spell" : "Trap") + "\nType: " + this.property
                 + "\nDescription: " + this.description;
     }
 
@@ -47,5 +46,4 @@ public class SpellAndTrapCard extends Card {
         }
         else return 2;
     }
-
 }

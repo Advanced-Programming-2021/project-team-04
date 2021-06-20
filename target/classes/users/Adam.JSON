@@ -5,9 +5,9 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Axe Raider": 1,
         "Bitron": 39,
-        "Skull Guardian": 3
+        "Skull Guardian": 3,
+        "Advanced Ritual Art": 8
       },
       "sideDeckCards": {},
       "deckName": "Langa"

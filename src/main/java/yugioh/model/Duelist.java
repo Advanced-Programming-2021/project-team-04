@@ -13,15 +13,15 @@ import java.util.*;
 @Setter
 public abstract class Duelist {
 
-    @Expose()
+    @Expose
     protected ArrayList<PlayerDeck> allPlayerDecks = new ArrayList<>();
-    @Expose()
+    @Expose
     protected LinkedHashMap<String, Short> allCardsHashMap = new LinkedHashMap<>();
-    @Expose()
+    @Expose
     protected String activePlayerDeck;
-    @Expose()
+    @Expose
     protected String username;
-    @Expose()
+    @Expose
     protected String nickname;
     protected ArrayList<Card> allCardsArrayList = new ArrayList<>();
     protected Field field;

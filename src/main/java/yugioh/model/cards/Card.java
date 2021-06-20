@@ -19,17 +19,20 @@ public class Card {
     protected static TreeMap<String, String> nameToDescriptionMap;
     protected static HashMap<String, String> specialCardNameToClassNameMap;
 
-    @Expose()
+    @Expose
     protected String name;
-    @Expose()
+    @Expose
     protected int price;
-    @Expose()
+    @Expose
     protected String description;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected int allowedNumber = 3;
     protected Duelist Owner;
-    @Expose()
+    @Expose
     protected String ownerUsername;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean hasBeenUsedInThisTurn = false;
+    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean hasBeenSetOrSummoned = false;
 
     static {

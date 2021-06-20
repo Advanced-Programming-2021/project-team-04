@@ -4,6 +4,8 @@ import yugioh.model.Duelist;
 import yugioh.model.Field;
 import yugioh.model.cards.MonsterCard;
 
+import java.util.Objects;
+
 public class Scanner extends MonsterCard {
 
     private MonsterCard cardReplaced;
@@ -26,7 +28,6 @@ public class Scanner extends MonsterCard {
         this.cardReplaced = cardReplaced;
     }
 
-
     private void setDescription() {
         this.description = "Once per turn, you can select 1 of your opponent's monsters that is removed from play." +
                 " Until the End Phase, this card's name is treated as the selected monster's name, " +
@@ -43,9 +44,11 @@ public class Scanner extends MonsterCard {
             field.getGraveyard().remove(cardReplaced);
             field.getGraveyard().add(this);
         }
-        originalOwner.getField().getGraveyard().add(cardReplaced);
-        cardReplaced.setOwner(originalOwner);
-        originalOwner = null;
+        if (Objects.nonNull(originalOwner)) {
+            originalOwner.getField().getGraveyard().add(cardReplaced);
+            cardReplaced.setOwner(originalOwner);
+            originalOwner = null;
+        }
         cardReplaced = null;
     }
 }

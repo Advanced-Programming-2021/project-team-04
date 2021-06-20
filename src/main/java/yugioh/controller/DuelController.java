@@ -1295,7 +1295,6 @@ public class DuelController {
     public void cheatShowRivalHand() {
         var rivalHand = new StringBuilder();
         game.getTheOtherPlayer().getField().getHand().forEach(c -> rivalHand.append(c.getName()).append("\n"));
-        rivalHand.setLength(rivalHand.length() - 1);
         IO.getInstance().printString(rivalHand.toString());
     }
 

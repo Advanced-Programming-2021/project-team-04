@@ -41,7 +41,7 @@ public class MainView extends ViewMenu {
             else if (command.matches("(?:user )?logout")) {
                 logout();
                 return;
-            }else if (enterMenuMatcher.matches())
+            } else if (enterMenuMatcher.matches())
                 enterMenu(enterMenuMatcher);
             else if (newDuelMatcher.matches())
                 newDuel(newDuelMatcher);
@@ -51,6 +51,8 @@ public class MainView extends ViewMenu {
                 cheatIncreaseScore(command);
             else if (command.matches("The Hanged Man Rusts \\d+"))
                 cheatIncreaseMoney(command);
+            else if (command.startsWith("read game"))
+                readDuel(command);
             else IO.getInstance().printInvalidCommand();
         }
     }
@@ -96,6 +98,13 @@ public class MainView extends ViewMenu {
             DuelView.getInstance().runForRPSAgainstAI();
             DuelView.getInstance().run();
         }
+    }
+
+    private void readDuel(String command) {
+        try {
+            MainController.getInstance().readDuel(command.substring(10));
+            DuelView.getInstance().run();
+        } catch (Exception ignored) { }
     }
 
     //TODO change the methods below

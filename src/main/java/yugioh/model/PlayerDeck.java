@@ -13,11 +13,11 @@ import java.util.Objects;
 @Setter
 public class PlayerDeck {
 
-    @Expose()
+    @Expose
     private LinkedHashMap<String, Short> mainDeckCards;
-    @Expose()
+    @Expose
     private LinkedHashMap<String, Short> sideDeckCards;
-    @Expose()
+    @Expose
     private String deckName;
 
     public PlayerDeck(String deckName) {
