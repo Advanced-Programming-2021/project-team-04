@@ -37,13 +37,4 @@ public class SpellAndTrapCard extends Card {
         if (getOwner().getField().getGraveyard().contains(this))
             isActive = false;
     }
-
-    public int getSpeed() {
-        if (isSpell) {
-            if (property.equals("Quick-play"))
-                return 2;
-            else return 1;
-        }
-        else return 2;
-    }
 }
