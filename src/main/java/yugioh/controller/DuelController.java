@@ -464,11 +464,10 @@ public class DuelController {
                 addMonsterToGYFromMonsterZone(game.getCurrentPlayer().getField().getMonsterCards().get(secondNumber - 1));
             }
         }
-
     }
 
     public boolean isTributeValid(int number) {
-        if (game.getCurrentPlayer().getField().getMonsterCards().size() < number) {
+        if (game.getCurrentPlayer().getField().getMonsterCards().size() <= number) {
             IO.getInstance().noMonster();
             return false;
         }
@@ -479,7 +478,8 @@ public class DuelController {
         if (game.getSelectedCard() == null) {
             IO.getInstance().cardNotSelected();
             return false;
-        } else if (!game.getCurrentPlayer().getField().getHand().contains(game.getSelectedCard()) ||
+        }
+        if (!game.getCurrentPlayer().getField().getHand().contains(game.getSelectedCard()) ||
                 !(game.getSelectedCard() instanceof MonsterCard)) {
             IO.getInstance().cantSummon();
             return false;
@@ -492,13 +492,16 @@ public class DuelController {
         if (monsterCard.getCardType().equals("Ritual")) {
             IO.getInstance().cantSummon();
             return false;
-        } else if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
+        }
+        if (game.getCurrentPlayer().getField().getMonsterCards().size() == 5) {
             IO.getInstance().monsterZoneFull();
             return false;
-        } else if (game.isSummonedInThisTurn()) {
+        }
+        if (game.isSummonedInThisTurn()) {
             IO.getInstance().alreadySummonedOrSet();
             return false;
-        } else if (((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) && game.getCurrentPlayer().getField().getMonsterCards().isEmpty()) ||
+        }
+        if (((monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) && game.getCurrentPlayer().getField().getMonsterCards().isEmpty()) ||
                 ((monsterCard.getLevel() >= 7) && game.getCurrentPlayer().getField().getMonsterCards().size() < 2)) {
             IO.getInstance().notEnoughTribute();
             return false;
@@ -658,7 +661,7 @@ public class DuelController {
             mirrorForce(mirrorForceCard, attacker.getOwner());
             return;
         }
-        if (attacked.getName().equals("Suijin") &&
+        if (attacked instanceof Suijin && !((Suijin) attacked).isHasBeenUsedInGeneral() &&
                 DuelView.getInstance().wantsToActivate("Suijin")) {
             ((Suijin) attacked).specialMethod(attacker);
         }
@@ -1013,8 +1016,8 @@ public class DuelController {
     }
 
     private void advancedRitualArt(SpellAndTrapCard spellAndTrapCard) {
-        ritualSummon();
-        moveSpellOrTrapToGYFromSpellZone(spellAndTrapCard);
+        if (ritualSummon())
+            moveSpellOrTrapToGYFromSpellZone(spellAndTrapCard);
     }
 
     public void twinTwisters(SpellAndTrapCard spellAndTrapCard) {
@@ -1203,14 +1206,16 @@ public class DuelController {
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
-    public void ritualSummon() {
-        if (!errorForRitualSummon()) return;
+    public boolean ritualSummon() {
+        if (!errorForRitualSummon()) return false;
         MonsterCard ritualMonster = DuelView.getInstance().getRitualCard();
         ArrayList<MonsterCard> toTribute = DuelView.getInstance().getTributes();
+        if (Objects.isNull(toTribute)) return false;
         while (!isSumOfTributesValid(toTribute, ritualMonster)) {
             toTribute = DuelView.getInstance().getTributes();
             IO.getInstance().invalidTributeSum();
         }
+        if (Objects.isNull(toTribute)) return false;
         chooseMonsterMode(ritualMonster);
         game.getCurrentPlayer().getField().getMonsterCards().add(ritualMonster);
         for (MonsterCard monsterCard : toTribute) {
@@ -1219,6 +1224,7 @@ public class DuelController {
         moveSpellOrTrapToGYFromSpellZone((SpellAndTrapCard) game.getSelectedCard());
         game.setSelectedCard(null);
         IO.getInstance().summoned();
+        return true;
     }
 
     private void chooseMonsterMode(MonsterCard monsterCard) {

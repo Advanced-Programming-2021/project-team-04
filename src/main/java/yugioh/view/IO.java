@@ -120,6 +120,10 @@ public class IO {
         System.out.println("enter the numbers of the card you want to tribute divided by a space:");
     }
 
+    public void chooseTributesAgain() {
+        System.out.println("an error occurred. please enter the numbers again:");
+    }
+
     public void chooseMonster() {
         System.out.println("enter the number of the monster you choose:");
     }

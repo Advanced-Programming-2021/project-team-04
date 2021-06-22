@@ -5,8 +5,10 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Blue-Eyes white dragon": 15,
-        "Haniwa": 30
+        "Feral Imp": 15,
+        "Silver Fang": 15,
+        "Crab Turtle": 15,
+        "Advanced Ritual Art": 15
       },
       "sideDeckCards": {},
       "deckName": "Langa"

@@ -1,7 +1,9 @@
 package yugioh.model.cards.specialcards;
 
+import lombok.Getter;
 import yugioh.model.cards.MonsterCard;
 
+@Getter
 public class Suijin extends MonsterCard {
 
     private boolean hasBeenUsedInGeneral = false;

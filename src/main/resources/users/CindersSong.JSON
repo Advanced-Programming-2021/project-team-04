@@ -5,7 +5,10 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Suijin": 40
+        "Feral Imp": 15,
+        "Silver Fang": 15,
+        "Crab Turtle": 15,
+        "Advanced Ritual Art": 15
       },
       "sideDeckCards": {},
       "deckName": "Cinder"

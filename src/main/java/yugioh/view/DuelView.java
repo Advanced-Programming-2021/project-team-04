@@ -8,9 +8,11 @@ import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class DuelView extends ViewMenu {
 
@@ -117,8 +119,7 @@ public class DuelView extends ViewMenu {
 
     public boolean wantsToActivate(String cardName) {
         IO.getInstance().wantToActivate(cardName);
-        String activate = IO.getInstance().getInputMessage();
-        return activate.toLowerCase().matches("y(?:es)?");
+        return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
     }
 
     private String getRPSInput() {
@@ -142,8 +143,7 @@ public class DuelView extends ViewMenu {
 
     public int getTribute() {
         IO.getInstance().chooseTribute();
-        String cardNumber = IO.getInstance().getInputMessage();
-        return Integer.parseInt(cardNumber);
+        return Integer.parseInt(IO.getInstance().getInputMessage()) - 1;
     }
 
     private void selectCard(Matcher matcher, boolean isPlayersCard, CardStatusInField cardStatusInField) {
@@ -182,16 +182,30 @@ public class DuelView extends ViewMenu {
 
     public ArrayList<MonsterCard> getTributes() {
         IO.getInstance().chooseTributes();
-        String numbers = IO.getInstance().getInputMessage();
-        if (numbers.equals("cancel")) return null;
-        String[] afterSplit = numbers.split(" ");
-        int[] tributes = new int[afterSplit.length];
-        for (int i = 0; i < afterSplit.length; i++)
-            tributes[i] = Integer.parseInt(afterSplit[i]);
-        ArrayList<MonsterCard> toTribute = new ArrayList<>();
-        for (int number : tributes)
-            toTribute.add(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(number));
-        return toTribute;
+        try {
+            return getTributeMonsterCards();
+        } catch (Exception exception) {
+            return getTributesAgain();
+        }
+    }
+
+    private ArrayList<MonsterCard> getTributesAgain() {
+        IO.getInstance().chooseTributesAgain();
+        try {
+            return getTributeMonsterCards();
+        } catch (Exception exception) {
+            return getTributesAgain();
+        }
+    }
+
+    private ArrayList<MonsterCard> getTributeMonsterCards() {
+        var input = IO.getInstance().getInputMessage();
+        if (input.equals("cancel")) return null;
+        try {
+            return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
+        } catch (Exception exception) {
+            return null;
+        }
     }
 
     public String monsterMode() {
