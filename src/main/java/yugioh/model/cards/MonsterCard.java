@@ -51,21 +51,19 @@ public class MonsterCard extends Card {
 
     @Override
     public void reset() {
-        this.thisCardDefensePower = classDefensePower;
-        this.thisCardAttackPower = classAttackPower;
+        this.thisCardDefensePower = this.classDefensePower;
+        this.thisCardAttackPower = this.classAttackPower;
         this.hasBeenUsedInThisTurn = false;
         this.isAbleToBeRemoved = true;
         this.isChangedPosition = false;
         this.attacked = false;
         this.hasBeenSetOrSummoned = false;
-//        this.ownerUsername = MainController.getInstance().getLoggedIn().getUsername();
         //TODO is it enough?
     }
 
     @Override
     public String toString() {
         return "Name: " + this.name + "\nLevel: " + this.level + "\nType: " + this.monsterType
-                +"\nATK: " + this.classAttackPower + "\nDEF: " + this.classDefensePower
-                + "\nDescription: " + this.description;
+                +"\nATK: " + this.thisCardAttackPower + "\nDEF: " + this.thisCardDefensePower + "\nDescription: " + this.description;
     }
 }

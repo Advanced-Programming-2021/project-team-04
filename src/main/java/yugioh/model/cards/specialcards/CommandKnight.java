@@ -6,6 +6,7 @@ import yugioh.model.MonsterCardModeInField;
 import yugioh.model.cards.MonsterCard;
 
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 public class CommandKnight extends MonsterCard {
 
@@ -30,13 +31,11 @@ public class CommandKnight extends MonsterCard {
     }
 
     public void specialMethod() {
-        ArrayList<MonsterCard> monsterCards = DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards();
-        ArrayList<MonsterCard> opponentMonsterCards = DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards();
-        monsterCards.addAll(opponentMonsterCards);
-            if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP) ||
-                    this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
-                for (int i = 0; i < monsterCards.size(); i++)
-                    monsterCards.get(i).changeAttackPower(400);
+        if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP) ||
+                this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
+            Stream.concat(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().stream(),
+                    DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().stream())
+                    .forEach(m -> m.changeAttackPower(400));
     }
 
     private void isRemovable() {
@@ -46,8 +45,7 @@ public class CommandKnight extends MonsterCard {
             if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP)
                     || this.monsterCardModeInField.equals(MonsterCardModeInField.DEFENSE_FACE_UP))
                 this.isAbleToBeRemoved = false;
-        }
-        else this.isAbleToBeRemoved = true;
+        } else this.isAbleToBeRemoved = true;
     }
 
     @Override

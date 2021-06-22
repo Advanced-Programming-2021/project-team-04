@@ -1,0 +1,15 @@
+{
+  "isGameFinished": false,
+  "currentPlayerUsername": "Adam",
+  "theOtherPlayerUsername": "CindersSong",
+  "rounds": 1,
+  "currentRound": 1,
+  "currentPhase": "FIRST_MAIN_PHASE",
+  "summonedInThisTurn": false,
+  "winnerOfEachRound": [
+    null,
+    null,
+    null
+  ],
+  "isAI": false
+}

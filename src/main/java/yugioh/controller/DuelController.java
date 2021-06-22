@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Getter
 @Setter
@@ -257,6 +258,7 @@ public class DuelController {
         if (!game.getCurrentPlayer().isAbleToAttack()) {
             game.getCurrentPlayer().setAbleToAttack(true);
             nextPhase();
+            return;
         }
         IO.getInstance().printPhase("battle phase");
     }
@@ -383,19 +385,14 @@ public class DuelController {
     }
 
     public void summon() { //TODO what the fuck? test shode vali ghermeze hanuz :|
-        if (handleSpecialCases()) return;
+        if (handleSpecialCasesBeforeSummon()) return;
         summonWithTribute();
         var monsterCard = (MonsterCard) game.getSelectedCard();
         monsterCard.getOwner().getField().getHand().remove(monsterCard);
         if (handleTrapHole(monsterCard)) return;
         game.getCurrentPlayer().getField().getMonsterCards().add(monsterCard);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
-        if (monsterCard.getName().equals("Terratiger, the Empowered Warrior"))
-            terraTigerMethod();
-        if (monsterCard instanceof CommandKnight) {
-           CommandKnight commandKnight = (CommandKnight) monsterCard;
-           commandKnight.specialMethod();
-        }
+        handleSpecialCasesAfterSummon();
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
         torrentialTribute();
@@ -405,7 +402,7 @@ public class DuelController {
     }
 
 
-    private boolean handleSpecialCases() {
+    private boolean handleSpecialCasesBeforeSummon() {
         //TODO is it ok that this if and the next if have different return true; positions?
         if (getGame().getCurrentPlayer() instanceof Account && !isSummonValid()) return true;
         if (game.getSelectedCard().getName().equals("The Tricky") && DuelView.getInstance().ordinaryOrSpecial()) {
@@ -429,7 +426,15 @@ public class DuelController {
             game.setSelectedCard(null);
             return true;
         }
+        ((MonsterCard) game.getSelectedCard()).changeAttackPower((int) (Stream.concat(game.getCurrentPlayer().getField().getMonsterCards().stream(), game.getTheOtherPlayer().getField().getMonsterCards().stream()).filter(m -> m instanceof CommandKnight).count() * 400));
         return false;
+    }
+
+    private void handleSpecialCasesAfterSummon() {
+        if (game.getSelectedCard().getName().equals("Terratiger, the Empowered Warrior"))
+            terraTigerMethod();
+        else if (game.getSelectedCard() instanceof CommandKnight)
+            ((CommandKnight) game.getSelectedCard()).specialMethod();
     }
 
     public boolean handleTrapHole(MonsterCard monsterCard) {
@@ -561,11 +566,10 @@ public class DuelController {
     public void setPosition(boolean isAttack) {
         if (!isSetPositionValid(isAttack)) return;
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
-        if (isAttack) {
-            selectedCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
-        } else {
-            selectedCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
-        }
+        if (isAttack) selectedCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        else selectedCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
+        if (selectedCard instanceof CommandKnight)
+            ((CommandKnight) selectedCard).specialMethod();
         game.setSelectedCard(null);
         IO.getInstance().positionChanged();
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
