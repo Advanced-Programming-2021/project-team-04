@@ -16,6 +16,7 @@ public class Scanner extends MonsterCard {
         setName("Scanner");
         setLevel(1);
         setMonsterType("Machine");
+        setCardType("Effect");
         setPrice(8000);
         setClassAttackPower(0);
         setClassDefensePower(0);

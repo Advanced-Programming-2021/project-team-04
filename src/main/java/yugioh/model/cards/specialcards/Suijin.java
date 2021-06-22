@@ -11,6 +11,7 @@ public class Suijin extends MonsterCard {
         setName("Suijin");
         setLevel(7);
         setMonsterType("Aqua");
+        setCardType("Effect");
         setClassAttackPower(2500);
         setClassDefensePower(2400);
         setThisCardAttackPower(2500);
