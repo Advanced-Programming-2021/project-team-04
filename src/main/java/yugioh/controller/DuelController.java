@@ -392,6 +392,10 @@ public class DuelController {
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         if (monsterCard.getName().equals("Terratiger, the Empowered Warrior"))
             terraTigerMethod();
+        if (monsterCard instanceof CommandKnight) {
+           CommandKnight commandKnight = (CommandKnight) monsterCard;
+           commandKnight.specialMethod();
+        }
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
         torrentialTribute();

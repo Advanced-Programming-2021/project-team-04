@@ -151,7 +151,7 @@ public class DuelView extends ViewMenu {
                 cardStatusInField == CardStatusInField.FIELD_ZONE ? 0 : Integer.parseInt(matcher.group("number")) - 1);
     }
 
-    private void showGraveyard() {
+    public void showGraveyard() {
         DuelController.getInstance().showGraveyard();
         while (true) {
             String command = IO.getInstance().getInputMessage();
@@ -229,14 +229,6 @@ public class DuelView extends ViewMenu {
         if (number.equals("cancel")) return null;
         int cardNumber = Integer.parseInt(number);
         return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(cardNumber);
-    }
-
-    public MonsterCard getFromMyDeck() {
-        IO.getInstance().chooseMonster();
-        String number = IO.getInstance().getInputMessage();
-        if (number.equals("cancel")) return null;
-        int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getDeckZone().get(monsterNumber);
     }
 
     public MonsterCard getFromOpponentGY() {
