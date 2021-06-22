@@ -14,11 +14,11 @@ import java.util.regex.Pattern;
 
 public class DuelView extends ViewMenu {
 
+    private static final Random RANDOM = new Random();
+
     private static final String[] RPS = {"r", "p", "s"};
 
     private static DuelView singleInstance = null;
-
-    private final Random random = new Random();
 
     private final Pattern selectCardPattern = Pattern.compile("^s(?:elect)? " +
             "(?=.*(?:-(?:(?:-monster|-spell|-hand)|[msh])|-(?:-field|f)))(?=.*(?<number>\\d+)).+");
@@ -109,7 +109,7 @@ public class DuelView extends ViewMenu {
     public void runForRPSAgainstAI() {
         while (!isRPSDone) {
             String playersChoice = getRPSInput();
-            String AIsChoice = RPS[random.nextInt(3)];
+            String AIsChoice = RPS[RANDOM.nextInt(3)];
             IO.getInstance().printAIsRPS(AIsChoice);
             DuelController.getInstance().rockPaperScissor(playersChoice, AIsChoice);
         }

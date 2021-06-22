@@ -5,9 +5,8 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Bitron": 39,
-        "Skull Guardian": 3,
-        "Advanced Ritual Art": 8
+        "Command Knight": 8,
+        "Silver Fang": 32
       },
       "sideDeckCards": {},
       "deckName": "Langa"
