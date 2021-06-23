@@ -30,7 +30,8 @@ public class DuelView extends ViewMenu {
 
     private boolean isRPSDone = false;
 
-    private DuelView() { }
+    private DuelView() {
+    }
 
     public static DuelView getInstance() {
         if (singleInstance == null)
@@ -198,14 +199,10 @@ public class DuelView extends ViewMenu {
         }
     }
 
-    private ArrayList<MonsterCard> getTributeMonsterCards() {
+    private ArrayList<MonsterCard> getTributeMonsterCards(){
         var input = IO.getInstance().getInputMessage();
         if (input.equals("cancel")) return null;
-        try {
-            return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
-        } catch (Exception exception) {
-            return null;
-        }
+        return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public String monsterMode() {
@@ -284,7 +281,8 @@ public class DuelView extends ViewMenu {
     }
 
     public boolean wantsToActivateTrap(String name) {
-        if (DuelController.getInstance().handleMirageDragon("")) return false; //TODO name of the person activating this trap
+        if (DuelController.getInstance().handleMirageDragon(""))
+            return false; //TODO name of the person activating this trap
         IO.getInstance().wantToActivate(name);
         String activate = IO.getInstance().getInputMessage();
         return activate.toLowerCase().matches("y(?:es)?");

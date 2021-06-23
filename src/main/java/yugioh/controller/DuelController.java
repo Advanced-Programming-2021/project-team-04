@@ -758,6 +758,10 @@ public class DuelController {
             IO.getInstance().alreadyAttacked();
             return false;
         }
+        if (!selectedCard.isAbleToAttack()) {
+            IO.getInstance().cannotAttack();
+            return false;
+        }
         if (game.getTheOtherPlayer().getField().getMonsterCards().size() < opponentMonsterPositionNumber) {
             IO.getInstance().noCardHere();
             return false;
@@ -1210,12 +1214,12 @@ public class DuelController {
         if (!errorForRitualSummon()) return false;
         MonsterCard ritualMonster = DuelView.getInstance().getRitualCard();
         ArrayList<MonsterCard> toTribute = DuelView.getInstance().getTributes();
+//        System.out.println(toTribute);
         if (Objects.isNull(toTribute)) return false;
         while (!isSumOfTributesValid(toTribute, ritualMonster)) {
             toTribute = DuelView.getInstance().getTributes();
             IO.getInstance().invalidTributeSum();
         }
-        if (Objects.isNull(toTribute)) return false;
         chooseMonsterMode(ritualMonster);
         game.getCurrentPlayer().getField().getMonsterCards().add(ritualMonster);
         for (MonsterCard monsterCard : toTribute) {

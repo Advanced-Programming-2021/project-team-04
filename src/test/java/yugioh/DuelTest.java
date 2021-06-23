@@ -61,11 +61,12 @@ public class DuelTest {
 
     @Test
     public void drawTest() {
-        //TODO see what happens to hand
+        int hand = thisPlayer.getField().getHand().size();
+        int deck = thisPlayer.getField().getDeckZone().size();
         thisPlayer.setAbleToDraw(true);
         DuelController.getInstance().drawPhase();
-        Assertions.assertEquals(6, thisPlayer.getField().getHand().size());
-        Assertions.assertEquals(39, thisPlayer.getField().getDeckZone().size());
+        Assertions.assertEquals(hand + 1, thisPlayer.getField().getHand().size());
+        Assertions.assertEquals(deck - 1, thisPlayer.getField().getDeckZone().size());
     }
 
     @Test
@@ -171,58 +172,55 @@ public class DuelTest {
 
     @Test
     public void barbarosTestThree() {
-        // TODO: 6/20/2021 Mfing allCards
         theOtherPlayer.getField().getMonsterCards().add((MonsterCard) Card.getCardByName("Baby dragon"));
         MonsterCard barbaros = (MonsterCard) Card.getCardByName("Beast King Barbaros");
         DuelController.getInstance().getGame().setSelectedCard(barbaros);
-        ArrayList<Card> backupCards = thisPlayer.getAllCardsArrayList();
-        thisPlayer.setAllCardsArrayList(new ArrayList<>());
-        for (int i = 0; i < 3; i++) {
-            ShopController.getInstance().buyCard("Baby dragon");
-            thisPlayer.getField().getMonsterCards().add((MonsterCard) thisPlayer.getAllCardsArrayList().get(0));
-        }
+
+        MonsterCard babyDragon = (MonsterCard) Card.getCardByName("Baby dragon");
+        MonsterCard crawlingDragon = (MonsterCard) Card.getCardByName("Crawling dragon");
+        MonsterCard battleWarrior = (MonsterCard) Card.getCardByName("Battle warrior");
+        babyDragon.setOwner(thisPlayer);
+        crawlingDragon.setOwner(thisPlayer);
+        battleWarrior .setOwner(thisPlayer);
+        thisPlayer.getField().getMonsterCards().add(babyDragon);
+        thisPlayer.getField().getMonsterCards().add(crawlingDragon);
+        thisPlayer.getField().getMonsterCards().add(battleWarrior);
+
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n1\r\n1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().barbaros(3);
         System.setIn(backup);
-        thisPlayer.setAllCardsArrayList(backupCards);
         Assertions.assertEquals(0, theOtherPlayer.getField().getMonsterCards().size());
     }
 
     @Test
     public void gateGuardianTest() {
-        // TODO: 6/20/2021 Mfing allCards again.
         ShopController.getInstance().buyCard("Gate Guardian");
         MonsterCard gateGuardian = (MonsterCard) Card.getCardByName("Gate Guardian");
         gateGuardian.setOwner(thisPlayer);
         DuelController.getInstance().getGame().setSelectedCard(gateGuardian);
-        ArrayList<Card> backupCards = thisPlayer.getAllCardsArrayList();
-        thisPlayer.setAllCardsArrayList(new ArrayList<>());
-        for (int i = 0; i < 3; i++) {
-            ShopController.getInstance().buyCard("Baby dragon");
-            thisPlayer.getField().getMonsterCards().add((MonsterCard) thisPlayer.getAllCardsArrayList().get(0));
-        }
+
+        thisPlayer.getField().getMonsterCards().add((MonsterCard) Card.getCardByName("Baby dragon"));
+        thisPlayer.getField().getMonsterCards().add((MonsterCard) Card.getCardByName("Crawling dragon"));
+        thisPlayer.getField().getMonsterCards().add((MonsterCard) Card.getCardByName("Battle warrior"));
+
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n1\r\n1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().gateGuardian();
         System.setIn(backup);
-        thisPlayer.setAllCardsArrayList(backupCards);
         Assertions.assertNull(DuelController.getInstance().getGame().getSelectedCard());
     }
 
     @Test
     public void theTrickyTest() {
-        // TODO: 6/20/2021 Same problem with this mfing allCards. also we don't check if the number we give is a monster card or spell and trap card. should we check it for the number that the player gives in the middle of a game?
         MonsterCard theTricky = (MonsterCard) Card.getCardByName("The Tricky");
         theTricky.setOwner(thisPlayer);
-        ArrayList<Card> backupCards = thisPlayer.getAllCardsArrayList();
         ArrayList<Card> hand = thisPlayer.getField().getHand();
         thisPlayer.getField().setHand(new ArrayList<>());
-        thisPlayer.setAllCardsArrayList(new ArrayList<>());
         DuelController.getInstance().getGame().setSelectedCard(theTricky);
         Card babyDragon = Card.getCardByName("Baby dragon");
         babyDragon.setOwner(thisPlayer);
@@ -233,7 +231,6 @@ public class DuelTest {
         IO.getInstance().resetScanner();
         DuelController.getInstance().theTricky();
         System.setIn(backup);
-        thisPlayer.setAllCardsArrayList(backupCards);
         thisPlayer.getField().setHand(hand);
         Assertions.assertNull(DuelController.getInstance().getGame().getSelectedCard());
     }
@@ -243,15 +240,13 @@ public class DuelTest {
         MonsterCard spiralSerpent = (MonsterCard) Card.getCardByName("Spiral Serpent");
         spiralSerpent.setOwner(thisPlayer);
         ArrayList<Card> graveyardBackUp = thisPlayer.getField().getGraveyard();
-        ArrayList<Card> backupCards = thisPlayer.getAllCardsArrayList();
         ArrayList<Card> hand = thisPlayer.getField().getHand();
         thisPlayer.getField().setHand(new ArrayList<>());
-        thisPlayer.setAllCardsArrayList(new ArrayList<>());
         thisPlayer.getField().setGraveyard(new ArrayList<>());
         thisPlayer.getField().getGraveyard().add(spiralSerpent);
-        ShopController.getInstance().buyCard("Baby dragon");
-        // TODO: 6/20/2021 Shit got pretty complicated since I used a HashMap<String, Short> instead of ArrayList<Card> for allCards. Change tests and then remove the mfing ArrayList.
-        thisPlayer.getField().getHand().add(thisPlayer.getAllCardsArrayList().get(0));
+        Card babyDragon = Card.getCardByName("Baby dragon");
+        babyDragon.setOwner(thisPlayer);
+        thisPlayer.getField().getHand().add(babyDragon);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n".getBytes());
         System.setIn(input);
@@ -259,7 +254,6 @@ public class DuelTest {
         DuelController.getInstance().heraldOfCreation();
         System.setIn(backup);
         boolean hasCard = thisPlayer.getField().getHand().contains(spiralSerpent);
-        thisPlayer.setAllCardsArrayList(backupCards);
         thisPlayer.getField().setHand(hand);
         thisPlayer.getField().setGraveyard(graveyardBackUp);
         Assertions.assertTrue(hasCard);
@@ -517,7 +511,7 @@ public class DuelTest {
         thisPlayer.getField().getMonsterCards().add(firstSacrifice);
         thisPlayer.getField().getMonsterCards().add(secondSacrifice);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0 1\r\nattack\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n1 2\r\nattack\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -532,7 +526,6 @@ public class DuelTest {
                 choose the monster mode (Attack or Defense):\r
                 summoned successfully\r
                 """, outputStream.toString());
-        //TODO what the fuck is that stream
     }
 
     @Test
@@ -831,7 +824,7 @@ public class DuelTest {
         theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
         theOtherPlayer.getField().getMonsterCards().add(monsterCard);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -1476,7 +1469,6 @@ public class DuelTest {
 
     @Test
     public void attackError7() {
-        // TODO: 6/20/2021 This one needs actual controller debugging
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Slot Machine");
         MonsterCard attacked = (MonsterCard) Card.getCardByName("Spiral Serpent");
         DuelController.getInstance().getGame().setSelectedCard(monsterCard);
@@ -1572,22 +1564,7 @@ public class DuelTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().attack(1);
-        Assertions.assertEquals("Your monster card is destroyed and you received 200 battle damage" + System.lineSeparator() +
-                "Ricca: 8000\n" +
-                "\tc \tc \tc \tc \tc \n" +
-                "35\n" +
-                "\tE \tE \tE \tE \tE \n" +
-                "\tE \tE \tOO\tE \tE \n" +
-                "0\t\t\t\t\t\tE \n" +
-                "\n" +
-                "--------------------------\n" +
-                "\n" +
-                "E \t\t\t\t\t\t1\n" +
-                "\tE \tE \tE \tE \tE \n" +
-                "\tE \tE \tE \tE \tE \n" +
-                "  \t\t\t\t\t\t35\n" +
-                "c \tc \tc \tc \tc \t\n" +
-                "Why Do I Exist: 7800" + System.lineSeparator(), outputStream.toString());
+        Assertions.assertTrue(outputStream.toString().startsWith("Your monster card is destroyed and you received 200 battle damage"));
         thisPlayer.getField().setMonsterCards(myMonsters);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
     }
@@ -1971,7 +1948,7 @@ public class DuelTest {
         thisPlayer.getField().getMonsterCards().add(yomi);
         thisPlayer.getField().getMonsterCards().add(warriorDaiGrepher);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n1\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n2\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().summonWithTribute();

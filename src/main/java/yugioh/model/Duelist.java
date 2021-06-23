@@ -23,7 +23,6 @@ public abstract class Duelist {
     protected String username;
     @Expose
     protected String nickname;
-    protected ArrayList<Card> allCardsArrayList = new ArrayList<>();
     protected Field field;
     protected int LP, countForRPS;
     protected int maxLPofThreeRounds;

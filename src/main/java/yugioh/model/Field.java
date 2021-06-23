@@ -57,7 +57,7 @@ public class Field {
 
     public ArrayList<MonsterCard> ritualMonsterCards() {
         return (ArrayList<MonsterCard>) hand.stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
-                .filter(m -> m.getMonsterType().equals("Ritual")).collect(Collectors.toList());
+                .filter(m -> m.getCardType().equals("Ritual")).collect(Collectors.toList());
     }
 
     public ArrayList<MonsterCard> ordinaryLowLevelCards() {
