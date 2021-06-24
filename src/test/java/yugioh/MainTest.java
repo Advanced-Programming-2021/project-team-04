@@ -62,10 +62,11 @@ public class MainTest {
     public void invalidDeckTestForTheOtherPlayer() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        PlayerDeck playerDeck = new PlayerDeck("our boy jack");
+        PlayerDeck ourBoyJack = new PlayerDeck("our boy jack");
         var cardName = "Call of The Haunted";
         for (int i = 0; i < 40; i++)
-            playerDeck.addCardToMainDeck(cardName);
+            ourBoyJack.addCardToMainDeck(cardName);
+        thisAccount.addDeck(ourBoyJack);
         thisAccount.setActivePlayerDeck("our boy jack");
         someoneElse.setActivePlayerDeck("no happy ending");
         MainController.getInstance().newDuel("Jan Kilbride", 3);

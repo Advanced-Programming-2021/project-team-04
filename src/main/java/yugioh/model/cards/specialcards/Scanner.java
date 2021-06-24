@@ -37,19 +37,22 @@ public class Scanner extends MonsterCard {
     }
 
     public void reset() {
+        super.reset();
         Field field = this.getOwner().getField();
-        if (field.getMonsterCards().contains(cardReplaced)) {
-            field.getMonsterCards().remove(cardReplaced);
-            field.getMonsterCards().add(this);
-        } else {
-            field.getGraveyard().remove(cardReplaced);
-            field.getGraveyard().add(this);
+        if (Objects.nonNull(cardReplaced)) {
+            if (field.getMonsterCards().contains(cardReplaced)) {
+                field.getMonsterCards().remove(cardReplaced);
+                field.getMonsterCards().add(this);
+            } else {
+                field.getGraveyard().remove(cardReplaced);
+                field.getGraveyard().add(this);
+            }
+            if (Objects.nonNull(originalOwner)) {
+                originalOwner.getField().getGraveyard().add(cardReplaced);
+                cardReplaced.setOwner(originalOwner);
+                originalOwner = null;
+            }
+            cardReplaced = null;
         }
-        if (Objects.nonNull(originalOwner)) {
-            originalOwner.getField().getGraveyard().add(cardReplaced);
-            cardReplaced.setOwner(originalOwner);
-            originalOwner = null;
-        }
-        cardReplaced = null;
     }
 }

@@ -50,7 +50,7 @@ public class ShopView extends ViewMenu {
 
     private void showCard(String input) {
         String cardName = input.substring(10);
-        if (!ShopController.getInstance().showCard(cardName)) IO.getInstance().printInvalidCommand();
+        ShopController.getInstance().showCard(cardName);
     }
 
     private void buyCard(Matcher matcher) {

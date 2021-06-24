@@ -14,7 +14,9 @@ public class ProfileController {
 
     public void changeNickname(String name) {
         if (isChangingNicknameValid(name)) {
+            Account.getAllNicknames().remove(MainController.getInstance().getLoggedIn().getNickname());
             MainController.getInstance().getLoggedIn().setNickname(name);
+            Account.getAllNicknames().add(name);
             IO.getInstance().nicknameChanged();
         }
     }
@@ -25,6 +27,7 @@ public class ProfileController {
             IO.getInstance().passwordChanged();
         }
     }
+
     private boolean isChangingPasswordValid(String oldPassword, String newPassword) {
         Account player = MainController.getInstance().getLoggedIn();
         if (!player.getPassword().equals(oldPassword)) {

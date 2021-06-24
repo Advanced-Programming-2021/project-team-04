@@ -33,7 +33,7 @@ public class ProfileView extends ViewMenu {
                 showCurrentMenu();
             else if (command.matches("(?:menu )?enter \\S+"))
                 IO.getInstance().printMenuNavigationImpossible();
-            else if (changeNicknameMatcher.matches())
+            else if (changeNicknameMatcher.matches() && !command.contains("-p"))
                 changeNickname(changeNicknameMatcher);
             else if (changePasswordMatcher.matches())
                 changePassword(changePasswordMatcher);

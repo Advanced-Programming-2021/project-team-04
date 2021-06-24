@@ -11,7 +11,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-public class ScoreboardView {
+public class ScoreboardViewTest {
     @BeforeAll
     public static void createAccounts() {
         Account ulysses = new Account("Ulysses", "greek", "Dies at Dawn");
