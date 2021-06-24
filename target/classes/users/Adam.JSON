@@ -5,10 +5,8 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Feral Imp": 15,
-        "Silver Fang": 15,
-        "Crab Turtle": 15,
-        "Advanced Ritual Art": 15
+        "Feral Imp": 30,
+        "Beast King Barbaros": 20
       },
       "sideDeckCards": {},
       "deckName": "Langa"

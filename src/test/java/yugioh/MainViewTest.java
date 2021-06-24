@@ -13,7 +13,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-public class MainView {
+public class MainViewTest {
     private static Account artie;
     @BeforeAll
     public static void createAccount() {

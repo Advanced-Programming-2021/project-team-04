@@ -8,8 +8,7 @@ import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 import yugioh.model.cards.specialcards.Scanner;
 
-import java.util.ArrayList;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -52,6 +51,7 @@ public class Field {
         var toPrint = new StringBuilder();
         graveyard.forEach(c -> toPrint.append(c.getName()).append(": ").append(c.getDescription()).append("\n"));
         if (!toPrint.isEmpty()) toPrint.setLength(toPrint.length() - 1);
+        else toPrint.append("graveyard empty");
         return toPrint.toString();
     }
 
@@ -74,8 +74,11 @@ public class Field {
     }
 
     public void resetAllCards() {
-        monsterCards.stream().filter(Objects::nonNull).forEach(MonsterCard::reset);
-        Stream.concat(spellAndTrapCards.stream(), Stream.of(fieldZone)).filter(Objects::nonNull).forEach(SpellAndTrapCard::reset);
+        var allCards = new ArrayList<Card>();
+        allCards.addAll(monsterCards);
+        allCards.addAll(spellAndTrapCards);
+        if (Objects.nonNull(fieldZone)) allCards.add(fieldZone);
+        for (Card card : allCards) card.reset();
     }
 
     public SpellAndTrapCard getSetSpellAndTrapCard(String cardName) {

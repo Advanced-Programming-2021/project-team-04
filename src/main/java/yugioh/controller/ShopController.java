@@ -8,6 +8,7 @@ import yugioh.view.IO;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -30,11 +31,13 @@ public class ShopController {
         return singleInstance;
     }
 
-    public boolean showCard(String cardName) {
-        Card card = Card.getCardByName(cardName);
-        if (card == null) return false;
+    public void showCard(String cardName) {
+        var card = Card.getCardByName(cardName);
+        if (Objects.isNull(card)) {
+            IO.getInstance().noSuchCard();
+            return;
+        }
         IO.getInstance().printString(card.toString());
-        return true;
     }
 
     public void showAllCards() {
@@ -50,12 +53,7 @@ public class ShopController {
     }
 
     public boolean isCardNameValid(String name) {
-        for (Card card : allCards)
-            if (card.getName().equals(name)) {
-                return true;
-            }
-        IO.getInstance().printInvalidCardName();
-        return false;
+        return allCards.stream().map(Card::getName).anyMatch(n -> n.equals(name));
     }
 
     private boolean hasEnoughMoney(String cardName) {

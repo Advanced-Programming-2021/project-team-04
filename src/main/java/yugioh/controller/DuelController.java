@@ -26,6 +26,7 @@ public class DuelController {
     private ArrayList<SpellAndTrapCard> forChain = new ArrayList<>();
     private boolean isChainActive = false;
     private SecureRandom random = new SecureRandom();
+    private ArrayList<Scanner> toReset = new ArrayList<>();
 
     public static DuelController getInstance() {
         if (singleInstance == null)
@@ -277,6 +278,8 @@ public class DuelController {
     private void reset() {
         game.getCurrentPlayer().getField().resetAllCards();
         game.getTheOtherPlayer().getField().resetAllCards();
+        toReset.forEach(Scanner::reset);
+        toReset = new ArrayList<>();
     }
 
     public void handleSwordOfRevealingLight() {
@@ -395,10 +398,10 @@ public class DuelController {
         handleSpecialCasesAfterSummon();
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
-        torrentialTribute();
         game.setSummonedInThisTurn(true);
         IO.getInstance().summoned();
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
+        torrentialTribute();
     }
 
 
@@ -1385,10 +1388,12 @@ public class DuelController {
     public void forScanner(Scanner scanner) {
         if (DuelView.getInstance().wantsToActivate("Scanner")) {
             MonsterCard toReplace = DuelView.getInstance().getFromOpponentGY();
+            if (toReplace == null) return;
             scanner.setCardReplaced(toReplace);
             ArrayList<MonsterCard> monsterCards = game.getCurrentPlayer().getField().getMonsterCards();
             monsterCards.remove(scanner);
             monsterCards.add(toReplace);
+            toReset.add(scanner);
         }
     }
 
@@ -1463,11 +1468,20 @@ public class DuelController {
             int spellSize = opponentSpellCards.size();
             int monsterSize = opponentMonsterCards.size();
             if (spellSize > 0)
-                opponentSpellCards.subList(0, spellSize).clear();
+                for (int i = 0; i < spellSize; i++)
+                    moveSpellOrTrapToGYFromSpellZone(opponentSpellCards.get(0));
             if (monsterSize > 0)
-                opponentMonsterCards.subList(0, monsterSize).clear();
+                for (int i = 0; i < monsterSize; i++)
+                    addMonsterToGYFromMonsterZone(opponentMonsterCards.get(0));
         }
         game.getCurrentPlayer().getField().getHand().remove(barbaros);
+        game.getCurrentPlayer().getField().getMonsterCards().add(barbaros);
+        barbaros.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
+        game.getSelectedCard().setHasBeenSetOrSummoned(true);
+        game.setSelectedCard(null);
+        game.setSummonedInThisTurn(true);
+        IO.getInstance().summoned();
+        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     public void texChanger(MonsterCard attacked) {

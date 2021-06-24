@@ -37,6 +37,7 @@ public class Scanner extends MonsterCard {
     }
 
     public void reset() {
+        if (cardReplaced == null) return;
         Field field = this.getOwner().getField();
         if (field.getMonsterCards().contains(cardReplaced)) {
             field.getMonsterCards().remove(cardReplaced);
