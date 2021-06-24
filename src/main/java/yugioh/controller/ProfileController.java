@@ -27,6 +27,7 @@ public class ProfileController {
             IO.getInstance().passwordChanged();
         }
     }
+
     private boolean isChangingPasswordValid(String oldPassword, String newPassword) {
         Account player = MainController.getInstance().getLoggedIn();
         if (!player.getPassword().equals(oldPassword)) {
