@@ -5,9 +5,10 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Feral Imp": 20,
+        "Feral Imp": 15,
         "Silver Fang": 15,
-        "Man-Eater Bug": 10
+        "Crab Turtle": 15,
+        "Advanced Ritual Art": 15
       },
       "sideDeckCards": {},
       "deckName": "Cinder"

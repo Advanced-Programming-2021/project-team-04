@@ -38,7 +38,11 @@ public class Scanner extends MonsterCard {
 
     public void reset() {
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (cardReplaced == null) return;
+=======
+        super.reset();
+>>>>>>> 08acaf1d15bf503f4f4d9c26746b210b2b3a1655
 =======
         super.reset();
 >>>>>>> 08acaf1d15bf503f4f4d9c26746b210b2b3a1655

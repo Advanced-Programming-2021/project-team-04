@@ -1,12 +1,14 @@
 {
-  "password": "sk8",
+  "password": "mechs",
   "score": 0,
   "money": 42900,
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Feral Imp": 30,
-        "Beast King Barbaros": 20
+        "Feral Imp": 15,
+        "Silver Fang": 15,
+        "Crab Turtle": 15,
+        "Advanced Ritual Art": 15
       },
       "sideDeckCards": {},
       "deckName": "Langa"
