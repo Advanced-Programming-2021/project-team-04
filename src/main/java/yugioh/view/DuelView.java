@@ -123,7 +123,7 @@ public class DuelView extends ViewMenu {
         return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
     }
 
-    private String getRPSInput() {
+    public String getRPSInput() {
         IO.getInstance().pickRPS();
         String input = IO.getInstance().getInputMessage().toLowerCase();
         while (!(input.matches("r(?:ock)?") || input.matches("p(?:aper)?") ||

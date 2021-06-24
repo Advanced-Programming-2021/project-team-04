@@ -36,4 +36,36 @@ public class ScoreboardView {
         Assertions.assertEquals("1- God of Death: 4444\n" +
                 "2- Dies at Dawn: 444\n\r\n", outputStream.toString());
     }
+
+    @Test
+    public void currentMenu() {
+        InputStream backup = System.in;
+        ByteArrayInputStream input = new ByteArrayInputStream(("""
+                menu show-current\r
+                menu exit\r
+                """).getBytes());
+        System.setIn(input);
+        IO.getInstance().resetScanner();
+        System.setIn(backup);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        yugioh.view.ScoreboardView.getInstance().run();
+        Assertions.assertEquals("Scoreboard Menu\r\n", outputStream.toString());
+    }
+
+    @Test
+    public void run() {
+        InputStream backup = System.in;
+        ByteArrayInputStream input = new ByteArrayInputStream(("""
+                kill me\r
+                menu exit\r
+                """).getBytes());
+        System.setIn(input);
+        IO.getInstance().resetScanner();
+        System.setIn(backup);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
+        yugioh.view.ScoreboardView.getInstance().run();
+        Assertions.assertEquals("invalid command\r\n", outputStream.toString());
+    }
 }
