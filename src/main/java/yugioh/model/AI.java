@@ -18,7 +18,9 @@ public class AI extends Duelist {
 
     private AI() {
         username = "AI";
+        nickname = "The Mechanisms";
         setAllPlayerDecks(ImportAndExport.getInstance().readAllDecks("src/main/resources/decks/"));
+        setActivePlayerDeck("deck");
     }
 
     public static AI getInstance() {
@@ -80,10 +82,6 @@ public class AI extends Duelist {
         MonsterCard strongestMonsterCardInHand = getStrongestMonsterCardInHand();
         if (strongestMonsterCardInHand == null)
             DuelController.getInstance().summon();
-    }
-
-    public void findTributesToRemove() {
-
     }
 
 }

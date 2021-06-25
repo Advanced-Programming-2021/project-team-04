@@ -1414,7 +1414,6 @@ public class DuelController {
         }
         MonsterCard monsterCard = DuelView.getInstance().getMonsterCardFromHand();
         specialSummon(monsterCard, MonsterCardModeInField.DEFENSE_FACE_DOWN, game.getCurrentPlayer().getField().getHand());
-        game.setSelectedCard(null);
         game.setSummonedInThisTurn(true);
     }
 
