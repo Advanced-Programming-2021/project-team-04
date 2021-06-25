@@ -4,5 +4,5 @@
     "property": "Normal",
     "isLimited": false,
     "price": 2000,
-    "description": "When an opponent's monster declares an attack: Target the attacking monster; negate the attack, and if you do, inflict damage to your opponent equal to its ATK."
+    "description": "Declare 1 card name; if that card is in your opponent's hand, they must discard all copies of it, otherwise you discard 1 random card."
 }

@@ -66,6 +66,8 @@ public class DuelController {
 
     public void drawPhase() {
         IO.getInstance().printPhase("draw phase");
+        if (game.getTheOtherPlayer().getField().getSetSpellAndTrapCard("Time Seal") != null)
+            game.getCurrentPlayer().setAbleToDraw(false);
         if (!game.getCurrentPlayer().isAbleToDraw()) {
             game.getCurrentPlayer().setAbleToDraw(true);
             return;
@@ -600,12 +602,12 @@ public class DuelController {
             IO.getInstance().alreadyInPosition();
             return false;
         }
-        if (selectedCard.isChangedPosition()) {
-            IO.getInstance().alreadyChangedPosition();
-            return false;
-        }
         if (selectedCard.isHasBeenSetOrSummoned()) {
             IO.getInstance().alreadySummonedOrSet();
+            return false;
+        }
+        if (selectedCard.isChangedPosition()) {
+            IO.getInstance().alreadyChangedPosition();
             return false;
         }
         return true;
@@ -939,8 +941,8 @@ public class DuelController {
             var toRemove = DuelView.getInstance().getCardFromHand();
             if (toRemove == null) return false;
             moveSpellOrTrapToGYFromSpellZone(magicJamamer);
-            game.getCurrentPlayer().getField().getHand().remove(spellAndTrapCard);
             game.getCurrentPlayer().getField().getGraveyard().add(spellAndTrapCard);
+            game.getCurrentPlayer().getField().getSpellAndTrapCards().remove(spellAndTrapCard);
             game.getTheOtherPlayer().getField().getHand().remove(toRemove);
             game.getTheOtherPlayer().getField().getGraveyard().add(toRemove);
             game.setSelectedCard(null);

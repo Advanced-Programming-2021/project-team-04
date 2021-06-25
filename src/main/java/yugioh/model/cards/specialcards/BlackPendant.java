@@ -32,7 +32,7 @@ public class BlackPendant extends SpellAndTrapCard {
     }
 
     public void reset() {
-        equippedMonster.reset();
+        if (equippedMonster != null) equippedMonster.reset();
         equippedMonster = null;
         isActive = false;
     }
