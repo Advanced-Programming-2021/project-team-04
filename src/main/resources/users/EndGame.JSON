@@ -5,8 +5,8 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Supply Squad": 10,
-        "Bitron": 30
+        "Magic Jamamer": 15,
+        "Feral Imp": 25
       },
       "sideDeckCards": {},
       "deckName": "Cinder"

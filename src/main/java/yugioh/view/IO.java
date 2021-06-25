@@ -34,10 +34,6 @@ public class IO {
         System.out.print("opponent’s monster card was " + cardName + " and ");
     }
 
-    public void noSuchCard() {
-        System.out.println("not a valid card name");
-    }
-
     public void lostInDefense(int damage) {
         System.out.println("no card is destroyed and you received " + damage + " battle damage");
     }
