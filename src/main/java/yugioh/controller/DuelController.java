@@ -443,7 +443,7 @@ public class DuelController {
     public boolean handleTrapHole(MonsterCard monsterCard) {
         SpellAndTrapCard trapHoleCard = game.getTheOtherPlayer().getField().getSpellAndTrapCard("Trap Hole");
         if (monsterCard.getClassAttackPower() >= 1000 && trapHoleCard != null &&
-                DuelView.getInstance().wantsToActivateTrap("Trap Hole")) {
+                DuelView.getInstance().wantsToActivateTrap("Trap Hole", trapHoleCard.getOwner().getUsername())) {
             makeChain(game.getCurrentPlayer(), game.getTheOtherPlayer());
             moveSpellOrTrapToGYFromSpellZone(trapHoleCard);
             addMonsterToGYFromMonsterZone(monsterCard);
@@ -925,7 +925,7 @@ public class DuelController {
 
     public boolean solemnWarning(MonsterCard monsterCard) {
         SpellAndTrapCard solemnWarning = game.getTheOtherPlayer().getField().getSpellAndTrapCard("Solemn Warning");
-        if (solemnWarning != null && DuelView.getInstance().wantsToActivateTrap("Solemn Warning")) {
+        if (solemnWarning != null && DuelView.getInstance().wantsToActivateTrap("Solemn Warning", solemnWarning.getOwner().getUsername())) {
             makeChain(game.getCurrentPlayer(), game.getTheOtherPlayer());
             moveSpellOrTrapToGYFromSpellZone(solemnWarning);
             game.getTheOtherPlayer().changeLP(-2000);
@@ -937,7 +937,7 @@ public class DuelController {
 
     public boolean magicJamamer(SpellAndTrapCard spellAndTrapCard) {
         SpellAndTrapCard magicJamamer = game.getTheOtherPlayer().getField().getSpellAndTrapCard("Magic Jamamer");
-        if (magicJamamer != null && DuelView.getInstance().wantsToActivateTrap("Magic Jamamer")) {
+        if (magicJamamer != null && DuelView.getInstance().wantsToActivateTrap("Magic Jamamer", magicJamamer.getOwner().getUsername())) {
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
             var toRemove = DuelView.getInstance().getCardFromHand();
             if (toRemove == null) return false;
@@ -961,7 +961,8 @@ public class DuelController {
 
     public void torrentialTribute() {
         SpellAndTrapCard torrentialTributeCard = game.getTheOtherPlayer().getField().getSpellAndTrapCard("Torrential Tribute");
-        if (torrentialTributeCard != null && DuelView.getInstance().wantsToActivateTrap("Torrential Tribute")) {
+        if (torrentialTributeCard != null && DuelView.getInstance().wantsToActivateTrap("Torrential Tribute",
+                torrentialTributeCard.getOwner().getUsername())) {
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
             moveSpellOrTrapToGYFromSpellZone(torrentialTributeCard);
             ArrayList<MonsterCard> allMonsters = getAllMonsterCards();
@@ -972,7 +973,7 @@ public class DuelController {
     }
 
     public void mindCrush(SpellAndTrapCard spellAndTrapCard, Duelist opponent) {
-        if (DuelView.getInstance().wantsToActivateTrap("Mind Crush")) {
+        if (DuelView.getInstance().wantsToActivateTrap("Mind Crush", spellAndTrapCard.getOwner().getUsername())) {
             String cardName = DuelView.getInstance().getCardName();
             if (!opponent.getCardInHand(cardName)) randomlyRemoveFromHand(spellAndTrapCard.getOwner());
             else opponent.getField().getHand().removeAll(opponent.getField().getHand().stream()
@@ -1002,7 +1003,7 @@ public class DuelController {
     }
 
     public void magicCylinder(MonsterCard attacker, SpellAndTrapCard magicCylinder) {
-        if (!DuelView.getInstance().wantsToActivateTrap("Magic Cylinder")) return;
+        if (!DuelView.getInstance().wantsToActivateTrap("Magic Cylinder", magicCylinder.getOwner().getUsername())) return;
         makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
         decreaseLPWithTrap(attacker.getOwner(), attacker.getClassAttackPower());
         addMonsterToGYFromMonsterZone(attacker);

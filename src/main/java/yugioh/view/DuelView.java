@@ -321,9 +321,9 @@ public class DuelView extends ViewMenu {
         }
     }
 
-    public boolean wantsToActivateTrap(String name) {
-        if (DuelController.getInstance().handleMirageDragon(""))
-            return false; //TODO name of the person activating this trap
+    public boolean wantsToActivateTrap(String name, String username) {
+        if (DuelController.getInstance().handleMirageDragon(username))
+            return false;
         IO.getInstance().wantToActivate(name);
         return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
     }
