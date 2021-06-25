@@ -56,7 +56,7 @@ public class ShopTest {
                 "Magic Cylinder:2000\n" +
                 "Magic Jamamer:3000\n" +
                 "Magnum Shield:4300\n" +
-                "Man-Eater Bug:600\n" +
+                "ManEater Bug:600\n" +
                 "Marshmallon:700\n" +
                 "Messenger of peace:4000\n" +
                 "Mind Crush:2000\n" +

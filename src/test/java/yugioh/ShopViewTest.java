@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-public class ShopView {
+public class ShopViewTest {
     @Test
     public void showCard() {
         InputStream backup = System.in;
@@ -75,7 +75,7 @@ public class ShopView {
                 Magic Cylinder:2000
                 Magic Jamamer:3000
                 Magnum Shield:4300
-                Man-Eater Bug:600
+                ManEater Bug:600
                 Marshmallon:700
                 Messenger of peace:4000
                 Mind Crush:2000

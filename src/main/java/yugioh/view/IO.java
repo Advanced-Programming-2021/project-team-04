@@ -8,7 +8,8 @@ public class IO {
 
     private Scanner scanner = new Scanner(System.in);
 
-    private IO() { }
+    private IO() {
+    }
 
     public static IO getInstance() {
         if (singleInstance == null)
@@ -16,7 +17,7 @@ public class IO {
         return singleInstance;
     }
 
-    public String getInputMessage(){
+    public String getInputMessage() {
         return scanner.nextLine().trim();
     }
 
@@ -27,6 +28,10 @@ public class IO {
 
     public void revealCard(String cardName) {
         System.out.print("opponent’s monster card was " + cardName + " and ");
+    }
+
+    public void noSuchCard() {
+        System.out.println("not a valid card name");
     }
 
     public void lostInDefense(int damage) {
@@ -145,7 +150,7 @@ public class IO {
     }
 
     public void printAIsRPS(String rps) {
-        System.out.println("computer chose: " + rps );
+        System.out.println("computer chose: " + rps);
     }
 
     public void wantToActivate(String cardName) {
@@ -362,6 +367,7 @@ public class IO {
     public void userCreated() {
         System.out.println("user created successfully!");
     }
+
     public void loggedIn() {
         System.out.println("user logged in successfully!");
     }
@@ -446,6 +452,7 @@ public class IO {
     public void printImportExportMenuName() {
         System.out.println("Import and Export Menu");
     }
+
     public void printLoginMenuName() {
         System.out.println("Login Menu");
     }

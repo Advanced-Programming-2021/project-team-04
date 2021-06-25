@@ -9,6 +9,7 @@ import yugioh.model.cards.SpellAndTrapCard;
 import yugioh.model.cards.specialcards.Scanner;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,8 +75,11 @@ public class Field {
     }
 
     public void resetAllCards() {
-        monsterCards.stream().filter(Objects::nonNull).forEach(MonsterCard::reset);
-        Stream.concat(spellAndTrapCards.stream(), Stream.of(fieldZone)).filter(Objects::nonNull).forEach(SpellAndTrapCard::reset);
+        var allCards = new ArrayList<Card>();
+        allCards.addAll(monsterCards);
+        allCards.addAll(spellAndTrapCards);
+        if (Objects.nonNull(fieldZone)) allCards.add(fieldZone);
+        for (Card card : allCards) card.reset();
     }
 
     public SpellAndTrapCard getSetSpellAndTrapCard(String cardName) {

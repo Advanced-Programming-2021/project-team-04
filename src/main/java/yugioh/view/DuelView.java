@@ -170,7 +170,7 @@ public class DuelView extends ViewMenu {
         String ritualCardNumber = IO.getInstance().getInputMessage();
         if (ritualCardNumber.equals("cancel")) return null;
         int number = Integer.parseInt(ritualCardNumber);
-        return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(number);
+        return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(number - 1);
     }
 
     public MonsterCard getOpponentMonster() {
@@ -178,7 +178,7 @@ public class DuelView extends ViewMenu {
         String monsterCardNumber = IO.getInstance().getInputMessage();
         if (monsterCardNumber.equals("cancel")) return null;
         int number = Integer.parseInt(monsterCardNumber);
-        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(number);
+        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(number - 1);
     }
 
     public ArrayList<MonsterCard> getTributes() {
@@ -215,7 +215,7 @@ public class DuelView extends ViewMenu {
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(monsterNumber);
+        return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(monsterNumber - 1);
     }
 
     public MonsterCard getFromMyGY() {
@@ -223,7 +223,7 @@ public class DuelView extends ViewMenu {
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(monsterNumber);
+        return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(monsterNumber - 1);
     }
 
     public Card getCardFromMyGY() {
@@ -231,7 +231,7 @@ public class DuelView extends ViewMenu {
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
         int cardNumber = Integer.parseInt(number);
-        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(cardNumber);
+        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(cardNumber - 1);
     }
 
     public Card getCardFromOpponentGY() {
@@ -239,7 +239,7 @@ public class DuelView extends ViewMenu {
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
         int cardNumber = Integer.parseInt(number);
-        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(cardNumber);
+        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(cardNumber - 1);
     }
 
     public MonsterCard getFromOpponentGY() {
@@ -247,7 +247,7 @@ public class DuelView extends ViewMenu {
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(monsterNumber);
+        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(monsterNumber - 1);
     }
 
     public boolean isMine() {
@@ -257,11 +257,12 @@ public class DuelView extends ViewMenu {
     }
 
     public SpellAndTrapCard getFieldSpellFromDeck() {
+        IO.getInstance().printString(DuelController.getInstance().sortFieldCards());
         IO.getInstance().chooseFieldSpell();
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
         int spellNumber = Integer.parseInt(number);
-        return (SpellAndTrapCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getDeckZone().get(spellNumber);
+        return (SpellAndTrapCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getDeckZone().get(spellNumber - 1);
     }
 
     public MonsterCard getMonsterToEquip() {
@@ -269,7 +270,7 @@ public class DuelView extends ViewMenu {
         String monsterCardNumber = IO.getInstance().getInputMessage();
         if (monsterCardNumber.equals("cancel")) return null;
         int number = Integer.parseInt(monsterCardNumber);
-        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(number);
+        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(number - 1);
     }
 
     public MonsterCard getHijackedCard() {
@@ -304,14 +305,14 @@ public class DuelView extends ViewMenu {
         IO.getInstance().chooseCard();
         String cardNumber = IO.getInstance().getInputMessage();
         if (cardNumber.matches("cancel")) return null;
-        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(cardNumber));
+        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(cardNumber) - 1);
     }
 
     public Card getCardFromTheOtherPlayerHand() {
         IO.getInstance().chooseCard();
         String cardNumber = IO.getInstance().getInputMessage();
         if (cardNumber.matches("cancel")) return null;
-        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(Integer.parseInt(cardNumber));
+        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(Integer.parseInt(cardNumber) - 1);
     }
 
     public boolean summonGateGuardian() {
@@ -339,14 +340,14 @@ public class DuelView extends ViewMenu {
         IO.getInstance().chooseSpell();
         String spellNumber = IO.getInstance().getInputMessage();
         if (spellNumber.matches("cancel")) return null;
-        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber));
+        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber) - 1);
     }
 
     public SpellAndTrapCard getFromOpponentField() {
         IO.getInstance().chooseSpell();
         String spellNumber = IO.getInstance().getInputMessage();
         if (spellNumber.matches("cancel")) return null;
-        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber));
+        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber) - 1);
     }
 
     public int whereToSummonFrom() {
@@ -387,7 +388,7 @@ public class DuelView extends ViewMenu {
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getDeckZone().get(monsterNumber);
+        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getDeckZone().get(monsterNumber - 1);
     }
 
     public MonsterCard getFromMyGY(boolean isOpponent) {
@@ -395,7 +396,7 @@ public class DuelView extends ViewMenu {
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(monsterNumber);
+        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(monsterNumber - 1);
     }
 
     public MonsterCard getMonsterCardFromHand(boolean isOpponent) {
@@ -403,7 +404,7 @@ public class DuelView extends ViewMenu {
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
         int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(monsterNumber);
+        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(monsterNumber - 1);
     }
 
 }

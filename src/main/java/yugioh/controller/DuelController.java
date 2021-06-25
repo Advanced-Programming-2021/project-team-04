@@ -7,14 +7,12 @@ import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 import yugioh.model.cards.specialcards.*;
+import yugioh.model.cards.specialcards.Scanner;
 import yugioh.view.DuelView;
 import yugioh.view.IO;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -1581,4 +1579,21 @@ public class DuelController {
             account.getField().exchangeCards(names[0], names[1]);
         }
     }
+
+    public String sortFieldCards() {
+        HashMap<Integer, SpellAndTrapCard> fields = new HashMap<>();
+        ArrayList<Card> deck = game.getCurrentPlayer().getField().getDeckZone();
+        int size = deck.size();
+        for (int i = 0; i < size; i++)
+            if (deck.get(i) instanceof SpellAndTrapCard) {
+                SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) deck.get(i);
+                if (spellAndTrapCard.getProperty().equals("Field"))
+                    fields.put(i + 1, spellAndTrapCard);
+            }
+        StringBuilder toPrint = new StringBuilder();
+        for (Map.Entry mapElement : fields.entrySet()) {
+            toPrint.append(mapElement.getKey()).append(": ").append(mapElement.getValue()).append("\n");
+        }
+            return toPrint.toString();
+        }
 }

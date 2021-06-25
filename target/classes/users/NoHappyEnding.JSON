@@ -5,12 +5,8 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Gate Guardian": 5,
-        "Bitron": 20,
-        "Scanner": 5,
-        "Marshmallon": 5,
-        "Beast King Barbaros": 5,
-        "Texchanger": 5
+        "Silver Fang": 30,
+        "Spell Absorption": 10
       },
       "sideDeckCards": {},
       "deckName": "Cinder"
