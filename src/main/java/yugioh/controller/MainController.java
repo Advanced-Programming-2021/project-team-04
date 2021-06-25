@@ -35,7 +35,7 @@ public class MainController {
 
     public boolean newAIDuel(int rounds) {
         if (errorForNewAIGame(rounds)) {
-            new Game(loggedIn, AI.getInstance(), rounds, true);
+            DuelController.getInstance().setGame(new Game(loggedIn, AI.getInstance(), rounds, true));
             return true;
         }
         return false;

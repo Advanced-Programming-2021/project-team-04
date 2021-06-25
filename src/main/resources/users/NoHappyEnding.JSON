@@ -5,8 +5,7 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Wattkid": 25,
-        "Swords of Revealing Light": 15
+        "Leotron": 40
       },
       "sideDeckCards": {},
       "deckName": "Cinder"
