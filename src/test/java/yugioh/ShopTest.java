@@ -114,8 +114,8 @@ public class ShopTest {
     public void invalidCardNameTest() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        ShopController.getInstance().isCardNameValid("Crime Scene");
-        Assertions.assertEquals("there is no card with this name\r\n", outputStream.toString());
+        ShopController.getInstance().showCard("Crime Scene");
+        Assertions.assertEquals("not a valid card name\r\n", outputStream.toString());
     }
 
     @Test

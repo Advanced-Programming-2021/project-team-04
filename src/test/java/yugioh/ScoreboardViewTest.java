@@ -10,10 +10,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 public class ScoreboardViewTest {
     @BeforeAll
     public static void createAccounts() {
+        Account.setAllAccounts(new ArrayList<>());
         Account ulysses = new Account("Ulysses", "greek", "Dies at Dawn");
         Account hades = new Account("Hades", "greek", "God of Death");
         ulysses.setScore(444);

@@ -497,10 +497,6 @@ public class IO {
         System.out.println("user logged out successfully!");
     }
 
-    public void printInvalidCardName() {
-        System.out.println("there is no card with this name");
-    }
-
     public void printDoesntHaveEnoughMoney() {
         System.out.println("not enough money");
     }

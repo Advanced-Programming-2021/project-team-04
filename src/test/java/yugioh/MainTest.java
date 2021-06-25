@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.LinkedHashMap;
 
 public class MainTest {
     public static Account thisAccount = new Account("Gerard Keay", "bean$le", "Erard Ke");
@@ -17,6 +18,8 @@ public class MainTest {
     @BeforeAll
     public static void setLoggedIn() {
         MainController.getInstance().setLoggedIn(thisAccount);
+        thisAccount.addDeck(new PlayerDeck("our boy jack"));
+        someoneElse.addDeck(new PlayerDeck("no happy ending"));
     }
 
     @Test
@@ -39,7 +42,7 @@ public class MainTest {
     public void activeDeckTestForTheOtherPlayer() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        PlayerDeck playerDeck = new PlayerDeck("No Pressure");
+        thisAccount.addDeck(new PlayerDeck("No Pressure"));
         thisAccount.setActivePlayerDeck("No Pressure");
         MainController.getInstance().newDuel("Jan Kilbride", 1);
         Assertions.assertEquals(someoneElse.getUsername() + " has no active deck\r\n", outputStream.toString());
@@ -50,6 +53,8 @@ public class MainTest {
     public void invalidDeckTestForThisUser() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
+        PlayerDeck ourBoyJack = thisAccount.getDeckByName("our boy jack");
+        ourBoyJack.setMainDeckCards(new LinkedHashMap<>());
         thisAccount.setActivePlayerDeck("our boy jack");
         someoneElse.setActivePlayerDeck("no happy ending");
         MainController.getInstance().newDuel("Jan Kilbride", 3);
@@ -62,11 +67,10 @@ public class MainTest {
     public void invalidDeckTestForTheOtherPlayer() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        PlayerDeck ourBoyJack = new PlayerDeck("our boy jack");
         var cardName = "Call of The Haunted";
+        PlayerDeck ourBoyJack = thisAccount.getDeckByName("our boy jack");
         for (int i = 0; i < 40; i++)
             ourBoyJack.addCardToMainDeck(cardName);
-        thisAccount.addDeck(ourBoyJack);
         thisAccount.setActivePlayerDeck("our boy jack");
         someoneElse.setActivePlayerDeck("no happy ending");
         MainController.getInstance().newDuel("Jan Kilbride", 3);

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @Setter
 public class Account extends Duelist {
 
-    @Getter
+    @Getter @Setter
     private static ArrayList<Account> allAccounts;
     @Getter
     private static ArrayList<String> allUsernames;

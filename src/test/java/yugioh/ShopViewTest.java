@@ -23,7 +23,7 @@ public class ShopViewTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         yugioh.view.ShopView.getInstance().run();
-        Assertions.assertEquals("there is no card with this name\r\n", outputStream.toString());
+        Assertions.assertEquals("not a valid card name\r\n", outputStream.toString());
     }
 
     @Test

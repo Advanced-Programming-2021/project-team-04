@@ -144,8 +144,7 @@ public class DeckViewTest {
                 Decks:
                 Active deck:
                 Lito: main deck 1, side deck 0, invalid
-                Other decks:\s
-                """, outputStream.toString());
+                Other decks:\s""" + System.lineSeparator(), outputStream.toString());
         Account.getAccountByUsername("Amanita").setAllPlayerDecks(new ArrayList<>());
     }
 
@@ -169,8 +168,7 @@ public class DeckViewTest {
                 Main deck:
                 Monsters:
                 Suijin: During damage calculation in your opponent's turn, if this card is being attacked: You can target the attacking monster; make that target's ATK 0 during damage calculation only (this is a Quick Effect). This effect can only be used once while this card is face-up on the field.
-                Spell and Traps:
-                """, outputStream.toString());
+                Spell and Traps:""" + System.lineSeparator(), outputStream.toString());
         Account.getAccountByUsername("Amanita").setAllPlayerDecks(new ArrayList<>());
     }
 
