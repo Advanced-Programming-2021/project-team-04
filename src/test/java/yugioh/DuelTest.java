@@ -173,19 +173,19 @@ public class DuelTest {
 
     @Test
     public void barbarosTestThree() {
-        var card = (MonsterCard) Card.getCardByName("Baby dragon");
+        MonsterCard card = (MonsterCard) Card.getCardByName("Baby dragon");
+        theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
         theOtherPlayer.getField().getMonsterCards().add(card);
-        theOtherPlayer.addCard("Baby dragon");
         card.setOwner(theOtherPlayer);
         MonsterCard barbaros = (MonsterCard) Card.getCardByName("Beast King Barbaros");
         DuelController.getInstance().getGame().setSelectedCard(barbaros);
-        MonsterCard babyDragon = (MonsterCard) Card.getCardByName("Baby dragon");
+        MonsterCard battleOX = (MonsterCard) Card.getCardByName("Battle OX");
         MonsterCard crawlingDragon = (MonsterCard) Card.getCardByName("Crawling dragon");
         MonsterCard battleWarrior = (MonsterCard) Card.getCardByName("Battle warrior");
-        babyDragon.setOwner(thisPlayer);
+        battleOX.setOwner(thisPlayer);
         crawlingDragon.setOwner(thisPlayer);
         battleWarrior.setOwner(thisPlayer);
-        thisPlayer.getField().getMonsterCards().add(babyDragon);
+        thisPlayer.getField().getMonsterCards().add(battleOX);
         thisPlayer.getField().getMonsterCards().add(crawlingDragon);
         thisPlayer.getField().getMonsterCards().add(battleWarrior);
         InputStream backup = System.in;
@@ -861,7 +861,7 @@ public class DuelTest {
         theOtherPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
         theOtherPlayer.getField().getSpellAndTrapCards().add(toRemove);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("no\r\nno\r\n0\r\n1\r\nno\r\n0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("no\r\nno\r\n1\r\n1\r\nno\r\n1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -954,7 +954,7 @@ public class DuelTest {
         thisPlayer.getField().getSpellAndTrapCards().add(blackPendant);
         thisPlayer.getField().getMonsterCards().add(hornImp);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -1007,11 +1007,11 @@ public class DuelTest {
         thisPlayer.getField().getMonsterCards().add(darkBlade);
         darkBlade.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
-        System.setIn(backup);
         DuelController.getInstance().equipMonster(magnumShield);
+        System.setIn(backup);
         Assertions.assertEquals(darkBlade.getClassAttackPower() + darkBlade.getClassDefensePower(), darkBlade.getThisCardAttackPower());
         thisPlayer.getField().setSpellAndTrapCards(mySpells);
         thisPlayer.getField().setMonsterCards(myMonsters);
@@ -1153,7 +1153,7 @@ public class DuelTest {
         thisPlayer.getField().getSpellAndTrapCards().add(callOfTheHaunted);
         thisPlayer.getField().getGraveyard().add(monsterCard);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -2202,7 +2202,7 @@ public class DuelTest {
         thisPlayer.getField().getGraveyard().add(tadashi);
         DuelController.getInstance().getForChain().add(adam);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().activateCards();
