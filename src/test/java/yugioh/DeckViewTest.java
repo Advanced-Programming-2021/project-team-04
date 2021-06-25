@@ -7,7 +7,6 @@ import yugioh.controller.MainController;
 import yugioh.model.Account;
 import yugioh.model.PlayerDeck;
 import yugioh.model.cards.MonsterCard;
-import yugioh.model.cards.specialcards.CommandKnight;
 import yugioh.model.cards.specialcards.ManEaterBug;
 import yugioh.model.cards.specialcards.Suijin;
 import yugioh.view.IO;
@@ -17,6 +16,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 public class DeckViewTest {
 
@@ -67,9 +67,8 @@ public class DeckViewTest {
 
     @Test
     public void addCard() {
-        // TODO: 6/25/2021 debug this son of a bitch
-        MonsterCard monsterCard = new ManEaterBug();
-        monsterCard.setOwner(Account.getAccountByUsername("Amanita"));
+        new ManEaterBug();
+        Account.getAccountByUsername("Amanita").addCard("ManEater Bug");
         PlayerDeck lito = new PlayerDeck("Lito");
         Account.getAccountByUsername("Amanita").addDeck(lito);
         Account.getAccountByUsername("Amanita").setActivePlayerDeck("Lito");
@@ -80,6 +79,7 @@ public class DeckViewTest {
         System.setIn(backup);
         yugioh.view.DeckView.getInstance().run();
         Assertions.assertTrue(lito.getMainDeckCards().containsKey("ManEater Bug"));
+        Account.getAccountByUsername("Amanita").setAllCardsHashMap(new LinkedHashMap<>());
     }
 
     @Test

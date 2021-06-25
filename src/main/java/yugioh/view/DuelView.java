@@ -157,6 +157,7 @@ public class DuelView extends ViewMenu {
         while (true) {
             String command = IO.getInstance().getInputMessage();
             if (command.matches("back")) break;
+            IO.getInstance().printInvalidCommand();
         }
     }
 
@@ -169,16 +170,24 @@ public class DuelView extends ViewMenu {
         IO.getInstance().chooseRitualCard();
         String ritualCardNumber = IO.getInstance().getInputMessage();
         if (ritualCardNumber.equals("cancel")) return null;
-        int number = Integer.parseInt(ritualCardNumber);
-        return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(number - 1);
+        try {
+            return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(ritualCardNumber) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getRitualCard();
+        }
     }
 
     public MonsterCard getOpponentMonster() {
         IO.getInstance().chooseMonster();
         String monsterCardNumber = IO.getInstance().getInputMessage();
         if (monsterCardNumber.equals("cancel")) return null;
-        int number = Integer.parseInt(monsterCardNumber);
-        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(number - 1);
+        try {
+            return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(Integer.parseInt(monsterCardNumber) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getOpponentMonster();
+        }
     }
 
     public ArrayList<MonsterCard> getTributes() {
@@ -214,46 +223,65 @@ public class DuelView extends ViewMenu {
         IO.getInstance().chooseMonster();
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
-        int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(monsterNumber - 1);
+        try {
+            return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(number) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getMonsterCardFromHand();
+        }
     }
 
     public MonsterCard getFromMyGY() {
         IO.getInstance().chooseMonster();
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
-        int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(monsterNumber - 1);
+        try {
+            return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getFromMyGY();
+        }
     }
 
     public Card getCardFromMyGY() {
         IO.getInstance().chooseCard();
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
-        int cardNumber = Integer.parseInt(number);
-        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(cardNumber - 1);
+        try {
+            return DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getCardFromMyGY();
+        }
     }
 
     public Card getCardFromOpponentGY() {
         IO.getInstance().chooseCard();
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
-        int cardNumber = Integer.parseInt(number);
-        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(cardNumber - 1);
+        try {
+            return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getCardFromOpponentGY();
+        }
     }
 
     public MonsterCard getFromOpponentGY() {
         IO.getInstance().chooseMonster();
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
-        int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(monsterNumber - 1);
+        try {
+            return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getFromOpponentGY();
+        }
     }
 
     public boolean isMine() {
         IO.getInstance().isMine();
-        String isMine = IO.getInstance().getInputMessage();
-        return isMine.toLowerCase().matches("y(?:es)?");
+        return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
     }
 
     public SpellAndTrapCard getFieldSpellFromDeck() {
@@ -261,32 +289,43 @@ public class DuelView extends ViewMenu {
         IO.getInstance().chooseFieldSpell();
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
-        int spellNumber = Integer.parseInt(number);
-        return (SpellAndTrapCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getDeckZone().get(spellNumber - 1);
+        try {
+            return (SpellAndTrapCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getDeckZone().get(Integer.parseInt(number) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getFieldSpellFromDeck();
+        }
     }
 
     public MonsterCard getMonsterToEquip() {
         IO.getInstance().chooseMonster();
         String monsterCardNumber = IO.getInstance().getInputMessage();
         if (monsterCardNumber.equals("cancel")) return null;
-        int number = Integer.parseInt(monsterCardNumber);
-        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(number - 1);
+        try {
+            return DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(Integer.parseInt(monsterCardNumber) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getMonsterToEquip();
+        }
     }
 
     public MonsterCard getHijackedCard() {
         IO.getInstance().chooseMonster();
         String monsterCardNumber = IO.getInstance().getInputMessage();
         if (monsterCardNumber.equals("cancel")) return null;
-        int number = Integer.parseInt(monsterCardNumber);
-        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(number - 1);
+        try {
+            return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(Integer.parseInt(monsterCardNumber) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getHijackedCard();
+        }
     }
 
     public boolean wantsToActivateTrap(String name) {
         if (DuelController.getInstance().handleMirageDragon(""))
             return false; //TODO name of the person activating this trap
         IO.getInstance().wantToActivate(name);
-        String activate = IO.getInstance().getInputMessage();
-        return activate.toLowerCase().matches("y(?:es)?");
+        return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
     }
 
     public boolean ordinaryOrSpecial() {
@@ -305,14 +344,24 @@ public class DuelView extends ViewMenu {
         IO.getInstance().chooseCard();
         String cardNumber = IO.getInstance().getInputMessage();
         if (cardNumber.matches("cancel")) return null;
-        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(cardNumber) - 1);
+        try {
+            return DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(cardNumber) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getCardFromHand();
+        }
     }
 
-    public Card getCardFromTheOtherPlayerHand() {
+    public Card getCardFromOpponentHand() {
         IO.getInstance().chooseCard();
         String cardNumber = IO.getInstance().getInputMessage();
         if (cardNumber.matches("cancel")) return null;
-        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(Integer.parseInt(cardNumber) - 1);
+        try {
+            return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(Integer.parseInt(cardNumber) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getCardFromOpponentHand();
+        }
     }
 
     public boolean summonGateGuardian() {
@@ -340,14 +389,24 @@ public class DuelView extends ViewMenu {
         IO.getInstance().chooseSpell();
         String spellNumber = IO.getInstance().getInputMessage();
         if (spellNumber.matches("cancel")) return null;
-        return DuelController.getInstance().getGame().getCurrentPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber) - 1);
+        try {
+            return DuelController.getInstance().getGame().getCurrentPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getFromMyField();
+        }
     }
 
     public SpellAndTrapCard getFromOpponentField() {
         IO.getInstance().chooseSpell();
         String spellNumber = IO.getInstance().getInputMessage();
         if (spellNumber.matches("cancel")) return null;
-        return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber) - 1);
+        try {
+            return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getFromOpponentField();
+        }
     }
 
     public int whereToSummonFrom() {
@@ -370,8 +429,7 @@ public class DuelView extends ViewMenu {
 
     public boolean wantsToExchange() {
         IO.getInstance().wantsToExchange();
-        String input = IO.getInstance().getInputMessage().toLowerCase();
-        return input.matches("y(?:es)?");
+        return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
     }
 
     public String[] cardsToExchange() {
@@ -379,32 +437,43 @@ public class DuelView extends ViewMenu {
         //card from side deck
         // *
         //card from main deck
-        String input = IO.getInstance().getInputMessage();
-        return input.split("\\*");
+        return IO.getInstance().getInputMessage().split("\\*");
     }
 
     public MonsterCard getFromMyDeck(boolean isOpponent) {
         IO.getInstance().chooseMonster();
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
-        int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getDeckZone().get(monsterNumber - 1);
+        try {
+            return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getDeckZone().get(Integer.parseInt(number) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getFromMyDeck(isOpponent);
+        }
     }
 
     public MonsterCard getFromMyGY(boolean isOpponent) {
         IO.getInstance().chooseMonster();
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
-        int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(monsterNumber - 1);
+        try {
+            return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getFromMyGY(isOpponent);
+        }
     }
 
     public MonsterCard getMonsterCardFromHand(boolean isOpponent) {
         IO.getInstance().chooseMonster();
         String number = IO.getInstance().getInputMessage();
         if (number.equals("cancel")) return null;
-        int monsterNumber = Integer.parseInt(number);
-        return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(monsterNumber - 1);
+        try {
+            return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(Integer.parseInt(number) - 1);
+        } catch (Exception e) {
+            IO.getInstance().invalidSelection();
+            return getMonsterCardFromHand(isOpponent);
+        }
     }
 
 }

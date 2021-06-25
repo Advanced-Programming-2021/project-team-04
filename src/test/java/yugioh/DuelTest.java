@@ -127,6 +127,7 @@ public class DuelTest {
 
     @Test
     public void selectTest() {
+        setup();
         DuelController.getInstance().selectCard(true, CardStatusInField.HAND, 0);
         Assertions.assertEquals(DuelController.getInstance().getGame().getSelectedCard().getName(), card.getName());
         DuelController.getInstance().deselectCard();
@@ -152,7 +153,7 @@ public class DuelTest {
         theOtherPlayer.getField().getHand().add(leotron);
         theOtherPlayer.getField().getMonsterCards().add(texChanger);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().texChanger(texChanger);
@@ -172,20 +173,21 @@ public class DuelTest {
 
     @Test
     public void barbarosTestThree() {
-        theOtherPlayer.getField().getMonsterCards().add((MonsterCard) Card.getCardByName("Baby dragon"));
+        var card = (MonsterCard) Card.getCardByName("Baby dragon");
+        theOtherPlayer.getField().getMonsterCards().add(card);
+        theOtherPlayer.addCard("Baby dragon");
+        card.setOwner(theOtherPlayer);
         MonsterCard barbaros = (MonsterCard) Card.getCardByName("Beast King Barbaros");
         DuelController.getInstance().getGame().setSelectedCard(barbaros);
-
         MonsterCard babyDragon = (MonsterCard) Card.getCardByName("Baby dragon");
         MonsterCard crawlingDragon = (MonsterCard) Card.getCardByName("Crawling dragon");
         MonsterCard battleWarrior = (MonsterCard) Card.getCardByName("Battle warrior");
         babyDragon.setOwner(thisPlayer);
         crawlingDragon.setOwner(thisPlayer);
-        battleWarrior .setOwner(thisPlayer);
+        battleWarrior.setOwner(thisPlayer);
         thisPlayer.getField().getMonsterCards().add(babyDragon);
         thisPlayer.getField().getMonsterCards().add(crawlingDragon);
         thisPlayer.getField().getMonsterCards().add(battleWarrior);
-
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("1\r\n1\r\n1\r\n".getBytes());
         System.setIn(input);
@@ -198,14 +200,18 @@ public class DuelTest {
     @Test
     public void gateGuardianTest() {
         ShopController.getInstance().buyCard("Gate Guardian");
-        MonsterCard gateGuardian = (MonsterCard) Card.getCardByName("Gate Guardian");
+        var gateGuardian = (MonsterCard) Card.getCardByName("Gate Guardian");
         gateGuardian.setOwner(thisPlayer);
         DuelController.getInstance().getGame().setSelectedCard(gateGuardian);
-
-        thisPlayer.getField().getMonsterCards().add((MonsterCard) Card.getCardByName("Baby dragon"));
-        thisPlayer.getField().getMonsterCards().add((MonsterCard) Card.getCardByName("Crawling dragon"));
-        thisPlayer.getField().getMonsterCards().add((MonsterCard) Card.getCardByName("Battle warrior"));
-
+        var babyDragon = (MonsterCard) Card.getCardByName("Baby dragon");
+        babyDragon.setOwner(thisPlayer);
+        thisPlayer.getField().getMonsterCards().add(babyDragon);
+        var crawlingDragon = (MonsterCard) Card.getCardByName("Crawling dragon");
+        crawlingDragon.setOwner(thisPlayer);
+        thisPlayer.getField().getMonsterCards().add(crawlingDragon);
+        var battleWarrior = (MonsterCard) Card.getCardByName("Battle warrior");
+        battleWarrior.setOwner(thisPlayer);
+        thisPlayer.getField().getMonsterCards().add(battleWarrior);
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream("1\r\n1\r\n1\r\n".getBytes());
         System.setIn(input);
@@ -226,7 +232,7 @@ public class DuelTest {
         babyDragon.setOwner(thisPlayer);
         thisPlayer.getField().getHand().add(babyDragon);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().theTricky();
@@ -248,7 +254,7 @@ public class DuelTest {
         babyDragon.setOwner(thisPlayer);
         thisPlayer.getField().getHand().add(babyDragon);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().heraldOfCreation();
@@ -269,7 +275,7 @@ public class DuelTest {
         monsterCard.setOwner(theOtherPlayer);
         theOtherPlayer.getField().getGraveyard().add(monsterCard);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n0".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n1".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         Scanner scanner = (Scanner) Card.getCardByName("Scanner");
@@ -285,12 +291,13 @@ public class DuelTest {
 
     @Test
     public void forManEaterTest() {
+        // TODO: 6/25/2021 the problem is the ByteArrayInputStream
         ArrayList<Card> opponentGY = theOtherPlayer.getField().getGraveyard();
         ArrayList<MonsterCard> monsterCards = theOtherPlayer.getField().getMonsterCards();
         theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName("Wattaildragon");
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         monsterCard.setOwner(theOtherPlayer);
@@ -386,7 +393,7 @@ public class DuelTest {
         thisPlayer.getField().setHand(new ArrayList<>());
         thisPlayer.getField().getHand().add(abbas);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().terraTigerMethod();
@@ -494,6 +501,7 @@ public class DuelTest {
 
     @Test
     public void ritualTest() {
+        // TODO: 6/25/2021 the problem is the ByteArrayInputStream
         SpellAndTrapCard spell = (SpellAndTrapCard) Card.getCardByName("Advanced Ritual Art");
         spell.setOwner(thisPlayer);
         DuelController.getInstance().getGame().setSelectedCard(spell);
@@ -511,7 +519,7 @@ public class DuelTest {
         thisPlayer.getField().getMonsterCards().add(firstSacrifice);
         thisPlayer.getField().getMonsterCards().add(secondSacrifice);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n1 2\r\nattack\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n1 2\r\nattack\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -582,7 +590,7 @@ public class DuelTest {
         thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
         thisPlayer.getField().getSpellAndTrapCards().add(monsterReborn);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -594,6 +602,7 @@ public class DuelTest {
 
     @Test
     public void terraFormingTest() {
+        // TODO: 6/25/2021 the problem is the ByteArrayInputStream
         SpellAndTrapCard terraForming = (SpellAndTrapCard) Card.getCardByName("Terraforming");
         terraForming.setOwner(thisPlayer);
         ArrayList<Card> handBackUp = thisPlayer.getField().getHand();
@@ -605,7 +614,7 @@ public class DuelTest {
         thisPlayer.getField().setDeckZone(new ArrayList<>());
         thisPlayer.getField().getDeckZone().add(witch);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -724,7 +733,7 @@ public class DuelTest {
         thisPlayer.getField().setSpellAndTrapCards(new ArrayList<>());
         thisPlayer.getField().getSpellAndTrapCards().add(umiiruka);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -909,6 +918,7 @@ public class DuelTest {
 
     @Test
     public void swordOfDarkDestruction() {
+        // TODO: 6/25/2021 the problem is the ByteArrayInputStream
         SpellAndTrapCard swordOfDarkDestruction = (SpellAndTrapCard) Card.getCardByName("Sword of dark destruction");
         MonsterCard hornImp = (MonsterCard) Card.getCardByName("Horn Imp");
         swordOfDarkDestruction.setOwner(thisPlayer);
@@ -920,7 +930,7 @@ public class DuelTest {
         thisPlayer.getField().getSpellAndTrapCards().add(swordOfDarkDestruction);
         thisPlayer.getField().getMonsterCards().add(hornImp);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -972,7 +982,7 @@ public class DuelTest {
         thisPlayer.getField().getMonsterCards().add(monsterCard);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -1094,7 +1104,7 @@ public class DuelTest {
         theOtherPlayer.getField().setHand(new ArrayList<>());
         theOtherPlayer.getField().getHand().add(toRemove);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\n1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
@@ -2080,6 +2090,7 @@ public class DuelTest {
 
     @Test
     public void handleHeraldOfCreationTest() {
+        // TODO: 6/25/2021 the problem is the ByteArrayInputStream
         MonsterCard heraldOfCreation = (MonsterCard) Card.getCardByName("Herald of Creation");
         heraldOfCreation.setOwner(thisPlayer);
         ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
@@ -2095,7 +2106,7 @@ public class DuelTest {
         thisPlayer.getField().setGraveyard(new ArrayList<>());
         thisPlayer.getField().getGraveyard().add(hornymp);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("0\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("1\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().handleCommandKnightAndHeraldOfCreation(thisPlayer.getField(), theOtherPlayer.getField());

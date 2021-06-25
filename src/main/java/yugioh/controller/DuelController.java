@@ -6,8 +6,8 @@ import yugioh.model.*;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
-import yugioh.model.cards.specialcards.*;
 import yugioh.model.cards.specialcards.Scanner;
+import yugioh.model.cards.specialcards.*;
 import yugioh.view.DuelView;
 import yugioh.view.IO;
 
@@ -1032,7 +1032,7 @@ public class DuelController {
         if (spellAndTrapCard.getOwner().equals(game.getCurrentPlayer()))
             removeFromHand = DuelView.getInstance().getCardFromHand();
         else
-            removeFromHand = DuelView.getInstance().getCardFromTheOtherPlayerHand();
+            removeFromHand = DuelView.getInstance().getCardFromOpponentHand();
         if (removeFromHand == null) return;
         spellAndTrapCard.getOwner().getField().getHand().remove(removeFromHand);
         spellAndTrapCard.getOwner().getField().getGraveyard().add(removeFromHand);
@@ -1234,7 +1234,7 @@ public class DuelController {
 
     private void chooseMonsterMode(MonsterCard monsterCard) {
         String mode = DuelView.getInstance().monsterMode().toLowerCase();
-        if (mode.equals("attack"))
+        if (mode.startsWith("a"))
             monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         else monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
     }
@@ -1465,12 +1465,10 @@ public class DuelController {
                 moveSpellOrTrapToGYFromFieldZone(game.getTheOtherPlayer().getField().getFieldZone());
             int spellSize = opponentSpellCards.size();
             int monsterSize = opponentMonsterCards.size();
-            if (spellSize > 0)
-                for (int i = 0; i < spellSize; i++)
-                    moveSpellOrTrapToGYFromSpellZone(opponentSpellCards.get(0));
-            if (monsterSize > 0)
-                for (int i = 0; i < monsterSize; i++)
-                    addMonsterToGYFromMonsterZone(opponentMonsterCards.get(0));
+            for (int i = 0; i < spellSize; i++)
+                moveSpellOrTrapToGYFromSpellZone(opponentSpellCards.get(0));
+            for (int i = 0; i < monsterSize; i++)
+                addMonsterToGYFromMonsterZone(opponentMonsterCards.get(0));
         }
         game.getCurrentPlayer().getField().getHand().remove(barbaros);
         game.getCurrentPlayer().getField().getMonsterCards().add(barbaros);
@@ -1608,6 +1606,6 @@ public class DuelController {
         for (Map.Entry mapElement : fields.entrySet()) {
             toPrint.append(mapElement.getKey()).append(": ").append(mapElement.getValue()).append("\n");
         }
-            return toPrint.toString();
-        }
+        return toPrint.toString();
+    }
 }

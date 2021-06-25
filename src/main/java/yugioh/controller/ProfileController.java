@@ -39,8 +39,8 @@ public class ProfileController {
             return false;
         }
         return true;
-
     }
+
     private boolean isChangingNicknameValid(String nickname) {
         if (Account.getAllNicknames().contains(nickname)) {
             IO.getInstance().userWithNicknameExists(nickname);

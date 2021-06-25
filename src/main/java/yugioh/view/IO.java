@@ -26,10 +26,6 @@ public class IO {
         scanner = new Scanner(System.in);
     }
 
-    public void noSuchCard() {
-        System.out.println("not a valid card name");
-    }
-
     public void revealCard(String cardName) {
         System.out.print("opponent’s monster card was " + cardName + " and ");
     }

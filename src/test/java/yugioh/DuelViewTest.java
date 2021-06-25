@@ -155,7 +155,7 @@ public class DuelViewTest {
         System.setIn(input);
         IO.getInstance().resetScanner();
         System.setIn(backup);
-        MonsterCard monsterCard = (MonsterCard) DuelView.getInstance().getCardFromTheOtherPlayerHand();
+        MonsterCard monsterCard = (MonsterCard) DuelView.getInstance().getCardFromOpponentHand();
         Assertions.assertNull(monsterCard);
     }
 
