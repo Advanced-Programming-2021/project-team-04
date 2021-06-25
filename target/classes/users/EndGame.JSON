@@ -1,12 +1,13 @@
 {
   "password": "mechs",
   "score": 0,
-  "money": 100000,
+  "money": 100100,
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Magic Jamamer": 15,
-        "Feral Imp": 25
+        "Beast King Barbaros": 10,
+        "Herald of Creation": 20,
+        "Bitron": 10
       },
       "sideDeckCards": {},
       "deckName": "Cinder"

@@ -80,8 +80,10 @@ public class AI extends Duelist {
 
     public void summonMonster() {
         MonsterCard strongestMonsterCardInHand = getStrongestMonsterCardInHand();
-        if (strongestMonsterCardInHand == null)
+        if (strongestMonsterCardInHand != null) {
+            DuelController.getInstance().getGame().setSelectedCard(strongestMonsterCardInHand);
             DuelController.getInstance().summon();
+        }
     }
 
 }

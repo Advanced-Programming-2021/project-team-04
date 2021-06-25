@@ -785,10 +785,11 @@ public class DuelController {
         if (!isDirectAttackValid()) return;
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
         int damage = selectedCard.getThisCardAttackPower();
-        game.getTheOtherPlayer().changeLP(-damage);
         selectedCard.setAttacked(true);
         game.setSelectedCard(null);
         IO.getInstance().receivedDamage(damage);
+        game.getTheOtherPlayer().changeLP(-damage);
+        if (game.getTheOtherPlayer().getLP() <= 0) return;
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
@@ -1611,4 +1612,16 @@ public class DuelController {
         }
         return toPrint.toString();
     }
+
+    public void wonGame(boolean allMatches, boolean isAI, Account winner) {
+        if (isAI)
+            IO.getInstance().printString("a spacecraft’s structure is its underlying body and it's won once again");
+        else {
+            if (allMatches)
+                IO.getInstance().printString(winner + " won the whole math with score: " + winner.getScore());
+            else
+                IO.getInstance().printString(winner + " won the game and the score is: " + winner.getScore());
+        }
+    }
+
 }

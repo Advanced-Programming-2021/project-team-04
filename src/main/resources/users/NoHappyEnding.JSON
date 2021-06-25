@@ -1,11 +1,12 @@
 {
   "password": "mechs",
-  "score": 0,
-  "money": 100000,
+  "score": 1000,
+  "money": 109000,
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Leotron": 40
+        "Blue-Eyes white dragon": 20,
+        "Silver Fang": 20
       },
       "sideDeckCards": {},
       "deckName": "Cinder"

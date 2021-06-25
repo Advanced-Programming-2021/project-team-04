@@ -5,6 +5,7 @@ import yugioh.controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.cards.Card;
+import yugioh.view.IO;
 
 import java.util.*;
 
@@ -106,9 +107,15 @@ public class Game {
             ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
             ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
         } else if (winner instanceof Account)
+        {
             ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
+            DuelController.getInstance().wonGame(false, false, (Account) winner);
+        }
         else if (loser instanceof Account)
+        {
             ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
+            DuelController.getInstance().wonGame(false, true, (Account) loser);
+        }
         isGameFinished = true;
 //        winner.reset();
 //        loser.reset();
@@ -122,20 +129,32 @@ public class Game {
                 winnerOfEachRound[0] = winner;
                 winner.setMaxLPofThreeRounds(winner.getLP());
                 loser.setMaxLPofThreeRounds(loser.getLP());
+                if (!(winner instanceof AI))
+                    DuelController.getInstance().wonGame(false, false, (Account) winner);
+                else DuelController.getInstance().wonGame(false, true, (Account) loser);
             }
             case 2 -> {
                 winner.checkMaxLPofThreeRounds();
                 loser.checkMaxLPofThreeRounds();
                 if (winnerOfEachRound[0] == winner) {
                     finishMultipleRoundGame(loser, winner);
+                    if (!(winner instanceof AI))
+                        DuelController.getInstance().wonGame(true, false, (Account) winner);
+                    else DuelController.getInstance().wonGame(false, true, (Account) loser);
                     return;
                 }
+                if (!(winner instanceof AI))
+                    DuelController.getInstance().wonGame(false, false, (Account) winner);
+                else DuelController.getInstance().wonGame(false, true, (Account) loser);
                 winnerOfEachRound[1] = winner;
             }
             case 3 -> {
                 winner.checkMaxLPofThreeRounds();
                 loser.checkMaxLPofThreeRounds();
                 finishMultipleRoundGame(loser, winner);
+                if (!(winner instanceof AI))
+                    DuelController.getInstance().wonGame(false, false, (Account) winner);
+                else DuelController.getInstance().wonGame(false, true, (Account) loser);
                 return;
             }
         }
