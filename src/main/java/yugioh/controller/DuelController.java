@@ -1484,17 +1484,21 @@ public class DuelController {
 
     public void texChanger(MonsterCard attacked) {
         if (!attacked.isHasBeenUsedInThisTurn()) {
-            ArrayList<Card> toRemoveFrom = new ArrayList<>();
-            int whereFrom = DuelView.getInstance().whereToSummonFrom();
-            MonsterCard monsterCard = null;
+            ArrayList<Card> toRemoveFrom;
+            MonsterCard monsterCard;
             do {
+                toRemoveFrom = new ArrayList<>();
+                int whereFrom = DuelView.getInstance().whereToSummonFrom();
+                monsterCard = null;
                 switch (whereFrom) {
                     case 1 -> {
                         monsterCard = DuelView.getInstance().getMonsterCardFromHand(true);
                         toRemoveFrom = game.getCurrentPlayer().getField().getHand();
                     }
                     case 2 -> {
-                        monsterCard = DuelView.getInstance().getFromMyDeck(true);
+                        monsterCard = game.getCurrentPlayer().getField().getDeckZone().stream().filter(c -> c instanceof MonsterCard)
+                                .map(c -> (MonsterCard) c).filter(m -> m.getCardType().equals("Normal") && m.getMonsterType().equals("Cyberse"))
+                                .findFirst().orElse(null);
                         toRemoveFrom = game.getCurrentPlayer().getField().getDeckZone();
                     }
                     case 3 -> {
@@ -1503,12 +1507,10 @@ public class DuelController {
                     }
                 }
                 if (monsterCard == null) return;
-            }
-            while (!(monsterCard.getCardType().equals("Normal") &&
-                    monsterCard.getMonsterType().equals("Cyberse")));
-
+            } while (!(monsterCard.getCardType().equals("Normal") && monsterCard.getMonsterType().equals("Cyberse")));
             specialSummon(monsterCard, MonsterCardModeInField.ATTACK_FACE_UP, toRemoveFrom);
             attacked.setHasBeenUsedInThisTurn(true);
+            IO.getInstance().summoned();
         }
     }
 
