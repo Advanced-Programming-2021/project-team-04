@@ -5,8 +5,9 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Feral Imp": 30,
-        "Beast King Barbaros": 20
+        "Feral Imp": 15,
+        "Horn Imp": 15,
+        "Mirage Dragon": 20
       },
       "sideDeckCards": {},
       "deckName": "Langa"
