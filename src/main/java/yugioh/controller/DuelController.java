@@ -844,6 +844,7 @@ public class DuelController {
             game.getCurrentPlayer().getField().setFieldZone(selectedCard);
         } else if (!game.getCurrentPlayer().getField().getSpellAndTrapCards().contains(selectedCard))
             game.getCurrentPlayer().getField().getSpellAndTrapCards().add(selectedCard);
+        game.getCurrentPlayer().getField().getHand().remove(selectedCard);
         selectedCard.setActive(true);
         callSpellAndTrapMethod(selectedCard);
         game.setSelectedCard(null);

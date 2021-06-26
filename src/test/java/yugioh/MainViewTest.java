@@ -83,7 +83,7 @@ public class MainViewTest {
     public void newGameAI() {
         InputStream backup = System.in;
         ByteArrayInputStream input = new ByteArrayInputStream(("""
-                duel --new --ai --rounds 1 \r
+                duel --new --ai -d e --rounds 1 \r
                 menu exit\r
                 """).getBytes());
         System.setIn(input);
