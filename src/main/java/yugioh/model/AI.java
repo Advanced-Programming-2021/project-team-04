@@ -50,38 +50,38 @@ public class AI extends Duelist {
         attack(opponent);
     }
 
-    private MonsterCard getStrongestMonsterCardInZone() {
+    public MonsterCard getStrongestMonsterCardInZone() {
         return getField().getMonsterCards().stream()
                 .filter(m -> m.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP))
                 .filter(m -> m.isAbleToAttack() && !m.isAttacked()).max(Comparator.comparing(MonsterCard::getThisCardAttackPower))
                 .orElse(null);
     }
 
-    private MonsterCard getOpponentsWeakestAttackCard(Duelist opponent) {
+    public MonsterCard getOpponentsWeakestAttackCard(Duelist opponent) {
         return opponent.getField().getMonsterCards().stream()
                 .filter(m -> m.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP))
                 .min(Comparator.comparing(MonsterCard::getThisCardAttackPower)).orElse(null);
     }
 
-    private MonsterCard getOpponentsWeakestDefenseCard(Duelist opponent) {
+    public MonsterCard getOpponentsWeakestDefenseCard(Duelist opponent) {
         return opponent.getField().getMonsterCards().stream()
                 .filter(m -> m.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN) ||
                         m.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_UP))
                 .min(Comparator.comparing(MonsterCard::getThisCardDefensePower)).orElse(null);
     }
 
-    private MonsterCard getStrongestMonsterCardInHandWithTwoTributes() {
+    public MonsterCard getStrongestMonsterCardInHandWithTwoTributes() {
         return getField().getHand().stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
                 .filter(m -> m.getLevel() > 6).max(Comparator.comparing(MonsterCard::getThisCardAttackPower)).orElse(null);
     }
 
-    private MonsterCard getStrongestMonsterCardInHandWithOneTribute() {
+    public MonsterCard getStrongestMonsterCardInHandWithOneTribute() {
         return getField().getHand().stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
                 .filter(m -> m.getLevel() > 4 && m.getLevel() < 7).max(Comparator.comparing(MonsterCard::getThisCardAttackPower)).orElse(null);
     }
 
 
-    private MonsterCard getStrongestMonsterCardInHandWithNoTributes() {
+    public MonsterCard getStrongestMonsterCardInHandWithNoTributes() {
         return getField().getHand().stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
                 .filter(m -> m.getLevel() < 5).max(Comparator.comparing(MonsterCard::getThisCardAttackPower)).orElse(null);
     }
@@ -105,11 +105,11 @@ public class AI extends Duelist {
         }
     }
 
-    private boolean canTributeOneMonster() {
+    public boolean canTributeOneMonster() {
         return getField().getMonsterCards().stream().anyMatch(m -> m.getLevel() < 5);
     }
 
-    private boolean canTributeTwoMonsters() {
+    public boolean canTributeTwoMonsters() {
         return getField().getMonsterCards().stream().filter(m -> m.getLevel() < 5).count() > 1;
     }
 
@@ -136,12 +136,12 @@ public class AI extends Duelist {
         }
     }
 
-    private SpellAndTrapCard getFieldZoneSpellCardFromHand() {
+    public SpellAndTrapCard getFieldZoneSpellCardFromHand() {
         return getField().getHand().stream().filter(c -> c instanceof SpellAndTrapCard).map(c -> (SpellAndTrapCard) c)
                 .filter(s -> s.getProperty().equals("Field")).findFirst().orElse(null);
     }
 
-    private SpellAndTrapCard getSpellCardFromHand() {
+    public SpellAndTrapCard getSpellCardFromHand() {
         return (SpellAndTrapCard) getField().getHand().stream().filter(c -> c instanceof SpellAndTrapCard).findFirst().orElse(null);
     }
 
