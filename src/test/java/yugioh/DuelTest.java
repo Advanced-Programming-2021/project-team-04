@@ -383,6 +383,7 @@ public class DuelTest {
 
     @Test
     public void terraTigerTest() {
+        var initialHandSize = thisPlayer.getField().getHand().size();
         Card selectedCard = DuelController.getInstance().getGame().getSelectedCard();
         ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
         ArrayList<Card> hand = thisPlayer.getField().getHand();
@@ -397,10 +398,10 @@ public class DuelTest {
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().terraTigerMethod();
+        Assertions.assertEquals(initialHandSize - 1, thisPlayer.getField().getHand().size());
         thisPlayer.getField().setMonsterCards(monsterCards);
         thisPlayer.getField().setHand(hand);
         System.setIn(backup);
-        Assertions.assertNull(DuelController.getInstance().getGame().getSelectedCard());
         DuelController.getInstance().getGame().setSelectedCard(selectedCard);
     }
 
@@ -413,12 +414,14 @@ public class DuelTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().showSelectedCard();
-        Assertions.assertEquals("Name: Silver Fang\n" +
-                "Level: 3\n" +
-                "Type: Beast\n" +
-                "ATK: 1200\n" +
-                "DEF: 800\n" +
-                "Description: A snow wolf that's beautiful to the eye, but absolutely vicious in battle.\r\n", outputStream.toString());
+        Assertions.assertEquals("""
+                Name: Silver Fang
+                Level: 3
+                Type: Beast
+                ATK: 1200
+                DEF: 800
+                Description: A snow wolf that's beautiful to the eye, but absolutely vicious in battle.\r
+                """, outputStream.toString());
         DuelController.getInstance().getGame().setSelectedCard(already);
     }
 
@@ -1554,7 +1557,6 @@ public class DuelTest {
 
     @Test
     public void attackInAttackLossTest() {
-
         thisPlayer.setLP(8000);
         DuelController.getInstance().getGame().setCurrentPhase(Phases.BATTLE_PHASE);
         MonsterCard attacker = (MonsterCard) Card.getCardByName("Wattkid");

@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class AIDuelTest {
 
     public static Account thisAccount = new Account("Pvt. Witt", "I_ACTUALLY_SAW_ANOTHER_WORLD_WITCH", "Witt");
-    static SpellAndTrapCard card;
 
     @BeforeAll
     public static void setup() {
