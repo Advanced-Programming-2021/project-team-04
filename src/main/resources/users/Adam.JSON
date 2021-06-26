@@ -5,9 +5,7 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Feral Imp": 15,
-        "Horn Imp": 15,
-        "Mirage Dragon": 20
+        "Battle OX": 40
       },
       "sideDeckCards": {},
       "deckName": "Langa"

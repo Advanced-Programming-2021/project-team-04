@@ -4,7 +4,7 @@
     "attribute": "EARHT",
     "monsterType": "Beast-Warrior",
     "cardType": "Normal",
-    "classAttackPower": 1700,
+    "classAttackPower": 8000,
     "classDefensePower": 1000,
     "price": 2900,
     "description": "A monster with tremendous power, it destroys enemies with a swing of its axe."
