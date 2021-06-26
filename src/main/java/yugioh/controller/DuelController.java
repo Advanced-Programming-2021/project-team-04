@@ -385,8 +385,14 @@ public class DuelController {
         try {
             Thread.sleep(100);
         } catch (InterruptedException ignored) { }
-        if (game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE) AI.getInstance().summonMonster();
-        else if (game.getCurrentPhase() == Phases.BATTLE_PHASE) AI.getInstance().attack(getGame().getTheOtherPlayer());
+        switch (getGame().getCurrentPhase()) {
+            case FIRST_MAIN_PHASE -> {
+                AI.getInstance().activateSpell();
+                AI.getInstance().summonMonster();
+            }
+            case BATTLE_PHASE -> AI.getInstance().attack(getGame().getTheOtherPlayer());
+            case SECOND_MAIN_PHASE -> AI.getInstance().activateSpell();
+        }
         try {
             Thread.sleep(100);
         } catch (InterruptedException ignored) { }
