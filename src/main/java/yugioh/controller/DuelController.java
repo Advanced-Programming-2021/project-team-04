@@ -256,12 +256,11 @@ public class DuelController {
     }
 
     public void battlePhase() {
+        IO.getInstance().printPhase("battle phase");
         if (!game.getCurrentPlayer().isAbleToAttack()) {
             game.getCurrentPlayer().setAbleToAttack(true);
             nextPhase();
-            return;
         }
-        IO.getInstance().printPhase("battle phase");
     }
 
     private void secondMainPhase() {
@@ -381,8 +380,7 @@ public class DuelController {
     }
 
     private void handleAI() {
-        if (game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)
-            AI.getInstance().summonMonster();
+        if (game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE) AI.getInstance().summonMonster();
         else if (game.getCurrentPhase() == Phases.BATTLE_PHASE) AI.getInstance().attack(getGame().getTheOtherPlayer());
         nextPhase();
     }
@@ -456,15 +454,17 @@ public class DuelController {
     public void summonWithTribute() {
         var monsterCard = (MonsterCard) game.getSelectedCard();
         if (monsterCard.getLevel() == 5 || monsterCard.getLevel() == 6) {
-            int number = DuelView.getInstance().getTribute();
+            int number = getGame().getCurrentPlayer() instanceof AI ? AI.getInstance().getWeakestMonsterCardInZone() : DuelView.getInstance().getTribute();
             if (isTributeValid(number))
                 addMonsterToGYFromMonsterZone(game.getCurrentPlayer().getField().getMonsterCards().get(number));
         } else if (monsterCard.getLevel() == 7 || monsterCard.getLevel() == 8) {
-            int firstNumber = DuelView.getInstance().getTribute();
-            int secondNumber = DuelView.getInstance().getTribute();
+            int firstNumber = getGame().getCurrentPlayer() instanceof AI ? AI.getInstance().getWeakestMonsterCardInZone() : DuelView.getInstance().getTribute();
+            int secondNumber = getGame().getCurrentPlayer() instanceof AI ? AI.getInstance().getSecondWeakestMonsterCardInZone() : DuelView.getInstance().getTribute();
+            var firstTribute = game.getCurrentPlayer().getField().getMonsterCards().get(firstNumber);
+            var secondTribute = game.getCurrentPlayer().getField().getMonsterCards().get(secondNumber);
             if (isTributeValid(firstNumber) && isTributeValid(secondNumber) && firstNumber != secondNumber) {
-                addMonsterToGYFromMonsterZone(game.getCurrentPlayer().getField().getMonsterCards().get(firstNumber));
-                addMonsterToGYFromMonsterZone(game.getCurrentPlayer().getField().getMonsterCards().get(secondNumber - 1));
+                addMonsterToGYFromMonsterZone(firstTribute);
+                addMonsterToGYFromMonsterZone(secondTribute);
             }
         }
     }
@@ -650,7 +650,6 @@ public class DuelController {
             nextPhase();
             return;
         }
-        opponentMonsterPositionNumber--; //TODO check these numbers and shits
         MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber);
         MonsterCard attacker = (MonsterCard) game.getSelectedCard();
         if (game.getTheOtherPlayer().getField().getThisActivatedCard("Swords of Revealing Light") != null) return;
@@ -765,11 +764,11 @@ public class DuelController {
             IO.getInstance().cannotAttack();
             return false;
         }
-        if (game.getTheOtherPlayer().getField().getMonsterCards().size() < opponentMonsterPositionNumber) {
+        if (game.getTheOtherPlayer().getField().getMonsterCards().size() <= opponentMonsterPositionNumber) {
             IO.getInstance().noCardHere();
             return false;
         }
-        MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber - 1);
+        MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber);
         if (!attacked.isAbleToBeRemoved()) { //TODO when is this set as false
             IO.getInstance().cannotAttackThisCard();
             return false;

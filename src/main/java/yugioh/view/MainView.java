@@ -1,6 +1,8 @@
 package yugioh.view;
 
+import yugioh.controller.DuelController;
 import yugioh.controller.MainController;
+import yugioh.model.AI;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -96,6 +98,8 @@ public class MainView extends ViewMenu {
     private void newDuelAI(Matcher matcher) {
         if (MainController.getInstance().newAIDuel(Integer.parseInt(matcher.group("roundsNumber")))) {
             DuelView.getInstance().runForRPSAgainstAI();
+            if (DuelController.getInstance().getGame().getCurrentPlayer() instanceof AI)
+                DuelController.getInstance().nextPhase();
             DuelView.getInstance().run();
         }
     }

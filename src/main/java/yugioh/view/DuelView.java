@@ -64,7 +64,7 @@ public class DuelView extends ViewMenu {
             else if (command.matches("f(?:lip)?-sum(?:mon)?"))
                 DuelController.getInstance().flipSummon();
             else if (attackMatcher.matches())
-                DuelController.getInstance().attack(Integer.parseInt(attackMatcher.group("number")));
+                DuelController.getInstance().attack(Integer.parseInt(attackMatcher.group("number")) - 1);
             else if (command.matches("att(?:ack)? d(?:ir(?:ect)?)?"))
                 DuelController.getInstance().directAttack();
             else if (command.matches("activ(?:at)?e(?: effect)?"))
@@ -135,8 +135,10 @@ public class DuelView extends ViewMenu {
     }
 
     public void chooseStarter(String winnerUsername) {
-        if (winnerUsername.equals("AI"))
+        if (winnerUsername.equals("AI")) {
             DuelController.getInstance().chooseStarter(winnerUsername);
+            return;
+        }
         IO.getInstance().chooseStarter();
         String username = IO.getInstance().getInputMessage();
         DuelController.getInstance().chooseStarter(username);
