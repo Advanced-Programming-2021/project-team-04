@@ -7,6 +7,7 @@ import yugioh.model.CardStatusInField;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class DuelView extends ViewMenu {
 
-    private static final Random RANDOM = new Random();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     private static final String[] RPS = {"r", "p", "s"};
 
@@ -30,8 +31,7 @@ public class DuelView extends ViewMenu {
 
     private boolean isRPSDone = false;
 
-    private DuelView() {
-    }
+    private DuelView() { }
 
     public static DuelView getInstance() {
         if (singleInstance == null)

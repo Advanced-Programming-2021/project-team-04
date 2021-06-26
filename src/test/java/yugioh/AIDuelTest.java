@@ -20,6 +20,6 @@ public class AIDuelTest {
         for (int i = 0; i < 40; i++)
             playerDeck.addCardToMainDeck(cardName);
         thisAccount.setActivePlayerDeck("Damaged");
-        MainController.getInstance().newAIDuel(1);
+        MainController.getInstance().newAIDuel(1, AI.AIDifficulty.EASY);
     }
 }

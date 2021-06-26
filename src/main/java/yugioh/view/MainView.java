@@ -15,8 +15,8 @@ public class MainView extends ViewMenu {
     private final Pattern newDuelPattern = Pattern.compile("^d(?:uel)? (?=.*-(?:-new|n))" +
             "(?=.*-(?:-second-player|s|s-p) (?<secondPlayerUsername>\\S+))" +
             "(?=.*-(?:-rounds?|r) (?<roundsNumber>\\d+)).+$");
-    private final Pattern newDuelAIPattern = Pattern.compile("^d(?:uel)? (?=.*-(?:-new|n))" +
-            "(?=.*--ai)(?=.*-(?:-rounds?|r) (?<roundsNumber>\\d+)).+$");
+    private final Pattern newDuelAIPattern = Pattern.compile("^d(?:uel)? (?=.*-(?:-new|n))(?=.*--ai)" +
+            "(?=.*-(?:-difficulty|d) (?<difficulty>e(?:asy)?|m(?:edium)?|h(?:ard)?))(?=.*-(?:-rounds?|r) (?<roundsNumber>\\d+)).+$");
 
     private boolean continueLoop = true;
 
@@ -96,7 +96,8 @@ public class MainView extends ViewMenu {
     }
 
     private void newDuelAI(Matcher matcher) {
-        if (MainController.getInstance().newAIDuel(Integer.parseInt(matcher.group("roundsNumber")))) {
+        if (MainController.getInstance().newAIDuel(Integer.parseInt(matcher.group("roundsNumber")),
+                AI.AIDifficulty.getDifficulty(matcher.group("difficulty")))) {
             DuelView.getInstance().runForRPSAgainstAI();
             if (DuelController.getInstance().getGame().getCurrentPlayer() instanceof AI)
                 DuelController.getInstance().nextPhase();
