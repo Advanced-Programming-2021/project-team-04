@@ -4,11 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.AI;
 import yugioh.model.Account;
-import yugioh.model.Field;
 import yugioh.model.Game;
 import yugioh.view.IO;
 
-import java.io.File;
 import java.util.Objects;
 
 @Getter
@@ -33,8 +31,9 @@ public class MainController {
         return false;
     }
 
-    public boolean newAIDuel(int rounds) {
+    public boolean newAIDuel(int rounds, AI.AIDifficulty difficulty) {
         if (errorForNewAIGame(rounds)) {
+            AI.getInstance().setActivePlayerDeck(difficulty.toString());
             DuelController.getInstance().setGame(new Game(loggedIn, AI.getInstance(), rounds, true));
             return true;
         }
@@ -46,7 +45,6 @@ public class MainController {
         DuelController.getInstance().getGame().getCurrentPlayer().setField(ImportAndExport.getInstance().readField("first_field"));
         DuelController.getInstance().getGame().getTheOtherPlayer().setField(ImportAndExport.getInstance().readField("second_field"));
     }
-
 
     private boolean errorForNewGame(String username, int rounds) {
         if (!Account.getAllAccounts().contains(Account.getAccountByUsername(username))) {

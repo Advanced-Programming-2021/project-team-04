@@ -1,6 +1,7 @@
 package yugioh.model.cards.specialcards;
 
 import yugioh.controller.DuelController;
+import yugioh.model.AI;
 import yugioh.model.Duelist;
 import yugioh.model.MonsterCardModeInField;
 import yugioh.model.cards.MonsterCard;
@@ -25,7 +26,8 @@ public class SwordsOfRevealingLight extends SpellAndTrapCard {
     }
 
     public void specialMethod(Duelist opponent) {
-        DuelController.getInstance().makeChain(DuelController.getInstance().getGame().getCurrentPlayer(),
+        if (!(opponent instanceof AI))
+            DuelController.getInstance().makeChain(DuelController.getInstance().getGame().getCurrentPlayer(),
                 DuelController.getInstance().getGame().getTheOtherPlayer());
         ArrayList<MonsterCard> monsterCards = opponent.getField().getMonsterCards();
         for (MonsterCard monsterCard : monsterCards)

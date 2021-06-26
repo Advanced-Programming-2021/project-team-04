@@ -7,6 +7,7 @@ import yugioh.model.CardStatusInField;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 
 public class DuelView extends ViewMenu {
 
-    private static final Random RANDOM = new Random();
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     private static final String[] RPS = {"r", "p", "s"};
 
@@ -30,8 +31,7 @@ public class DuelView extends ViewMenu {
 
     private boolean isRPSDone = false;
 
-    private DuelView() {
-    }
+    private DuelView() { }
 
     public static DuelView getInstance() {
         if (singleInstance == null)
@@ -64,7 +64,7 @@ public class DuelView extends ViewMenu {
             else if (command.matches("f(?:lip)?-sum(?:mon)?"))
                 DuelController.getInstance().flipSummon();
             else if (attackMatcher.matches())
-                DuelController.getInstance().attack(Integer.parseInt(attackMatcher.group("number")));
+                DuelController.getInstance().attack(Integer.parseInt(attackMatcher.group("number")) - 1);
             else if (command.matches("att(?:ack)? d(?:ir(?:ect)?)?"))
                 DuelController.getInstance().directAttack();
             else if (command.matches("activ(?:at)?e(?: effect)?"))
@@ -135,8 +135,10 @@ public class DuelView extends ViewMenu {
     }
 
     public void chooseStarter(String winnerUsername) {
-        if (winnerUsername.equals("AI"))
+        if (winnerUsername.equals("AI")) {
             DuelController.getInstance().chooseStarter(winnerUsername);
+            return;
+        }
         IO.getInstance().chooseStarter();
         String username = IO.getInstance().getInputMessage();
         DuelController.getInstance().chooseStarter(username);

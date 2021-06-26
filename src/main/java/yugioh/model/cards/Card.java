@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import yugioh.controller.ImportAndExport;
 import lombok.Getter;
 import lombok.Setter;
+import yugioh.model.AI;
 import yugioh.model.Account;
 import yugioh.model.Duelist;
 
@@ -27,7 +28,7 @@ public class Card {
     protected String description;
     @Expose // TODO: 6/19/2021 delete this @Expose
     protected int allowedNumber = 3;
-    protected Duelist Owner;
+    protected Duelist owner;
     @Expose
     protected String ownerUsername;
     @Expose // TODO: 6/19/2021 delete this @Expose
@@ -46,8 +47,11 @@ public class Card {
     }
 
     public Duelist getOwner() {
-        if (Owner == null) Owner = Account.getAccountByUsername(ownerUsername);
-        return Owner;
+        if (owner == null) {
+            if (ownerUsername.equals("AI")) owner = AI.getInstance();
+            else owner = Account.getAccountByUsername(ownerUsername);
+        }
+        return owner;
     }
 
     public static Card getCardByName(String name) {
