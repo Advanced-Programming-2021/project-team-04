@@ -1,15 +1,1 @@
-<<<<<<< HEAD
-{
-    "name": "Battle OX",
-    "level": 4,
-    "attribute": "EARHT",
-    "monsterType": "Beast-Warrior",
-    "cardType": "Normal",
-    "classAttackPower": 8000,
-    "classDefensePower": 1000,
-    "price": 2900,
-    "description": "A monster with tremendous power, it destroys enemies with a swing of its axe."
-}
-=======
 {"classAttackPower":1700,"classDefensePower":1000,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":4,"monsterType":"Beast-Warrior","cardType":"Normal","attribute":"EARHT","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Battle OX","price":2900,"description":"A monster with tremendous power, it destroys enemies with a swing of its axe.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}
->>>>>>> c9acbcf2e01fd606f2fd1771b9e652dcb8feaeaf
