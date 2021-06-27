@@ -53,8 +53,6 @@ public class MainView extends ViewMenu {
                 cheatIncreaseScore(command);
             else if (command.matches("The Hanged Man Rusts \\d+"))
                 cheatIncreaseMoney(command);
-            else if (command.startsWith("read game"))
-                readDuel(command);
             else IO.getInstance().printInvalidCommand();
         }
     }
@@ -105,28 +103,19 @@ public class MainView extends ViewMenu {
         }
     }
 
-    private void readDuel(String command) {
-        try {
-            MainController.getInstance().readDuel(command.substring(10));
-            DuelView.getInstance().run();
-        } catch (Exception ignored) { }
-    }
-
     //TODO change the methods below
 
     private void cheatIncreaseScore(String string) {
         Pattern pattern = Pattern.compile("The Aurora Strikes (\\d+)");
         Matcher matcher = pattern.matcher(string);
-        matcher.find();
-        int amount = Integer.parseInt(matcher.group(1));
-        MainController.getInstance().cheatIncreaseScore(amount);
+        if (matcher.find())
+            MainController.getInstance().cheatIncreaseScore(Integer.parseInt(matcher.group(1)));
     }
 
     private void cheatIncreaseMoney(String string) {
         Pattern pattern = Pattern.compile("The Hanged Man Rusts (\\d+)");
         Matcher matcher = pattern.matcher(string);
-        matcher.find();
-        int amount = Integer.parseInt(matcher.group(1));
-        MainController.getInstance().cheatIncreaseMoney(amount);
+        if (matcher.find())
+            MainController.getInstance().cheatIncreaseMoney(Integer.parseInt(matcher.group(1)));
     }
 }

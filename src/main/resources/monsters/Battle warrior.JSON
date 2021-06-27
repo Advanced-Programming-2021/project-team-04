@@ -1,11 +1,1 @@
-{
-    "name": "Battle warrior",
-    "level": 3,
-    "attribute": "EARTH",
-    "monsterType": "Warrior",
-    "cardType": "Normal",
-    "classAttackPower": 700,
-    "classDefensePower": 1000,
-    "price": 1300,
-    "description": "A warrior that fights with his bare hands!!!"
-}
+{"classAttackPower":700,"classDefensePower":1000,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":3,"monsterType":"Warrior","cardType":"Normal","attribute":"EARTH","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Battle warrior","price":1300,"description":"A warrior that fights with his bare hands!!!","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

@@ -1,11 +1,1 @@
-{
-    "name": "Gate Guardian",
-    "level": 11,
-    "attribute": "DARK",
-    "monsterType": "Warrior",
-    "cardType": "Effect",
-    "classAttackPower": 3750,
-    "classDefensePower": 3400,
-    "price": 20000,
-    "description": "Cannot be Normal Summoned/Set. Must first be Special Summoned (from your hand) by Tributing 1 'Sanga of the Thunder', 'Kazejin', and 'Suijin'."
-}
+{"classAttackPower":3750,"classDefensePower":3400,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":11,"monsterType":"Warrior","cardType":"Effect","attribute":"DARK","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Gate Guardian","price":20000,"description":"Cannot be Normal Summoned/Set. Must first be Special Summoned (from your hand) by Tributing 1 \u0027Sanga of the Thunder\u0027, \u0027Kazejin\u0027, and \u0027Suijin\u0027.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

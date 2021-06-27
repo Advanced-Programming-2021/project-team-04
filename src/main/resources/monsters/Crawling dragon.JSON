@@ -1,11 +1,1 @@
-{
-    "name": "Crawling dragon",
-    "level": 5,
-    "attribute": "EARTH",
-    "monsterType": "Dragon",
-    "cardType": "Normal",
-    "classAttackPower": 1600,
-    "classDefensePower": 1400,
-    "price": 3900,
-    "description": "This weakened dragon can no longer fly, but is still a deadly force to be reckoned with."
-}
+{"classAttackPower":1600,"classDefensePower":1400,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":5,"monsterType":"Dragon","cardType":"Normal","attribute":"EARTH","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Crawling dragon","price":3900,"description":"This weakened dragon can no longer fly, but is still a deadly force to be reckoned with.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

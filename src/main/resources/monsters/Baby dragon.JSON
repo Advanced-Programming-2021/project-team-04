@@ -1,11 +1,1 @@
-{
-    "name": "Baby dragon",
-    "level": 3,
-    "attribute": "WIND",
-    "monsterType": "Dragon",
-    "cardType": "Normal",
-    "classAttackPower": 1200,
-    "classDefensePower": 700,
-    "price": 1600,
-    "description": "Much more than just a child, this dragon is gifted with untapped power."
-}
+{"classAttackPower":1200,"classDefensePower":700,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":3,"monsterType":"Dragon","cardType":"Normal","attribute":"WIND","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Baby dragon","price":1600,"description":"Much more than just a child, this dragon is gifted with untapped power.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

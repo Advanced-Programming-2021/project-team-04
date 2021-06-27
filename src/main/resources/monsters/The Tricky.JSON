@@ -1,11 +1,1 @@
-{
-    "name": "The Tricky",
-    "level": 5,
-    "attribute": "WIND",
-    "monsterType": "Spellcaster",
-    "cardType": "Effect",
-    "classAttackPower": 2000,
-    "classDefensePower": 1200,
-    "price": 4300,
-    "description": "You can Special Summon this card (from your hand) by discarding 1 card."
-}
+{"classAttackPower":2000,"classDefensePower":1200,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":5,"monsterType":"Spellcaster","cardType":"Effect","attribute":"WIND","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"The Tricky","price":4300,"description":"You can Special Summon this card (from your hand) by discarding 1 card.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

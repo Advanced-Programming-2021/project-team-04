@@ -1,11 +1,1 @@
-{
-    "name": "Slot Machine",
-    "level": 7,
-    "attribute": "DARK",
-    "monsterType": "Machine",
-    "cardType": "Normal",
-    "classAttackPower": 2000,
-    "classDefensePower": 2300,
-    "price": 7500,
-    "description": "The machine's ability is said to vary according to its slot results."
-}
+{"classAttackPower":2000,"classDefensePower":2300,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":7,"monsterType":"Machine","cardType":"Normal","attribute":"DARK","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Slot Machine","price":7500,"description":"The machine\u0027s ability is said to vary according to its slot results.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

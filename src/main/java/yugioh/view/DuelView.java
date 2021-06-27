@@ -2,6 +2,7 @@ package yugioh.view;
 
 import yugioh.controller.DuelController;
 import yugioh.controller.ImportAndExport;
+import yugioh.model.AI;
 import yugioh.model.cards.Card;
 import yugioh.model.CardStatusInField;
 import yugioh.model.cards.MonsterCard;
@@ -87,18 +88,8 @@ public class DuelView extends ViewMenu {
                 DuelController.getInstance().cheatSetWinner();
             else if (command.matches("Drunk Space Pirate"))
                 DuelController.getInstance().cheatShowRivalHand();
-                // TODO remove this son of a bitch below
-            else if (command.equals("write"))
-                writeGame();
-                // TODO remove this son of a bitch above
             else IO.getInstance().printInvalidCommand();
         }
-    }
-
-    private void writeGame() {
-        ImportAndExport.getInstance().writeToJson("src/main/resources/games/first_game.JSON", DuelController.getInstance().getGame());
-        ImportAndExport.getInstance().writeToJson("src/main/resources/fields/first_field.JSON", DuelController.getInstance().getGame().getCurrentPlayer().getField());
-        ImportAndExport.getInstance().writeToJson("src/main/resources/fields/second_field.JSON", DuelController.getInstance().getGame().getTheOtherPlayer().getField());
     }
 
     public void runForRPS() {
@@ -135,7 +126,7 @@ public class DuelView extends ViewMenu {
     }
 
     public void chooseStarter(String winnerUsername) {
-        if (winnerUsername.equals("AI")) {
+        if (winnerUsername.equals(AI.AI_USERNAME)) {
             DuelController.getInstance().chooseStarter(winnerUsername);
             return;
         }

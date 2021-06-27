@@ -1,8 +1,1 @@
-{
-    "name": "Spell Absorption",
-    "isSpell": true,
-    "property": "Continuous",
-    "isLimited":false,
-    "price": 4000,
-    "description": "Each time a Spell Card is activated, gain 500 Life Points immediately after it resolves."
-}
+{"isActive":false,"isSpell":true,"property":"Continuous","isLimited":false,"name":"Spell Absorption","price":4000,"description":"Each time a Spell Card is activated, gain 500 Life Points immediately after it resolves.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

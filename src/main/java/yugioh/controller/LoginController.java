@@ -1,5 +1,6 @@
 package yugioh.controller;
 
+import yugioh.model.AI;
 import yugioh.model.Account;
 import yugioh.view.IO;
 
@@ -29,7 +30,7 @@ public class LoginController {
     }
 
     private boolean errorsForCreatingUser(String username, String nickname) {
-        if (Account.getAllUsernames().contains(username) || username.equals("AI")) {
+        if (Account.getAllUsernames().contains(username) || username.equals(AI.AI_USERNAME)) {
             IO.getInstance().userWithUsernameExists(username);
             return false;
         } else if (Account.getAllNicknames().contains(nickname)) {

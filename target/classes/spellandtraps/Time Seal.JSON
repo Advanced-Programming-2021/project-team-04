@@ -1,8 +1,1 @@
-{
-    "name": "Time Seal",
-    "isSpell": false,
-    "property": "Normal",
-    "isLimited": true,
-    "price": 2000,
-    "description": "Skip the Draw Phase of your opponent's next turn."
-}
+{"isActive":false,"isSpell":false,"property":"Normal","isLimited":true,"name":"Time Seal","price":2000,"description":"Skip the Draw Phase of your opponent\u0027s next turn.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

@@ -13,36 +13,20 @@ import java.util.*;
 @Setter
 public class Game {
 
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     boolean isGameFinished = false;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private HashMap<Duelist, Integer> maxLifePoint;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private String currentPlayerUsername, theOtherPlayerUsername;
     private Duelist currentPlayer = null, theOtherPlayer = null;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private int rounds;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private int currentRound = 0;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private Phases currentPhase;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
-    private GameRounds totalRounds;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private Card selectedCard;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private boolean summonedInThisTurn;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private ArrayList<Card> cardsWithChangedPositions;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private ArrayList<Duelist> roundWinners;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private Card lastSetCard;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private ArrayList<Card> cardsWhichAttacked;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private Duelist[] winnerOfEachRound = new Duelist[3];
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private boolean isAI;
 
     public Game(Duelist firstPlayer, Duelist secondPlayer, int rounds, boolean isAI) {
@@ -60,8 +44,6 @@ public class Game {
     }
 
     private void initializeGame() {
-//        shuffleDeck();
-//        added the shuffle to GameDeck constructor so it should be ok.
         Field currentPlayerField = new Field(new GameDeck(currentPlayer.getActiveDeck()));
         Field theOtherPlayerField = new Field(new GameDeck(theOtherPlayer.getActiveDeck()));
         currentPlayer.setField(currentPlayerField);
@@ -80,21 +62,6 @@ public class Game {
         duelist.getField().getSideDeck().stream().filter(Objects::nonNull).peek(c -> c.setOwnerUsername(duelist.getUsername())).forEach(Card::reset);
     }
 
-//    public void shuffleDeck() {
-//        LinkedHashMap<String , Short> temp;
-//        ArrayList<String> list;
-//        list = new ArrayList<>(currentPlayer.getActiveDeck().getMainDeckCards().keySet());
-//        Collections.shuffle(list);
-//        temp = new LinkedHashMap<>();
-//        list.forEach(c -> temp.put(c, currentPlayer.getActiveDeck().getMainDeckCards().get(c)));
-//        currentPlayer.getActiveDeck().setMainDeckCards(new LinkedHashMap<>(temp));
-//        list = new ArrayList<>(currentPlayer.getActiveDeck().getSideDeckCards().keySet());
-//        Collections.shuffle(list);
-//        temp = new LinkedHashMap<>();
-//        list.forEach(c -> temp.put(c, currentPlayer.getActiveDeck().getSideDeckCards().get(c)));
-//        currentPlayer.getActiveDeck().setSideDeckCards(new LinkedHashMap<>(temp));
-//    }
-
     public void changeTurn() {
         Duelist temp = currentPlayer;
         currentPlayer = theOtherPlayer;
@@ -106,19 +73,14 @@ public class Game {
         if (!isAI) {
             ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
             ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
-        } else if (winner instanceof Account)
-        {
+        } else if (winner instanceof Account) {
             ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
             DuelController.getInstance().wonGame(false, false, (Account) winner);
-        }
-        else if (loser instanceof Account)
-        {
+        } else if (loser instanceof Account) {
             ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
             DuelController.getInstance().wonGame(false, true, (Account) loser);
         }
         isGameFinished = true;
-//        winner.reset();
-//        loser.reset();
         loser.deleteField();
         winner.deleteField();
     }
@@ -163,8 +125,6 @@ public class Game {
         if (loser instanceof Account)
             DuelController.getInstance().exchangeCardsWithSideDeck((Account) loser);
         DuelController.getInstance().chooseStarter(winner.getUsername());
-//        winner.reset();
-//        loser.reset();
         initializeGame();
     }
 
@@ -179,8 +139,6 @@ public class Game {
         isGameFinished = true;
         loser.deleteField();
         winner.deleteField();
-//        winner.reset();
-//        loser.reset();
     }
 
     public void finishGame(Duelist loser) {

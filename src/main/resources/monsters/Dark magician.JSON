@@ -1,11 +1,1 @@
-{
-    "name": "Dark magician",
-    "level": 7,
-    "attribute": "DARK",
-    "monsterType": "Spellcaster",
-    "cardType": "Normal",
-    "classAttackPower": 2500,
-    "classDefensePower": 2100,
-    "price": 8300,
-    "description": "The ultimate wizard in terms of attack and defense."
-}
+{"classAttackPower":2500,"classDefensePower":2100,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":7,"monsterType":"Spellcaster","cardType":"Normal","attribute":"DARK","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Dark magician","price":8300,"description":"The ultimate wizard in terms of attack and defense.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

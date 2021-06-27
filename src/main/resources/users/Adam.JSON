@@ -1,17 +1,1 @@
-{
-  "password": "mechs",
-  "score": 0,
-  "money": 42900,
-  "allPlayerDecks": [
-    {
-      "mainDeckCards": {
-        "Spell Absorption": 40
-      },
-      "sideDeckCards": {},
-      "deckName": "Langa"
-    }
-  ],
-  "activePlayerDeck": "Langa",
-  "username": "Adam",
-  "nickname": "murderer"
-}
+{"password":"mechs","score":0,"money":42900,"allPlayerDecks":[{"mainDeckCards":{"Spell Absorption":40},"sideDeckCards":{},"deckName":"Langa"}],"activePlayerDeck":"Langa","username":"Adam","nickname":"murderer"}

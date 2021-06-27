@@ -1,8 +1,1 @@
-{
-    "name": "Monster Reborn",
-    "isSpell": true,
-    "property": "Normal",
-    "isLimited": true,
-    "price": 2500,
-    "description": "Target 1 monster in either GY; Special Summon it."
-}
+{"isActive":false,"isSpell":true,"property":"Normal","isLimited":true,"name":"Monster Reborn","price":2500,"description":"Target 1 monster in either GY; Special Summon it.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}
