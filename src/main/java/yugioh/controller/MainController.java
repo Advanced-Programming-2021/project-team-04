@@ -7,8 +7,6 @@ import yugioh.model.Account;
 import yugioh.model.Game;
 import yugioh.view.IO;
 
-import java.util.Objects;
-
 @Getter
 @Setter
 public class MainController {

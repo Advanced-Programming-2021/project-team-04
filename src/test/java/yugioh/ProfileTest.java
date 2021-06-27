@@ -11,25 +11,24 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 public class ProfileTest {
-    public static Account thisAccount = new Account("Gerard Keay", "bean$le", "Erard Ke");
-    public static Account someoneElse = new Account("Jan Kilbride", "Astronaut", "vast");
+    public static final Account FIRST_ACCOUNT = new Account("Gerard Keay", "bean$le", "Erard Ke");
 
     @BeforeAll
     public static void setLoggedIn() {
-        MainController.getInstance().setLoggedIn(thisAccount);
+        MainController.getInstance().setLoggedIn(FIRST_ACCOUNT);
     }
 
     @Test
     public void changeNicknameTest() {
         ProfileController.getInstance().changeNickname("yag");
-        Assertions.assertEquals(thisAccount.getNickname(), "yag");
+        Assertions.assertEquals(FIRST_ACCOUNT.getNickname(), "yag");
         ProfileController.getInstance().changeNickname("Erard Ke");
     }
 
     @Test
     public void changePasswordTest() {
         ProfileController.getInstance().changePassword("bean$le", "beanLee");
-        Assertions.assertEquals(thisAccount.getPassword(), "beanLee");
+        Assertions.assertEquals(FIRST_ACCOUNT.getPassword(), "beanLee");
         ProfileController.getInstance().changePassword("beanLee", "bean$le");
     }
 

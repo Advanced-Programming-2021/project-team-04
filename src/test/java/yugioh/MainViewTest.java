@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import yugioh.controller.MainController;
 import yugioh.model.Account;
-import yugioh.model.PlayerDeck;
 import yugioh.view.IO;
 
 import java.io.ByteArrayInputStream;

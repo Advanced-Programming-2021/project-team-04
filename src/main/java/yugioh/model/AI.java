@@ -116,12 +116,12 @@ public final class AI extends Duelist {
 
     public int getWeakestMonsterCardInZone() {
         return getField().getMonsterCards().indexOf(getField().getMonsterCards().stream().filter(m -> m.getLevel() < MonsterCard.ONE_TRIBUTE_BOUND)
-                .min(Comparator.comparing(MonsterCard::getThisCardAttackPower)).get());
+                .min(Comparator.comparing(MonsterCard::getThisCardAttackPower)).orElse(null));
     }
 
     public int getSecondWeakestMonsterCardInZone() {
         return getField().getMonsterCards().indexOf(getField().getMonsterCards().stream().filter(m -> m.getLevel() < MonsterCard.ONE_TRIBUTE_BOUND)
-                .sorted(Comparator.comparing(MonsterCard::getThisCardAttackPower)).skip(1).findFirst().get());
+                .sorted(Comparator.comparing(MonsterCard::getThisCardAttackPower)).skip(1).findFirst().orElse(null));
     }
 
     public void activateSpell() {

@@ -67,7 +67,6 @@ public class DeckController {
     }
 
     public void printAllDecks() {
-        //TODO move this method to IO
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         var toPrint = new StringBuilder("Decks:\nActive deck:\n");
         if (thisPlayer.getActiveDeck() != null) {
@@ -76,7 +75,6 @@ public class DeckController {
                     .append(", side deck ").append(activePlayerDeck.getSideDeckSize()).append(", ")
                     .append(activePlayerDeck.isDeckValid() ? "valid" : "invalid").append("\n");
         }
-        //TODO isn't active deck an object of all decks? is this method tested?
         toPrint.append("Other decks: \n");
         if (!thisPlayer.getAllPlayerDecks().isEmpty()) {
             sortDecks();
@@ -156,7 +154,7 @@ public class DeckController {
 
     private boolean errorForDeletingOrActivating(String deckName) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
-        if (!thisPlayer.hasDeck(deckName)) {
+        if (thisPlayer.doesntHaveDeck(deckName)) {
             IO.getInstance().deckDoesntExist(deckName);
             return false;
         }
@@ -168,7 +166,7 @@ public class DeckController {
         if (!thisPlayer.hasCard(cardName)) {
             IO.getInstance().cardDoesntExist(cardName);
             return false;
-        } else if (!thisPlayer.hasDeck(deckName)) {
+        } else if (thisPlayer.doesntHaveDeck(deckName)) {
             IO.getInstance().deckDoesntExist(deckName);
             return false;
         } else if (isMainDeck && thisPlayer.getDeckByName(deckName).isMainDeckFull()) {

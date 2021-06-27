@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import yugioh.controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;
-import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 
 import java.util.*;
@@ -28,13 +27,6 @@ public abstract class Duelist {
     protected int maxLPofThreeRounds;
     protected boolean isAbleToDraw = true;
     protected boolean isAbleToAttack = true;
-
-//    public Duelist() {
-//        allCardsHashMap.keySet().forEach(n -> {
-//            for (var i = 0; i < allCardsHashMap.get(n); i++)
-//                allCardsArrayList.add(Objects.requireNonNull(ImportAndExport.getInstance().readCard(n)));
-//        });
-//    }
 
     public void checkMaxLPofThreeRounds() {
         if (maxLPofThreeRounds < LP) maxLPofThreeRounds = LP;
@@ -60,10 +52,6 @@ public abstract class Duelist {
         return allPlayerDecks.stream().filter(d -> d.getDeckName().equals(deckName)).findAny().orElse(null);
     }
 
-//    public Card getCardByName(String cardName) {
-//        return allCardsArrayList.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null);
-//    }
-
     public void addDeck(PlayerDeck playerDeck) {
         this.getAllPlayerDecks().add(playerDeck);
     }
@@ -77,24 +65,12 @@ public abstract class Duelist {
         else allCardsHashMap.put(cardName, (short) 1);
     }
 
-    public boolean hasDeck(String deckName) {
-        return allPlayerDecks.stream().anyMatch(d -> d.getDeckName().equals(deckName));
+    public boolean doesntHaveDeck(String deckName) {
+        return allPlayerDecks.stream().noneMatch(d -> d.getDeckName().equals(deckName));
     }
 
     public boolean hasCard(String cardName) {
         return allCardsHashMap.containsKey(cardName);
-    }
-
-    private void activateDeck(String deckName) {
-        activePlayerDeck = deckName;
-    }
-
-    private boolean hasActiveDeck() {
-        return activePlayerDeck != null;
-    }
-
-    private boolean hasEnoughCardInHand(int amount) { //TODO check while writing the code
-        return true;
     }
 
     public void deleteField() {

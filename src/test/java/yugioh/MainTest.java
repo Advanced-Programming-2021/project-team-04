@@ -12,14 +12,14 @@ import java.io.PrintStream;
 import java.util.LinkedHashMap;
 
 public class MainTest {
-    public static Account thisAccount = new Account("Gerard Keay", "bean$le", "Erard Ke");
-    public static Account someoneElse = new Account("Jan Kilbride", "Astronaut", "vast");
+    public static final Account FIRST_ACCOUNT = new Account("Gerard Keay", "bean$le", "Erard Ke");
+    public static final Account SECOND_ACCOUNT = new Account("Jan Kilbride", "Astronaut", "vast");
 
     @BeforeAll
     public static void setLoggedIn() {
-        MainController.getInstance().setLoggedIn(thisAccount);
-        thisAccount.addDeck(new PlayerDeck("our boy jack"));
-        someoneElse.addDeck(new PlayerDeck("no happy ending"));
+        MainController.getInstance().setLoggedIn(FIRST_ACCOUNT);
+        FIRST_ACCOUNT.addDeck(new PlayerDeck("our boy jack"));
+        SECOND_ACCOUNT.addDeck(new PlayerDeck("no happy ending"));
     }
 
     @Test
@@ -35,32 +35,32 @@ public class MainTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         MainController.getInstance().newDuel("Jan Kilbride", 1);
-        Assertions.assertEquals(thisAccount.getUsername() + " has no active deck\r\n", outputStream.toString());
+        Assertions.assertEquals(FIRST_ACCOUNT.getUsername() + " has no active deck\r\n", outputStream.toString());
     }
 
     @Test
     public void activeDeckTestForTheOtherPlayer() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        thisAccount.addDeck(new PlayerDeck("No Pressure"));
-        thisAccount.setActivePlayerDeck("No Pressure");
+        FIRST_ACCOUNT.addDeck(new PlayerDeck("No Pressure"));
+        FIRST_ACCOUNT.setActivePlayerDeck("No Pressure");
         MainController.getInstance().newDuel("Jan Kilbride", 1);
-        Assertions.assertEquals(someoneElse.getUsername() + " has no active deck\r\n", outputStream.toString());
-        thisAccount.setActivePlayerDeck(null);
+        Assertions.assertEquals(SECOND_ACCOUNT.getUsername() + " has no active deck\r\n", outputStream.toString());
+        FIRST_ACCOUNT.setActivePlayerDeck(null);
     }
 
     @Test
     public void invalidDeckTestForThisUser() {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        PlayerDeck ourBoyJack = thisAccount.getDeckByName("our boy jack");
+        PlayerDeck ourBoyJack = FIRST_ACCOUNT.getDeckByName("our boy jack");
         ourBoyJack.setMainDeckCards(new LinkedHashMap<>());
-        thisAccount.setActivePlayerDeck("our boy jack");
-        someoneElse.setActivePlayerDeck("no happy ending");
+        FIRST_ACCOUNT.setActivePlayerDeck("our boy jack");
+        SECOND_ACCOUNT.setActivePlayerDeck("no happy ending");
         MainController.getInstance().newDuel("Jan Kilbride", 3);
         Assertions.assertEquals("Gerard Keay’s deck is invalid\r\n", outputStream.toString());
-        thisAccount.setActivePlayerDeck(null);
-        someoneElse.setActivePlayerDeck(null);
+        FIRST_ACCOUNT.setActivePlayerDeck(null);
+        SECOND_ACCOUNT.setActivePlayerDeck(null);
     }
 
     @Test
@@ -68,15 +68,15 @@ public class MainTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         var cardName = "Call of The Haunted";
-        PlayerDeck ourBoyJack = thisAccount.getDeckByName("our boy jack");
+        PlayerDeck ourBoyJack = FIRST_ACCOUNT.getDeckByName("our boy jack");
         for (int i = 0; i < 40; i++)
             ourBoyJack.addCardToMainDeck(cardName);
-        thisAccount.setActivePlayerDeck("our boy jack");
-        someoneElse.setActivePlayerDeck("no happy ending");
+        FIRST_ACCOUNT.setActivePlayerDeck("our boy jack");
+        SECOND_ACCOUNT.setActivePlayerDeck("no happy ending");
         MainController.getInstance().newDuel("Jan Kilbride", 3);
         Assertions.assertEquals("Jan Kilbride’s deck is invalid\r\n", outputStream.toString());
-        thisAccount.setActivePlayerDeck(null);
-        someoneElse.setActivePlayerDeck(null);
+        FIRST_ACCOUNT.setActivePlayerDeck(null);
+        SECOND_ACCOUNT.setActivePlayerDeck(null);
     }
 
     @Test
@@ -87,25 +87,25 @@ public class MainTest {
         var cardName = "Call of The Haunted";
         for (int i = 0; i < 40; i++)
             playerDeck.addCardToMainDeck(cardName);
-        thisAccount.setActivePlayerDeck("our boy jack");
-        someoneElse.setActivePlayerDeck("our boy jack");
+        FIRST_ACCOUNT.setActivePlayerDeck("our boy jack");
+        SECOND_ACCOUNT.setActivePlayerDeck("our boy jack");
         MainController.getInstance().newDuel("Jan Kilbride", 4);
         Assertions.assertEquals("number of rounds is not supported\r\n", outputStream.toString());
-        thisAccount.setActivePlayerDeck(null);
-        someoneElse.setActivePlayerDeck(null);
+        FIRST_ACCOUNT.setActivePlayerDeck(null);
+        SECOND_ACCOUNT.setActivePlayerDeck(null);
     }
 
     @Test
     public void cheatIncreaseMoneyTest() {
-        int initialMoney = thisAccount.getMoney();
+        int initialMoney = FIRST_ACCOUNT.getMoney();
         MainController.getInstance().cheatIncreaseMoney(4444);
-        Assertions.assertEquals(initialMoney + 4444, thisAccount.getMoney());
+        Assertions.assertEquals(initialMoney + 4444, FIRST_ACCOUNT.getMoney());
     }
 
     @Test
     public void cheatIncreaseScoreTest() {
-        int initialScore = thisAccount.getScore();
+        int initialScore = FIRST_ACCOUNT.getScore();
         MainController.getInstance().cheatIncreaseScore(4444);
-        Assertions.assertEquals(initialScore + 4444, thisAccount.getScore());
+        Assertions.assertEquals(initialScore + 4444, FIRST_ACCOUNT.getScore());
     }
 }

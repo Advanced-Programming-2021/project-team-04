@@ -1,8 +1,5 @@
 module YuGiOhGame {
-    requires javafx.controls;
-    requires javafx.fxml;
     requires com.google.gson;
-    requires javafx.media;
     requires lombok;
 
     opens yugioh.view to javafx.fxml;

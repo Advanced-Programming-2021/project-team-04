@@ -191,16 +191,8 @@ public class IO {
         System.out.println("there is no way you could ritual summon a monster");
     }
 
-    public void cannotRitualSummonThisCard() {
-        System.out.println("you can't ritual summon this card");
-    }
-
     public void cannotSet() {
         System.out.println("you can’t set this card");
-    }
-
-    public void preparationsNotDone() {
-        System.out.println("preparations of this spell are not done yet");
     }
 
     public void spellZoneFull() {

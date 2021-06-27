@@ -19,9 +19,10 @@ public class MagnumShield extends SpellAndTrapCard {
     }
 
     private void setDescription() {
-        description = "Equip only to a Warrior-Type monster. Apply this effect, depending on its battle position." +
-                "\n-Attack Position: It gains ATK equal to its original DEF." +
-                "\n-Defense Position: It gains DEF equal to its original ATK.";
+        description = """
+                Equip only to a Warrior-Type monster. Apply this effect, depending on its battle position.
+                -Attack Position: It gains ATK equal to its original DEF.
+                -Defense Position: It gains DEF equal to its original ATK.""";
     }
 
     public void setEquippedMonster(MonsterCard equippedMonster) {

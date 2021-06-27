@@ -31,10 +31,13 @@ public class ScoreBoardTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         ScoreboardController.getInstance().run();
-        Assertions.assertEquals("1- Mother of Puppets: 85\n" +
-                "2- Breekon and Hope: 69\n" +
-                "2- Crush Material: 69\n" +
-                "4- Jesus Christ: 37\n\r\n", outputStream.toString());
+        Assertions.assertEquals("""
+                1- Mother of Puppets: 85
+                2- Breekon and Hope: 69
+                2- Crush Material: 69
+                4- Jesus Christ: 37
+                \r
+                """, outputStream.toString());
     }
 
 

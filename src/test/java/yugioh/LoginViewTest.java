@@ -2,7 +2,6 @@ package yugioh;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import yugioh.controller.MainController;
 import yugioh.model.Account;
 import yugioh.view.IO;
 

@@ -35,8 +35,11 @@ public class ScoreboardViewTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         yugioh.view.ScoreboardView.getInstance().run();
-        Assertions.assertEquals("1- God of Death: 4444\n" +
-                "2- Dies at Dawn: 444\n\r\n", outputStream.toString());
+        Assertions.assertEquals("""
+                1- God of Death: 4444
+                2- Dies at Dawn: 444
+                \r
+                """, outputStream.toString());
     }
 
     @Test

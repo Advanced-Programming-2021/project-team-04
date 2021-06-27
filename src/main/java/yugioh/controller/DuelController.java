@@ -185,7 +185,6 @@ public class DuelController {
 
 
     private String[] makeSpellZone(ArrayList<SpellAndTrapCard> spellZone) {
-        //TODO needs to go to Output class
         var spellZoneString = new String[5];
         for (var i = 0; i < 5; i++) {
             if (spellZone.size() - 1 < i) {
@@ -200,7 +199,6 @@ public class DuelController {
     }
 
     private String[] makeMonsterZone(ArrayList<MonsterCard> monsterZone) {
-        //TODO needs to go to Output class
         var monsterZoneString = new String[5];
         for (var i = 0; i < 5; i++) {
             if (monsterZone.size() - 1 < i) {
@@ -218,7 +216,6 @@ public class DuelController {
     }
 
     private void showGameBoard(Duelist opponent, Duelist current) {
-        //TODO needs to go to Output class
         String opponentNickname = opponent.getNickname() + ": " + opponent.getLP();
         int opponentHandCount = opponent.getField().getHand().size();
         int opponentDeckNumber = opponent.getField().getDeckZone().size();
@@ -399,7 +396,7 @@ public class DuelController {
         nextPhase();
     }
 
-    public void summon() { //TODO what the fuck? test shode vali ghermeze hanuz :|
+    public void summon() {
         if (handleSpecialCasesBeforeSummon()) return;
         summonWithTribute();
         var monsterCard = (MonsterCard) game.getSelectedCard();
@@ -417,7 +414,6 @@ public class DuelController {
     }
 
     private boolean handleSpecialCasesBeforeSummon() {
-        //TODO is it ok that this if and the next if have different return true; positions?
         if (getGame().getCurrentPlayer() instanceof Account && !isSummonValid()) return true;
         if (game.getSelectedCard().getName().equals("The Tricky") && DuelView.getInstance().ordinaryOrSpecial()) {
             theTricky();
@@ -596,19 +592,7 @@ public class DuelController {
     }
 
     private boolean isSetPositionValid(boolean isAttack) {
-        if (game.getSelectedCard() == null) {
-            IO.getInstance().cardNotSelected();
-            return false;
-        }
-        if (!(game.getSelectedCard() instanceof MonsterCard) ||
-                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
-            IO.getInstance().cannotChangePosition();
-            return false;
-        }
-        if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
-            IO.getInstance().wrongPhase();
-            return false;
-        }
+        if (checkChangingModeInFieldError()) return false;
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
         if ((isAttack && selectedCard.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP) ||
                 (!isAttack && (selectedCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_UP ||
@@ -627,6 +611,23 @@ public class DuelController {
         return true;
     }
 
+    private boolean checkChangingModeInFieldError() {
+        if (game.getSelectedCard() == null) {
+            IO.getInstance().cardNotSelected();
+            return true;
+        }
+        if (!(game.getSelectedCard() instanceof MonsterCard) ||
+                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
+            IO.getInstance().cannotChangePosition();
+            return true;
+        }
+        if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
+            IO.getInstance().wrongPhase();
+            return true;
+        }
+        return false;
+    }
+
     public void flipSummon() {
         if (!isFlipSummonValid()) return;
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
@@ -638,19 +639,7 @@ public class DuelController {
     }
 
     private boolean isFlipSummonValid() {
-        if (game.getSelectedCard() == null) {
-            IO.getInstance().cardNotSelected();
-            return false;
-        }
-        if (!(game.getSelectedCard() instanceof MonsterCard) ||
-                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
-            IO.getInstance().cannotChangePosition();
-            return false;
-        }
-        if (!(game.getCurrentPhase() == Phases.FIRST_MAIN_PHASE || game.getCurrentPhase() == Phases.SECOND_MAIN_PHASE)) {
-            IO.getInstance().wrongPhase();
-            return false;
-        }
+        if (checkChangingModeInFieldError()) return false;
         if (!((MonsterCard) game.getSelectedCard()).getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN)) {
             IO.getInstance().cannotFlipSummon();
             return false;
@@ -757,25 +746,9 @@ public class DuelController {
     }
 
     private boolean isAttackValid(int opponentMonsterPositionNumber) {
-        if (game.getSelectedCard() == null) {
-            IO.getInstance().cardNotSelected();
-            return false;
-        }
-        if (!(game.getSelectedCard() instanceof MonsterCard) ||
-                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
-            IO.getInstance().cannotAttack();
-            return false;
-        }
-        if (game.getCurrentPhase() != Phases.BATTLE_PHASE) {
-            IO.getInstance().wrongPhase();
-            return false;
-        }
-        MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
-        if (selectedCard.isAttacked()) {
-            IO.getInstance().alreadyAttacked();
-            return false;
-        }
-        if (!selectedCard.isAbleToAttack()) {
+        if (checkAttackErrorsInCommon()) return false;
+        var selectedMonster = (MonsterCard) getGame().getSelectedCard();
+        if (!selectedMonster.isAbleToAttack()) {
             IO.getInstance().cannotAttack();
             return false;
         }
@@ -783,12 +756,11 @@ public class DuelController {
             IO.getInstance().noCardHere();
             return false;
         }
-        MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber);
-        if (!attacked.isAbleToBeRemoved()) { //TODO when is this set as false
+        if (!game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber).isAbleToBeRemoved()) {
             IO.getInstance().cannotAttackThisCard();
             return false;
         }
-        if (selectedCard.isAttacked()) { //TODO this also
+        if (selectedMonster.isAttacked()) {
             IO.getInstance().cannotAttack();
             return false;
         }
@@ -808,29 +780,34 @@ public class DuelController {
     }
 
     public boolean isDirectAttackValid() {
-        if (game.getSelectedCard() == null) {
-            IO.getInstance().cardNotSelected();
-            return false;
-        }
-        if (!(game.getSelectedCard() instanceof MonsterCard) ||
-                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
-            IO.getInstance().cannotAttack();
-            return false;
-        }
-        if (game.getCurrentPhase() != Phases.BATTLE_PHASE) {
-            IO.getInstance().wrongPhase();
-            return false;
-        }
-        MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
-        if (selectedCard.isAttacked()) {
-            IO.getInstance().alreadyAttacked();
-            return false;
-        }
+        if (checkAttackErrorsInCommon()) return false;
         if (!game.getTheOtherPlayer().getField().getMonsterCards().isEmpty()) {
             IO.getInstance().cannotDirectAttack();
             return false;
         }
         return true;
+    }
+
+    private boolean checkAttackErrorsInCommon() {
+        if (game.getSelectedCard() == null) {
+            IO.getInstance().cardNotSelected();
+            return true;
+        }
+        if (!(game.getSelectedCard() instanceof MonsterCard) ||
+                !game.getCurrentPlayer().getField().getMonsterCards().contains(game.getSelectedCard())) {
+            IO.getInstance().cannotAttack();
+            return true;
+        }
+        if (game.getCurrentPhase() != Phases.BATTLE_PHASE) {
+            IO.getInstance().wrongPhase();
+            return true;
+        }
+        MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
+        if (selectedCard.isAttacked()) {
+            IO.getInstance().alreadyAttacked();
+            return true;
+        }
+        return false;
     }
 
     public void activateSpell() {
@@ -1040,7 +1017,7 @@ public class DuelController {
         moveSpellOrTrapToGYFromSpellZone(mirrorForce);
     }
 
-    private void decreaseLPWithTrap(Duelist duelist, int amount) { //TODO
+    private void decreaseLPWithTrap(Duelist duelist, int amount) {
         if (duelist.getField().getThisActivatedCard("Ring of defense") == null)
             duelist.changeLP(-amount);
     }
@@ -1138,7 +1115,6 @@ public class DuelController {
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
         int myMonstersSize = game.getCurrentPlayer().getField().getMonsterCards().size();
         int opponentSize = game.getTheOtherPlayer().getField().getMonsterCards().size();
-        //TODO could this be done by forEach()?
         for (var i = 0; i < myMonstersSize; i++)
             addMonsterToGYFromMonsterZone(game.getCurrentPlayer().getField().getMonsterCards().get(0));
         for (var i = 0; i < opponentSize; i++)
@@ -1279,19 +1255,6 @@ public class DuelController {
     private boolean isSumOfTributesValid(ArrayList<MonsterCard> toTribute, MonsterCard ritualMonster) {
         return toTribute.stream().mapToInt(MonsterCard::getLevel).sum() == ritualMonster.getLevel();
     }
-
-//    private boolean errorAfterChoosingRitualCard(MonsterCard ritualMonster) {
-//        if (!ritualMonster.getCardType().equals("Ritual")) {
-//            IO.getInstance().cannotRitualSummonThisCard();
-//            return false;
-//        }
-//        if (!game.getCurrentPlayer().getField().isTributesLevelSumValid(ritualMonster.getLevel(),
-//                game.getCurrentPlayer().getField().getMonsterCards().size())) {
-//            IO.getInstance().cannotRitualSummonThisCard();
-//            return false;
-//        }
-//        return true;
-//    }
 
     private boolean errorForRitualSummon() {
         if (game.getCurrentPlayer().getField().ritualMonsterCards().isEmpty()) {
@@ -1642,7 +1605,7 @@ public class DuelController {
                     fields.put(i + 1, spellAndTrapCard);
             }
         StringBuilder toPrint = new StringBuilder();
-        for (Map.Entry mapElement : fields.entrySet()) {
+        for (Map.Entry<Integer, SpellAndTrapCard> mapElement : fields.entrySet()) {
             toPrint.append(mapElement.getKey()).append(": ").append(mapElement.getValue()).append("\n");
         }
         return toPrint.toString();

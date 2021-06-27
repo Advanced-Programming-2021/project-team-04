@@ -21,82 +21,84 @@ public class ShopTest {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         ShopController.getInstance().showAllCards();
-        Assertions.assertEquals("Advanced Ritual Art:3000\n" +
-                "Alexandrite Dragon:2600\n" +
-                "Axe Raider:3100\n" +
-                "Baby dragon:1600\n" +
-                "Battle OX:2900\n" +
-                "Battle warrior:1300\n" +
-                "Beast King Barbaros:9200\n" +
-                "Bitron:1000\n" +
-                "Black Pendant:4300\n" +
-                "Blue-Eyes white dragon:11300\n" +
-                "Call of The Haunted:3500\n" +
-                "Change of Heart:2500\n" +
-                "Closed Forest:4300\n" +
-                "Command Knight:2100\n" +
-                "Crab Turtle:10200\n" +
-                "Crawling dragon:3900\n" +
-                "Curtain of the dark ones:700\n" +
-                "Dark Blade:3500\n" +
-                "Dark Hole:2500\n" +
-                "Dark magician:8300\n" +
-                "Exploder Dragon:1000\n" +
-                "Feral Imp:2800\n" +
-                "Fireyarou:2500\n" +
-                "Flame manipulator:1500\n" +
-                "Forest:4300\n" +
-                "Gate Guardian:20000\n" +
-                "Haniwa:600\n" +
-                "Harpie's Feather Duster:2500\n" +
-                "Herald of Creation:2700\n" +
-                "Hero of the east:1700\n" +
-                "Horn Imp:2500\n" +
-                "Leotron:2500\n" +
-                "Magic Cylinder:2000\n" +
-                "Magic Jamamer:3000\n" +
-                "Magnum Shield:4300\n" +
-                "ManEater Bug:600\n" +
-                "Marshmallon:700\n" +
-                "Messenger of peace:4000\n" +
-                "Mind Crush:2000\n" +
-                "Mirage Dragon:2500\n" +
-                "Mirror Force:2000\n" +
-                "Monster Reborn:2500\n" +
-                "Mystical space typhoon:3500\n" +
-                "Negate Attack:3000\n" +
-                "Pot of Greed:2500\n" +
-                "Raigeki:2500\n" +
-                "Ring of defense:3500\n" +
-                "Scanner:8000\n" +
-                "Silver Fang:1700\n" +
-                "Skull Guardian:7900\n" +
-                "Slot Machine:7500\n" +
-                "Solemn Warning:3000\n" +
-                "Spell Absorption:4000\n" +
-                "Spiral Serpent:11700\n" +
-                "Suijin:8700\n" +
-                "Supply Squad:4000\n" +
-                "Sword of dark destruction:4300\n" +
-                "Swords of Revealing Light:2500\n" +
-                "Terraforming:2500\n" +
-                "Terratiger, the Empowered Warrior:3200\n" +
-                "Texchanger:200\n" +
-                "The Calculator:8000\n" +
-                "The Tricky:4300\n" +
-                "Time Seal:2000\n" +
-                "Torrential Tribute:2000\n" +
-                "Trap Hole:2000\n" +
-                "Twin Twisters:3500\n" +
-                "Umiiruka:4300\n" +
-                "United We Stand:4300\n" +
-                "Vanity's Emptiness:3500\n" +
-                "Wall of Revealing Light:3500\n" +
-                "Warrior Dai Grepher:3400\n" +
-                "Wattaildragon:5800\n" +
-                "Wattkid:1300\n" +
-                "Yami:4300\n" +
-                "Yomi Ship:1700\r\n", outputStream.toString());
+        Assertions.assertEquals("""
+                Advanced Ritual Art:3000
+                Alexandrite Dragon:2600
+                Axe Raider:3100
+                Baby dragon:1600
+                Battle OX:2900
+                Battle warrior:1300
+                Beast King Barbaros:9200
+                Bitron:1000
+                Black Pendant:4300
+                BlueEyes white dragon:11300
+                Call of The Haunted:3500
+                Change of Heart:2500
+                Closed Forest:4300
+                Command Knight:2100
+                Crab Turtle:10200
+                Crawling dragon:3900
+                Curtain of the dark ones:700
+                Dark Blade:3500
+                Dark Hole:2500
+                Dark magician:8300
+                Exploder Dragon:1000
+                Feral Imp:2800
+                Fireyarou:2500
+                Flame manipulator:1500
+                Forest:4300
+                Gate Guardian:20000
+                Haniwa:600
+                Harpie's Feather Duster:2500
+                Herald of Creation:2700
+                Hero of the east:1700
+                Horn Imp:2500
+                Leotron:2500
+                Magic Cylinder:2000
+                Magic Jamamer:3000
+                Magnum Shield:4300
+                ManEater Bug:600
+                Marshmallon:700
+                Messenger of peace:4000
+                Mind Crush:2000
+                Mirage Dragon:2500
+                Mirror Force:2000
+                Monster Reborn:2500
+                Mystical space typhoon:3500
+                Negate Attack:3000
+                Pot of Greed:2500
+                Raigeki:2500
+                Ring of defense:3500
+                Scanner:8000
+                Silver Fang:1700
+                Skull Guardian:7900
+                Slot Machine:7500
+                Solemn Warning:3000
+                Spell Absorption:4000
+                Spiral Serpent:11700
+                Suijin:8700
+                Supply Squad:4000
+                Sword of dark destruction:4300
+                Swords of Revealing Light:2500
+                Terraforming:2500
+                Terratiger, the Empowered Warrior:3200
+                Texchanger:200
+                The Calculator:8000
+                The Tricky:4300
+                Time Seal:2000
+                Torrential Tribute:2000
+                Trap Hole:2000
+                Twin Twisters:3500
+                Umiiruka:4300
+                United We Stand:4300
+                Vanity's Emptiness:3500
+                Wall of Revealing Light:3500
+                Warrior Dai Grepher:3400
+                Wattaildragon:5800
+                Wattkid:1300
+                Yami:4300
+                Yomi Ship:1700\r
+                """, outputStream.toString());
     }
 
     @Test
