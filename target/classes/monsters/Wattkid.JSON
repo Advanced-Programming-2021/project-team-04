@@ -1,11 +1,1 @@
-{
-    "name": "Wattkid",
-    "level": 3,
-    "attribute": "LIGHT",
-    "monsterType": "Thunder",
-    "cardType": "Normal",
-    "classAttackPower": 1000,
-    "classDefensePower": 500,
-    "price": 1300,
-    "description": "A creature that electrocutes opponents with bolts of lightning."
-}
+{"classAttackPower":1000,"classDefensePower":500,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":3,"monsterType":"Thunder","cardType":"Normal","attribute":"LIGHT","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Wattkid","price":1300,"description":"A creature that electrocutes opponents with bolts of lightning.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

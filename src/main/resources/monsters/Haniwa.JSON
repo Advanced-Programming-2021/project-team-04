@@ -1,11 +1,1 @@
-{
-    "name": "Haniwa",
-    "level": 2,
-    "attribute": "EARTH",
-    "monsterType": "Rock",
-    "cardType": "Normal",
-    "classAttackPower": 500,
-    "classDefensePower": 500,
-    "price": 600,
-    "description": "An earthen figure that protects the tomb of an ancient ruler."
-}
+{"classAttackPower":500,"classDefensePower":500,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":2,"monsterType":"Rock","cardType":"Normal","attribute":"EARTH","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Haniwa","price":600,"description":"An earthen figure that protects the tomb of an ancient ruler.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

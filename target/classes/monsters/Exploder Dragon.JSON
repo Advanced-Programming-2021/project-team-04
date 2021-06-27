@@ -1,11 +1,1 @@
-{
-    "name": "Exploder Dragon",
-    "level": 3,
-    "attribute": "EARTH",
-    "monsterType": "Dragon",
-    "cardType": "Effect",
-    "classAttackPower": 1000,
-    "classDefensePower": 0,
-    "price": 1000,
-    "description": "If this card is destroyed by battle and sent to the Graveyard: Destroy the monster that destroyed it. Neither player takes any battle damage from attacks involving this attacking card."
-}
+{"classAttackPower":1000,"classDefensePower":0,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":3,"monsterType":"Dragon","cardType":"Effect","attribute":"EARTH","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Exploder Dragon","price":1000,"description":"If this card is destroyed by battle and sent to the Graveyard: Destroy the monster that destroyed it. Neither player takes any battle damage from attacks involving this attacking card.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

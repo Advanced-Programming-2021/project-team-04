@@ -1,11 +1,1 @@
-{
-    "name": "Yomi Ship",
-    "level": 3,
-    "attribute": "WATER",
-    "monsterType": "Aqua",
-    "cardType": "Effect",
-    "classAttackPower": 800,
-    "classDefensePower": 1400,
-    "price": 1700,
-    "description": "If this card is destroyed by battle and sent to the GY: Destroy the monster that destroyed this card."
-}
+{"classAttackPower":800,"classDefensePower":1400,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":3,"monsterType":"Aqua","cardType":"Effect","attribute":"WATER","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Yomi Ship","price":1700,"description":"If this card is destroyed by battle and sent to the GY: Destroy the monster that destroyed this card.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

@@ -1,11 +1,1 @@
-{
-    "name": "Marshmallon",
-    "level": 3,
-    "attribute": "LIGHT",
-    "monsterType": "Fairy",
-    "cardType": "Effect",
-    "classAttackPower": 300,
-    "classDefensePower": 500,
-    "price": 700,
-    "description": "Cannot be destroyed by battle. After damage calculation, if this card was attacked, and was face-down at the start of the Damage Step: The attacking player takes 1000 damage."
-}
+{"classAttackPower":300,"classDefensePower":500,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":3,"monsterType":"Fairy","cardType":"Effect","attribute":"LIGHT","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Marshmallon","price":700,"description":"Cannot be destroyed by battle. After damage calculation, if this card was attacked, and was face-down at the start of the Damage Step: The attacking player takes 1000 damage.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

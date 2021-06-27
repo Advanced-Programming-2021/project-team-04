@@ -1,8 +1,1 @@
-{
-    "name": "Vanity's Emptiness",
-    "isSpell": false,
-    "property": "Continuous",
-    "isLimited": true,
-    "price": 3500,
-    "description": "Neither player can Special Summon monsters. If a card is sent from the Deck or the field to your Graveyard: Destroy this card."
-}
+{"isActive":false,"isSpell":false,"property":"Continuous","isLimited":true,"name":"Vanity\u0027s Emptiness","price":3500,"description":"Neither player can Special Summon monsters. If a card is sent from the Deck or the field to your Graveyard: Destroy this card.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

@@ -1,11 +1,1 @@
-{
-    "name": "Fireyarou",
-    "level": 4,
-    "attribute": "FIRE",
-    "monsterType": "Pyro",
-    "cardType": "Normal",
-    "classAttackPower": 1300,
-    "classDefensePower": 1000,
-    "price": 2500,
-    "description": "A malevolent creature wrapped in flames that attacks enemies with intense fire."
-}
+{"classAttackPower":1300,"classDefensePower":1000,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":4,"monsterType":"Pyro","cardType":"Normal","attribute":"FIRE","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Fireyarou","price":2500,"description":"A malevolent creature wrapped in flames that attacks enemies with intense fire.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

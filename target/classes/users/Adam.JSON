@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "password": "mechs",
   "score": 1000,
@@ -17,3 +18,6 @@
   "username": "Adam",
   "nickname": "murderer"
 }
+=======
+{"password":"mechs","score":0,"money":42900,"allPlayerDecks":[{"mainDeckCards":{"Spell Absorption":40},"sideDeckCards":{},"deckName":"Langa"}],"activePlayerDeck":"Langa","username":"Adam","nickname":"murderer"}
+>>>>>>> c9acbcf2e01fd606f2fd1771b9e652dcb8feaeaf

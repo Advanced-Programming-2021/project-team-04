@@ -1,8 +1,1 @@
-{
-    "name": "Trap Hole",
-    "isSpell": false,
-    "property": "Normal",
-    "isLimited": false,
-    "price": 2000,
-    "description": "When your opponent Normal or Flip Summons 1 monster with 1000 or more ATK: Target that monster; destroy that target."
-}
+{"isActive":false,"isSpell":false,"property":"Normal","isLimited":false,"name":"Trap Hole","price":2000,"description":"When your opponent Normal or Flip Summons 1 monster with 1000 or more ATK: Target that monster; destroy that target.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

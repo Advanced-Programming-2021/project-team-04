@@ -13,25 +13,15 @@ import java.util.*;
 @Setter
 public class Game {
 
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     boolean isGameFinished = false;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private String currentPlayerUsername, theOtherPlayerUsername;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private Duelist currentPlayer = null, theOtherPlayer = null;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private int rounds;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
-    private int currentRound;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
+    private int currentRound = 0;
     private Phases currentPhase;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private Card selectedCard;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private boolean summonedInThisTurn;
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private Duelist[] winnerOfEachRound = new Duelist[3];
-    @Expose // TODO: 6/20/2021 remove this @Expose after debug
     private boolean isAI;
 
     public Game(Duelist firstPlayer, Duelist secondPlayer, int rounds, boolean isAI) {
@@ -82,13 +72,10 @@ public class Game {
             ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
             ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
             DuelController.getInstance().wonGame(false, false, (Account) winner);
-        } else if (winner instanceof Account)
-        {
+        } else if (winner instanceof Account) {
             ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
             DuelController.getInstance().wonGame(false, false, (Account) winner);
-        }
-        else if (loser instanceof Account)
-        {
+        } else if (loser instanceof Account) {
             ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
             DuelController.getInstance().wonGame(false, true, (Account) loser);
         }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "password": "mechs",
   "score": 0,
@@ -17,3 +18,6 @@
   "username": "CindersSong",
   "nickname": "TheTwins"
 }
+=======
+{"password":"mechs","score":0,"money":100000,"allPlayerDecks":[{"mainDeckCards":{"Feral Imp":20,"Mind Crush":20},"sideDeckCards":{},"deckName":"Cinder"}],"allCardsHashMap":{},"activePlayerDeck":"Cinder","username":"CindersSong","nickname":"TheTwins"}
+>>>>>>> c9acbcf2e01fd606f2fd1771b9e652dcb8feaeaf

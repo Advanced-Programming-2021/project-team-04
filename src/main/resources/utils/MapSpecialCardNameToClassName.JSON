@@ -1,14 +1,1 @@
-{
-  "Command Knight": "yugioh.model.cards.specialcards.CommandKnight",
-  "Messenger of peace": "yugioh.model.cards.specialcards.MessengerOfPeace",
-  "The Calculator": "yugioh.model.cards.specialcards.TheCalculator",
-  "Change of Heart": "yugioh.model.cards.specialcards.ChangeOfHeart",
-  "ManEater Bug": "yugioh.model.cards.specialcards.ManEaterBug",
-  "United We Stand": "yugioh.model.cards.specialcards.UnitedWeStand",
-  "Suijin": "yugioh.model.cards.specialcards.Suijin",
-  "Swords of Revealing Light": "yugioh.model.cards.specialcards.SwordsOfRevealingLight",
-  "Sword of dark destruction": "yugioh.model.cards.specialcards.SwordOfDarkDestruction",
-  "Black Pendant": "yugioh.model.cards.specialcards.BlackPendant",
-  "Magnum Shield": "yugioh.model.cards.specialcards.MagnumShield",
-  "Scanner": "yugioh.model.cards.specialcards.Scanner"
-}
+{"Command Knight":"yugioh.model.cards.specialcards.CommandKnight","Sword of dark destruction":"yugioh.model.cards.specialcards.SwordOfDarkDestruction","Magnum Shield":"yugioh.model.cards.specialcards.MagnumShield","Messenger of peace":"yugioh.model.cards.specialcards.MessengerOfPeace","Scanner":"yugioh.model.cards.specialcards.Scanner","The Calculator":"yugioh.model.cards.specialcards.TheCalculator","ManEater Bug":"yugioh.model.cards.specialcards.ManEaterBug","Change of Heart":"yugioh.model.cards.specialcards.ChangeOfHeart","United We Stand":"yugioh.model.cards.specialcards.UnitedWeStand","Black Pendant":"yugioh.model.cards.specialcards.BlackPendant","Suijin":"yugioh.model.cards.specialcards.Suijin","Swords of Revealing Light":"yugioh.model.cards.specialcards.SwordsOfRevealingLight"}

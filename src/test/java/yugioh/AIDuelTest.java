@@ -44,7 +44,7 @@ public class AIDuelTest {
         var newHand = new ArrayList<>(List.of(ImportAndExport.getInstance().readCard("Bitron"),
                 ImportAndExport.getInstance().readCard("Bitron"), ImportAndExport.getInstance().readCard("Horn Imp"),
                 ImportAndExport.getInstance().readCard("Axe Raider"), ImportAndExport.getInstance().readCard("Silver Fang")));
-        newHand.forEach(c -> c.setOwnerUsername("AI"));
+        newHand.forEach(c -> c.setOwnerUsername(AI.AI_USERNAME));
         AI.getInstance().getField().setHand(newHand);
         AI.getInstance().getField().setMonsterCards(new ArrayList<>());
         var initialHandSize = AI.getInstance().getField().getHand().size();
@@ -63,9 +63,9 @@ public class AIDuelTest {
         var newHand = new ArrayList<>(List.of(ImportAndExport.getInstance().readCard("Bitron"),
                 ImportAndExport.getInstance().readCard("Crawling dragon"), ImportAndExport.getInstance().readCard("Blue-Eyes white dragon"),
                 ImportAndExport.getInstance().readCard("Axe Raider"), ImportAndExport.getInstance().readCard("Wattaildragon")));
-        newHand.forEach(c -> c.setOwnerUsername("AI"));
+        newHand.forEach(c -> c.setOwnerUsername(AI.AI_USERNAME));
         var newMonsterZone = new ArrayList<>(List.of((MonsterCard) ImportAndExport.getInstance().readCard("Bitron")));
-        newMonsterZone.forEach(m -> m.setOwnerUsername("AI"));
+        newMonsterZone.forEach(m -> m.setOwnerUsername(AI.AI_USERNAME));
         AI.getInstance().getField().setHand(newHand);
         AI.getInstance().getField().setMonsterCards(newMonsterZone);
         var initialHandSize = AI.getInstance().getField().getHand().size();
@@ -84,10 +84,10 @@ public class AIDuelTest {
         var newHand = new ArrayList<>(List.of(ImportAndExport.getInstance().readCard("Bitron"),
                 ImportAndExport.getInstance().readCard("Crawling dragon"), ImportAndExport.getInstance().readCard("Blue-Eyes white dragon"),
                 ImportAndExport.getInstance().readCard("Axe Raider"), ImportAndExport.getInstance().readCard("Wattaildragon")));
-        newHand.forEach(c -> c.setOwnerUsername("AI"));
+        newHand.forEach(c -> c.setOwnerUsername(AI.AI_USERNAME));
         var newMonsterZone = new ArrayList<>(List.of((MonsterCard) ImportAndExport.getInstance().readCard("Bitron"),
                 (MonsterCard) ImportAndExport.getInstance().readCard("Axe Raider")));
-        newMonsterZone.forEach(m -> m.setOwnerUsername("AI"));
+        newMonsterZone.forEach(m -> m.setOwnerUsername(AI.AI_USERNAME));
         AI.getInstance().getField().setHand(newHand);
         AI.getInstance().getField().setMonsterCards(newMonsterZone);
         var initialHandSize = AI.getInstance().getField().getHand().size();
@@ -106,7 +106,7 @@ public class AIDuelTest {
         var newHand = new ArrayList<>(List.of(ImportAndExport.getInstance().readCard("Closed Forest"),
                 ImportAndExport.getInstance().readCard("Crawling dragon"), ImportAndExport.getInstance().readCard("Blue-Eyes white dragon"),
                 ImportAndExport.getInstance().readCard("Axe Raider"), ImportAndExport.getInstance().readCard("Wattaildragon")));
-        newHand.forEach(c -> c.setOwnerUsername("AI"));
+        newHand.forEach(c -> c.setOwnerUsername(AI.AI_USERNAME));
         AI.getInstance().getField().setHand(newHand);
         AI.getInstance().getField().setFieldZone(null);
         AI.getInstance().activateSpell();
@@ -123,7 +123,7 @@ public class AIDuelTest {
         var newHand = new ArrayList<>(List.of(ImportAndExport.getInstance().readCard("Bitron"),
                 ImportAndExport.getInstance().readCard("Spell Absorption"), ImportAndExport.getInstance().readCard("Blue-Eyes white dragon"),
                 ImportAndExport.getInstance().readCard("Axe Raider"), ImportAndExport.getInstance().readCard("Wattaildragon")));
-        newHand.forEach(c -> c.setOwnerUsername("AI"));
+        newHand.forEach(c -> c.setOwnerUsername(AI.AI_USERNAME));
         var newMonsterZone = new ArrayList<SpellAndTrapCard>();
         AI.getInstance().getField().setHand(newHand);
         AI.getInstance().getField().setSpellAndTrapCards(newMonsterZone);
@@ -144,7 +144,7 @@ public class AIDuelTest {
                 (MonsterCard) ImportAndExport.getInstance().readCard("Axe Raider")));
         var newPlayerMonsterZone = new ArrayList<>(List.of((MonsterCard) ImportAndExport.getInstance().readCard("Feral Imp")));
         newAIMonsterZone.forEach(m -> {
-            m.setOwnerUsername("AI");
+            m.setOwnerUsername(AI.AI_USERNAME);
             m.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         });
         newPlayerMonsterZone.forEach(m -> {
@@ -169,7 +169,7 @@ public class AIDuelTest {
                 (MonsterCard) ImportAndExport.getInstance().readCard("Axe Raider")));
         var newPlayerMonsterZone = new ArrayList<MonsterCard>();
         newAIMonsterZone.forEach(m -> {
-            m.setOwnerUsername("AI");
+            m.setOwnerUsername(AI.AI_USERNAME);
             m.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         });
         AI.getInstance().getField().setMonsterCards(newAIMonsterZone);

@@ -13,7 +13,7 @@ private static ScoreboardController singleInstance = null;
         return singleInstance;
     }
     public void run() {
-        sortedAccounts();
+        sortAccounts();
         StringBuilder sorted = new StringBuilder();
         int count = 0;
         int countForEquals = 0;
@@ -32,7 +32,7 @@ private static ScoreboardController singleInstance = null;
         IO.getInstance().printString(sorted.toString());
     }
 
-    private void sortedAccounts() {
+    private void sortAccounts() {
         Account.getAllAccounts().sort((o1, o2) -> {
             int compared = -Integer.compare(o1.getScore(), o2.getScore());
             if (compared == 0) compared = o1.getNickname().compareTo(o2.getNickname());

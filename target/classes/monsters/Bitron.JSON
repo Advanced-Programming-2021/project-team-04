@@ -1,11 +1,1 @@
-{
-    "name": "Bitron",
-    "level": 2,
-    "attribute": "EARTH",
-    "monsterType": "Cyberse",
-    "cardType": "Normal",
-    "classAttackPower": 200,
-    "classDefensePower": 2000,
-    "price": 1000,
-    "description": "A new species found in electronic space. There's not much information on it."
-}
+{"classAttackPower":200,"classDefensePower":2000,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":2,"monsterType":"Cyberse","cardType":"Normal","attribute":"EARTH","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Bitron","price":1000,"description":"A new species found in electronic space. There\u0027s not much information on it.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

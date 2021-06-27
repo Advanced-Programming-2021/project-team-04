@@ -1,8 +1,1 @@
-{
-    "name": "Dark Hole",
-    "isSpell": true,
-    "property": "Normal",
-    "isLimited": false,
-    "price": 2500,
-    "description": "Destroy all monsters on the field."
-}
+{"isActive":false,"isSpell":true,"property":"Normal","isLimited":false,"name":"Dark Hole","price":2500,"description":"Destroy all monsters on the field.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

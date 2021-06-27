@@ -1,8 +1,1 @@
-{
-    "name": "Harpie's Feather Duster",
-    "isSpell": true,
-    "property": "Normal",
-    "isLimited": false,
-    "price": 2500,
-    "description": "Destroy all Spells and Traps your opponent controls."
-}
+{"isActive":false,"isSpell":true,"property":"Normal","isLimited":false,"name":"Harpie\u0027s Feather Duster","price":2500,"description":"Destroy all Spells and Traps your opponent controls.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}
