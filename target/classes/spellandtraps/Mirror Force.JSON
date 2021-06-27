@@ -1,8 +1,1 @@
-{
-    "name": "Mirror Force",
-    "isSpell": false,
-    "property": "Normal",
-    "isLimited": false,
-    "price": 2000,
-    "description": "When an opponent's monster declares an attack: Destroy all your opponent's Attack Position monsters."
-}
+{"isActive":false,"isSpell":false,"property":"Normal","isLimited":false,"name":"Mirror Force","price":2000,"description":"When an opponent\u0027s monster declares an attack: Destroy all your opponent\u0027s Attack Position monsters.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

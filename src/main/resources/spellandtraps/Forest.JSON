@@ -1,8 +1,1 @@
-{
-    "name": "Forest",
-    "isSpell": true,
-    "property": "Field",
-    "isLimited":false,
-    "price": 4300,
-    "description": "All Insect, Beast, Plant, and Beast-Warrior monsters on the field gain 200 ATK/DEF."
-}
+{"isActive":false,"isSpell":true,"property":"Field","isLimited":false,"name":"Forest","price":4300,"description":"All Insect, Beast, Plant, and Beast-Warrior monsters on the field gain 200 ATK/DEF.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

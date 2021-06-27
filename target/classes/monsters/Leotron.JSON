@@ -1,11 +1,1 @@
-{
-    "name": "Leotron",
-    "level": 4,
-    "attribute": "EARTH",
-    "monsterType": "Cyberse",
-    "cardType": "Normal",
-    "classAttackPower": 2000,
-    "classDefensePower": 0,
-    "price": 2500,
-    "description": "A territorial electronic monster that guards its own domain."
-}
+{"classAttackPower":2000,"classDefensePower":0,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":4,"monsterType":"Cyberse","cardType":"Normal","attribute":"EARTH","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Leotron","price":2500,"description":"A territorial electronic monster that guards its own domain.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

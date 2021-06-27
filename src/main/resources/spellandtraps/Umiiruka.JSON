@@ -1,8 +1,1 @@
-{
-    "name": "Umiiruka",
-    "isSpell": true,
-    "property": "Field",
-    "isLimited":false,
-    "price": 4300,
-    "description": "Increase the ATK of all WATER monsters by 500 points and decrease their DEF by 400 points."
-}
+{"isActive":false,"isSpell":true,"property":"Field","isLimited":false,"name":"Umiiruka","price":4300,"description":"Increase the ATK of all WATER monsters by 500 points and decrease their DEF by 400 points.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

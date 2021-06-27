@@ -1,8 +1,1 @@
-{
-    "name": "Torrential Tribute",
-    "isSpell": false,
-    "property": "Normal",
-    "isLimited": false,
-    "price": 2000,
-    "description": "When a monster(s) is Summoned: Destroy all monsters on the field."
-}
+{"isActive":false,"isSpell":false,"property":"Normal","isLimited":false,"name":"Torrential Tribute","price":2000,"description":"When a monster(s) is Summoned: Destroy all monsters on the field.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

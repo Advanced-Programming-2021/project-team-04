@@ -1,8 +1,1 @@
-{
-    "name": "Mystical space typhoon",
-    "isSpell": true,
-    "property": "Quick-play",
-    "isLimited":false,
-    "price": 3500,
-    "description": "Target 1 Spell/Trap on the field; destroy that target."
-}
+{"isActive":false,"isSpell":true,"property":"Quick-play","isLimited":false,"name":"Mystical space typhoon","price":3500,"description":"Target 1 Spell/Trap on the field; destroy that target.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

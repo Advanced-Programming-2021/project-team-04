@@ -1,11 +1,1 @@
-{
-    "name": "Silver Fang",
-    "level": 3,
-    "attribute": "EARTH",
-    "monsterType": "Beast",
-    "cardType": "Normal",
-    "classAttackPower": 1200,
-    "classDefensePower": 800,
-    "price": 1700,
-    "description": "A snow wolf that's beautiful to the eye, but absolutely vicious in battle."
-}
+{"classAttackPower":1200,"classDefensePower":800,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":3,"monsterType":"Beast","cardType":"Normal","attribute":"EARTH","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Silver Fang","price":1700,"description":"A snow wolf that\u0027s beautiful to the eye, but absolutely vicious in battle.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

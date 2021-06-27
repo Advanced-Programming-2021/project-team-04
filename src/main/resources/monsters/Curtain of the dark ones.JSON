@@ -1,11 +1,1 @@
-{
-    "name": "Curtain of the dark ones",
-    "level": 2,
-    "attribute": "DARK",
-    "monsterType": "Spellcaster",
-    "cardType": "Normal",
-    "classAttackPower": 600,
-    "classDefensePower": 500,
-    "price": 700,
-    "description": "A curtain that a spellcaster made, it is said to raise a dark power."
-}
+{"classAttackPower":600,"classDefensePower":500,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":2,"monsterType":"Spellcaster","cardType":"Normal","attribute":"DARK","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Curtain of the dark ones","price":700,"description":"A curtain that a spellcaster made, it is said to raise a dark power.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

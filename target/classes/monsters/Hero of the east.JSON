@@ -1,11 +1,1 @@
-{
-    "name": "Hero of the east",
-    "level": 3,
-    "attribute": "EARTH",
-    "monsterType": "Warrior",
-    "cardType": "Normal",
-    "classAttackPower": 1100,
-    "classDefensePower": 1000,
-    "price": 1700,
-    "description": "Feel da strength ah dis sword-swinging samurai from da Far East."
-}
+{"classAttackPower":1100,"classDefensePower":1000,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":3,"monsterType":"Warrior","cardType":"Normal","attribute":"EARTH","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Hero of the east","price":1700,"description":"Feel da strength ah dis sword-swinging samurai from da Far East.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

@@ -1,8 +1,1 @@
-{
-    "name": "Pot of Greed",
-    "isSpell": true,
-    "property": "Normal",
-    "isLimited": true,
-    "price": 2500,
-    "description": "Draw 2 cards."
-}
+{"isActive":false,"isSpell":true,"property":"Normal","isLimited":true,"name":"Pot of Greed","price":2500,"description":"Draw 2 cards.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

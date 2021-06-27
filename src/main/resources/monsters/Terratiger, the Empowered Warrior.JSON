@@ -1,11 +1,1 @@
-{
-    "name": "Terratiger, the Empowered Warrior",
-    "level": 4,
-    "attribute": "EARTH",
-    "monsterType": "Warrior",
-    "cardType": "Effect",
-    "classAttackPower": 1800,
-    "classDefensePower": 1200,
-    "price": 3200,
-    "description": "When this card is Normal Summoned: You can Special Summon 1 Level 4 or lower Normal Monster from your hand in Defense Position."
-}
+{"classAttackPower":1800,"classDefensePower":1200,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":4,"monsterType":"Warrior","cardType":"Effect","attribute":"EARTH","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Terratiger, the Empowered Warrior","price":3200,"description":"When this card is Normal Summoned: You can Special Summon 1 Level 4 or lower Normal Monster from your hand in Defense Position.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}
