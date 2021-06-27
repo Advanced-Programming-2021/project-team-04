@@ -291,7 +291,6 @@ public class DuelTest {
 
     @Test
     public void forManEaterTest() {
-        // TODO: 6/25/2021 the problem is the ByteArrayInputStream
         ArrayList<Card> opponentGY = theOtherPlayer.getField().getGraveyard();
         ArrayList<MonsterCard> monsterCards = theOtherPlayer.getField().getMonsterCards();
         theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
@@ -371,19 +370,17 @@ public class DuelTest {
 
     @Test
     public void showRivalHandTest() {
+        ArrayList<Card> hand = theOtherPlayer.getField().getHand();
+        theOtherPlayer.getField().setHand(new ArrayList<>());
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
         DuelController.getInstance().cheatShowRivalHand();
-        Assertions.assertEquals("Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\n" +
-                "Dark Hole\r\n", outputStream.toString());
+        Assertions.assertEquals("\r\n", outputStream.toString());
+        theOtherPlayer.getField().setHand(hand);
     }
 
     @Test
     public void terraTigerTest() {
-        var initialHandSize = thisPlayer.getField().getHand().size();
         Card selectedCard = DuelController.getInstance().getGame().getSelectedCard();
         ArrayList<MonsterCard> monsterCards = thisPlayer.getField().getMonsterCards();
         ArrayList<Card> hand = thisPlayer.getField().getHand();
@@ -398,7 +395,7 @@ public class DuelTest {
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().terraTigerMethod();
-        Assertions.assertEquals(initialHandSize - 1, thisPlayer.getField().getHand().size());
+        Assertions.assertEquals(0, thisPlayer.getField().getHand().size());
         thisPlayer.getField().setMonsterCards(monsterCards);
         thisPlayer.getField().setHand(hand);
         System.setIn(backup);
@@ -1472,7 +1469,7 @@ public class DuelTest {
         theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
         theOtherPlayer.getField().getMonsterCards().add(attacked);
         attacked.setAbleToBeRemoved(false);
-        DuelController.getInstance().attack(1);
+        DuelController.getInstance().attack(0);
         Assertions.assertEquals("you can’t attack this card\r\n", outputStream.toString());
         attacked.setAbleToBeRemoved(true);
         DuelController.getInstance().getGame().setSelectedCard(null);
@@ -1524,7 +1521,7 @@ public class DuelTest {
         theOtherPlayer.getField().getMonsterCards().add(attacked);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        DuelController.getInstance().attack(1);
+        DuelController.getInstance().attack(0);
         Assertions.assertTrue(outputStream.toString().startsWith("your opponent’s monster is destroyed and your opponent receives 200 battle damage"));
         thisPlayer.getField().setMonsterCards(myMonsters);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
@@ -1549,7 +1546,7 @@ public class DuelTest {
         theOtherPlayer.getField().getMonsterCards().add(attacked);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        DuelController.getInstance().attack(1);
+        DuelController.getInstance().attack(0);
         Assertions.assertTrue(outputStream.toString().startsWith("both you and your opponent monster cards are destroyed and no one receives damage"));
         thisPlayer.getField().setMonsterCards(myMonsters);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
@@ -1573,10 +1570,8 @@ public class DuelTest {
         theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
         thisPlayer.getField().getMonsterCards().add(attacker);
         theOtherPlayer.getField().getMonsterCards().add(attacked);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(outputStream));
-        DuelController.getInstance().attack(1);
-        Assertions.assertTrue(outputStream.toString().startsWith("Your monster card is destroyed and you received 200 battle damage"));
+        DuelController.getInstance().attack(0);
+        Assertions.assertEquals(7800, thisPlayer.getLP());
         thisPlayer.getField().setMonsterCards(myMonsters);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
     }
@@ -1600,7 +1595,7 @@ public class DuelTest {
         theOtherPlayer.getField().getMonsterCards().add(attacked);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        DuelController.getInstance().attack(1);
+        DuelController.getInstance().attack(0);
         Assertions.assertTrue(outputStream.toString().startsWith("opponent’s monster card was Wattkid and the defense position monster is destroyed"));
         thisPlayer.getField().setMonsterCards(myMonsters);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
@@ -1626,7 +1621,7 @@ public class DuelTest {
         theOtherPlayer.getField().getMonsterCards().add(attacked);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        DuelController.getInstance().attack(1);
+        DuelController.getInstance().attack(0);
         thisPlayer.getField().setMonsterCards(myMonsters);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
         Assertions.assertTrue(outputStream.toString().startsWith("no card is destroyed"));
@@ -1653,7 +1648,7 @@ public class DuelTest {
         theOtherPlayer.getField().getMonsterCards().add(attacked);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
-        DuelController.getInstance().attack(1);
+        DuelController.getInstance().attack(0);
         Assertions.assertTrue(outputStream.toString().startsWith("no card is destroyed and you received 150 battle damage"));
         thisPlayer.getField().setMonsterCards(myMonsters);
         theOtherPlayer.getField().setMonsterCards(opponentMonsters);
@@ -2168,7 +2163,7 @@ public class DuelTest {
         inTheCloset.setOwner(thisPlayer);
         thisPlayer.getField().getSideDeck().add(inTheCloset);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\nClosed Forest*Slot Machine\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\nClosed Forest * Slot Machine\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().exchangeCardsWithSideDeck(thisPlayer);

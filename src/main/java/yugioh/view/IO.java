@@ -60,11 +60,11 @@ public class IO {
 
     public void cardsToExchange() {
         System.out.println("enter the name of the cards you want to exchange:" +
-                "\n(card from side deck * card from main deck");
+                "\n(card from side deck * card from main deck)");
     }
 
     public void wantsToExchange() {
-        System.out.println("do you want to exchange a card with your side deck?");
+        System.out.println("do you want to exchange a card with your side deck? (y|n)");
     }
 
     public void cardName() {
@@ -393,7 +393,6 @@ public class IO {
     }
 
     public void printPhase(String phase) {
-        //TODO create a method for every phase so this command doesn't get an input String
         System.out.println("phase: " + phase);
     }
 
@@ -458,7 +457,7 @@ public class IO {
     }
 
     public void printMainMenuName() {
-        System.out.println("yogioh.Main Menu");
+        System.out.println("Main Menu");
     }
 
     public void printDuelMenuName() {

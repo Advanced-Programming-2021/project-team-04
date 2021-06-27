@@ -1,13 +1,15 @@
 {
   "password": "mechs",
-  "score": 0,
-  "money": 42900,
+  "score": 1000,
+  "money": 51900,
   "allPlayerDecks": [
     {
       "mainDeckCards": {
         "Battle OX": 40
       },
-      "sideDeckCards": {},
+      "sideDeckCards": {
+        "Fireyarou": 2
+      },
       "deckName": "Langa"
     }
   ],

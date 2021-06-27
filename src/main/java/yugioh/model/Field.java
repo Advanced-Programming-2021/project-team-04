@@ -9,6 +9,7 @@ import yugioh.model.cards.SpellAndTrapCard;
 import yugioh.model.cards.specialcards.Scanner;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -94,5 +95,6 @@ public class Field {
         deckZone.remove(cardFromMain);
         sideDeck.add(cardFromMain);
         sideDeck.remove(cardFromSide);
+        Collections.shuffle(deckZone);
     }
 }
