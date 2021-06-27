@@ -61,7 +61,7 @@ public class AIDuelTest {
         var initialHand = AI.getInstance().getField().getHand();
         var initialMonsterZone = AI.getInstance().getField().getMonsterCards();
         var newHand = new ArrayList<>(List.of(ImportAndExport.getInstance().readCard("Bitron"),
-                ImportAndExport.getInstance().readCard("Crawling dragon"), ImportAndExport.getInstance().readCard("Blue-Eyes white dragon"),
+                ImportAndExport.getInstance().readCard("Crawling dragon"), ImportAndExport.getInstance().readCard("Blue Eyes white dragon"),
                 ImportAndExport.getInstance().readCard("Axe Raider"), ImportAndExport.getInstance().readCard("Wattaildragon")));
         newHand.forEach(c -> c.setOwnerUsername(AI.AI_USERNAME));
         var newMonsterZone = new ArrayList<>(List.of((MonsterCard) ImportAndExport.getInstance().readCard("Bitron")));
@@ -82,7 +82,7 @@ public class AIDuelTest {
         var initialHand = AI.getInstance().getField().getHand();
         var initialMonsterZone = AI.getInstance().getField().getMonsterCards();
         var newHand = new ArrayList<>(List.of(ImportAndExport.getInstance().readCard("Bitron"),
-                ImportAndExport.getInstance().readCard("Crawling dragon"), ImportAndExport.getInstance().readCard("Blue-Eyes white dragon"),
+                ImportAndExport.getInstance().readCard("Crawling dragon"), ImportAndExport.getInstance().readCard("Blue Eyes white dragon"),
                 ImportAndExport.getInstance().readCard("Axe Raider"), ImportAndExport.getInstance().readCard("Wattaildragon")));
         newHand.forEach(c -> c.setOwnerUsername(AI.AI_USERNAME));
         var newMonsterZone = new ArrayList<>(List.of((MonsterCard) ImportAndExport.getInstance().readCard("Bitron"),
@@ -93,7 +93,7 @@ public class AIDuelTest {
         var initialHandSize = AI.getInstance().getField().getHand().size();
         AI.getInstance().summonMonster();
         Assertions.assertEquals(initialHandSize - 1, AI.getInstance().getField().getHand().size());
-        Assertions.assertEquals("Blue-Eyes white dragon", AI.getInstance().getField().getMonsterCards().get(0).getName());
+        Assertions.assertEquals("Blue Eyes white dragon", AI.getInstance().getField().getMonsterCards().get(0).getName());
         AI.getInstance().getField().setHand(initialHand);
         AI.getInstance().getField().setMonsterCards(initialMonsterZone);
     }
@@ -104,7 +104,7 @@ public class AIDuelTest {
         var initialHand = AI.getInstance().getField().getHand();
         var initialFieldZone = AI.getInstance().getField().getFieldZone();
         var newHand = new ArrayList<>(List.of(ImportAndExport.getInstance().readCard("Closed Forest"),
-                ImportAndExport.getInstance().readCard("Crawling dragon"), ImportAndExport.getInstance().readCard("Blue-Eyes white dragon"),
+                ImportAndExport.getInstance().readCard("Crawling dragon"), ImportAndExport.getInstance().readCard("Blue Eyes white dragon"),
                 ImportAndExport.getInstance().readCard("Axe Raider"), ImportAndExport.getInstance().readCard("Wattaildragon")));
         newHand.forEach(c -> c.setOwnerUsername(AI.AI_USERNAME));
         AI.getInstance().getField().setHand(newHand);
@@ -121,7 +121,7 @@ public class AIDuelTest {
         var initialHand = AI.getInstance().getField().getHand();
         var initialSpellZone = AI.getInstance().getField().getSpellAndTrapCards();
         var newHand = new ArrayList<>(List.of(ImportAndExport.getInstance().readCard("Bitron"),
-                ImportAndExport.getInstance().readCard("Spell Absorption"), ImportAndExport.getInstance().readCard("Blue-Eyes white dragon"),
+                ImportAndExport.getInstance().readCard("Spell Absorption"), ImportAndExport.getInstance().readCard("Blue Eyes white dragon"),
                 ImportAndExport.getInstance().readCard("Axe Raider"), ImportAndExport.getInstance().readCard("Wattaildragon")));
         newHand.forEach(c -> c.setOwnerUsername(AI.AI_USERNAME));
         var newMonsterZone = new ArrayList<SpellAndTrapCard>();

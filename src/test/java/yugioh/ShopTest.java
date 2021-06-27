@@ -30,7 +30,7 @@ public class ShopTest {
                 "Beast King Barbaros:9200\n" +
                 "Bitron:1000\n" +
                 "Black Pendant:4300\n" +
-                "Blue-Eyes white dragon:11300\n" +
+                "Blue Eyes white dragon:11300\n" +
                 "Call of The Haunted:3500\n" +
                 "Change of Heart:2500\n" +
                 "Closed Forest:4300\n" +
