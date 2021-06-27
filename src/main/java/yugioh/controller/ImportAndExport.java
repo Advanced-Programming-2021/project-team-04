@@ -2,16 +2,12 @@ package yugioh.controller;
 
 import com.google.gson.GsonBuilder;
 import yugioh.model.Account;
-import yugioh.model.Field;
-import yugioh.model.Game;
 import yugioh.model.PlayerDeck;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

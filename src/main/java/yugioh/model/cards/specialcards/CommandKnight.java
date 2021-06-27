@@ -5,7 +5,6 @@ import yugioh.model.Account;
 import yugioh.model.MonsterCardModeInField;
 import yugioh.model.cards.MonsterCard;
 
-import java.util.ArrayList;
 import java.util.stream.Stream;
 
 public class CommandKnight extends MonsterCard {
@@ -39,7 +38,6 @@ public class CommandKnight extends MonsterCard {
     }
 
     private void isRemovable() {
-        //TODO is this method ok AI-wise?
         Account thisPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         if (!thisPlayer.getField().getMonsterCards().isEmpty()) {
             if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP)

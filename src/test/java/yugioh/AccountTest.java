@@ -15,7 +15,7 @@ public class AccountTest {
     public void loginSuccessfullyTest() {
         Account account = new Account("Rosemary Standley", "NothingButThieves", "Dom La Nena");
         LoginController.getInstance().loginUser("Rosemary Standley", "NothingButThieves");
-        Assertions.assertTrue(MainController.getInstance().getLoggedIn().equals(account));
+        Assertions.assertEquals(account, MainController.getInstance().getLoggedIn());
         Account.removeAccount(account);
         MainController.getInstance().setLoggedIn(null);
     }

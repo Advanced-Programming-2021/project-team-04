@@ -1,6 +1,5 @@
 package yugioh.model;
 
-import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.cards.Card;
@@ -10,28 +9,19 @@ import yugioh.model.cards.specialcards.Scanner;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Getter
 @Setter
 public class Field {
 
-    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<Card> graveyard = new ArrayList<>();
-    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<Card> deckZone = new ArrayList<>();
-    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
-    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<MonsterCard> monsterCards = new ArrayList<>();
-    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<Card> hand = new ArrayList<>();
-    @Expose // TODO: 6/19/2021 delete this @Expose
     private SpellAndTrapCard fieldZone;
-    @Expose // TODO: 6/19/2021 delete this @Expose
     private ArrayList<Card> sideDeck = new ArrayList<>();
 
     public Field(GameDeck gameDeck) {

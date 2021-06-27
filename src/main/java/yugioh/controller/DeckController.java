@@ -154,7 +154,7 @@ public class DeckController {
 
     private boolean errorForDeletingOrActivating(String deckName) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
-        if (!thisPlayer.hasDeck(deckName)) {
+        if (thisPlayer.doesntHaveDeck(deckName)) {
             IO.getInstance().deckDoesntExist(deckName);
             return false;
         }
@@ -166,7 +166,7 @@ public class DeckController {
         if (!thisPlayer.hasCard(cardName)) {
             IO.getInstance().cardDoesntExist(cardName);
             return false;
-        } else if (!thisPlayer.hasDeck(deckName)) {
+        } else if (thisPlayer.doesntHaveDeck(deckName)) {
             IO.getInstance().deckDoesntExist(deckName);
             return false;
         } else if (isMainDeck && thisPlayer.getDeckByName(deckName).isMainDeckFull()) {

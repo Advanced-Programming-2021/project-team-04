@@ -53,7 +53,6 @@ public class MonsterCard extends Card {
         this.isChangedPosition = false;
         this.attacked = false;
         this.hasBeenSetOrSummoned = false;
-        //TODO is it enough?
     }
 
     @Override

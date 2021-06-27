@@ -49,7 +49,7 @@ public class ShopViewTest {
                 Beast King Barbaros:9200
                 Bitron:1000
                 Black Pendant:4300
-                Blue Eyes white dragon:11300
+                BlueEyes white dragon:11300
                 Call of The Haunted:3500
                 Change of Heart:2500
                 Closed Forest:4300

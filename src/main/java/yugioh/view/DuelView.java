@@ -2,7 +2,6 @@ package yugioh.view;
 
 import lombok.Setter;
 import yugioh.controller.DuelController;
-import yugioh.controller.ImportAndExport;
 import yugioh.model.AI;
 import yugioh.model.cards.Card;
 import yugioh.model.CardStatusInField;
@@ -12,7 +11,6 @@ import yugioh.model.cards.SpellAndTrapCard;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;

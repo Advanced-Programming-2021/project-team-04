@@ -1,11 +1,9 @@
 package yugioh.model;
 
-import com.google.gson.annotations.Expose;
 import yugioh.controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.cards.Card;
-import yugioh.view.IO;
 
 import java.util.*;
 

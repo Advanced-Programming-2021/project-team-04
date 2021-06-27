@@ -103,8 +103,6 @@ public class MainView extends ViewMenu {
         }
     }
 
-    //TODO change the methods below
-
     private void cheatIncreaseScore(String string) {
         Pattern pattern = Pattern.compile("The Aurora Strikes (\\d+)");
         Matcher matcher = pattern.matcher(string);
