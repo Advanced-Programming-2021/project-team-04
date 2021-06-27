@@ -60,11 +60,11 @@ public class IO {
 
     public void cardsToExchange() {
         System.out.println("enter the name of the cards you want to exchange:" +
-                "\n(card from side deck * card from main deck");
+                "\n(card from side deck * card from main deck)");
     }
 
     public void wantsToExchange() {
-        System.out.println("do you want to exchange a card with your side deck?");
+        System.out.println("do you want to exchange a card with your side deck? (y|n)");
     }
 
     public void cardName() {
@@ -72,10 +72,11 @@ public class IO {
     }
 
     public void whereToSummonFrom() {
-        System.out.println("where do you want to summon a card from?" +
-                "\n1: hand" +
-                "\n2: deck" +
-                "\n3: graveyard");
+        System.out.println("""
+                where do you want to summon a card from?
+                1: hand
+                2: deck
+                3: graveyard""");
     }
 
     public void chooseSpell() {
@@ -87,10 +88,11 @@ public class IO {
     }
 
     public void barbaros() {
-        System.out.println("how do you want to summon this card?" +
-                "\n1: with 2 tributes" +
-                "\n2: with 0 tributes and ATK reduction" +
-                "\n3: with 3 tributes and destruction of all opponent cards");
+        System.out.println("""
+                how do you want to summon this card?
+                1: with 2 tributes
+                2: with 0 tributes and ATK reduction
+                3: with 3 tributes and destruction of all opponent cards""");
     }
 
     public void gateGuardian() {
@@ -322,18 +324,20 @@ public class IO {
     }
 
     public void cheatIncreaseScore() {
-        System.out.println("The space pirate crew of the Aurora\n" +
-                "Known as the Mechanisms\n" +
-                "Had been watching all this time, fascinated\n" +
-                "For when you're immortal\n" +
-                "A good war is a very pleasant distraction, indeed");
+        System.out.println("""
+                The space pirate crew of the Aurora
+                Known as the Mechanisms
+                Had been watching all this time, fascinated
+                For when you're immortal
+                A good war is a very pleasant distraction, indeed""");
     }
 
     public void cheatIncreaseMoney() {
-        System.out.println("Deep within the depth of the station\n" +
-                "You’d find the key that brings your salvation\n" +
-                "Ornate and hidden past pain and privation\n" +
-                "It’s clutched in the Captain’s cold hands");
+        System.out.println("""
+                Deep within the depth of the station
+                You’d find the key that brings your salvation
+                Ornate and hidden past pain and privation
+                It’s clutched in the Captain’s cold hands""");
     }
 
     public void invalidDeck(String username) {
@@ -393,7 +397,6 @@ public class IO {
     }
 
     public void printPhase(String phase) {
-        //TODO create a method for every phase so this command doesn't get an input String
         System.out.println("phase: " + phase);
     }
 
@@ -458,7 +461,7 @@ public class IO {
     }
 
     public void printMainMenuName() {
-        System.out.println("yogioh.Main Menu");
+        System.out.println("Main Menu");
     }
 
     public void printDuelMenuName() {

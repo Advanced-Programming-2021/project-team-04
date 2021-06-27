@@ -1,11 +1,1 @@
-{
-    "name": "Spiral Serpent",
-    "level": 8,
-    "attribute": "WATER",
-    "monsterType": "Sea Serpent",
-    "cardType": "Normal",
-    "classAttackPower": 2900,
-    "classDefensePower": 2900,
-    "price": 11700,
-    "description": "When huge whirlpools lay cities asunder, it is the hunger of this sea serpent at work. No one has ever escaped its dreaded Spiral Wave to accurately describe the terror they experienced."
-}
+{"classAttackPower":2900,"classDefensePower":2900,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":8,"monsterType":"Sea Serpent","cardType":"Normal","attribute":"WATER","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Spiral Serpent","price":11700,"description":"When huge whirlpools lay cities asunder, it is the hunger of this sea serpent at work. No one has ever escaped its dreaded Spiral Wave to accurately describe the terror they experienced.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

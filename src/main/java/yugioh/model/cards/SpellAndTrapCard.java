@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class SpellAndTrapCard extends Card {
 
     protected static ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
-    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean isActive = false;
     @Expose
     protected boolean isSpell;

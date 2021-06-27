@@ -1,8 +1,1 @@
-{
-    "name": "Mind Crush",
-    "isSpell": false,
-    "property": "Normal",
-    "isLimited": false,
-    "price": 2000,
-    "description": "Declare 1 card name; if that card is in your opponent's hand, they must discard all copies of it, otherwise you discard 1 random card."
-}
+{"isActive":false,"isSpell":false,"property":"Normal","isLimited":false,"name":"Mind Crush","price":2000,"description":"Declare 1 card name; if that card is in your opponent\u0027s hand, they must discard all copies of it, otherwise you discard 1 random card.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

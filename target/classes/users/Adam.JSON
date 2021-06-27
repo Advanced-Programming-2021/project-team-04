@@ -1,15 +1,16 @@
+<<<<<<< HEAD
 {
   "password": "mechs",
-  "score": 0,
-  "money": 42900,
+  "score": 1000,
+  "money": 51900,
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Feral Imp": 15,
-        "Horn Imp": 15,
-        "Mirage Dragon": 20
+        "Battle OX": 40
       },
-      "sideDeckCards": {},
+      "sideDeckCards": {
+        "Fireyarou": 2
+      },
       "deckName": "Langa"
     }
   ],
@@ -17,3 +18,6 @@
   "username": "Adam",
   "nickname": "murderer"
 }
+=======
+{"password":"mechs","score":0,"money":42900,"allPlayerDecks":[{"mainDeckCards":{"Spell Absorption":40},"sideDeckCards":{},"deckName":"Langa"}],"activePlayerDeck":"Langa","username":"Adam","nickname":"murderer"}
+>>>>>>> c9acbcf2e01fd606f2fd1771b9e652dcb8feaeaf

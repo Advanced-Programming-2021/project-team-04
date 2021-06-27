@@ -1,11 +1,1 @@
-{
-    "name": "Wattaildragon",
-    "level": 6,
-    "attribute": "LIGHT",
-    "monsterType": "Dragon",
-    "cardType": "Normal",
-    "classAttackPower": 2500,
-    "classDefensePower": 1000,
-    "price": 5800,
-    "description": "Capable of indefinite flight. Attacks by wrapping its body with electricity and ramming into opponents.\nIMPORTANT: Capturing the 'Wattaildragon' is forbidden by the Ancient Rules and is a Level 6 offense, the minimum sentence for which is imprisonment for no less than 2500 heliocycles."
-}
+{"classAttackPower":2500,"classDefensePower":1000,"thisCardAttackPower":0,"thisCardDefensePower":0,"level":6,"monsterType":"Dragon","cardType":"Normal","attribute":"LIGHT","isAbleToBeRemoved":true,"isAbleToAttack":true,"isChangedPosition":false,"attacked":false,"name":"Wattaildragon","price":5800,"description":"Capable of indefinite flight. Attacks by wrapping its body with electricity and ramming into opponents.\nIMPORTANT: Capturing the \u0027Wattaildragon\u0027 is forbidden by the Ancient Rules and is a Level 6 offense, the minimum sentence for which is imprisonment for no less than 2500 heliocycles.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

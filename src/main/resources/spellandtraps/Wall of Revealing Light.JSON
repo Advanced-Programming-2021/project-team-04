@@ -1,8 +1,1 @@
-{
-    "name": "Wall of Revealing Light",
-    "isSpell": false,
-    "property": "Continuous",
-    "isLimited": true,
-    "price": 3500,
-    "description": "Activate by paying any multiple of 1000 Life Points. Monsters your opponent controls cannot attack if their ATK is less than or equal to the amount you paid."
-}
+{"isActive":false,"isSpell":false,"property":"Continuous","isLimited":true,"name":"Wall of Revealing Light","price":3500,"description":"Activate by paying any multiple of 1000 Life Points. Monsters your opponent controls cannot attack if their ATK is less than or equal to the amount you paid.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

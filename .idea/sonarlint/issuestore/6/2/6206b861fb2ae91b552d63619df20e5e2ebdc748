@@ -1,9 +1,0 @@
-
-ˆ
-java:S1319"mThe return type of this method should be an interface such as "Map" rather than the implementation "HashMap".(®Çà°üÿÿÿÿ
-‹
-java:S1319"uThe type of the "mainDeckCards" object should be an interface such as "Map" rather than the implementation "HashMap".(…é
-ˆ
-java:S1319!"mThe return type of this method should be an interface such as "Map" rather than the implementation "HashMap".(¬ö¾Áÿÿÿÿÿ
-
-java:S1319%"uThe type of the "sideDeckCards" object should be an interface such as "Map" rather than the implementation "HashMap".(›¬ùÿÿÿÿ

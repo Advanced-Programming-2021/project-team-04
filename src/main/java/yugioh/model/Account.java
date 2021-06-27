@@ -10,6 +10,7 @@ import java.util.ArrayList;
 @Setter
 public class Account extends Duelist {
 
+    public static final int STARTING_MONEY = 100000;
     @Getter @Setter
     private static ArrayList<Account> allAccounts;
     @Getter
@@ -23,13 +24,12 @@ public class Account extends Duelist {
         allUsernames = new ArrayList<>();
     }
 
-    @Expose()
+    @Expose
     private String password;
-    @Expose()
+    @Expose
     private int score;
-
-    @Expose()
-    private int money = 100000;
+    @Expose
+    private int money = STARTING_MONEY;
 
     public Account(String username, String password, String nickname) {
         this.username = username;

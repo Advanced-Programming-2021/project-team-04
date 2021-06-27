@@ -10,11 +10,20 @@ import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class ImportAndExport {
+
+    public static final String JSON = ".JSON";
+    public static final String RESOURCES_USERS = "src/main/resources/users/";
+    public static final String RESOURCES_IMPORTANDEXPORT = "src/main/resources/importandexport/";
+    public static final String RESOURCES_MONSTERS = "src/main/resources/monsters/";
+    public static final String RESOURCES_SPELLANDTRAPS = "src/main/resources/spellandtraps/";
+
     private static ImportAndExport singleInstance = null;
 
     public static ImportAndExport getInstance() {
@@ -24,37 +33,33 @@ public class ImportAndExport {
     }
 
     public void writeAllUsers() {
-        Account.getAllAccounts().forEach(a -> writeToJson("src/main/resources/users/" + a.getUsername() + ".JSON", a));
+        Account.getAllAccounts().forEach(a -> writeToJson(RESOURCES_USERS + a.getUsername() + JSON, a));
     }
 
     public void readAllUsers() {
-        Arrays.stream(Objects.requireNonNull(new File("src/main/resources/users").listFiles())).filter(Objects::nonNull)
-                .forEach(f -> Account.addAccount(readAccount("src/main/resources/users/" + f.getName())));
+        Arrays.stream(Objects.requireNonNull(new File(RESOURCES_USERS).listFiles())).filter(Objects::nonNull)
+                .forEach(f -> Account.addAccount(readAccount(RESOURCES_USERS + f.getName())));
     }
 
     public void importCard(String cardName, String type) {
         if (type.equals("monster")) {
-            var monsterCard = readMonsterCard("src/main/resources/importandexport/" + cardName + ".JSON");
+            var monsterCard = readMonsterCard(RESOURCES_IMPORTANDEXPORT + cardName + JSON);
             monsterCard.reset();
             ShopController.getAllCards().add(monsterCard);
         } else {
-            var spellAndTrapCard = readSpellAndTrapCard("src/main/resources/importandexport/" + cardName + ".JSON");
+            var spellAndTrapCard = readSpellAndTrapCard(RESOURCES_IMPORTANDEXPORT + cardName + JSON);
             spellAndTrapCard.reset();
             ShopController.getAllCards().add(spellAndTrapCard);
         }
     }
 
     public void exportCard(String cardName) {
-        writeToJson("src/main/resources/importandexport/" + cardName + ".JSON", Card.getCardByName(cardName));
+        writeToJson(RESOURCES_IMPORTANDEXPORT + cardName + JSON, Card.getCardByName(cardName));
     }
 
     public Account readAccount(String address) {
         try {
-            var fileReader = new FileReader(address);
-            var gsonBuilder = new GsonBuilder();
-            var gson = gsonBuilder.create();
-            var bufferedReader = new BufferedReader(fileReader);
-            var account = gson.fromJson(bufferedReader, Account.class);
+            var account = new GsonBuilder().create().fromJson(new BufferedReader(new FileReader(address)), Account.class);
             account.setAbleToDraw(true);
             account.setAbleToAttack(true);
             return account;
@@ -70,11 +75,7 @@ public class ImportAndExport {
 
     public PlayerDeck readDeck(String address) {
         try {
-            var fileReader = new FileReader(address);
-            var gsonBuilder = new GsonBuilder();
-            var gson = gsonBuilder.create();
-            var bufferedReader = new BufferedReader(fileReader);
-            return gson.fromJson(bufferedReader, PlayerDeck.class);
+            return new GsonBuilder().create().fromJson(new BufferedReader(new FileReader(address)), PlayerDeck.class);
         } catch (Exception fileNotFoundException) {
             return null;
         }
@@ -83,8 +84,8 @@ public class ImportAndExport {
     public Card readCard(String cardName) throws Exception {
         if (Card.isCardSpecial(cardName))
             return (Card) Class.forName(Card.getSpecialCardClassName(cardName)).getConstructor().newInstance();
-        var monsterCard = readMonsterCard("src/main/resources/monsters/" + cardName + ".JSON");
-        var spellAndTrapCard = readSpellAndTrapCard("src/main/resources/spellandtraps/" + cardName + ".JSON");
+        var monsterCard = readMonsterCard(RESOURCES_MONSTERS + cardName + JSON);
+        var spellAndTrapCard = readSpellAndTrapCard(RESOURCES_SPELLANDTRAPS + cardName + JSON);
         if (monsterCard == null && spellAndTrapCard != null) return spellAndTrapCard;
         if (monsterCard != null && spellAndTrapCard == null) {
             monsterCard.reset();
@@ -95,20 +96,16 @@ public class ImportAndExport {
 
     public ArrayList<Card> readAllCards() {
         return Stream.concat(
-                Arrays.stream(Objects.requireNonNull(new File("src/main/resources/monsters/").listFiles()))
+                Arrays.stream(Objects.requireNonNull(new File(RESOURCES_MONSTERS).listFiles()))
                         .map(f -> readMonsterCard(f.getPath())).filter(Objects::nonNull).peek(MonsterCard::reset),
-                Arrays.stream(Objects.requireNonNull(new File("src/main/resources/spellandtraps/").listFiles()))
+                Arrays.stream(Objects.requireNonNull(new File(RESOURCES_SPELLANDTRAPS).listFiles()))
                         .map(f -> readSpellAndTrapCard(f.getPath())).filter(Objects::nonNull))
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
     public MonsterCard readMonsterCard(String address) {
         try {
-            var fileReader = new FileReader(address);
-            var gsonBuilder = new GsonBuilder();
-            var gson = gsonBuilder.create();
-            var bufferedReader = new BufferedReader(fileReader);
-            return gson.fromJson(bufferedReader, MonsterCard.class);
+            return new GsonBuilder().create().fromJson(new BufferedReader(new FileReader(address)), MonsterCard.class);
         } catch (Exception fileNotFoundException) {
             return null;
         }
@@ -116,11 +113,7 @@ public class ImportAndExport {
 
     public SpellAndTrapCard readSpellAndTrapCard(String address) {
         try {
-            var fileReader = new FileReader(address);
-            var gsonBuilder = new GsonBuilder();
-            var gson = gsonBuilder.create();
-            var bufferedReader = new BufferedReader(fileReader);
-            return gson.fromJson(bufferedReader, SpellAndTrapCard.class);
+            return new GsonBuilder().create().fromJson(new BufferedReader(new FileReader(address)), SpellAndTrapCard.class);
         } catch (Exception fileNotFoundException) {
             return null;
         }
@@ -128,11 +121,7 @@ public class ImportAndExport {
 
     public TreeMap<String, String> readCardNameToDescriptionMap() {
         try {
-            var fileReader = new FileReader("src/main/resources/utils/MapCardNameToCardDescription.JSON");
-            var gsonBuilder = new GsonBuilder();
-            var gson = gsonBuilder.create();
-            var bufferedReader = new BufferedReader(fileReader);
-            return gson.fromJson(bufferedReader, TreeMap.class);
+            return new GsonBuilder().create().fromJson(new BufferedReader(new FileReader("src/main/resources/utils/MapCardNameToCardDescription.JSON")), TreeMap.class);
         } catch (Exception fileNotFoundException) {
             return null;
         }
@@ -140,55 +129,17 @@ public class ImportAndExport {
 
     public HashMap<String, String> readSpecialCardNameToClassNameMap() {
         try {
-            var fileReader = new FileReader("src/main/resources/utils/MapSpecialCardNameToClassName.JSON");
-            var gsonBuilder = new GsonBuilder();
-            var gson = gsonBuilder.create();
-            var bufferedReader = new BufferedReader(fileReader);
-            return gson.fromJson(bufferedReader, HashMap.class);
+            return new GsonBuilder().create().fromJson(new BufferedReader(new FileReader("src/main/resources/utils/MapSpecialCardNameToClassName.JSON")), HashMap.class);
         } catch (Exception fileNotFoundException) {
             return null;
         }
     }
-
-    public Game readGame(String gameName) {
-        try {
-            var fileReader = new FileReader("src/main/resources/games/" + gameName + ".JSON");
-            var gsonBuilder = new GsonBuilder();
-            var gson = gsonBuilder.create();
-            var bufferedReader = new BufferedReader(fileReader);
-            return gson.fromJson(bufferedReader, Game.class);
-        } catch (Exception fileNotFoundException) {
-            return null;
-        }
-    }
-
-    public Field readField(String fieldName) {
-        try {
-            var fileReader = new FileReader("src/main/resources/fields/" + fieldName + ".JSON");
-            var gsonBuilder = new GsonBuilder();
-            var gson = gsonBuilder.create();
-            var bufferedReader = new BufferedReader(fileReader);
-            return gson.fromJson(bufferedReader, Field.class);
-        } catch (Exception fileNotFoundException) {
-            return null;
-        }
-    }
-
 
     public void writeToJson(String address, Object object) {
-        var gsonBuilder = new GsonBuilder();
-        var gson = gsonBuilder.excludeFieldsWithoutExposeAnnotation().setPrettyPrinting().create();
-        FileWriter fileWriter;
         try {
-            fileWriter = new FileWriter(address);
-            fileWriter.write(gson.toJson(object));
+            var fileWriter = new FileWriter(address);
+            fileWriter.write(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(object));
             fileWriter.close();
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) { }
     }
-
-//    public GameDeck getGameDeck(PlayerDeck playerDeck) {
-//        //TODO this method or GameDeck's constructor?
-//    }
-
 }

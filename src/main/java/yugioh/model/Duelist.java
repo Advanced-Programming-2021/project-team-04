@@ -26,8 +26,7 @@ public abstract class Duelist {
     protected Field field;
     protected int LP, countForRPS;
     protected int maxLPofThreeRounds;
-    protected int countOfRoundsWon; //TODO should reset this
-    protected boolean isAbleToDraw = true; //TODO should reset this
+    protected boolean isAbleToDraw = true;
     protected boolean isAbleToAttack = true;
 
 //    public Duelist() {
@@ -105,6 +104,8 @@ public abstract class Duelist {
     public void reset() {
         setLP(8000);
         countForRPS = 0;
+        isAbleToDraw = true;
+        isAbleToAttack = true;
     }
 
     public void changeLP(int amount) {

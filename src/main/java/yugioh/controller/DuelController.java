@@ -844,6 +844,7 @@ public class DuelController {
             game.getCurrentPlayer().getField().setFieldZone(selectedCard);
         } else if (!game.getCurrentPlayer().getField().getSpellAndTrapCards().contains(selectedCard))
             game.getCurrentPlayer().getField().getSpellAndTrapCards().add(selectedCard);
+        game.getCurrentPlayer().getField().getHand().remove(selectedCard);
         selectedCard.setActive(true);
         callSpellAndTrapMethod(selectedCard);
         game.setSelectedCard(null);
@@ -1652,9 +1653,9 @@ public class DuelController {
             IO.getInstance().printString("a spacecraft’s structure is its underlying body and it's won once again");
         else {
             if (allMatches)
-                IO.getInstance().printString(winner + " won the whole math with score: " + winner.getScore());
+                IO.getInstance().printString(winner.getUsername() + " won the whole math with score: " + winner.getScore());
             else
-                IO.getInstance().printString(winner + " won the game and the score is: " + winner.getScore());
+                IO.getInstance().printString(winner.getUsername() + " won the game and the score is: " + winner.getScore());
         }
     }
 

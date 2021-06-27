@@ -19,11 +19,12 @@ public class ShopController {
 
     static {
         allCards = new ArrayList<>();
+        addSpecialCards();
+        allCards.addAll(ImportAndExport.getInstance().readAllCards());
+        sort();
     }
 
-    public ShopController() {
-        createCardForShop();
-    }
+    private ShopController() { }
 
     public static ShopController getInstance() {
         if (singleInstance == null)
@@ -71,15 +72,7 @@ public class ShopController {
         }
     }
 
-    public void createCardForShop() {
-        //TODO a static method would do better, or perhaps a static block
-        allCards = new ArrayList<>();
-        addSpecialCards();
-        allCards.addAll(ImportAndExport.getInstance().readAllCards());
-        sort();
-    }
-
-    private void addSpecialCards() {
+    private static void addSpecialCards() {
         allCards.add(new ChangeOfHeart());
         allCards.add(new CommandKnight());
         allCards.add(new ManEaterBug());
@@ -94,7 +87,7 @@ public class ShopController {
         allCards.add(new Scanner());
     }
 
-    private void sort() {
+    private static void sort() {
         allCards.sort(Comparator.comparing(Card::getName));
     }
 }

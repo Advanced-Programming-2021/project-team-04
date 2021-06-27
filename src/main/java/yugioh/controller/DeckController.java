@@ -34,7 +34,8 @@ public class DeckController {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorForDeletingOrActivating(deckName)) {
             IO.getInstance().deckDeleted();
-            if (thisPlayer.getActiveDeck() != null && thisPlayer.getActiveDeck().getDeckName().equals(deckName)) thisPlayer.setActivePlayerDeck(null);
+            if (thisPlayer.getActiveDeck() != null && thisPlayer.getActiveDeck().getDeckName().equals(deckName))
+                thisPlayer.setActivePlayerDeck(null);
             thisPlayer.deleteDeck(thisPlayer.getDeckByName(deckName));
         }
     }

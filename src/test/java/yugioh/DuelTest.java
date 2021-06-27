@@ -291,7 +291,6 @@ public class DuelTest {
 
     @Test
     public void forManEaterTest() {
-        // TODO: 6/25/2021 the problem is the ByteArrayInputStream
         ArrayList<Card> opponentGY = theOtherPlayer.getField().getGraveyard();
         ArrayList<MonsterCard> monsterCards = theOtherPlayer.getField().getMonsterCards();
         theOtherPlayer.getField().setMonsterCards(new ArrayList<>());
@@ -2164,7 +2163,7 @@ public class DuelTest {
         inTheCloset.setOwner(thisPlayer);
         thisPlayer.getField().getSideDeck().add(inTheCloset);
         InputStream backup = System.in;
-        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\nClosed Forest*Slot Machine\r\n".getBytes());
+        ByteArrayInputStream input = new ByteArrayInputStream("yes\r\nClosed Forest * Slot Machine\r\n".getBytes());
         System.setIn(input);
         IO.getInstance().resetScanner();
         DuelController.getInstance().exchangeCardsWithSideDeck(thisPlayer);

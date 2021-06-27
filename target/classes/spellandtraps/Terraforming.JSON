@@ -1,8 +1,1 @@
-{
-    "name": "Terraforming",
-    "isSpell": true,
-    "property": "Normal",
-    "isLimited": true,
-    "price": 2500,
-    "description": "Add 1 Field Spell from your Deck to your hand."
-}
+{"isActive":false,"isSpell":true,"property":"Normal","isLimited":true,"name":"Terraforming","price":2500,"description":"Add 1 Field Spell from your Deck to your hand.","allowedNumber":3,"hasBeenUsedInThisTurn":false,"hasBeenSetOrSummoned":false}

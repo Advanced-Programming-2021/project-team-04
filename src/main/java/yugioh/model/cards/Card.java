@@ -26,14 +26,11 @@ public class Card {
     protected int price;
     @Expose
     protected String description;
-    @Expose // TODO: 6/19/2021 delete this @Expose
     protected int allowedNumber = 3;
     protected Duelist owner;
     @Expose
     protected String ownerUsername;
-    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean hasBeenUsedInThisTurn = false;
-    @Expose // TODO: 6/19/2021 delete this @Expose
     protected boolean hasBeenSetOrSummoned = false;
 
     static {
@@ -48,7 +45,7 @@ public class Card {
 
     public Duelist getOwner() {
         if (owner == null) {
-            if (ownerUsername.equals("AI")) owner = AI.getInstance();
+            if (ownerUsername.equals(AI.AI_USERNAME)) owner = AI.getInstance();
             else owner = Account.getAccountByUsername(ownerUsername);
         }
         return owner;
