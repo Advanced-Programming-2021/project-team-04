@@ -6,12 +6,10 @@
     {
       "mainDeckCards": {
         "Bitron": 36,
-        "Skull Guardian": 2,
-        "Dark Blade": 3
+        "Skull Guardian": 2
       },
       "sideDeckCards": {
-        "Baby dragon": 2,
-        "Blue-Eyes white dragon": 1
+        "Baby dragon": 2
       },
       "deckName": "Langa"
     },

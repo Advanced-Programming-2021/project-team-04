@@ -1,0 +1,33 @@
+package yugioh.view;
+
+import yugioh.controller.MainController;
+import yugioh.controller.ScoreboardController;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+
+import java.util.ArrayList;
+
+public class ScoreboardView{
+
+    public static void run() {
+        VBox vBox = (VBox)  LoginView.scoreboardScene.lookup("#scoreboard");
+        vBox.getChildren().clear();
+        ArrayList<String> sortedUsers = ScoreboardController.getInstance().getSortedUsers();
+        int min = Math.min(sortedUsers.size(), 20);
+        for (int i = 0; i < min; i++) {
+            String thisLine = sortedUsers.get(i);
+            Label label = new Label(thisLine);
+            if (thisLine.contains(MainController.getInstance().getLoggedIn().getNickname()))
+                label.setStyle("-fx-text-fill: #FF00C8");
+            else
+                label.setStyle("-fx-text-fill: #00F2FF");
+            vBox.getChildren().add(label);
+        }
+    }
+
+    public void mainMenu() {
+        LoginView.stage.setScene(LoginView.mainScene);
+        LoginView.stage.centerOnScreen();
+    }
+
+}

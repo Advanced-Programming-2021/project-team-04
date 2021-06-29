@@ -5,9 +5,9 @@ module YoGiOhGame {
     requires javafx.media;
     requires lombok;
 
-    opens view to javafx.fxml;
-    opens model to com.google.gson;
-    opens model.cards to com.google.gson;
-    exports model.cards to com.google.gson;
-    exports view to javafx.graphics;
+    opens yugioh.view to javafx.fxml;
+    opens yugioh.model to com.google.gson;
+    opens yugioh.model.cards to com.google.gson;
+    exports yugioh.model.cards to com.google.gson;
+    exports yugioh.view to javafx.graphics;
 }

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import java.net.URL?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="yugioh.view.MainView"
+          alignment="CENTER" hgap="10" vgap="10" styleClass="root">
+
+    <padding>
+        <Insets top="25" right="25" bottom="25" left="25"/>
+    </padding>
+
+    <Label text="And when the giants, they come a-rolling&#10;
+    Then we will fight, we will fight, fight for our boy Jack&#10;
+    When the giants, they come a-rolling&#10;If he can slay them, so can we"
+           textAlignment="CENTER" GridPane.rowIndex="0" GridPane.columnSpan="2" fx:id="heading"/>
+    <HBox spacing="10" alignment="CENTER"
+          GridPane.rowIndex="1" GridPane.columnSpan="2">
+        <Button text="Shop Menu" alignment="CENTER"
+                onMouseClicked="#enterShopMenu"/>
+        <Button text="Profile Menu" alignment="CENTER"
+                onMouseClicked="#enterProfileMenu"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER"
+          GridPane.rowIndex="2" GridPane.columnSpan="2">
+        <Button text="Scoreboard" alignment="CENTER"
+                onMouseClicked="#enterScoreboard"/>
+        <Button text="Deck Menu" alignment="CENTER"
+                onMouseClicked="#enterDeckMenu"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER"
+          GridPane.rowIndex="3" GridPane.columnSpan="2">
+        <Button text="Play AI" onMouseClicked="#playWithAI"/>
+        <Button text="Play with Rival" onMouseClicked="#playWithRival"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER"
+          GridPane.rowIndex="4" GridPane.columnSpan="2">
+    <Button text="Log Out" onMouseClicked="#logout"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="CENTER"
+          GridPane.rowIndex="5" GridPane.columnSpan="2">
+        <ToggleButton fx:id="mute" onMouseClicked="#mute" prefWidth="100" prefHeight="100"/>
+    </HBox>
+
+    <stylesheets>
+        <URL value="@stylesheets/MainView.css"/>
+    </stylesheets>
+</GridPane>
