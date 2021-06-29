@@ -24,8 +24,8 @@
 }
 
 #Back {
-    -fx-translate-y: 40;
-    -fx-translate-x: 37;
+    -fx-translate-y: -20;
+    -fx-translate-x: 47;
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
     -fx-pref-width: 175;

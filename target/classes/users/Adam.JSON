@@ -5,11 +5,20 @@
   "allPlayerDecks": [
     {
       "mainDeckCards": {
-        "Bitron": 37,
-        "Skull Guardian": 2
+        "Bitron": 36,
+        "Skull Guardian": 2,
+        "Dark Blade": 3
       },
-      "sideDeckCards": {},
+      "sideDeckCards": {
+        "Baby dragon": 2,
+        "Blue-Eyes white dragon": 1
+      },
       "deckName": "Langa"
+    },
+    {
+      "mainDeckCards": {},
+      "sideDeckCards": {},
+      "deckName": "mia"
     }
   ],
   "allCardsHashMap": {
@@ -19,7 +28,7 @@
     "Bitron": 2,
     "Swords of Revealing Light": 1
   },
-  "activePlayerDeck": "Langa",
+  "activePlayerDeck": "mia",
   "username": "Adam",
   "nickname": "Dead"
 }

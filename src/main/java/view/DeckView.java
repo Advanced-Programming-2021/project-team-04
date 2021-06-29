@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import model.Field;
 import model.PlayerDeck;
 import model.cards.Card;
 
@@ -22,10 +23,10 @@ public class DeckView {
     private static final ArrayList<PlayerDeck> allDecks = MainController.getInstance().getLoggedIn().getAllPlayerDecks();
     private static final ArrayList<String> allCards = new ArrayList<>(MainController.getInstance().getLoggedIn().getAllCardsHashMap().keySet());
     private static int count;
-    private static ArrayList<String> mainCards = new ArrayList<>(allDecks.get(count).getMainDeckCards().keySet());
-    private static LinkedHashMap<String, Short> mainCardsHashMap = allDecks.get(count).getMainDeckCards();
-    private static ArrayList<String> sideCards = new ArrayList<>(allDecks.get(count).getSideDeckCards().keySet());
-    private static LinkedHashMap<String, Short> sideCardsHashMap = allDecks.get(count).getSideDeckCards();
+    private static ArrayList<String> mainCards;
+    private static ArrayList<String> sideCards;
+    private static LinkedHashMap<String, Short> mainCardsHashMap;
+    private static LinkedHashMap<String, Short> sideCardsHashMap;
     private static int countForDeck;
     private static int countForAdd;
     private static Card firstCard;
@@ -34,8 +35,6 @@ public class DeckView {
     private static Scene sceneForOneDeck;
     private static final Card emptyCard = new Card();
 
-    //TODO labels for number of cards
-    //TODO test with side deck not empty
     //TODO add card scene
     //TODO profile menu
     //TODO back button in add scene
@@ -44,8 +43,16 @@ public class DeckView {
         countForDeck = 0;
         countForAdd = 0;
         count = 0;
+        updateLists();
         showDetails();
         handleButtons();
+    }
+
+    private static void updateLists() {
+        mainCards = new ArrayList<>(allDecks.get(count).getMainDeckCards().keySet());
+        sideCards = new ArrayList<>(allDecks.get(count).getSideDeckCards().keySet());
+        mainCardsHashMap = allDecks.get(count).getMainDeckCards();
+        sideCardsHashMap = allDecks.get(count).getSideDeckCards();
     }
 
     private static void handleButtons() {
@@ -139,7 +146,7 @@ public class DeckView {
         try {
             sceneForAdding = new Scene(fxmlLoader.load());
             showPlayerCards();
-            LoginView.setSize(sceneForAdding, 1424, 2224);
+            LoginView.setSize(sceneForAdding);
             LoginView.stage.setScene(sceneForAdding);
             LoginView.stage.centerOnScreen();
         } catch (IOException e) {
@@ -148,11 +155,12 @@ public class DeckView {
     }
 
     public void deckScene() {
+        updateLists();
         FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("Deck.fxml"));
         try {
             sceneForOneDeck = new Scene(fxmlLoader.load());
             showDeckCards();
-            LoginView.setSize(sceneForOneDeck, 1098, 1638);
+            LoginView.setSize(sceneForOneDeck);
             LoginView.stage.setScene(sceneForOneDeck);
             LoginView.stage.centerOnScreen();
             handleButtonForCards();
@@ -182,31 +190,35 @@ public class DeckView {
     private void showDeckCards() {
         if (countForDeck < 0) countForDeck = 0;
         ImageView first = (ImageView) sceneForOneDeck.lookup("#first");
-        first.setImage(mainImage());
+        first.setImage(mainImage((Label) sceneForOneDeck.lookup("#numberMain")));
         ImageView second = (ImageView) sceneForOneDeck.lookup("#second");
-        second.setImage(sideImage());
+        second.setImage(sideImage((Label) sceneForOneDeck.lookup("#numberSide")));
     }
 
-    private Image sideImage() {
+    private Image sideImage(Label number) {
         Image secondImage;
         if (sideCards.size() > countForDeck) {
             secondCard = Card.getCardByName(sideCards.get(countForDeck));
             secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+            number.setText(String.valueOf(sideCardsHashMap.get(secondCard.getName())));
         } else {
             secondCard = emptyCard;
             secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+            number.setText("");
         }
         return secondImage;
     }
 
-    private Image mainImage() {
+    private Image mainImage(Label number) {
         Image firstImage;
         if (mainCards.size() > countForDeck) {
             firstCard = Card.getCardByName(mainCards.get(countForDeck));
             firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+            number.setText(String.valueOf(mainCardsHashMap.get(firstCard.getName())));
         } else {
             firstCard = emptyCard;
             firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+            number.setText("");
         }
         return firstImage;
     }

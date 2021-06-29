@@ -70,12 +70,4 @@ public class Account extends Duelist {
     public static Account getAccountByUsername(String username) {
         return allAccounts.stream().filter(a -> a.getUsername().equals(username)).findAny().orElse(null);
     }
-
-//    class AccountDeserializer implements JsonDeserializer<Account> {
-//
-//        @Override
-//        public Account deserialize(JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
-//            return new Account(jsonElement.getAsJsonObject().keySet().stream().findAny(o -> (String) o));
-//        }
-//    } //TODO fix this sexy son of a bitch, remove the current solution to false canDraw() problem, in readAccount in ImportAndExport
 }

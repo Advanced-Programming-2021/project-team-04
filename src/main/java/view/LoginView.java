@@ -48,23 +48,18 @@ public class LoginView extends Application {
         stage.centerOnScreen();
     }
 
-    public static void setSize(Scene scene, int picHeight, int picWidth) {
+    public static void setSize(Scene scene) {
         double height = Screen.getPrimary().getVisualBounds().getHeight() - 20;
         ((GridPane) scene.getRoot()).setPrefHeight(height);
-        ((GridPane) scene.getRoot()).setPrefWidth(picWidth * height / picHeight);
+        ((GridPane) scene.getRoot()).setPrefWidth(2224 * height / 1424);
     }
 
     private static void createAllScenes() {
         loginScene = sceneCreator("LoginView.fxml");
-        setSize(loginScene, 1222, 1954);
         signUpScene = sceneCreator("SignupView.fxml");
-        setSize(signUpScene, 1222, 1954);
         mainScene = sceneCreator("MainView.fxml");
-        setSize(mainScene, 1112, 1954);
         profileScene = sceneCreator("ProfileView.fxml");
-        setSize(profileScene, 1213, 1280);
         scoreboardScene = sceneCreator("ScoreboardView.fxml");
-        setSize(scoreboardScene, 1192, 876);
         shopScene = sceneCreator("ShopView.fxml");
 //        duelScene = sceneCreator("DuelView.fxml");
 //        importAndExportScene = sceneCreator("ImportAndExportView.fxml");
@@ -74,7 +69,9 @@ public class LoginView extends Application {
     public static Scene sceneCreator(String resource) {
         FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource(resource));
         try {
-            return new Scene(fxmlLoader.load());
+            Scene scene = new Scene(fxmlLoader.load());
+            setSize(scene);
+            return scene;
         } catch (IOException e) {
             e.printStackTrace();
         }

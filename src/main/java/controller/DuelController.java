@@ -181,7 +181,6 @@ public class DuelController {
 
 
     private String[] makeSpellZone(ArrayList<SpellAndTrapCard> spellZone) {
-        //TODO needs to go to Output class
         var spellZoneString = new String[5];
         for (var i = 0; i < 5; i++) {
             if (spellZone.size() - 1 < i) {
@@ -196,7 +195,6 @@ public class DuelController {
     }
 
     private String[] makeMonsterZone(ArrayList<MonsterCard> monsterZone) {
-        //TODO needs to go to Output class
         var monsterZoneString = new String[5];
         for (var i = 0; i < 5; i++) {
             if (monsterZone.size() - 1 < i) {
@@ -214,7 +212,7 @@ public class DuelController {
     }
 
     private void showGameBoard(Duelist opponent, Duelist current) {
-        //TODO needs to go to Output class
+
         String opponentNickname = opponent.getNickname() + ": " + opponent.getLP();
         int opponentHandCount = opponent.getField().getHand().size();
         int opponentDeckNumber = opponent.getField().getDeckZone().size();
@@ -382,7 +380,7 @@ public class DuelController {
         nextPhase();
     }
 
-    public void summon() { //TODO what the fuck? test shode vali ghermeze hanuz :|
+    public void summon() {
         if (handleSpecialCases()) return;
         summonWithTribute();
         var monsterCard = (MonsterCard) game.getSelectedCard();
@@ -401,7 +399,6 @@ public class DuelController {
 
 
     private boolean handleSpecialCases() {
-        //TODO is it ok that this if and the next if have different return true; positions?
         if (getGame().getCurrentPlayer() instanceof Account && !isSummonValid()) return true;
         if (game.getSelectedCard().getName().equals("The Tricky") && DuelView.getInstance().ordinaryOrSpecial()) {
             theTricky();
@@ -635,7 +632,7 @@ public class DuelController {
             nextPhase();
             return;
         }
-        opponentMonsterPositionNumber--; //TODO check these numbers and shits
+        opponentMonsterPositionNumber--;
         MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber);
         MonsterCard attacker = (MonsterCard) game.getSelectedCard();
         if (game.getTheOtherPlayer().getField().getThisActivatedCard("Swords of Revealing Light") != null) return;
@@ -751,11 +748,11 @@ public class DuelController {
             return false;
         }
         MonsterCard attacked = game.getTheOtherPlayer().getField().getMonsterCards().get(opponentMonsterPositionNumber - 1);
-        if (!attacked.isAbleToBeRemoved()) { //TODO when is this set as false
+        if (!attacked.isAbleToBeRemoved()) {
             IO.getInstance().cannotAttackThisCard();
             return false;
         }
-        if (selectedCard.isAttacked()) { //TODO this also
+        if (selectedCard.isAttacked()) {
             IO.getInstance().cannotAttack();
             return false;
         }
@@ -998,7 +995,7 @@ public class DuelController {
         moveSpellOrTrapToGYFromSpellZone(mirrorForce);
     }
 
-    private void decreaseLPWithTrap(Duelist duelist, int amount) { //TODO
+    private void decreaseLPWithTrap(Duelist duelist, int amount) {
         if (duelist.getField().getThisActivatedCard("Ring of defense") == null)
             duelist.changeLP(-amount);
     }
@@ -1090,7 +1087,6 @@ public class DuelController {
         makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
         int myMonstersSize = game.getCurrentPlayer().getField().getMonsterCards().size();
         int opponentSize = game.getTheOtherPlayer().getField().getMonsterCards().size();
-        //TODO could this be done by forEach()?
         for (var i = 0; i < myMonstersSize; i++)
             addMonsterToGYFromMonsterZone(game.getCurrentPlayer().getField().getMonsterCards().get(0));
         for (var i = 0; i < opponentSize; i++)

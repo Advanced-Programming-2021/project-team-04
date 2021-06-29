@@ -27,8 +27,8 @@ public abstract class Duelist {
     protected Field field;
     protected int LP, countForRPS;
     protected int maxLPofThreeRounds;
-    protected int countOfRoundsWon; //TODO should reset this
-    protected boolean isAbleToDraw = true; //TODO should reset this
+    protected int countOfRoundsWon;
+    protected boolean isAbleToDraw = true;
     protected boolean isAbleToAttack = true;
 
 
@@ -89,7 +89,7 @@ public abstract class Duelist {
         return activePlayerDeck != null;
     }
 
-    private boolean hasEnoughCardInHand(int amount) { //TODO check while writing the code
+    private boolean hasEnoughCardInHand(int amount) {
         return true;
     }
 

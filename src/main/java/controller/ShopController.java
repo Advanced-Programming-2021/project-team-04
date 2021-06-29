@@ -67,14 +67,13 @@ public class ShopController {
     }
 
     public void buyCard(String cardName) {
-        if (isCardNameValid(cardName) && hasEnoughMoney(cardName)) { //TODO we probably dont need to check these anymore
+        if (isCardNameValid(cardName) && hasEnoughMoney(cardName)) {
             MainController.getInstance().getLoggedIn().addCard(cardName);
             MainController.getInstance().getLoggedIn().setMoney(MainController.getInstance().getLoggedIn().getMoney() - Card.getCardByName(cardName).getPrice());
         }
     }
 
     public void createCardForShop() {
-        //TODO a static method would do better, or perhaps a static block
         allCards = new ArrayList<>();
         addSpecialCards();
         allCards.addAll(ImportAndExport.getInstance().readAllCards());

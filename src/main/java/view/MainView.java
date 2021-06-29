@@ -46,7 +46,7 @@ public class MainView {
     @FXML
     public void enterDeckMenu() {
         LoginView.deckScene = sceneCreator("DeckView.fxml");
-        LoginView.setSize(LoginView.deckScene, 976, 1072);
+        LoginView.setSize(LoginView.deckScene);
         LoginView.stage.setScene(LoginView.deckScene);
         LoginView.stage.centerOnScreen();
         DeckView.run();

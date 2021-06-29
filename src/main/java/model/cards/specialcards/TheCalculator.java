@@ -23,7 +23,6 @@ public class TheCalculator extends MonsterCard {
 
     @Override
     public int getThisCardAttackPower() {
-        //TODO is this method ok AI-wise?
         int amount = 0;
         Duelist player = this.getOwner();
         for (MonsterCard monsterCard : player.getField().getMonsterCards())

@@ -40,7 +40,6 @@ public class CommandKnight extends MonsterCard {
     }
 
     private void isRemovable() {
-        //TODO is this method ok AI-wise?
         Account thisPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         if (!thisPlayer.getField().getMonsterCards().isEmpty()) {
             if (this.monsterCardModeInField.equals(MonsterCardModeInField.ATTACK_FACE_UP)

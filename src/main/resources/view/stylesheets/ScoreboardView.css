@@ -9,15 +9,15 @@
 .label {
     -fx-font-size: 27;
     -fx-font-family: "Script MT Bold";
-    -fx-translate-x: -72;
-    -fx-translate-y: -200;
+    -fx-translate-x: -70;
+    -fx-translate-y: -150;
 }
 
 .button {
     -fx-font-family: "Script MT Bold";
     -fx-pref-width: 150;
-    -fx-translate-y: 300;
-    -fx-translate-x: 60;
+    -fx-translate-y: 260;
+    -fx-translate-x: 330;
     -fx-font-size: 20;
     -fx-background-color: #FF00C8;
     -fx-text-fill: #3c5162;

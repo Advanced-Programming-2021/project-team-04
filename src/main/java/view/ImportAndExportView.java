@@ -19,7 +19,7 @@ public class ImportAndExportView extends ViewMenu {
     }
 
     private void importCard(String input) {
-        Matcher matcher = Pattern.compile("import (?:m(?:onster)?|s(?:pell)?) (.*)").matcher(input.toLowerCase()); //TODO is there anything better i could do?
+        Matcher matcher = Pattern.compile("import (?:m(?:onster)?|s(?:pell)?) (.*)").matcher(input.toLowerCase());
         matcher.find();
         ImportAndExport.getInstance().importCard(matcher.group(1), matcher.group(2));
     }

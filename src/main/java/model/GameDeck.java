@@ -44,12 +44,10 @@ public class GameDeck {
     }
 
     public boolean mainDeckHasCard(String cardName) {
-        //TODO still doubt
         return mainDeck.contains(Card.getCardByName(cardName));
     }
 
     public boolean sideDeckHasCard(String cardName) {
-        //TODO still doubt
         return sideDeck.contains(Card.getCardByName(cardName));
     }
 
