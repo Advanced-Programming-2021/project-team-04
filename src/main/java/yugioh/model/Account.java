@@ -30,6 +30,8 @@ public class Account extends Duelist {
     private int score;
     @Expose
     private int money = STARTING_MONEY;
+    @Expose
+    private int profilePictureNumber;
 
     public Account(String username, String password, String nickname) {
         this.username = username;
@@ -58,5 +60,13 @@ public class Account extends Duelist {
 
     public static Account getAccountByUsername(String username) {
         return allAccounts.stream().filter(a -> a.getUsername().equals(username)).findAny().orElse(null);
+    }
+
+    public int getProfilePictureNumber() {
+        return profilePictureNumber;
+    }
+
+    public void setProfilePictureNumber(int profilePicture) {
+        this.profilePictureNumber = profilePicture;
     }
 }

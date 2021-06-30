@@ -8,7 +8,7 @@
 
 .box1, .box2 {
     -fx-border-color: #f11728;
-    -fx-translate-x: 30;
+    -fx-translate-x: 80;
     -fx-translate-y: 27;
     -fx-padding: 15;
 }
@@ -43,5 +43,10 @@
 
 #mainMenu {
     -fx-pref-width: 150;
-    -fx-translate-y: 120;
+    -fx-translate-x: 320;
+    -fx-translate-y: -10;
+}
+
+#profilePicture {
+    -fx-translate-x: 20;
 }

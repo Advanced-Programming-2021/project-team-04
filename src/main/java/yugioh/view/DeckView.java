@@ -1,6 +1,10 @@
 package yugioh.view;
 
 
+import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseDragEvent;
+import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 import yugioh.controller.DeckController;
 import yugioh.controller.MainController;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +23,7 @@ import java.util.LinkedHashMap;
 
 public class DeckView {
 
-    private static final ArrayList<PlayerDeck> allDecks = MainController.getInstance().getLoggedIn().getAllPlayerDecks();
+    private static ArrayList<PlayerDeck> allDecks;
     private static final ArrayList<String> allCards = new ArrayList<>(MainController.getInstance().getLoggedIn().getAllCardsHashMap().keySet());
     private static int count;
     private static ArrayList<String> mainCards;
@@ -34,11 +38,9 @@ public class DeckView {
     private static Scene sceneForOneDeck;
     private static final Card emptyCard = new Card();
 
-    //TODO add card scene
-    //TODO on mouse hover
-    //TODO profile menu
 
     public static void run() {
+        allDecks = MainController.getInstance().getLoggedIn().getAllPlayerDecks();
         countForDeck = 0;
         countForAdd = 0;
         count = 0;
@@ -62,6 +64,7 @@ public class DeckView {
 
     private static void showDetails() {
         Label deckName = ((Label) LoginView.deckScene.lookup("#deckName"));
+        setLabelToolTip(deckName);
         if (allDecks.isEmpty()) {
             deckName.setText("Empty");
             count = 0;
@@ -71,6 +74,14 @@ public class DeckView {
         if (allDecks.get(count).equals(MainController.getInstance().getLoggedIn().getActiveDeck()))
             deckName.setStyle("-fx-text-fill: #4a78ff");
         else deckName.setStyle("-fx-text-fill: #ffffff");
+    }
+
+    private static void setLabelToolTip(Label deckName) {
+        Tooltip tooltip = new Tooltip(DeckController.getInstance().getDeckCards(allDecks.get(count)));
+        tooltip.setWrapText(true);
+        tooltip.setStyle("-fx-font-size: 27");
+        deckName.setTooltip(tooltip);
+        tooltip.setShowDelay(Duration.seconds(0));
     }
 
     public void next() {
@@ -267,4 +278,5 @@ public class DeckView {
         LoginView.stage.setScene(sceneForOneDeck);
         LoginView.stage.centerOnScreen();
     }
+
 }

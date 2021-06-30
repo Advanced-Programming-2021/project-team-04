@@ -90,32 +90,6 @@ public class DeckController {
         MainController.getInstance().getLoggedIn().getAllPlayerDecks().sort(Comparator.comparing(PlayerDeck::getDeckName));
     }
 
-    public void printDeck(String deckName, boolean isMain) {
-        Account thisPlayer = MainController.getInstance().getLoggedIn();
-        if (errorForDeletingOrActivating(deckName)) {
-            ArrayList<Card> monsterCards = new ArrayList<>();
-            ArrayList<Card> spellAndTrap = new ArrayList<>();
-            var toPrint = new StringBuilder("Deck: " + deckName + "\n");
-            sortCards(deckName);
-            if (isMain) {
-                toPrint.append("Main deck:\n");
-                thisPlayer.getDeckByName(deckName).getMainDeckCards().keySet().forEach(c -> {
-                    Card card = null;
-                    try {
-                        card = ImportAndExport.getInstance().readCard(c);
-                    } catch (Exception ignored) { }
-                    if (card instanceof MonsterCard) monsterCards.add(card);
-                    else spellAndTrap.add(card);
-                });
-                toPrint.append("Monsters:\n");
-                monsterCards.forEach(c -> toPrint.append(c.getName()).append(": ").append(c.getDescription()).append("\n"));
-                toPrint.append("Spell and Traps:\n");
-                spellAndTrap.forEach(c -> toPrint.append(c.getName()).append(": ").append(c.getDescription()).append("\n"));
-            }
-            toPrint.setLength(toPrint.length() - 1);
-            IO.getInstance().printString(toPrint.toString());
-        }
-    }
 
     public void sortCards(String deckName) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
@@ -125,17 +99,6 @@ public class DeckController {
         thisPlayer.getDeckByName(deckName).setSideDeckCards(thisPlayer.getDeckByName(deckName).getSideDeckCards().entrySet()
                 .stream().sorted(Map.Entry.comparingByKey())
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (c1, c2) -> c1, LinkedHashMap::new)));
-    }
-
-    public void printAllCards() {
-        Account thisPlayer = MainController.getInstance().getLoggedIn();
-        var toPrint = new StringBuilder();
-        sortAllCards();
-        thisPlayer.getAllCardsHashMap().keySet().forEach(n -> {
-            for (var i = 0; i < thisPlayer.getAllCardsHashMap().get(n); i++)
-                toPrint.append(n).append(": ").append(Card.getDescriptionByName(n)).append("\n");
-        });
-        IO.getInstance().printString(toPrint.toString());
     }
 
     private void sortAllCards() {
@@ -195,5 +158,17 @@ public class DeckController {
             return false;
         }
         return true;
+    }
+
+    public String getDeckCards(PlayerDeck deck) {
+        LinkedHashMap<String, Short> mainDeckCards = deck.getMainDeckCards();
+        LinkedHashMap<String, Short> sideDeckCards = deck.getSideDeckCards();
+        StringBuilder stringBuilder = new StringBuilder(deck.getDeckName()).append(":\n").append("Main Deck:\n");
+        for (String cardName : mainDeckCards.keySet())
+            stringBuilder.append(cardName).append(":").append(mainDeckCards.get(cardName)).append(" - ");
+        stringBuilder.append("\nSide Deck:\n");
+        for (String cardName : sideDeckCards.keySet())
+            stringBuilder.append(cardName).append(":").append(sideDeckCards.get(cardName)).append(" - ");
+        return stringBuilder.toString();
     }
 }

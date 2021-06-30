@@ -8,6 +8,8 @@ import yugioh.model.Account;
 import yugioh.model.Game;
 import yugioh.view.IO;
 
+import java.util.Random;
+
 
 @Getter
 @Setter
@@ -15,6 +17,7 @@ public class MainController {
 
 
     private static MainController singleInstance = null;
+    private Random random = new Random();
 
 
     private Account loggedIn;
@@ -102,5 +105,10 @@ public class MainController {
     public void cheatIncreaseScore(int amount) {
         loggedIn.setScore(loggedIn.getScore() + amount);
         IO.getInstance().cheatIncreaseScore();
+    }
+
+    public void setRandomProfile() {
+        if (loggedIn.getProfilePictureNumber() != 0) return;
+        loggedIn.setProfilePictureNumber(random.nextInt(9) + 1);
     }
 }

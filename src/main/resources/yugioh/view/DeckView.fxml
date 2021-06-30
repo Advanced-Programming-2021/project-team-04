@@ -30,7 +30,6 @@
     </VBox>
     <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="2" fx:id="next" onMouseClicked="#next"/>
 
-
     <stylesheets>
         <URL value="@stylesheets/DeckView.css"/>
     </stylesheets>
