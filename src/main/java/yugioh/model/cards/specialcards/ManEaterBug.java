@@ -1,16 +1,20 @@
 package yugioh.model.cards.specialcards;
 
+
 import yugioh.controller.DuelController;
 import yugioh.model.MonsterCardModeInField;
 import yugioh.model.cards.MonsterCard;
 
+
 public class ManEaterBug extends MonsterCard {
+
 
     public ManEaterBug() {
         super();
-        setName("Man-Eater Bug");
+        setName("ManEater Bug");
         setLevel(2);
         setMonsterType("Insect");
+        setCardType("Effect");
         setClassAttackPower(450);
         setClassDefensePower(600);
         setThisCardAttackPower(450);
@@ -19,9 +23,12 @@ public class ManEaterBug extends MonsterCard {
         setDescription();
     }
 
+
     private void setDescription() {
         this.description = "FLIP: Target 1 monster on the field; destroy that target.";
     }
+
+
 
 
     public void setMonsterCardModeInField(MonsterCardModeInField newMode) {

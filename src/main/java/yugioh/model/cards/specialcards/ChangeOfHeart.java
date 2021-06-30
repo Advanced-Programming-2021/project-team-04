@@ -1,13 +1,17 @@
 package yugioh.model.cards.specialcards;
 
+
 import yugioh.model.Duelist;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
+
 public class ChangeOfHeart extends SpellAndTrapCard {
+
 
     private MonsterCard hijackedCard = null;
     private Duelist originalOwner = null;
+
 
     public ChangeOfHeart() {
         super();
@@ -19,9 +23,11 @@ public class ChangeOfHeart extends SpellAndTrapCard {
         setPrice(2500);
     }
 
+
     private void setDescription() {
         description = "Target 1 monster your opponent controls; take control of it until the End Phase.";
     }
+
 
     public void setHijackedCard(MonsterCard hijackedCard) {
         this.hijackedCard = hijackedCard;
@@ -30,6 +36,7 @@ public class ChangeOfHeart extends SpellAndTrapCard {
         originalOwner.getField().getMonsterCards().remove(hijackedCard);
         hijackedCard.setOwner(this.getOwner());
     }
+
 
     public void reset() {
         if (isActive()) {

@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DeckController {
+
     private static DeckController singleInstance = null;
 
     public static DeckController getInstance() {
@@ -33,7 +34,8 @@ public class DeckController {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
         if (errorForDeletingOrActivating(deckName)) {
             IO.getInstance().deckDeleted();
-            if (thisPlayer.getActiveDeck()!= null && thisPlayer.getActiveDeck().getDeckName().equals(deckName)) thisPlayer.setActivePlayerDeck(null);
+            if (thisPlayer.getActiveDeck() != null && thisPlayer.getActiveDeck().getDeckName().equals(deckName))
+                thisPlayer.setActivePlayerDeck(null);
             thisPlayer.deleteDeck(thisPlayer.getDeckByName(deckName));
         }
     }
@@ -152,7 +154,7 @@ public class DeckController {
 
     private boolean errorForDeletingOrActivating(String deckName) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
-        if (!thisPlayer.hasDeck(deckName)) {
+        if (thisPlayer.doesntHaveDeck(deckName)) {
             IO.getInstance().deckDoesntExist(deckName);
             return false;
         }
@@ -164,7 +166,7 @@ public class DeckController {
         if (!thisPlayer.hasCard(cardName)) {
             IO.getInstance().cardDoesntExist(cardName);
             return false;
-        } else if (!thisPlayer.hasDeck(deckName)) {
+        } else if (thisPlayer.doesntHaveDeck(deckName)) {
             IO.getInstance().deckDoesntExist(deckName);
             return false;
         } else if (isMainDeck && thisPlayer.getDeckByName(deckName).isMainDeckFull()) {

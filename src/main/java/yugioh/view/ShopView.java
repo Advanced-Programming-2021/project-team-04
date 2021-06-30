@@ -14,7 +14,7 @@ public class ShopView {
     private static Card firstCard;
     private static Card secondCard;
     private static int navigate;
-    private static final ArrayList<Card> allCards = Card.getAllCards();
+    private static final ArrayList<Card> allCards = ShopController.getAllCards();
 
     public static void run() {
         showCards();

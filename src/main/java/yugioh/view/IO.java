@@ -44,6 +44,22 @@ public class IO {
         scanner = new Scanner(System.in);
     }
 
+    public void loggedIn() {
+        System.out.println("user logged in successfully!");
+    }
+
+    public void chooseTributesAgain() {
+        System.out.println("an error occurred. please enter the numbers again:");
+    }
+
+    public void userCreated() {
+        System.out.println("user created successfully!");
+    }
+
+    public void summoned() {
+        System.out.println("summoned successfully");
+    }
+
     public void revealCard(String cardName) {
         System.out.print("opponent’s monster card was " + cardName + " and ");
     }

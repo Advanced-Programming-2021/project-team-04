@@ -1,16 +1,23 @@
 package yugioh.model.cards.specialcards;
 
+
+import lombok.Getter;
 import yugioh.model.cards.MonsterCard;
 
+
+@Getter
 public class Suijin extends MonsterCard {
 
+
     private boolean hasBeenUsedInGeneral = false;
+
 
     public Suijin() {
         super();
         setName("Suijin");
         setLevel(7);
         setMonsterType("Aqua");
+        setCardType("Effect");
         setClassAttackPower(2500);
         setClassDefensePower(2400);
         setThisCardAttackPower(2500);

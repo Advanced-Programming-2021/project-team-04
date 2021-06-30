@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import yugioh.controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;
-import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 
 import java.util.*;
@@ -13,24 +12,21 @@ import java.util.*;
 @Setter
 public abstract class Duelist {
 
-    @Expose()
+    @Expose
     protected ArrayList<PlayerDeck> allPlayerDecks = new ArrayList<>();
-    @Expose()
+    @Expose
     protected LinkedHashMap<String, Short> allCardsHashMap = new LinkedHashMap<>();
-    @Expose()
+    @Expose
     protected String activePlayerDeck;
-    @Expose()
+    @Expose
     protected String username;
-    @Expose()
+    @Expose
     protected String nickname;
-    protected ArrayList<Card> allCardsArrayList = new ArrayList<>();
     protected Field field;
     protected int LP, countForRPS;
     protected int maxLPofThreeRounds;
-    protected int countOfRoundsWon;
     protected boolean isAbleToDraw = true;
     protected boolean isAbleToAttack = true;
-
 
     public void checkMaxLPofThreeRounds() {
         if (maxLPofThreeRounds < LP) maxLPofThreeRounds = LP;
@@ -56,10 +52,6 @@ public abstract class Duelist {
         return allPlayerDecks.stream().filter(d -> d.getDeckName().equals(deckName)).findAny().orElse(null);
     }
 
-//    public Card getCardByName(String cardName) {
-//        return allCardsArrayList.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null);
-//    }
-
     public void addDeck(PlayerDeck playerDeck) {
         this.getAllPlayerDecks().add(playerDeck);
     }
@@ -73,24 +65,12 @@ public abstract class Duelist {
         else allCardsHashMap.put(cardName, (short) 1);
     }
 
-    public boolean hasDeck(String deckName) {
-        return allPlayerDecks.stream().anyMatch(d -> d.getDeckName().equals(deckName));
+    public boolean doesntHaveDeck(String deckName) {
+        return allPlayerDecks.stream().noneMatch(d -> d.getDeckName().equals(deckName));
     }
 
     public boolean hasCard(String cardName) {
         return allCardsHashMap.containsKey(cardName);
-    }
-
-    private void activateDeck(String deckName) {
-        activePlayerDeck = deckName;
-    }
-
-    private boolean hasActiveDeck() {
-        return activePlayerDeck != null;
-    }
-
-    private boolean hasEnoughCardInHand(int amount) {
-        return true;
     }
 
     public void deleteField() {
@@ -100,6 +80,8 @@ public abstract class Duelist {
     public void reset() {
         setLP(8000);
         countForRPS = 0;
+        isAbleToDraw = true;
+        isAbleToAttack = true;
     }
 
     public void changeLP(int amount) {

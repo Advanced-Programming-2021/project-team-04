@@ -1,12 +1,16 @@
 package yugioh.model.cards.specialcards;
 
+
 import yugioh.controller.DuelController;
+import yugioh.model.AI;
 import yugioh.model.Duelist;
 import yugioh.model.MonsterCardModeInField;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
+
 import java.util.ArrayList;
+
 
 public class SwordsOfRevealingLight extends SpellAndTrapCard {
     public int counter = 0;
@@ -24,14 +28,18 @@ public class SwordsOfRevealingLight extends SpellAndTrapCard {
                 " flip all monsters they control face-up. While this card is face-up on the field, your opponent's monsters cannot declare an attack.";
     }
 
+
     public void specialMethod(Duelist opponent) {
-        DuelController.getInstance().makeChain(DuelController.getInstance().getGame().getCurrentPlayer(),
-                DuelController.getInstance().getGame().getTheOtherPlayer());
+        if (!(opponent instanceof AI))
+            DuelController.getInstance().makeChain(DuelController.getInstance().getGame().getCurrentPlayer(),
+                    DuelController.getInstance().getGame().getTheOtherPlayer());
         ArrayList<MonsterCard> monsterCards = opponent.getField().getMonsterCards();
         for (MonsterCard monsterCard : monsterCards)
             if (monsterCard.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN))
                 monsterCard.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
     }
+
+
 
 
 }

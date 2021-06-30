@@ -1,28 +1,37 @@
 package yugioh.controller;
 
+
 import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.specialcards.*;
 import yugioh.view.IO;
 
+
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Objects;
+
 
 @Getter
 @Setter
 public class ShopController {
 
+
     private static ShopController singleInstance = null;
     private static ArrayList<Card> allCards;
 
+
     static {
         allCards = new ArrayList<>();
+        addSpecialCards();
+        allCards.addAll(ImportAndExport.getInstance().readAllCards());
+        sort();
     }
 
-    public ShopController() {
-        createCardForShop();
-    }
+
+    private ShopController() { }
+
 
     public static ShopController getInstance() {
         if (singleInstance == null)
@@ -30,41 +39,25 @@ public class ShopController {
         return singleInstance;
     }
 
-    public boolean showCard(String cardName) {
-        Card card = Card.getCardByName(cardName);
-        if (card == null) return false;
-        IO.getInstance().printString(card.toString());
-        return true;
-    }
-
-    public void showAllCards() {
-        var toPrint = new StringBuilder();
-        for (Card card : allCards)
-            toPrint.append(card.getName()).append(":").append(card.getPrice()).append("\n");
-        toPrint.setLength(toPrint.length() - 1);
-        IO.getInstance().printString(toPrint.toString());
-    }
 
     public static ArrayList<Card> getAllCards() {
         return allCards;
     }
 
+
     public boolean isCardNameValid(String name) {
-        for (Card card : allCards)
-            if (card.getName().equals(name)) {
-                return true;
-            }
-        IO.getInstance().printInvalidCardName();
-        return false;
+        return allCards.stream().map(Card::getName).anyMatch(n -> n.equals(name));
     }
 
+
     private boolean hasEnoughMoney(String cardName) {
-       if (!MainController.getInstance().getLoggedIn().hasEnoughMoney(Card.getCardByName(cardName).getPrice())) {
-           IO.getInstance().printDoesntHaveEnoughMoney();
-           return false;
-       }
-       return true;
+        if (!MainController.getInstance().getLoggedIn().hasEnoughMoney(Card.getCardByName(cardName).getPrice())) {
+            IO.getInstance().printDoesntHaveEnoughMoney();
+            return false;
+        }
+        return true;
     }
+
 
     public void buyCard(String cardName) {
         if (isCardNameValid(cardName) && hasEnoughMoney(cardName)) {
@@ -73,14 +66,8 @@ public class ShopController {
         }
     }
 
-    public void createCardForShop() {
-        allCards = new ArrayList<>();
-        addSpecialCards();
-        allCards.addAll(ImportAndExport.getInstance().readAllCards());
-        sort();
-    }
 
-    private void addSpecialCards() {
+    private static void addSpecialCards() {
         allCards.add(new ChangeOfHeart());
         allCards.add(new CommandKnight());
         allCards.add(new ManEaterBug());
@@ -95,7 +82,8 @@ public class ShopController {
         allCards.add(new Scanner());
     }
 
-    private void sort() {
+
+    private static void sort() {
         allCards.sort(Comparator.comparing(Card::getName));
     }
 }

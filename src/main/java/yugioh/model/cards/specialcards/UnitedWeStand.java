@@ -1,11 +1,14 @@
 package yugioh.model.cards.specialcards;
 
+
 import yugioh.model.MonsterCardModeInField;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
+
 public class UnitedWeStand extends SpellAndTrapCard {
     private MonsterCard equippedMonster = null;
+
 
     public UnitedWeStand() {
         super();
@@ -17,18 +20,22 @@ public class UnitedWeStand extends SpellAndTrapCard {
         setPrice(4300);
     }
 
+
     private void setDescription() {
         description = "The equipped monster gains 800 ATK/DEF for each face-up monster you control.";
     }
+
 
     public void setEquippedMonster(MonsterCard equippedMonster) {
         this.equippedMonster = equippedMonster;
         equipMonster();
     }
 
+
     public void equipMonster() {
         equippedMonster.setThisCardAttackPower(equippedMonster.getThisCardAttackPower() + amountOfAttackToAdd());
     }
+
 
     private int amountOfAttackToAdd() {
         int counter = 0;
@@ -38,10 +45,12 @@ public class UnitedWeStand extends SpellAndTrapCard {
         return counter * 800;
     }
 
+
     public void reset() {
-        equippedMonster.reset();
+        if (equippedMonster != null) equippedMonster.reset();
         equippedMonster = null;
         isActive = false;
     }
+
 
 }

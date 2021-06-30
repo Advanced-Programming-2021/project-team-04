@@ -1,10 +1,13 @@
 package yugioh.model.cards.specialcards;
 
+
 import yugioh.controller.DuelController;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
+
 import java.util.ArrayList;
+
 
 public class MessengerOfPeace extends SpellAndTrapCard {
     ArrayList<MonsterCard> deactivatedCards = new ArrayList<>();
@@ -22,6 +25,7 @@ public class MessengerOfPeace extends SpellAndTrapCard {
                 " Once per turn, during your Standby Phase, pay 100 LP or destroy this card.";
     }
 
+
     public void deactivateCards() {
         ArrayList<MonsterCard> cards = new ArrayList<>();
         cards.addAll(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
@@ -33,10 +37,12 @@ public class MessengerOfPeace extends SpellAndTrapCard {
             }
     }
 
+
     public void reset() {
         for (MonsterCard monsterCard : deactivatedCards)
             monsterCard.setAbleToAttack(true);
         deactivatedCards = new ArrayList<>();
     }
+
 
 }

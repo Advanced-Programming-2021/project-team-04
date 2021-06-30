@@ -1,11 +1,15 @@
 package yugioh.model.cards.specialcards;
 
+
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
+
 public class SwordOfDarkDestruction extends SpellAndTrapCard {
 
+
     private MonsterCard equippedMonster = null;
+
 
     public SwordOfDarkDestruction() {
         super();
@@ -17,14 +21,17 @@ public class SwordOfDarkDestruction extends SpellAndTrapCard {
         setPrice(4300);
     }
 
+
     private void setDescription() {
         description = "A DARK monster equipped with this card increases its ATK by 400 points and decreases its DEF by 200 points.";
     }
+
 
     public void setEquippedMonster(MonsterCard equippedMonster) {
         this.equippedMonster = equippedMonster;
         equipMonster();
     }
+
 
     public void equipMonster() {
         if (equippedMonster.getMonsterType().equals("Fiend") || equippedMonster.getMonsterType().equals("Spellcaster")) {
@@ -33,10 +40,12 @@ public class SwordOfDarkDestruction extends SpellAndTrapCard {
         }
     }
 
+
     public void reset() {
-        equippedMonster.reset();
+        if (equippedMonster != null) equippedMonster.reset();
         equippedMonster = null;
         isActive = false;
     }
+
 
 }

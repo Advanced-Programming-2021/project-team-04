@@ -35,8 +35,8 @@ public class DeckView {
     private static final Card emptyCard = new Card();
 
     //TODO add card scene
+    //TODO on mouse hover
     //TODO profile menu
-    //TODO back button in add scene
 
     public static void run() {
         countForDeck = 0;

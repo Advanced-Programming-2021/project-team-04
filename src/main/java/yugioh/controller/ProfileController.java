@@ -1,10 +1,13 @@
 package yugioh.controller;
 
+
 import yugioh.model.Account;
 import yugioh.view.IO;
 
+
 public class ProfileController {
     private static ProfileController singleInstance = null;
+
 
     public static ProfileController getInstance() {
         if (singleInstance == null)
@@ -12,12 +15,16 @@ public class ProfileController {
         return singleInstance;
     }
 
+
     public void changeNickname(String name) {
         if (isChangingNicknameValid(name)) {
-            MainController.getInstance().getLoggedIn().changeNickname(name);
+            Account.getAllNicknames().remove(MainController.getInstance().getLoggedIn().getNickname());
+            MainController.getInstance().getLoggedIn().setNickname(name);
+            Account.getAllNicknames().add(name);
             IO.getInstance().nicknameChanged();
         }
     }
+
 
     public void changePassword(String oldPassword, String newPassword) {
         if (isChangingPasswordValid(oldPassword, newPassword)) {
@@ -25,6 +32,8 @@ public class ProfileController {
             IO.getInstance().passwordChanged();
         }
     }
+
+
     private boolean isChangingPasswordValid(String oldPassword, String newPassword) {
         Account player = MainController.getInstance().getLoggedIn();
         if (!player.getPassword().equals(oldPassword)) {
@@ -36,8 +45,9 @@ public class ProfileController {
             return false;
         }
         return true;
-
     }
+
+
     private boolean isChangingNicknameValid(String nickname) {
         if (Account.getAllNicknames().contains(nickname)) {
             IO.getInstance().userWithNicknameExists(nickname);

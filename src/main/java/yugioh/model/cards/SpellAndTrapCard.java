@@ -1,36 +1,41 @@
 package yugioh.model.cards;
 
+
 import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
 
+
 import java.util.ArrayList;
+
 
 @Getter
 @Setter
 public class SpellAndTrapCard extends Card {
 
+
     protected static ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
     protected boolean isActive = false;
-    @Expose()
+    @Expose
     protected boolean isSpell;
-    @Expose()
+    @Expose
     protected String property;
-    @Expose()
+    @Expose
     protected boolean isLimited;
+
 
     public SpellAndTrapCard() {
         super();
         spellAndTrapCards.add(this);
     }
 
+
     @Override
     public String toString() {
-        var spellAndTrap = "Trap";
-        if (isSpell) spellAndTrap = "Spell";
-        return "Name: " + this.name + "\n" + spellAndTrap + "\nType: " + this.property
-                + "\nDescription: " + this.description;
+        return "Name: " + this.name + "\n" + (isSpell ? "Spell" : "Trap") +
+                "\nType: " + this.property + "\nDescription: " + this.description;
     }
+
 
     @Override
     public void reset() {
@@ -38,14 +43,4 @@ public class SpellAndTrapCard extends Card {
         if (getOwner().getField().getGraveyard().contains(this))
             isActive = false;
     }
-
-    public int getSpeed() {
-        if (isSpell) {
-            if (property.equals("Quick-play"))
-                return 2;
-            else return 1;
-        }
-        else return 2;
-    }
-
 }

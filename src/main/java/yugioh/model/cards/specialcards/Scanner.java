@@ -1,24 +1,33 @@
 package yugioh.model.cards.specialcards;
 
+
 import yugioh.model.Duelist;
 import yugioh.model.Field;
 import yugioh.model.cards.MonsterCard;
 
+
+import java.util.Objects;
+
+
 public class Scanner extends MonsterCard {
+
 
     private MonsterCard cardReplaced;
     private Duelist originalOwner;
+
 
     public Scanner() {
         super();
         setName("Scanner");
         setLevel(1);
         setMonsterType("Machine");
+        setCardType("Effect");
         setPrice(8000);
         setClassAttackPower(0);
         setClassDefensePower(0);
         setDescription();
     }
+
 
     public void setCardReplaced(MonsterCard cardReplaced) {
         originalOwner = cardReplaced.getOwner();
@@ -34,18 +43,25 @@ public class Scanner extends MonsterCard {
                 "If this card is removed from the field while this effect is applied, remove it from play.";
     }
 
+
     public void reset() {
+        if (cardReplaced == null) return;
+        super.reset();
         Field field = this.getOwner().getField();
-        if (field.getMonsterCards().contains(cardReplaced)) {
-            field.getMonsterCards().remove(cardReplaced);
-            field.getMonsterCards().add(this);
-        } else {
-            field.getGraveyard().remove(cardReplaced);
-            field.getGraveyard().add(this);
+        if (Objects.nonNull(cardReplaced)) {
+            if (field.getMonsterCards().contains(cardReplaced)) {
+                field.getMonsterCards().remove(cardReplaced);
+                field.getMonsterCards().add(this);
+            } else {
+                field.getGraveyard().remove(cardReplaced);
+                field.getGraveyard().add(this);
+            }
+            if (Objects.nonNull(originalOwner)) {
+                originalOwner.getField().getGraveyard().add(cardReplaced);
+                cardReplaced.setOwner(originalOwner);
+                originalOwner = null;
+            }
+            cardReplaced = null;
         }
-        originalOwner.getField().getGraveyard().add(cardReplaced);
-        cardReplaced.setOwner(originalOwner);
-        originalOwner = null;
-        cardReplaced = null;
     }
 }

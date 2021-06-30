@@ -1,27 +1,32 @@
 package yugioh.model.cards;
 
+
 import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.MonsterCardModeInField;
 
+
 @Getter
 @Setter
 public class MonsterCard extends Card {
 
-    @Expose()
+
+    public static final int ONE_TRIBUTE_BOUND = 5;
+    public static final int TWO_TRIBUTES_BOUND = 7;
+    @Expose
     protected int classAttackPower;
-    @Expose()
+    @Expose
     protected int classDefensePower;
     protected int thisCardAttackPower;
     protected int thisCardDefensePower;
-    @Expose()
+    @Expose
     protected int level;
-    @Expose()
+    @Expose
     protected String monsterType;
-    @Expose()
+    @Expose
     protected String cardType;
-    @Expose()
+    @Expose
     protected String attribute;
     protected MonsterCardModeInField monsterCardModeInField;
     protected boolean isAbleToBeRemoved = true;
@@ -29,23 +34,27 @@ public class MonsterCard extends Card {
     protected boolean isChangedPosition = false;
     protected boolean attacked = false;
 
+
     public MonsterCard() {
         super();
     }
+
 
     public void setMonsterCardModeInField(MonsterCardModeInField monsterCardModeInField) {
         this.monsterCardModeInField = monsterCardModeInField;
         this.isChangedPosition = true;
     }
 
+
     public void changeAttackPower(int amount) {
         this.thisCardAttackPower += amount;
     }
 
+
     @Override
     public void reset() {
-        this.thisCardDefensePower = classDefensePower;
-        this.thisCardAttackPower = classAttackPower;
+        this.thisCardDefensePower = this.classDefensePower;
+        this.thisCardAttackPower = this.classAttackPower;
         this.hasBeenUsedInThisTurn = false;
         this.isAbleToBeRemoved = true;
         this.isChangedPosition = false;
@@ -53,10 +62,10 @@ public class MonsterCard extends Card {
         this.hasBeenSetOrSummoned = false;
     }
 
+
     @Override
     public String toString() {
         return "Name: " + this.name + "\nLevel: " + this.level + "\nType: " + this.monsterType
-                +"\nATK: " + this.classAttackPower + "\nDEF: " + this.classDefensePower
-                + "\nDescription: " + this.description;
+                +"\nATK: " + getThisCardAttackPower() + "\nDEF: " + this.thisCardDefensePower + "\nDescription: " + this.description;
     }
 }
