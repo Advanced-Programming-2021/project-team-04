@@ -28,7 +28,7 @@
 }
 
 #Back {
-    -fx-translate-x: 17;
+    -fx-translate-x: -550;
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
@@ -46,7 +46,7 @@
     -fx-border-color: #ffffff;
     -fx-text-fill: #ffffff;
     -fx-font-size: 25.4;
-    -fx-translate-x: 17;
+    -fx-translate-x: -550;
 }
 
 .label {
@@ -61,7 +61,7 @@
 #numberMain, #numberSide {
     -fx-font-size: 50;
     -fx-padding: 0;
-    -fx-border-color: #ffffff;
+    -fx-border-color: white;
 }
 
 .Delete {
