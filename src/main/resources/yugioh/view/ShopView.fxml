@@ -13,7 +13,7 @@
           fx:controller="yugioh.view.ShopView"
           prefHeight="763" prefWidth="1246" alignment="CENTER" hgap="10" vgap="10" styleClass="root">
 
-    <HBox GridPane.rowIndex="0" GridPane.columnSpan="4"/>
+    <Button text="Main Menu" fx:id="mainMenu" GridPane.columnIndex="1" GridPane.rowIndex="0" onMouseClicked="#mainMenu"/>
 
     <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back" onMouseClicked="#back"/>
 
@@ -34,8 +34,7 @@
     </VBox>
 
     <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="3" fx:id="next" onMouseClicked="#next"/>
-
-    <Button text="Main Menu" fx:id="mainMenu" GridPane.columnIndex="4" GridPane.rowIndex="2" onMouseClicked="#mainMenu"/>
+    <Label GridPane.rowIndex="2" GridPane.columnIndex="4" prefWidth="150"/>
 
     <stylesheets>
         <URL value="@stylesheets/ShopView.css"/>

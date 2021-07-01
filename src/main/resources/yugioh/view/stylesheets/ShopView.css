@@ -24,8 +24,8 @@
 }
 
 #mainMenu {
-    -fx-translate-y: 50;
-    -fx-translate-x: 100;
+    -fx-translate-y: -10;
+    -fx-translate-x: 120;
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
