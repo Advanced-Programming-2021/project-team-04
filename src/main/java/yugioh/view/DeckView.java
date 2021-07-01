@@ -19,12 +19,13 @@ import yugioh.model.cards.Card;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 
 public class DeckView {
 
     private static ArrayList<PlayerDeck> allDecks;
-    private static final ArrayList<String> allCards = new ArrayList<>(MainController.getInstance().getLoggedIn().getAllCardsHashMap().keySet());
+    private static ArrayList<String> allCards;
     private static int count;
     private static ArrayList<String> mainCards;
     private static ArrayList<String> sideCards;
@@ -49,7 +50,12 @@ public class DeckView {
         handleButtons();
     }
 
+    private static void initializeForAddToDeck() {
+        allCards = new ArrayList<>(MainController.getInstance().getLoggedIn().getAllCardsHashMap().keySet());
+    }
+
     private static void updateLists() {
+        if (allDecks.isEmpty()) return;
         mainCards = new ArrayList<>(allDecks.get(count).getMainDeckCards().keySet());
         sideCards = new ArrayList<>(allDecks.get(count).getSideDeckCards().keySet());
         mainCardsHashMap = allDecks.get(count).getMainDeckCards();
@@ -64,12 +70,16 @@ public class DeckView {
 
     private static void showDetails() {
         Label deckName = ((Label) LoginView.deckScene.lookup("#deckName"));
-        setLabelToolTip(deckName);
         if (allDecks.isEmpty()) {
             deckName.setText("Empty");
+            deckName.setStyle("-fx-text-fill: #ffffff");
             count = 0;
+            LoginView.deckScene.lookup("#edit").setDisable(true);
+            LoginView.deckScene.lookup("#delete").setDisable(true);
+            LoginView.deckScene.lookup("#activate").setDisable(true);
             return;
         }
+        setLabelToolTip(deckName);
         deckName.setText(allDecks.get(count).getDeckName() + " " + allDecks.get(count).getMainDeckSize());
         if (allDecks.get(count).equals(MainController.getInstance().getLoggedIn().getActiveDeck()))
             deckName.setStyle("-fx-text-fill: #4a78ff");
@@ -121,14 +131,25 @@ public class DeckView {
         textField.clear();
         showDetails();
         handleButtons();
+        LoginView.deckScene.lookup("#edit").setDisable(false);
+        LoginView.deckScene.lookup("#delete").setDisable(false);
+        LoginView.deckScene.lookup("#activate").setDisable(false);
     }
 
-    public void addCardToMain() {
+    public void addFirstCardToMain() {
         DeckController.getInstance().addCardToDeck(allDecks.get(count).getDeckName(), allCards.get(countForAdd), true);
     }
 
-    public void addCardToSide() {
+    public void addFirstCardToSide() {
         DeckController.getInstance().addCardToDeck(allDecks.get(count).getDeckName(), allCards.get(countForAdd), false);
+    }
+
+    public void addSecondCardToMain() {
+        DeckController.getInstance().addCardToDeck(allDecks.get(count).getDeckName(), allCards.get(countForAdd + 1), true);
+    }
+
+    public void addSecondCardToSide() {
+        DeckController.getInstance().addCardToDeck(allDecks.get(count).getDeckName(), allCards.get(countForAdd + 1), false);
     }
 
     public void removeCardFromMain() {
@@ -152,6 +173,7 @@ public class DeckView {
     }
 
     public void addScene() {
+        initializeForAddToDeck();
         FXMLLoader fxmlLoader = new FXMLLoader(LoginView.class.getResource("Add.fxml"));
         try {
             sceneForAdding = new Scene(fxmlLoader.load());
@@ -159,6 +181,8 @@ public class DeckView {
             LoginView.setSize(sceneForAdding);
             LoginView.stage.setScene(sceneForAdding);
             LoginView.stage.centerOnScreen();
+            sceneForAdding.lookup("#back").setDisable(true);
+            if (allCards.size() == 2) sceneForAdding.lookup("#next").setDisable(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -181,18 +205,11 @@ public class DeckView {
 
     private void showPlayerCards() {
         firstCard = Card.getCardByName(allCards.get(countForAdd));
-        if (countForAdd + 1 == allCards.size()) secondCard = emptyCard;
-        else secondCard = Card.getCardByName(allCards.get(countForAdd + 1));
+        secondCard = Card.getCardByName(allCards.get(countForAdd + 1));
         ImageView first = (ImageView) sceneForAdding.lookup("#first");
         ImageView second = (ImageView) sceneForAdding.lookup("#second");
         Image firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
-        Image secondImage;
-        if (countForAdd + 1 == allCards.size()) {
-            secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
-        }
-        else {
-            secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
-        }
+        Image secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
         first.setImage(firstImage);
         second.setImage(secondImage);
     }
@@ -211,9 +228,11 @@ public class DeckView {
             secondCard = Card.getCardByName(sideCards.get(countForDeck));
             secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
             number.setText(String.valueOf(sideCardsHashMap.get(secondCard.getName())));
+            sceneForOneDeck.lookup("#removeSide").setDisable(false);
         } else {
             secondCard = emptyCard;
             secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+            sceneForOneDeck.lookup("#removeSide").setDisable(true);
             number.setText("");
         }
         return secondImage;
@@ -223,12 +242,14 @@ public class DeckView {
         Image firstImage;
         if (mainCards.size() > countForDeck) {
             firstCard = Card.getCardByName(mainCards.get(countForDeck));
-            firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
             number.setText(String.valueOf(mainCardsHashMap.get(firstCard.getName())));
+            firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+            sceneForOneDeck.lookup("#removeMain").setDisable(false);
         } else {
             firstCard = emptyCard;
-            firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
             number.setText("");
+            firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+            sceneForOneDeck.lookup("#removeMain").setDisable(true);
         }
         return firstImage;
     }
@@ -251,31 +272,28 @@ public class DeckView {
         showDeckCards();
     }
 
-    public void handleButtonsForAdd() {
-        sceneForAdding.lookup("#back").setDisable(countForAdd == 0);
-        sceneForAdding.lookup("#next").setDisable(countForAdd == allDecks.size() - 1);
-        if (countForAdd == 0 && allDecks.isEmpty()) sceneForAdding.lookup("#next").setDisable(true);
-    }
-
     public void nextForAdd() {
+        if (countForAdd == 0) sceneForAdding.lookup("#back").setDisable(false);
+        if (countForAdd == allCards.size() - 3) sceneForAdding.lookup("#next").setDisable(true);
         countForAdd++;
-        handleButtonsForAdd();
         showPlayerCards();
     }
 
     public void backForAdd() {
+        if (countForAdd == allCards.size() - 2) sceneForAdding.lookup("#next").setDisable(false);
+        if (countForAdd == 1) sceneForAdding.lookup("#back").setDisable(true);
         countForAdd--;
-        handleButtonsForAdd();
         showPlayerCards();
     }
 
     public void backToDeck() {
         LoginView.stage.setScene(LoginView.deckScene);
+        showDetails();
         LoginView.stage.centerOnScreen();
     }
 
     public void backToEdit() {
-        LoginView.stage.setScene(sceneForOneDeck);
+        deckScene();
         LoginView.stage.centerOnScreen();
     }
 
