@@ -16,8 +16,8 @@
 .button {
     -fx-font-family: "Script MT Bold";
     -fx-pref-width: 150;
-    -fx-translate-y: 260;
-    -fx-translate-x: 330;
+    -fx-translate-y: 270;
+    -fx-translate-x: 35;
     -fx-font-size: 20;
     -fx-background-color: #FF00C8;
     -fx-text-fill: #3c5162;
