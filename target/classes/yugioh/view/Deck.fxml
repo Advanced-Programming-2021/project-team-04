@@ -22,14 +22,14 @@
         <Label text="From Main Deck" styleClass="address"/>
         <Label fx:id="numberMain"/>
         <ImageView fx:id="first" fitHeight="400" fitWidth="300"/>
-        <Button text="Delete" styleClass="Delete" onMouseClicked="#removeCardFromMain"/>
+        <Button fx:id="removeMain" text="Delete" styleClass="Delete" onMouseClicked="#removeCardFromMain"/>
     </VBox>
 
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="2" spacing="10" alignment="CENTER" styleClass="box">
         <Label text="From Side Deck" styleClass="address"/>
         <Label fx:id="numberSide"/>
         <ImageView fx:id="second" fitHeight="400" fitWidth="300"/>
-        <Button text="Delete" styleClass="Delete" onMouseClicked="#removeCardFromSide"/>
+        <Button fx:id="removeSide" text="Delete" styleClass="Delete" onMouseClicked="#removeCardFromSide"/>
     </VBox>
 
     <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="3" fx:id="next"
