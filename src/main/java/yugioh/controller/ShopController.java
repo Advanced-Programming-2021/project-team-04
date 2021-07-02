@@ -51,11 +51,7 @@ public class ShopController {
 
 
     private boolean hasEnoughMoney(String cardName) {
-        if (!MainController.getInstance().getLoggedIn().hasEnoughMoney(Card.getCardByName(cardName).getPrice())) {
-            IO.getInstance().printDoesntHaveEnoughMoney();
-            return false;
-        }
-        return true;
+        return MainController.getInstance().getLoggedIn().hasEnoughMoney(Card.getCardByName(cardName).getPrice());
     }
 
 

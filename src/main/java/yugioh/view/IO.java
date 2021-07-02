@@ -39,23 +39,6 @@ public class IO {
         return scanner.nextLine().trim();
     }
 
-    public void resetScanner() {
-        //used only for unit tests
-        scanner = new Scanner(System.in);
-    }
-
-    public void loggedIn() {
-        System.out.println("user logged in successfully!");
-    }
-
-    public void chooseTributesAgain() {
-        System.out.println("an error occurred. please enter the numbers again:");
-    }
-
-    public void userCreated() {
-        System.out.println("user created successfully!");
-    }
-
     public void summoned() {
         System.out.println("summoned successfully");
     }
@@ -365,15 +348,18 @@ public class IO {
     }
 
     public void invalidDeck(String username) {
-        System.out.println(username + "’s deck is invalid");
+        label.setText(username + "’s deck is invalid");
+        popup.show(LoginView.stage);
     }
 
     public void noActiveDeck(String username) {
-        System.out.println(username + " has no active deck");
+        label.setText(username + " has no active deck");
+        popup.show(LoginView.stage);
     }
 
     public void invalidNumOfRounds() {
         System.out.println("number of rounds is not supported");
+
     }
 
     public void playerDoesntExist() {

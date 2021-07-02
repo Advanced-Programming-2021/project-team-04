@@ -408,7 +408,6 @@ public class DuelController {
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
         game.setSummonedInThisTurn(true);
-        IO.getInstance().summoned();
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
         torrentialTribute();
     }
@@ -704,21 +703,17 @@ public class DuelController {
     private void attackInDefense(MonsterCard attacked, MonsterCard attacker) {
         if (attacked.getName().equals("Marshmallon")) game.getCurrentPlayer().changeLP(-1000);
         if (attacked.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN)
-            IO.getInstance().revealCard(attacked.getName());
         if (attacked.getThisCardDefensePower() < attacker.getThisCardAttackPower()) {
             moveToGraveyardAfterAttack(attacked, attacker);
-            IO.getInstance().wonInDefense();
             return;
         }
         if (attacked.getThisCardDefensePower() == attacker.getThisCardAttackPower()) {
             attacked.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
-            IO.getInstance().drawInDefense();
             return;
         }
         int damage = attacker.getThisCardAttackPower() - attacked.getThisCardDefensePower();
         game.getCurrentPlayer().changeLP(damage);
         attacked.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
-        IO.getInstance().lostInDefense(-damage);
     }
 
     private void attackInAttack(MonsterCard attacked, MonsterCard attacker) {
@@ -727,21 +722,18 @@ public class DuelController {
             if (!attacked.getName().equals("Exploder Dragon")) {
                 int damage = attacked.getThisCardAttackPower() - attacker.getThisCardAttackPower();
                 game.getTheOtherPlayer().changeLP(damage);
-                IO.getInstance().wonAttackInAttack(-damage);
-            } else IO.getInstance().lostInAttack(0);
+            }
             return;
         }
         if (attacked.getThisCardAttackPower() == attacker.getThisCardAttackPower()) {
             moveToGraveyardAfterAttack(attacker, attacked);
             moveToGraveyardAfterAttack(attacked, attacker);
-            IO.getInstance().drawInAttack();
             return;
         }
         if (!attacker.getName().equals("Exploder Dragon")) {
             int damage = attacker.getThisCardAttackPower() - attacked.getThisCardAttackPower();
             game.getCurrentPlayer().changeLP(damage);
-            IO.getInstance().lostInAttack(-damage);
-        } else IO.getInstance().lostInAttack(0);
+        }
         moveToGraveyardAfterAttack(attacker, attacked);
     }
 
@@ -1241,7 +1233,6 @@ public class DuelController {
         }
         moveSpellOrTrapToGYFromSpellZone((SpellAndTrapCard) game.getSelectedCard());
         game.setSelectedCard(null);
-        IO.getInstance().summoned();
         return true;
     }
 
@@ -1476,7 +1467,6 @@ public class DuelController {
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
         game.setSummonedInThisTurn(true);
-        IO.getInstance().summoned();
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
@@ -1508,7 +1498,6 @@ public class DuelController {
             } while (!(monsterCard.getCardType().equals("Normal") && monsterCard.getMonsterType().equals("Cyberse")));
             specialSummon(monsterCard, MonsterCardModeInField.ATTACK_FACE_UP, toRemoveFrom);
             attacked.setHasBeenUsedInThisTurn(true);
-            IO.getInstance().summoned();
         }
     }
 

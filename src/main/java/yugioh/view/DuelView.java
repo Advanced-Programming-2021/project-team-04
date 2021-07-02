@@ -425,7 +425,6 @@ public class DuelView extends ViewMenu {
 
 
     public SpellAndTrapCard getFromMyField() {
-        IO.getInstance().chooseSpell();
         String spellNumber = IO.getInstance().getInputMessage();
         if (spellNumber.matches("cancel")) return null;
         try {
@@ -438,7 +437,6 @@ public class DuelView extends ViewMenu {
 
 
     public SpellAndTrapCard getFromOpponentField() {
-        IO.getInstance().chooseSpell();
         String spellNumber = IO.getInstance().getInputMessage();
         if (spellNumber.matches("cancel")) return null;
         try {
@@ -451,7 +449,6 @@ public class DuelView extends ViewMenu {
 
 
     public int whereToSummonFrom() {
-        IO.getInstance().whereToSummonFrom();
         String originOfSummon = IO.getInstance().getInputMessage();
         return Integer.parseInt(originOfSummon);
         // 1 hand
@@ -461,13 +458,11 @@ public class DuelView extends ViewMenu {
 
 
     public String getCardName() {
-        IO.getInstance().cardName();
         return IO.getInstance().getInputMessage();
     }
 
 
     public boolean wantsToExchange() {
-        IO.getInstance().wantsToExchange();
         return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
     }
 

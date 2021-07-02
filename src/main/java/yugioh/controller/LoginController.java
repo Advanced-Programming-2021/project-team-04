@@ -20,7 +20,6 @@ public class LoginController {
     public boolean loginUser(String username, String password) {
         if (isLoggingInValid(username, password)) {
             MainController.getInstance().setLoggedIn(Account.getAccountByUsername(username));
-            IO.getInstance().loggedIn();
             return true;
         }
         return false;
@@ -30,7 +29,6 @@ public class LoginController {
     public void createUser(String username, String password, String nickname) {
         if (errorsForCreatingUser(username, nickname)) {
             new Account(username, password, nickname);
-            IO.getInstance().userCreated();
         }
     }
 
