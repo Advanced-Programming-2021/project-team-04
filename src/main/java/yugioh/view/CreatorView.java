@@ -49,12 +49,13 @@ public class CreatorView {
         createMonsterEffects();
         String name = IO.getInstance().getInputMessage();
         if (!name.equals("Not Special")) {
-            monsterPrice(attackPower, defencePower, monsterType, cardType, level, name);
+           MonsterCard monsterCard = monsterPrice(attackPower, defencePower, monsterType, cardType, level, name);
+           //TODO add this to shop
         }
         System.out.println("Great! You’ll get used to the world we created. Or you'll try I guess...");
     }
 
-    private static void monsterPrice(int attackPower, int defencePower, String monsterType, String cardType, int level, String name) {
+    private static MonsterCard monsterPrice(int attackPower, int defencePower, String monsterType, String cardType, int level, String name) {
         MonsterCard monsterCard = (MonsterCard) Card.getCardByName(name);
         int price = 0;
         if (monsterCard.getClassAttackPower() > attackPower) price += 100;
@@ -71,6 +72,7 @@ public class CreatorView {
         newCard.setCardType(cardType);
         newCard.setMonsterType(monsterType);
         newCard.setPrice(monsterCard.getPrice() + price);
+        return newCard;
     }
 
     private static void createSpell(boolean isSpell) {
