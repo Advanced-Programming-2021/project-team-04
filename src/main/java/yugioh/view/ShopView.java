@@ -1,11 +1,16 @@
 package yugioh.view;
 
+import javafx.scene.control.Tooltip;
+import javafx.util.Duration;
+import lombok.extern.java.Log;
 import yugioh.controller.MainController;
 import yugioh.controller.ShopController;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import yugioh.model.cards.Card;
+import yugioh.model.cards.MonsterCard;
+import yugioh.model.cards.SpellAndTrapCard;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -29,6 +34,7 @@ public class ShopView {
         checkMoney();
     }
 
+
     private static void setImages() {
         ImageView first = (ImageView) LoginView.shopScene.lookup("#first");
         ImageView second = (ImageView) LoginView.shopScene.lookup("#second");
@@ -36,6 +42,25 @@ public class ShopView {
         Image secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
         first.setImage(firstImage);
         second.setImage(secondImage);
+        Tooltip.install(first, getToolTip(firstCard));
+        Tooltip.install(second, getToolTip(secondCard));
+    }
+
+    private static Tooltip getToolTip(Card card) {
+        StringBuilder cardInformation = new StringBuilder(card.getName()).append("\n");
+        if (card instanceof MonsterCard) {
+            MonsterCard monsterCard = (MonsterCard) card;
+            cardInformation.append("Monster Card\nATK: ").append(monsterCard.getClassAttackPower()).
+                    append("\nDEF: ").append(monsterCard.getClassDefensePower());
+        } else {
+            SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) card;
+            cardInformation.append(spellAndTrapCard.isSpell() ? "Spell Card" : "Trap Card");
+        }
+        cardInformation.append("\nPRICE: ").append(card.getPrice());
+        Tooltip tooltip = new Tooltip(cardInformation.toString());
+        tooltip.setShowDelay(Duration.seconds(0));
+        tooltip.setStyle("-fx-font-size: 17");
+        return tooltip;
     }
 
     private static void checkAmount() {

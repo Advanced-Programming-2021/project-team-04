@@ -11,29 +11,7 @@ public class ScoreboardView{
 
     private static ArrayList<String> congrats = new ArrayList<>();
 
-    public static void run() {
-        congratsText();
-        VBox vBox = (VBox)  LoginView.scoreboardScene.lookup("#scoreboard");
-        vBox.getChildren().clear();
-        ArrayList<String> sortedUsers = ScoreboardController.getInstance().getSortedUsers();
-        int min = Math.min(sortedUsers.size(), 20);
-        for (int i = 0; i < min; i++) {
-            String thisLine = sortedUsers.get(i) + " : " + congrats.get(i);
-            Label label = new Label(thisLine);
-            if (thisLine.contains(MainController.getInstance().getLoggedIn().getNickname()))
-                label.setStyle("-fx-text-fill: #ff00c8");
-            else
-                label.setStyle("-fx-text-fill: #00F2FF");
-            vBox.getChildren().add(label);
-        }
-    }
-
-    public void mainMenu() {
-        LoginView.stage.setScene(LoginView.mainScene);
-        LoginView.stage.centerOnScreen();
-    }
-
-    private static void congratsText() {
+    static {
         congrats.add("Io vengo dalla luna");
         congrats.add("Tieniti la terra uomo, io voglio la luna");
         congrats.add("Ora ho la forza necessaria per rinascere");
@@ -54,5 +32,26 @@ public class ScoreboardView{
         congrats.add("sono l'unico fiore che sboccia anche senza aspettare questa primavera");
         congrats.add("sono ancora in piedi nonostante i segni che mi hanno lasciato sulla schiena");
         congrats.add("Se sono sere nere mi sentirò bene sotto la luna piena");
+    }
+
+    public static void run() {
+        VBox vBox = (VBox)  LoginView.scoreboardScene.lookup("#scoreboard");
+        vBox.getChildren().clear();
+        ArrayList<String> sortedUsers = ScoreboardController.getInstance().getSortedUsers();
+        int min = Math.min(sortedUsers.size(), 20);
+        for (int i = 0; i < min; i++) {
+            String thisLine = sortedUsers.get(i) + " : " + congrats.get(i);
+            Label label = new Label(thisLine);
+            if (sortedUsers.get(i).matches("\\d+\\. " + MainController.getInstance().getLoggedIn().getNickname() + " \\) \\d+"))
+                label.setStyle("-fx-text-fill: #ff00c8");
+            else
+                label.setStyle("-fx-text-fill: #00F2FF");
+            vBox.getChildren().add(label);
+        }
+    }
+
+    public void mainMenu() {
+        LoginView.stage.setScene(LoginView.mainScene);
+        LoginView.stage.centerOnScreen();
     }
 }

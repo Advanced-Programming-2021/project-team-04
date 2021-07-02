@@ -78,10 +78,13 @@ public class LoginView extends Application {
     }
 
     public void createUser() {
-        String username = ((TextField) signUpScene.lookup("#username")).getText();
-        String nickname = ((TextField) signUpScene.lookup("#nickname")).getText();
-        String password = ((PasswordField) signUpScene.lookup("#password")).getText();
-        LoginController.getInstance().createUser(username, password, nickname);
+        TextField username = ((TextField) signUpScene.lookup("#username"));
+        TextField nickname = ((TextField) signUpScene.lookup("#nickname"));
+        PasswordField password = ((PasswordField) signUpScene.lookup("#password"));
+        LoginController.getInstance().createUser(username.getText(), password.getText(), nickname.getText());
+        username.clear();
+        nickname.clear();
+        password.clear();
     }
 
     public void loginScene() {
