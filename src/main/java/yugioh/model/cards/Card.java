@@ -37,7 +37,7 @@ public class Card {
     protected String ownerUsername;
     protected boolean hasBeenUsedInThisTurn = false;
     protected boolean hasBeenSetOrSummoned = false;
-
+    public boolean isOriginal = true;
 
     static {
         allCards = new ArrayList<>();

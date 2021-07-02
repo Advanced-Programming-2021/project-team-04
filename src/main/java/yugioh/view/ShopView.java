@@ -38,8 +38,20 @@ public class ShopView {
     private static void setImages() {
         ImageView first = (ImageView) LoginView.shopScene.lookup("#first");
         ImageView second = (ImageView) LoginView.shopScene.lookup("#second");
-        Image firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
-        Image secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+        Image firstImage;
+        Image secondImage;
+        if (!firstCard.isOriginal) {
+           firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+        }
+        else {
+            firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+        }
+        if (!secondCard.isOriginal) {
+            secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+        }
+        else {
+            secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+        }
         first.setImage(firstImage);
         second.setImage(secondImage);
         Tooltip.install(first, getToolTip(firstCard));
