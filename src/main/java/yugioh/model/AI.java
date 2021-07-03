@@ -84,13 +84,13 @@ public final class AI extends Duelist {
 
 
     public MonsterCard getStrongestMonsterCardInHandWithTwoTributes() {
-        return getField().getHand().stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
+        return getField().getHand().stream().filter(MonsterCard.class::isInstance).map(MonsterCard.class::cast)
                 .filter(m -> m.getLevel() >= MonsterCard.TWO_TRIBUTES_BOUND).max(Comparator.comparing(MonsterCard::getThisCardAttackPower)).orElse(null);
     }
 
 
     public MonsterCard getStrongestMonsterCardInHandWithOneTribute() {
-        return getField().getHand().stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
+        return getField().getHand().stream().filter(MonsterCard.class::isInstance).map(MonsterCard.class::cast)
                 .filter(m -> m.getLevel() >= MonsterCard.ONE_TRIBUTE_BOUND && m.getLevel() < MonsterCard.TWO_TRIBUTES_BOUND).max(Comparator.comparing(MonsterCard::getThisCardAttackPower)).orElse(null);
     }
 
@@ -98,7 +98,7 @@ public final class AI extends Duelist {
 
 
     public MonsterCard getStrongestMonsterCardInHandWithNoTributes() {
-        return getField().getHand().stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
+        return getField().getHand().stream().filter(MonsterCard.class::isInstance).map(MonsterCard.class::cast)
                 .filter(m -> m.getLevel() < MonsterCard.ONE_TRIBUTE_BOUND).max(Comparator.comparing(MonsterCard::getThisCardAttackPower)).orElse(null);
     }
 
@@ -160,21 +160,19 @@ public final class AI extends Duelist {
 
 
     public SpellAndTrapCard getFieldZoneSpellCardFromHand() {
-        return getField().getHand().stream().filter(c -> c instanceof SpellAndTrapCard).map(c -> (SpellAndTrapCard) c)
+        return getField().getHand().stream().filter(SpellAndTrapCard.class::isInstance).map(SpellAndTrapCard.class::cast)
                 .filter(s -> s.getProperty().equals("Field")).findFirst().orElse(null);
     }
 
 
     public SpellAndTrapCard getSpellCardFromHand() {
-        return (SpellAndTrapCard) getField().getHand().stream().filter(c -> c instanceof SpellAndTrapCard).findFirst().orElse(null);
+        return (SpellAndTrapCard) getField().getHand().stream().filter(SpellAndTrapCard.class::isInstance).findFirst().orElse(null);
     }
 
 
     public enum AIDifficulty {
 
-
         EASY, MEDIUM, HARD;
-
 
         public static AIDifficulty getDifficulty(final String name) {
             switch (String.valueOf(name.charAt(0))) {

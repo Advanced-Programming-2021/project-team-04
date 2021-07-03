@@ -1,15 +1,17 @@
 package yugioh.controller;
 
 
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvMapper;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import yugioh.model.Account;
 import yugioh.model.PlayerDeck;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
-
-import java.io.*;
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -17,16 +19,19 @@ import java.util.stream.Stream;
 
 public class ImportAndExport {
 
-
     public static final String JSON = ".JSON";
     public static final String RESOURCES_USERS = "src/main/resources/users/";
     public static final String RESOURCES_IMPORTANDEXPORT = "src/main/resources/importandexport/";
     public static final String RESOURCES_MONSTERS = "src/main/resources/monsters/";
     public static final String RESOURCES_SPELLANDTRAPS = "src/main/resources/spellandtraps/";
-
+    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private static ImportAndExport singleInstance = null;
 
+    static {
+        OBJECT_MAPPER.disable(MapperFeature.AUTO_DETECT_CREATORS, MapperFeature.AUTO_DETECT_FIELDS,
+                MapperFeature.AUTO_DETECT_GETTERS, MapperFeature.AUTO_DETECT_IS_GETTERS);
+    }
 
     public static ImportAndExport getInstance() {
         if (singleInstance == null)
@@ -34,17 +39,14 @@ public class ImportAndExport {
         return singleInstance;
     }
 
-
     public void writeAllUsers() {
-        Account.getAllAccounts().forEach(a -> writeToJson(RESOURCES_USERS + a.getUsername() + JSON, a));
+        Account.getAllAccounts().forEach(a -> writeObjectToJson(RESOURCES_USERS + a.getUsername() + JSON, a));
     }
-
 
     public void readAllUsers() {
         Arrays.stream(Objects.requireNonNull(new File(RESOURCES_USERS).listFiles())).filter(Objects::nonNull)
                 .forEach(f -> Account.addAccount(readAccount(RESOURCES_USERS + f.getName())));
     }
-
 
     public void importCard(String cardName, String type) {
         if (type.equals("monster")) {
@@ -58,38 +60,33 @@ public class ImportAndExport {
         }
     }
 
-
     public void exportCard(String cardName) {
-        writeToJson(RESOURCES_IMPORTANDEXPORT + cardName + JSON, Card.getCardByName(cardName));
+        writeObjectToJson(RESOURCES_IMPORTANDEXPORT + cardName + JSON, Card.getCardByName(cardName));
     }
-
 
     public Account readAccount(String address) {
         try {
-            var account = new GsonBuilder().create().fromJson(new BufferedReader(new FileReader(address)), Account.class);
+            var account = OBJECT_MAPPER.readValue(new File(address), Account.class);
             account.setAbleToDraw(true);
             account.setAbleToAttack(true);
             return account;
-        } catch (Exception fileNotFoundException) {
+        } catch (Exception e) {
             return null;
         }
     }
-
 
     public ArrayList<PlayerDeck> readAllDecks(String address) {
         return (ArrayList<PlayerDeck>) Arrays.stream(Objects.requireNonNull(new File(address).listFiles()))
                 .filter(Objects::nonNull).map(f -> readDeck(address + f.getName())).collect(Collectors.toList());
     }
 
-
     public PlayerDeck readDeck(String address) {
         try {
-            return new GsonBuilder().create().fromJson(new BufferedReader(new FileReader(address)), PlayerDeck.class);
-        } catch (Exception fileNotFoundException) {
+            return OBJECT_MAPPER.readValue(new File(address), PlayerDeck.class);
+        } catch (Exception e) {
             return null;
         }
     }
-
 
     public Card readCard(String cardName) throws Exception {
         if (Card.isCardSpecial(cardName))
@@ -104,7 +101,6 @@ public class ImportAndExport {
         return null;
     }
 
-
     public ArrayList<Card> readAllCards() {
         return Stream.concat(
                 Arrays.stream(Objects.requireNonNull(new File(RESOURCES_MONSTERS).listFiles()))
@@ -114,48 +110,48 @@ public class ImportAndExport {
                 .collect(Collectors.toCollection(ArrayList::new));
     }
 
-
     public MonsterCard readMonsterCard(String address) {
         try {
-            return new GsonBuilder().create().fromJson(new BufferedReader(new FileReader(address)), MonsterCard.class);
-        } catch (Exception fileNotFoundException) {
+            return OBJECT_MAPPER.readValue(new File(address), MonsterCard.class);
+        } catch (Exception e) {
             return null;
         }
     }
-
 
     public SpellAndTrapCard readSpellAndTrapCard(String address) {
         try {
-            return new GsonBuilder().create().fromJson(new BufferedReader(new FileReader(address)), SpellAndTrapCard.class);
-        } catch (Exception fileNotFoundException) {
+            return OBJECT_MAPPER.readValue(new File(address), SpellAndTrapCard.class);
+        } catch (Exception e) {
             return null;
         }
     }
 
-
-    public TreeMap<String, String> readCardNameToDescriptionMap() {
+    public HashMap<String, String> readCardNameToDescriptionMap() {
         try {
-            return new GsonBuilder().create().fromJson(new BufferedReader(new FileReader("src/main/resources/utils/MapCardNameToCardDescription.JSON")), TreeMap.class);
-        } catch (Exception fileNotFoundException) {
+            return OBJECT_MAPPER.readValue(new File("src/main/resources/utils/MapCardNameToCardDescription.JSON"), HashMap.class);
+        } catch (Exception e) {
             return null;
         }
     }
-
 
     public HashMap<String, String> readSpecialCardNameToClassNameMap() {
         try {
-            return new GsonBuilder().create().fromJson(new BufferedReader(new FileReader("src/main/resources/utils/MapSpecialCardNameToClassName.JSON")), HashMap.class);
-        } catch (Exception fileNotFoundException) {
+            return OBJECT_MAPPER.readValue(new File("src/main/resources/utils/MapSpecialCardNameToClassName.JSON"), HashMap.class);
+        } catch (Exception e) {
             return null;
         }
     }
 
-
-    public void writeToJson(String address, Object object) {
+    public void writeCSVToJson(File csvFile, String address) {
         try {
-            var fileWriter = new FileWriter(address);
-            fileWriter.write(new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create().toJson(object));
-            fileWriter.close();
-        } catch (IOException ignored) { }
+            writeObjectToJson(address, new CsvMapper().readerFor(Map.class)
+                    .with(CsvSchema.emptySchema().withHeader()).readValues(csvFile).readAll());
+        } catch (Exception ignored) { }
+    }
+
+    public void writeObjectToJson(String address, Object object) {
+        try {
+            OBJECT_MAPPER.writeValue(new File(address), object);
+        } catch (Exception ignored) { }
     }
 }

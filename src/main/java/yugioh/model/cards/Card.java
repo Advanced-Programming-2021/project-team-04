@@ -1,18 +1,17 @@
 package yugioh.model.cards;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
-import yugioh.controller.ImportAndExport;
 import lombok.Getter;
 import lombok.Setter;
+import yugioh.controller.ImportAndExport;
 import yugioh.model.AI;
 import yugioh.model.Account;
 import yugioh.model.Duelist;
 
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
 
 
 @Getter
@@ -21,23 +20,8 @@ public class Card {
 
 
     protected static ArrayList<Card> allCards;
-    protected static TreeMap<String, String> nameToDescriptionMap;
+    protected static HashMap<String, String> nameToDescriptionMap;
     protected static HashMap<String, String> specialCardNameToClassNameMap;
-
-
-    @Expose
-    protected String name;
-    @Expose
-    protected int price;
-    @Expose
-    protected String description;
-    protected int allowedNumber = 3;
-    protected Duelist owner;
-    @Expose
-    protected String ownerUsername;
-    protected boolean hasBeenUsedInThisTurn = false;
-    protected boolean hasBeenSetOrSummoned = false;
-    public boolean isOriginal = true;
 
     static {
         allCards = new ArrayList<>();
@@ -45,11 +29,40 @@ public class Card {
         specialCardNameToClassNameMap = ImportAndExport.getInstance().readSpecialCardNameToClassNameMap();
     }
 
+    public boolean isOriginal = true;
+    @JsonProperty
+    protected String name;
+    @JsonProperty
+    protected int price;
+    @JsonProperty
+    protected String description;
+    protected int allowedNumber = 3;
+    protected Duelist owner;
+    @JsonProperty
+    protected String ownerUsername;
+    protected boolean hasBeenUsedInThisTurn = false;
+    protected boolean hasBeenSetOrSummoned = false;
+
 
     public Card() {
         allCards.add(this);
     }
 
+    public static Card getCardByName(String name) {
+        return allCards.stream().filter(c -> c.getName().equals(name)).findFirst().orElse(null);
+    }
+
+    public static String getDescriptionByName(String name) {
+        return nameToDescriptionMap.get(name);
+    }
+
+    public static boolean isCardSpecial(String cardName) {
+        return specialCardNameToClassNameMap.containsKey(cardName);
+    }
+
+    public static String getSpecialCardClassName(String cardName) {
+        return specialCardNameToClassNameMap.get(cardName);
+    }
 
     public Duelist getOwner() {
         if (owner == null) {
@@ -59,28 +72,8 @@ public class Card {
         return owner;
     }
 
-
-    public static Card getCardByName(String name) {
-        return allCards.stream().filter(c -> c.getName().equals(name)).findFirst().orElse(null);
+    public void reset() {
     }
-
-
-    public static String getDescriptionByName(String name) {
-        return nameToDescriptionMap.get(name);
-    }
-
-
-    public static boolean isCardSpecial(String cardName) {
-        return specialCardNameToClassNameMap.containsKey(cardName);
-    }
-
-
-    public static String getSpecialCardClassName(String cardName) {
-        return specialCardNameToClassNameMap.get(cardName);
-    }
-
-
-    public void reset() { }
 
 
 }

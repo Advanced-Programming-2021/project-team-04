@@ -1,6 +1,7 @@
 package yugioh.model.cards;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,19 +15,19 @@ public class MonsterCard extends Card {
 
     public static final int ONE_TRIBUTE_BOUND = 5;
     public static final int TWO_TRIBUTES_BOUND = 7;
-    @Expose
+    @JsonProperty
     protected int classAttackPower;
-    @Expose
+    @JsonProperty
     protected int classDefensePower;
     protected int thisCardAttackPower;
     protected int thisCardDefensePower;
-    @Expose
+    @JsonProperty
     protected int level;
-    @Expose
+    @JsonProperty
     protected String monsterType;
-    @Expose
+    @JsonProperty
     protected String cardType;
-    @Expose
+    @JsonProperty
     protected String attribute;
     protected MonsterCardModeInField monsterCardModeInField;
     protected boolean isAbleToBeRemoved = true;

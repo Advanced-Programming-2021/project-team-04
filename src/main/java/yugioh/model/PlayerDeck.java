@@ -1,6 +1,7 @@
 package yugioh.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,11 +18,11 @@ import java.util.Objects;
 public class PlayerDeck {
 
 
-    @Expose
+    @JsonProperty
     private LinkedHashMap<String, Short> mainDeckCards;
-    @Expose
+    @JsonProperty
     private LinkedHashMap<String, Short> sideDeckCards;
-    @Expose
+    @JsonProperty
     private String deckName;
 
 
