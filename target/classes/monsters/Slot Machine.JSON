@@ -1,0 +1,11 @@
+{
+    "name": "Slot Machine",
+    "level": 7,
+    "attribute": "DARK",
+    "monsterType": "Machine",
+    "cardType": "Normal",
+    "classAttackPower": 2000,
+    "classDefensePower": 2300,
+    "price": 7500,
+    "description": "The machine's ability is said to vary according to its slot results."
+}

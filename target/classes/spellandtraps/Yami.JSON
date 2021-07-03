@@ -1,0 +1,8 @@
+{
+    "name": "Yami",
+    "isSpell": true,
+    "property": "Field",
+    "isLimited":false,
+    "price": 4300,
+    "description": "All Fiend and Spellcaster monsters on the field gain 200 ATK/DEF, also all Fairy monsters on the field lose 200 ATK/DEF."
+}

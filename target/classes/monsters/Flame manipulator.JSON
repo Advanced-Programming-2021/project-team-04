@@ -1,0 +1,11 @@
+{
+    "name": "Flame manipulator",
+    "level": 3,
+    "attribute": "FIRE",
+    "monsterType": "Spellcaster",
+    "cardType": "Normal",
+    "classAttackPower": 900,
+    "classDefensePower": 1000,
+    "price": 1500,
+    "description": "This Spellcaster attacks enemies with fire-related spells such as \"Sea of Flames\" and \"Wall of Fire\"."
+}
