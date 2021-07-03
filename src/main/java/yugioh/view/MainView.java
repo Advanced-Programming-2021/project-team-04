@@ -1,5 +1,6 @@
 package yugioh.view;
 
+import javafx.scene.Scene;
 import yugioh.controller.MainController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
@@ -15,6 +16,7 @@ import static yugioh.view.LoginView.sceneCreator;
 public class MainView {
 
     private static MediaPlayer mainMusic;
+    public static MediaPlayer startGameMusic;
     public static boolean isMute;
 
 
@@ -57,10 +59,23 @@ public class MainView {
         //TODO change rps and rounds
     }
 
+    private void createGameScene() {
+        playStartGame();
+
+    }
+
+    public static void playStartGame() {
+        Media startGame = new Media(MainView.class.getResource("London-Grammar-Intro-320.mp3").toExternalForm());
+        startGameMusic = new MediaPlayer(startGame);
+        startGameMusic.setCycleCount(MediaPlayer.INDEFINITE);
+        startGameMusic.play();
+    }
+
     @FXML
     public void playWithRival() {
         LoginView.stage.setScene(LoginView.duelScene);
         mainMusic.stop();
+        createGameScene();
         DuelView.getInstance().runForRPS();
         DuelView.getInstance().run();
         //TODO change rps and rounds
@@ -81,7 +96,6 @@ public class MainView {
             e.printStackTrace();
         }
     }
-
 
     //TODO change the methods below
 
