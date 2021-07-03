@@ -20,7 +20,10 @@ import java.util.stream.Stream;
 @Setter
 public class DuelController {
 
-    private final static SecureRandom RANDOM = new SecureRandom();
+    private static final SecureRandom RANDOM = new SecureRandom();
+    public static final String ROCK = "r(?:ock)?";
+    public static final String SCISSORS = "s(?:cissors)?";
+    public static final String PAPER = "p(?:aper)?";
 
     private static DuelController singleInstance = null;
     private Game game;
@@ -36,17 +39,17 @@ public class DuelController {
 
     public void rockPaperScissor(String thisPlayer, String theOtherPlayer) {
         if (thisPlayer.equals(theOtherPlayer)) return;
-        if (thisPlayer.matches("r(?:ock)?") && theOtherPlayer.matches("s(?:cissors)?"))
+        if (thisPlayer.matches(ROCK) && theOtherPlayer.matches(SCISSORS))
             game.getCurrentPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches("r(?:ock)?") && theOtherPlayer.matches("p(?:aper)?"))
+        else if (thisPlayer.matches(ROCK) && theOtherPlayer.matches(PAPER))
             game.getTheOtherPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches("s(?:cissors)?") && theOtherPlayer.matches("p(?:aper)?"))
+        else if (thisPlayer.matches(SCISSORS) && theOtherPlayer.matches(PAPER))
             game.getCurrentPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches("s(?:cissors)?") && theOtherPlayer.matches("r(?:ock)?"))
+        else if (thisPlayer.matches(SCISSORS) && theOtherPlayer.matches(ROCK))
             game.getTheOtherPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches("p(?:aper)?") && theOtherPlayer.matches("r(?:ock)?"))
+        else if (thisPlayer.matches(PAPER) && theOtherPlayer.matches(ROCK))
             game.getCurrentPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches("p(?:aper)?") && theOtherPlayer.matches("s(?:cissors)?"))
+        else if (thisPlayer.matches(PAPER) && theOtherPlayer.matches(SCISSORS))
             game.getTheOtherPlayer().increaseCountForRPS();
         if ((game.getCurrentPlayer().getCountForRPS() == 2 && game.getTheOtherPlayer().getCountForRPS() == 0) ||
                 game.getCurrentPlayer().getCountForRPS() == 3) {

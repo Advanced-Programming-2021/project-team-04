@@ -46,10 +46,7 @@ public class LoginController {
 
 
     public boolean isLoggingInValid(String username, String password) {
-        if (Account.getAccountByUsername(username) == null) {
-            IO.getInstance().passwordDoesntMatch();
-            return false;
-        } else if (!Account.getAccountByUsername(username).getPassword().equals(password)) {
+        if (Account.getAccountByUsername(username) == null || !Account.getAccountByUsername(username).getPassword().equals(password)) {
             IO.getInstance().passwordDoesntMatch();
             return false;
         }

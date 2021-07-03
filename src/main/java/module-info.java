@@ -4,6 +4,9 @@ module YoGiOhGame {
     requires com.google.gson;
     requires javafx.media;
     requires lombok;
+    requires com.fasterxml.jackson.core;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.dataformat.csv;
 
     opens yugioh.view to javafx.fxml;
     opens yugioh.model to com.google.gson;
