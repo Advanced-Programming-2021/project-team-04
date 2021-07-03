@@ -2,7 +2,6 @@ package yugioh.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.cards.Card;
@@ -31,6 +30,8 @@ public class PlayerDeck {
         sideDeckCards = new LinkedHashMap<>();
         this.deckName = deckName;
     }
+
+    public PlayerDeck() { }
 
 
     public boolean mainDeckContainsCard(String cardName) {

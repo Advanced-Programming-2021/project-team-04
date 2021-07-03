@@ -2,7 +2,6 @@ package yugioh.model.cards;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.MonsterCardModeInField;
