@@ -26,11 +26,11 @@ public class DuelController {
     public static final String PAPER = "p(?:aper)?";
 
     private static DuelController singleInstance = null;
+    private static ArrayList<MonsterCard> deactivatedCards = new ArrayList<>();
     private Game game;
     private ArrayList<SpellAndTrapCard> forChain = new ArrayList<>();
     private boolean isChainActive = false;
     private ArrayList<Scanner> toReset = new ArrayList<>();
-
     public static DuelController getInstance() {
         if (singleInstance == null)
             singleInstance = new DuelController();
@@ -201,13 +201,13 @@ public class DuelController {
             if (DuelView.getInstance().killMessengerOfPeace())
                 moveSpellOrTrapToGYFromSpellZone(myMessengerOfPeace);
             else {
-                ((MessengerOfPeace) myMessengerOfPeace).deactivateCards();
+                messengerOfPeace();
                 game.getCurrentPlayer().changeLP(-100);
             }
         }
         SpellAndTrapCard opponentMessengerOfPeace = game.getTheOtherPlayer().getField().getThisActivatedCard("Messenger of peace");
         if (opponentMessengerOfPeace != null)
-            ((MessengerOfPeace) opponentMessengerOfPeace).deactivateCards();
+            messengerOfPeace();
     }
 
 
@@ -304,8 +304,16 @@ public class DuelController {
         game.getCurrentPlayer().getField().resetAllCards();
         game.getTheOtherPlayer().getField().resetAllCards();
         toReset.forEach(Scanner::reset);
+        resetMessengerOfPeace();
         toReset = new ArrayList<>();
     }
+
+    private void resetMessengerOfPeace() {
+        for (MonsterCard monsterCard : deactivatedCards)
+            monsterCard.setAbleToAttack(true);
+        deactivatedCards = new ArrayList<>();
+    }
+
 
     public void handleSwordOfRevealingLight() {
         SwordsOfRevealingLight sword = (SwordsOfRevealingLight) game.getTheOtherPlayer().getField().getThisActivatedCard("Swords of Revealing Light");
@@ -660,6 +668,7 @@ public class DuelController {
         if (!isFlipSummonValid()) return;
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         if (handleTrapHole(monsterCard)) return;
+        if (monsterCard.getName().startsWith("ManEater Bug")) forManEaterBug();
         game.setSelectedCard(null);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         IO.getInstance().flipSummoned();
@@ -694,21 +703,42 @@ public class DuelController {
             mirrorForce(mirrorForceCard, attacker.getOwner());
             return;
         }
-        if (attacked instanceof Suijin && !((Suijin) attacked).isHasBeenUsedInGeneral() &&
-                DuelView.getInstance().wantsToActivate("Suijin")) {
-            ((Suijin) attacked).specialMethod(attacker);
+        if (attacked.getName().startsWith("Suijin") &&
+                DuelView.getInstance().wantsToActivate(attacked.getName())) {
+            handleSuijin(attacked, attacker);
         }
         if (attacked.getName().startsWith("Texchanger") &&
-                DuelView.getInstance().wantsToActivate("Texchanger")) {
+                DuelView.getInstance().wantsToActivate(attacked.getName())) {
             texChanger(attacked);
             return;
         }
+        if (attacker.getName().startsWith("The Calculator")) handleCalculator(attacker);
+        if (attacked.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP))
+            handleCalculator(attacked);
+
         if (attacked.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP)
             attackInAttack(attacked, attacker);
         else attackInDefense(attacked, attacker);
         attacker.setAttacked(true);
         game.setSelectedCard(null);
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
+    }
+
+    private void handleCalculator(MonsterCard monsterCard) {
+        int amount = 0;
+        Duelist player = monsterCard.getOwner();
+        for (MonsterCard m : player.getField().getMonsterCards())
+            if (m.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP)
+                    || m.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_UP))
+                amount += m.getLevel();
+        monsterCard.setThisCardAttackPower(amount * 300);
+    }
+
+    private void handleSuijin(MonsterCard attacked, MonsterCard attacker) {
+        if (!attacked.isHasBeenUsedInGeneral()) {
+            attacker.setThisCardAttackPower(0);
+            attacked.setHasBeenUsedInGeneral(true);
+        }
     }
 
     public boolean handleMirageDragon(String name) {
@@ -920,7 +950,7 @@ public class DuelController {
             twinTwisters(card);
         switch (card.getName()) {
             case "Change of Heart" -> changeOfHeart((ChangeOfHeart) card);
-            case "Messenger of peace" -> ((MessengerOfPeace) card).deactivateCards();
+            case "Messenger of peace" -> messengerOfPeace();
             case "Sword of dark destruction", "Black Pendant", "United We Stand", "Magnum Shield" -> equipMonster(card); //TODO
             case "Swords of Revealing Light" -> ((SwordsOfRevealingLight) card).specialMethod(game.getTheOtherPlayer());
         }
@@ -1684,6 +1714,21 @@ public class DuelController {
             toPrint.append(mapElement.getKey()).append(": ").append(mapElement.getValue()).append("\n");
         }
         return toPrint.toString();
+    }
+
+    public void messengerOfPeace() {
+        ArrayList<MonsterCard> cards = new ArrayList<>();
+        cards.addAll(game.getCurrentPlayer().getField().getMonsterCards());
+        cards.addAll(game.getTheOtherPlayer().getField().getMonsterCards());
+        for (MonsterCard monsterCard : cards)
+            if (monsterCard.getClassAttackPower() >= 1500 && monsterCard.isAbleToAttack()) {
+                monsterCard.setAbleToAttack(false);
+                deactivatedCards.add(monsterCard);
+            }
+    }
+
+    public void commandKnight() {
+
     }
 
     public void wonGame(boolean allMatches, boolean isAI, Account winner) {

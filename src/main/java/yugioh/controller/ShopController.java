@@ -66,10 +66,6 @@ public class ShopController {
     private static void addSpecialCards() {
         allCards.add(new ChangeOfHeart());
         allCards.add(new CommandKnight());
-        allCards.add(new ManEaterBug());
-        allCards.add(new MessengerOfPeace());
-        allCards.add(new Suijin());
-        allCards.add(new TheCalculator());
         allCards.add(new UnitedWeStand());
         allCards.add(new SwordsOfRevealingLight());
         allCards.add(new SwordOfDarkDestruction());
