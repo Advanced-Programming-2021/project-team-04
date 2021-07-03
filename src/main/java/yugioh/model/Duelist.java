@@ -1,7 +1,6 @@
 package yugioh.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.Expose;
 import yugioh.controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;

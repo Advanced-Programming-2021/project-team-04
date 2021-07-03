@@ -2,7 +2,6 @@ package yugioh.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.Expose;
 import yugioh.controller.ImportAndExport;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,11 +18,8 @@ import java.util.Objects;
 public class GameDeck {
 
 
-    @JsonProperty
     private ArrayList<Card> mainDeck = new ArrayList<>();
-    @JsonProperty
     private ArrayList<Card> sideDeck = new ArrayList<>();
-    @JsonProperty
     private String deckName;
 
 

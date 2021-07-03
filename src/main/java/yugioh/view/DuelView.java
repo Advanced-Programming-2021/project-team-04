@@ -219,7 +219,6 @@ public class DuelView extends ViewMenu {
 
 
     private ArrayList<MonsterCard> getTributesAgain() {
-        IO.getInstance().chooseTributesAgain();
         try {
             return getTributeMonsterCards();
         } catch (Exception exception) {
