@@ -109,18 +109,32 @@ public class DuelController {
         ArrayList<MonsterCard> myMonsters = new ArrayList<>(field.getMonsterCards());
         ArrayList<MonsterCard> opponentMonsters = new ArrayList<>(opponentField.getMonsterCards());
         myMonsters.forEach(m -> {
-            if (m.getName().equals("Herald of Creation") && !m.isHasBeenUsedInThisTurn() &&
+            if (m.getName().startsWith("Herald of Creation") && !m.isHasBeenUsedInThisTurn() &&
                     !(m.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN))) {
                 heraldOfCreation();
                 m.setHasBeenUsedInThisTurn(true);
             }
-            if (m.getName().equals("Command Knight")) {
-                ((CommandKnight) m).specialMethod();
+            if (m.getName().startsWith("Command Knight")) {
+                if (m.isOriginal()) {
+                    ((CommandKnight) m).specialMethod();
+                } else {
+                    CommandKnight commandKnight = new CommandKnight();
+                    commandKnight.setConverted(true);
+                    m = commandKnight;
+                    commandKnight.specialMethod();
+                }
                 m.setHasBeenUsedInThisTurn(true);
             }
         });
-        opponentMonsters.stream().filter(m -> m.getName().equals("Command Knight")).forEach(m -> {
-            ((CommandKnight) m).specialMethod();
+        opponentMonsters.stream().filter(m -> m.getName().startsWith("Command Knight")).forEach(m -> {
+            if (m.isOriginal()) {
+                ((CommandKnight) m).specialMethod();
+            } else {
+                CommandKnight commandKnight = new CommandKnight();
+                commandKnight.setConverted(true);
+                m = commandKnight;
+                commandKnight.specialMethod();
+            }
             m.setHasBeenUsedInThisTurn(true);
         });
     }
@@ -146,9 +160,18 @@ public class DuelController {
         if (timeSealCard != null) timeSeal(timeSealCard, game.getCurrentPlayer());
     }
 
-    private void handleEquip(Field field) {
+    private void handleEquip(Field field) { //TODO
         var swordOfDarkDestruction = (SwordOfDarkDestruction) field.getThisActivatedCard("Sword of dark destruction");
-        if (swordOfDarkDestruction != null) swordOfDarkDestruction.equipMonster();
+        if (swordOfDarkDestruction != null) {
+            if (swordOfDarkDestruction.isOriginal())
+                swordOfDarkDestruction.equipMonster();
+            else {
+                SwordOfDarkDestruction dark = new SwordOfDarkDestruction();
+                dark.setConverted(true);
+                swordOfDarkDestruction = dark;
+                dark.equipMonster();
+            }
+        }
         var blackPendant = (BlackPendant) field.getThisActivatedCard("Black Pendant");
         if (blackPendant != null) blackPendant.equipMonster();
         var unitedWeStand = (UnitedWeStand) field.getThisActivatedCard("United We Stand");
@@ -158,17 +181,18 @@ public class DuelController {
     }
 
     private void handleField(Field field, Field opponentField) {
-        if ((field.getFieldZone() != null && field.getFieldZone().getName().equals("Umiiruka")) ||
-                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().equals("Umiiruka")))
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().startsWith("Umiiruka")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().startsWith("Umiiruka")))
             umiiruka();
-        if ((field.getFieldZone() != null && field.getFieldZone().getName().equals("Forest")) ||
-                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().equals("Forest")))
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().startsWith("Forest")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().startsWith("Forest")))
             forest();
-        if ((field.getFieldZone() != null && field.getFieldZone().getName().equals("Closed Forest")) ||
-                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().equals("Closed Forest")))
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().startsWith("Closed Forest")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().startsWith("Closed Forest")))
             closedForest();
-        if ((field.getFieldZone() != null && field.getFieldZone().getName().equals("Yami")) ||
-                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().equals("Yami"))) yami();
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().startsWith("Yami")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().startsWith("Yami")))
+            yami();
     }
 
     public void handleMessengerOfPeace() {
@@ -384,7 +408,8 @@ public class DuelController {
     private void handleAI() {
         try {
             Thread.sleep(100);
-        } catch (InterruptedException ignored) { }
+        } catch (InterruptedException ignored) {
+        }
         switch (getGame().getCurrentPhase()) {
             case FIRST_MAIN_PHASE -> {
                 AI.getInstance().activateSpell();
@@ -395,7 +420,8 @@ public class DuelController {
         }
         try {
             Thread.sleep(100);
-        } catch (InterruptedException ignored) { }
+        } catch (InterruptedException ignored) {
+        }
         nextPhase();
     }
 
@@ -417,17 +443,17 @@ public class DuelController {
 
     private boolean handleSpecialCasesBeforeSummon() {
         if (getGame().getCurrentPlayer() instanceof Account && !isSummonValid()) return true;
-        if (game.getSelectedCard().getName().equals("The Tricky") && DuelView.getInstance().ordinaryOrSpecial()) {
+        if (game.getSelectedCard().getName().startsWith("The Tricky") && DuelView.getInstance().ordinaryOrSpecial()) {
             theTricky();
             return true;
         }
-        if (game.getSelectedCard().getName().equals("Gate Guardian")) {
+        if (game.getSelectedCard().getName().startsWith("Gate Guardian")) {
             if (DuelView.getInstance().summonGateGuardian()) {
                 gateGuardian();
             }
             return true;
         }
-        if (game.getSelectedCard().getName().equals("Beast King Barbaros")) {
+        if (game.getSelectedCard().getName().startsWith("Beast King Barbaros")) {
             int howToSummon = DuelView.getInstance().barbaros();
             if (howToSummon != 1) {
                 barbaros(howToSummon);
@@ -443,7 +469,7 @@ public class DuelController {
     }
 
     private void handleSpecialCasesAfterSummon() {
-        if (game.getSelectedCard().getName().equals("Terratiger, the Empowered Warrior"))
+        if (game.getSelectedCard().getName().startsWith("Terratiger, the Empowered Warrior"))
             terraTigerMethod();
         else if (game.getSelectedCard() instanceof CommandKnight)
             ((CommandKnight) game.getSelectedCard()).specialMethod();
@@ -527,7 +553,7 @@ public class DuelController {
     public void setMonster() {
         if (!isSettingMonsterValid()) return;
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
-        if (selectedCard.getName().equals("Gate Guardian")) {
+        if (selectedCard.getName().startsWith("Gate Guardian")) {
             IO.getInstance().cantSet();
             return;
         }
@@ -672,7 +698,7 @@ public class DuelController {
                 DuelView.getInstance().wantsToActivate("Suijin")) {
             ((Suijin) attacked).specialMethod(attacker);
         }
-        if (attacked.getName().equals("Texchanger") &&
+        if (attacked.getName().startsWith("Texchanger") &&
                 DuelView.getInstance().wantsToActivate("Texchanger")) {
             texChanger(attacked);
             return;
@@ -704,12 +730,12 @@ public class DuelController {
     }
 
     private void attackInDefense(MonsterCard attacked, MonsterCard attacker) {
-        if (attacked.getName().equals("Marshmallon")) game.getCurrentPlayer().changeLP(-1000);
+        if (attacked.getName().startsWith("Marshmallon")) game.getCurrentPlayer().changeLP(-1000);
         if (attacked.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN)
-        if (attacked.getThisCardDefensePower() < attacker.getThisCardAttackPower()) {
-            moveToGraveyardAfterAttack(attacked, attacker);
-            return;
-        }
+            if (attacked.getThisCardDefensePower() < attacker.getThisCardAttackPower()) {
+                moveToGraveyardAfterAttack(attacked, attacker);
+                return;
+            }
         if (attacked.getThisCardDefensePower() == attacker.getThisCardAttackPower()) {
             attacked.setMonsterCardModeInField(MonsterCardModeInField.DEFENSE_FACE_UP);
             return;
@@ -722,7 +748,7 @@ public class DuelController {
     private void attackInAttack(MonsterCard attacked, MonsterCard attacker) {
         if (attacked.getThisCardAttackPower() < attacker.getThisCardAttackPower()) {
             moveToGraveyardAfterAttack(attacked, attacker);
-            if (!attacked.getName().equals("Exploder Dragon")) {
+            if (!attacked.getName().startsWith("Exploder Dragon")) {
                 int damage = attacked.getThisCardAttackPower() - attacker.getThisCardAttackPower();
                 game.getTheOtherPlayer().changeLP(damage);
             }
@@ -733,7 +759,7 @@ public class DuelController {
             moveToGraveyardAfterAttack(attacked, attacker);
             return;
         }
-        if (!attacker.getName().equals("Exploder Dragon")) {
+        if (!attacker.getName().startsWith("Exploder Dragon")) {
             int damage = attacker.getThisCardAttackPower() - attacked.getThisCardAttackPower();
             game.getCurrentPlayer().changeLP(damage);
         }
@@ -866,23 +892,36 @@ public class DuelController {
     }
 
     private void callSpellAndTrapMethod(SpellAndTrapCard card) {
+        if (card.getName().startsWith("Monster Reborn"))
+            monsterReborn(card);
+        else if (card.getName().startsWith("Terraforming"))
+            terraforming(card);
+        else if (card.getName().startsWith("Pot of Greed"))
+            potOfGreed(card);
+        else if (card.getName().startsWith("Raigeki"))
+            raigeki(card);
+        else if (card.getName().startsWith("Harpie's Feather Duster"))
+            harpiesFeatherDuster(card);
+        else if (card.getName().startsWith("Dark Hole"))
+            darkHole(card);
+        else if (card.getName().startsWith("Mystical space typhoon"))
+            mysticalSpaceTyphoon(card);
+        else if (card.getName().startsWith("Yami"))
+            yami();
+        else if (card.getName().startsWith("Forest"))
+            forest();
+        else if (card.getName().startsWith("Closed Forest"))
+            closedForest();
+        else if (card.getName().startsWith("Umiiruka"))
+            umiiruka();
+        else if (card.getName().startsWith("Advanced Ritual Art"))
+            advancedRitualArt(card);
+        else if (card.getName().startsWith("Twin Twisters"))
+            twinTwisters(card);
         switch (card.getName()) {
-            case "Monster Reborn" -> monsterReborn(card);
-            case "Terraforming" -> terraforming(card);
-            case "Pot of Greed" -> potOfGreed(card);
-            case "Raigeki" -> raigeki(card);
             case "Change of Heart" -> changeOfHeart((ChangeOfHeart) card);
-            case "Harpie's Feather Duster" -> harpiesFeatherDuster(card);
-            case "Dark Hole" -> darkHole(card);
             case "Messenger of peace" -> ((MessengerOfPeace) card).deactivateCards();
-            case "Mystical space typhoon" -> mysticalSpaceTyphoon(card);
-            case "Yami" -> yami();
-            case "Forest" -> forest();
-            case "Closed Forest" -> closedForest();
-            case "Umiiruka" -> umiiruka();
-            case "Sword of dark destruction", "Black Pendant", "United We Stand", "Magnum Shield" -> equipMonster(card);
-            case "Advanced Ritual Art" -> advancedRitualArt(card);
-            case "Twin Twisters" -> twinTwisters(card);
+            case "Sword of dark destruction", "Black Pendant", "United We Stand", "Magnum Shield" -> equipMonster(card); //TODO
             case "Swords of Revealing Light" -> ((SwordsOfRevealingLight) card).specialMethod(game.getTheOtherPlayer());
         }
     }
@@ -994,7 +1033,8 @@ public class DuelController {
     }
 
     public void magicCylinder(MonsterCard attacker, SpellAndTrapCard magicCylinder) {
-        if (!DuelView.getInstance().wantsToActivateTrap("Magic Cylinder", magicCylinder.getOwner().getUsername())) return;
+        if (!DuelView.getInstance().wantsToActivateTrap("Magic Cylinder", magicCylinder.getOwner().getUsername()))
+            return;
         if (!getGame().isAI())
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
         decreaseLPWithTrap(attacker.getOwner(), attacker.getClassAttackPower());
@@ -1045,44 +1085,87 @@ public class DuelController {
     }
 
     public void umiiruka() {
+        SpellAndTrapCard umiiruka = game.getCurrentPlayer().getField().getFieldZone();
+        if (umiiruka == null) umiiruka = game.getTheOtherPlayer().getField().getFieldZone();
+        String[] toEffectPositively = umiiruka.getFieldPositiveEffects();
+        if (umiiruka.isOriginal()) {
+            toEffectPositively = new String[1];
+            toEffectPositively[0] = "Aqua";
+        }
         if (!getGame().isAI())
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
-        getAllMonsterCards().stream().filter(m -> m.getMonsterType().equals("Aqua")).forEach(a -> {
-            a.setThisCardAttackPower(a.getThisCardAttackPower() + 500);
-            a.setThisCardDefensePower(a.getThisCardDefensePower() - 400);
-        });
+        for (MonsterCard monsterCard : getAllMonsterCards())
+            for (String s : toEffectPositively)
+                if (monsterCard.getMonsterType().equals(s)) {
+                    monsterCard.setThisCardAttackPower(monsterCard.getThisCardAttackPower() + 500);
+                    monsterCard.setThisCardDefensePower(monsterCard.getThisCardDefensePower() - 400);
+                }
     }
 
     public void closedForest() {
         if (!getGame().isAI())
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
+        SpellAndTrapCard forest = game.getCurrentPlayer().getField().getFieldZone();
+        if (forest == null) forest = game.getTheOtherPlayer().getField().getFieldZone();
+        String[] toEffectPositively = forest.getFieldPositiveEffects();
+        if (forest.isOriginal()) {
+            toEffectPositively = new String[2];
+            toEffectPositively[0] = "Beast";
+            toEffectPositively[1] = "Beast-Warrior";
+        }
         int amount = game.getCurrentPlayer().getField().getGraveyard().size() * 100;
-        game.getCurrentPlayer().getField().getMonsterCards().stream()
-                .filter(m -> m.getMonsterType().equals("Beast") || m.getMonsterType().equals("Beast-Warrior"))
-                .forEach(b -> b.setThisCardAttackPower(b.getThisCardAttackPower() + amount));
+        for (MonsterCard monsterCard : getAllMonsterCards())
+            for (String s : toEffectPositively)
+                if (monsterCard.getMonsterType().equals(s))
+                    monsterCard.setThisCardAttackPower(monsterCard.getThisCardAttackPower() + amount);
     }
 
     public void forest() {
+        SpellAndTrapCard forest = game.getCurrentPlayer().getField().getFieldZone();
+        if (forest == null) forest = game.getTheOtherPlayer().getField().getFieldZone();
+        String[] toEffectPositively = forest.getFieldPositiveEffects();
+        if (forest.isOriginal()) {
+            toEffectPositively = new String[3];
+            toEffectPositively[0] = "Insect";
+            toEffectPositively[1] = "Beast";
+            toEffectPositively[2] = "Beast-Warrior";
+        }
         if (!getGame().isAI())
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
-        getAllMonsterCards().stream().filter(m -> m.getMonsterType().equals("Insect") || m.getMonsterType().equals("Beast") ||
-                m.getMonsterType().equals("Beast-Warrior")).forEach(m -> {
-            m.setThisCardAttackPower(m.getThisCardAttackPower() + 200);
-            m.setThisCardDefensePower(m.getThisCardDefensePower() + 200);
-        });
+        for (MonsterCard m : getAllMonsterCards())
+            for (String s : toEffectPositively)
+                if (m.getMonsterType().equals(s)) {
+                    m.setThisCardDefensePower(m.getThisCardDefensePower() + 200);
+                    m.setThisCardAttackPower(m.getThisCardAttackPower() + 200);
+                }
     }
 
     public void yami() {
+        SpellAndTrapCard yami = game.getCurrentPlayer().getField().getFieldZone();
+        if (yami == null) yami = game.getTheOtherPlayer().getField().getFieldZone();
+        String[] toEffectPositively = yami.getFieldPositiveEffects();
+        String[] toEffectNegatively = yami.getFieldNegativeEffects();
+        if (yami.isOriginal()) {
+            toEffectPositively = new String[2];
+            toEffectNegatively = new String[1];
+            toEffectPositively[0] = "Fiend";
+            toEffectPositively[1] = "Spellcaster";
+            toEffectNegatively[0] = "Fairy";
+        }
         if (!getGame().isAI())
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
-        getAllMonsterCards().stream().filter(m -> m.getMonsterType().equals("Fiend") || m.getMonsterType().equals("Spellcaster")).forEach(m -> {
-            m.setThisCardAttackPower(m.getThisCardAttackPower() + 200);
-            m.setThisCardDefensePower(m.getThisCardDefensePower() + 200);
-        });
-        getAllMonsterCards().stream().filter(m -> m.getMonsterType().equals("Fairy")).forEach(m -> {
-            m.setThisCardAttackPower(m.getThisCardAttackPower() - 200);
-            m.setThisCardDefensePower(m.getThisCardDefensePower() - 200);
-        });
+        for (MonsterCard monsterCard : getAllMonsterCards())
+            for (String s : toEffectPositively)
+                if (monsterCard.getMonsterType().equals(s)) {
+                    monsterCard.setThisCardAttackPower(monsterCard.getThisCardAttackPower() + 200);
+                    monsterCard.setThisCardDefensePower(monsterCard.getThisCardDefensePower() + 200);
+                }
+        for (MonsterCard m : getAllMonsterCards())
+            for (String s : toEffectNegatively)
+                if (m.getMonsterType().equals(s)) {
+                    m.setThisCardAttackPower(m.getThisCardAttackPower() - 200);
+                    m.setThisCardDefensePower(m.getThisCardDefensePower() - 200);
+                }
     }
 
     public ArrayList<MonsterCard> getAllMonsterCards() {
@@ -1336,10 +1419,10 @@ public class DuelController {
     }
 
     private void moveToGraveyardAfterAttack(MonsterCard toBeRemoved, MonsterCard remover) {
-        if (toBeRemoved.getName().equals("Marshmallon")) return;
+        if (toBeRemoved.getName().startsWith("Marshmallon")) return;
         addMonsterToGYFromMonsterZone(toBeRemoved);
-        if (toBeRemoved.getName().equals("Exploder Dragon") ||
-                toBeRemoved.getName().equals("Yomi Ship")) {
+        if (toBeRemoved.getName().startsWith("Exploder Dragon") ||
+                toBeRemoved.getName().startsWith("Yomi Ship")) {
             addMonsterToGYFromMonsterZone(remover);
         }
     }

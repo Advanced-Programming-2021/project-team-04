@@ -16,7 +16,8 @@
 .label {
     -fx-font-family: "Monotype Corsiva";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 27;
+    -fx-font-size: 20;
+    -fx-translate-x: 5;
 }
 
 #nickname, #username {

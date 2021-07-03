@@ -40,13 +40,13 @@ public class ShopView {
         ImageView second = (ImageView) LoginView.shopScene.lookup("#second");
         Image firstImage;
         Image secondImage;
-        if (!firstCard.isOriginal) {
+        if (!firstCard.isOriginal() || firstCard.isConverted()) {
            firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
         }
         else {
             firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
         }
-        if (!secondCard.isOriginal) {
+        if (!secondCard.isOriginal() || firstCard.isConverted()) {
             secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
         }
         else {

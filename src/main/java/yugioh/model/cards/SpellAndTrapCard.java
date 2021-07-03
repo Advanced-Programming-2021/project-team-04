@@ -22,7 +22,8 @@ public class SpellAndTrapCard extends Card {
     protected String property;
     @JsonProperty
     protected boolean isLimited;
-
+    protected String[] fieldPositiveEffects;
+    protected String[] fieldNegativeEffects;
 
     public SpellAndTrapCard() {
         super();
