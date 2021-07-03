@@ -1,6 +1,7 @@
 package yugioh.model.cards;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,15 +30,15 @@ public class Card {
     }
 
     public boolean isOriginal = true;
-    @Expose
+    @JsonProperty
     protected String name;
-    @Expose
+    @JsonProperty
     protected int price;
-    @Expose
+    @JsonProperty
     protected String description;
     protected int allowedNumber = 3;
     protected Duelist owner;
-    @Expose
+    @JsonProperty
     protected String ownerUsername;
     protected boolean hasBeenUsedInThisTurn = false;
     protected boolean hasBeenSetOrSummoned = false;

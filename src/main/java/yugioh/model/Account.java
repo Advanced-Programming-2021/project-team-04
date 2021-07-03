@@ -1,5 +1,6 @@
 package yugioh.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,13 +25,13 @@ public class Account extends Duelist {
         allUsernames = new ArrayList<>();
     }
 
-    @Expose
+    @JsonProperty
     private String password;
-    @Expose
+    @JsonProperty
     private int score;
-    @Expose
+    @JsonProperty
     private int money = STARTING_MONEY;
-    @Expose
+    @JsonProperty
     private int profilePictureNumber;
 
     public Account(String username, String password, String nickname) {

@@ -1,6 +1,7 @@
 package yugioh.model.cards;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,11 +17,11 @@ public class SpellAndTrapCard extends Card {
 
     protected static ArrayList<SpellAndTrapCard> spellAndTrapCards = new ArrayList<>();
     protected boolean isActive = false;
-    @Expose
+    @JsonProperty
     protected boolean isSpell;
-    @Expose
+    @JsonProperty
     protected String property;
-    @Expose
+    @JsonProperty
     protected boolean isLimited;
 
 

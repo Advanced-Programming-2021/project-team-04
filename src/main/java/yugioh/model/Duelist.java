@@ -1,5 +1,6 @@
 package yugioh.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.Expose;
 import yugioh.controller.DuelController;
 import lombok.Getter;
@@ -12,18 +13,19 @@ import java.util.*;
 @Setter
 public abstract class Duelist {
 
-    @Expose
+    @JsonProperty
     protected ArrayList<PlayerDeck> allPlayerDecks = new ArrayList<>();
-    @Expose
+    @JsonProperty
     protected LinkedHashMap<String, Short> allCardsHashMap = new LinkedHashMap<>();
-    @Expose
+    @JsonProperty
     protected String activePlayerDeck;
-    @Expose
+    @JsonProperty
     protected String username;
-    @Expose
+    @JsonProperty
     protected String nickname;
     protected Field field;
-    protected int LP, countForRPS;
+    protected int LP;
+    protected int countForRPS;
     protected int maxLPofThreeRounds;
     protected boolean isAbleToDraw = true;
     protected boolean isAbleToAttack = true;

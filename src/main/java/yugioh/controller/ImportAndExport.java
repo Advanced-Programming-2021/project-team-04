@@ -1,6 +1,7 @@
 package yugioh.controller;
 
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
@@ -23,8 +24,14 @@ public class ImportAndExport {
     public static final String RESOURCES_IMPORTANDEXPORT = "src/main/resources/importandexport/";
     public static final String RESOURCES_MONSTERS = "src/main/resources/monsters/";
     public static final String RESOURCES_SPELLANDTRAPS = "src/main/resources/spellandtraps/";
+    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     private static ImportAndExport singleInstance = null;
+
+    static {
+        OBJECT_MAPPER.disable(MapperFeature.AUTO_DETECT_CREATORS, MapperFeature.AUTO_DETECT_FIELDS,
+                MapperFeature.AUTO_DETECT_GETTERS, MapperFeature.AUTO_DETECT_IS_GETTERS);
+    }
 
     public static ImportAndExport getInstance() {
         if (singleInstance == null)
@@ -59,7 +66,7 @@ public class ImportAndExport {
 
     public Account readAccount(String address) {
         try {
-            var account = new ObjectMapper().readValue(new File(address), Account.class);
+            var account = OBJECT_MAPPER.readValue(new File(address), Account.class);
             account.setAbleToDraw(true);
             account.setAbleToAttack(true);
             return account;
@@ -75,7 +82,7 @@ public class ImportAndExport {
 
     public PlayerDeck readDeck(String address) {
         try {
-            return new ObjectMapper().readValue(new File(address), PlayerDeck.class);
+            return OBJECT_MAPPER.readValue(new File(address), PlayerDeck.class);
         } catch (Exception e) {
             return null;
         }
@@ -105,7 +112,7 @@ public class ImportAndExport {
 
     public MonsterCard readMonsterCard(String address) {
         try {
-            return new ObjectMapper().readValue(new File(address), MonsterCard.class);
+            return OBJECT_MAPPER.readValue(new File(address), MonsterCard.class);
         } catch (Exception e) {
             return null;
         }
@@ -113,7 +120,7 @@ public class ImportAndExport {
 
     public SpellAndTrapCard readSpellAndTrapCard(String address) {
         try {
-            return new ObjectMapper().readValue(new File(address), SpellAndTrapCard.class);
+            return OBJECT_MAPPER.readValue(new File(address), SpellAndTrapCard.class);
         } catch (Exception e) {
             return null;
         }
@@ -121,7 +128,7 @@ public class ImportAndExport {
 
     public HashMap<String, String> readCardNameToDescriptionMap() {
         try {
-            return new ObjectMapper().readValue(new File("src/main/resources/utils/MapCardNameToCardDescription.JSON"), HashMap.class);
+            return OBJECT_MAPPER.readValue(new File("src/main/resources/utils/MapCardNameToCardDescription.JSON"), HashMap.class);
         } catch (Exception e) {
             return null;
         }
@@ -129,7 +136,7 @@ public class ImportAndExport {
 
     public HashMap<String, String> readSpecialCardNameToClassNameMap() {
         try {
-            return new ObjectMapper().readValue(new File("src/main/resources/utils/MapSpecialCardNameToClassName.JSON"), HashMap.class);
+            return OBJECT_MAPPER.readValue(new File("src/main/resources/utils/MapSpecialCardNameToClassName.JSON"), HashMap.class);
         } catch (Exception e) {
             return null;
         }
@@ -144,7 +151,7 @@ public class ImportAndExport {
 
     public void writeObjectToJson(String address, Object object) {
         try {
-            new ObjectMapper().writeValue(new File(address), object);
+            OBJECT_MAPPER.writeValue(new File(address), object);
         } catch (Exception ignored) { }
     }
 }
