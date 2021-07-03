@@ -61,7 +61,7 @@ public class LoginView extends Application {
         scoreboardScene = sceneCreator("ScoreboardView.fxml");
         shopScene = sceneCreator("ShopView.fxml");
 //        duelScene = sceneCreator("DuelView.fxml");
-//        importAndExportScene = sceneCreator("ImportAndExportView.fxml");
+        importAndExportScene = sceneCreator("ImportAndExportView.fxml");
 //        creatorScene = sceneCreator("CreatorView.fxml");
     }
 

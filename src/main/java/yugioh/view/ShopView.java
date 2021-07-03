@@ -2,7 +2,6 @@ package yugioh.view;
 
 import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
-import lombok.extern.java.Log;
 import yugioh.controller.MainController;
 import yugioh.controller.ShopController;
 import javafx.scene.control.Label;
@@ -16,10 +15,12 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class ShopView {
+
+    private static final ArrayList<Card> ALL_CARDS = ShopController.getAllCards();
+
     private static Card firstCard;
     private static Card secondCard;
     private static int navigate;
-    private static final ArrayList<Card> allCards = ShopController.getAllCards();
 
     public static void run() {
         showCards();
@@ -27,8 +28,8 @@ public class ShopView {
     }
 
     private static void showCards() {
-        firstCard = allCards.get(navigate * 2);
-        secondCard = allCards.get(navigate * 2 + 1);
+        firstCard = ALL_CARDS.get(navigate * 2);
+        secondCard = ALL_CARDS.get(navigate * 2 + 1);
         setImages();
         checkAmount();
         checkMoney();
@@ -40,18 +41,12 @@ public class ShopView {
         ImageView second = (ImageView) LoginView.shopScene.lookup("#second");
         Image firstImage;
         Image secondImage;
-        if (!firstCard.isOriginal) {
-           firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-        }
-        else {
-            firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
-        }
-        if (!secondCard.isOriginal) {
+        if (!firstCard.isOriginal() || firstCard.isConverted())
+            firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+        else firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+        if (!secondCard.isOriginal() || secondCard.isConverted())
             secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-        }
-        else {
-            secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
-        }
+        else secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
         first.setImage(firstImage);
         second.setImage(secondImage);
         Tooltip.install(first, getToolTip(firstCard));

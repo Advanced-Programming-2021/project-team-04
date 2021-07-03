@@ -1,0 +1,36 @@
+.root {
+    -fx-background-color: #000000;
+    -fx-background-image: url("shopbackground.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+.navi {
+    -fx-translate-x: -100;
+    -fx-background-color: #000000;
+    -fx-font-size: 50;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 0;
+}
+
+.navi:hover {
+    -fx-text-fill: #000000;
+    -fx-background-color: #ffffff;
+}
+
+#mainMenu {
+    -fx-translate-y: -10;
+    -fx-translate-x: 120;
+    -fx-font-family: "Kunstler Script";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ffffff;
+    -fx-font-size: 25.4;
+}
+
+#mainMenu:hover {
+    -fx-border-color: #ffffff;
+    -fx-background-color: #0023ff;
+}

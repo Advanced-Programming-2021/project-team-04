@@ -1,37 +1,43 @@
 package yugioh.view;
 
+import javafx.scene.control.Label;
+import javafx.scene.input.TransferMode;
+import javafx.scene.layout.VBox;
 import yugioh.controller.ImportAndExport;
+import yugioh.model.cards.Card;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
 
-public class ImportAndExportView extends ViewMenu {
-    @Override
-    public void run() {
-        String command;
-        while (!(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit")) {
-            if (command.startsWith("import "))
-                importCard(command);
-            else if (command.startsWith("export "))
-                exportCard(command);
-            else IO.getInstance().printInvalidCommand();
-        }
+public class ImportAndExportView {
+
+    public static void run() {
+        var label = (Label) LoginView.importAndExportScene.lookup("#label");
+        var dropped = (Label) LoginView.importAndExportScene.lookup("#dropped");
+        var dragTarget = (VBox) LoginView.importAndExportScene.lookup("#dragTarget");
+        label.setText("Drag the file to me.");
+        dropped.setText("");
+        dragTarget.setOnDragOver(event -> {
+            if (event.getGestureSource() != dragTarget && event.getDragboard().hasFiles())
+                event.acceptTransferModes(TransferMode.COPY);
+            event.consume();
+        });
+
+        dragTarget.setOnDragDropped(event -> {
+            var dragboard = event.getDragboard();
+            var success = dragboard.hasFiles();
+            if (success)
+                dragboard.getFiles().forEach(file -> ImportAndExport.getInstance().importFile(file));
+            event.setDropCompleted(success);
+            event.consume();
+        });
     }
 
-    private void importCard(String input) {
-        Matcher matcher = Pattern.compile("import (?:m(?:onster)?|s(?:pell)?) (.*)").matcher(input.toLowerCase());
-        matcher.find();
-        ImportAndExport.getInstance().importCard(matcher.group(1), matcher.group(2));
+    public static void mainMenu() {
+        LoginView.stage.setScene(LoginView.mainScene);
+        LoginView.stage.centerOnScreen();
     }
 
-    private void exportCard(String input) {
-        Matcher matcher = Pattern.compile("export(?: c(?:ard)?)? (.*)").matcher(input);
-        matcher.find();
-        ImportAndExport.getInstance().exportCard(matcher.group(1));
-    }
+    public static void showCards(List<Card> cards) {
 
-    @Override
-    public void showCurrentMenu() {
-        IO.getInstance().printImportExportMenuName();
     }
 }

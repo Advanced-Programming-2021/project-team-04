@@ -36,7 +36,7 @@ public class Field {
 
 
     public ArrayList<Scanner> getActiveScanners() {
-        return (ArrayList<Scanner>) monsterCards.stream().filter(m -> m.getName().equals("Scanner"))
+        return (ArrayList<Scanner>) monsterCards.stream().filter(m -> m.getName().startsWith("Scanner"))
                 .map(m -> (Scanner) m).collect(Collectors.toList());
     }
 
@@ -69,12 +69,12 @@ public class Field {
 
 
     public SpellAndTrapCard getThisActivatedCard(String cardName) {
-        return spellAndTrapCards.stream().filter(c -> c.isActive() && c.getName().equals(cardName)).findAny().orElse(null);
+        return spellAndTrapCards.stream().filter(c -> c.isActive() && c.getName().startsWith(cardName)).findAny().orElse(null);
     }
 
 
     public SpellAndTrapCard getSpellAndTrapCard(String cardName) {
-        return spellAndTrapCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null);
+        return spellAndTrapCards.stream().filter(c -> c.getName().startsWith(cardName)).findAny().orElse(null);
     }
 
 
@@ -88,7 +88,7 @@ public class Field {
 
 
     public SpellAndTrapCard getSetSpellAndTrapCard(String cardName) {
-        return spellAndTrapCards.stream().filter(c -> c.getName().equals(cardName)).findAny().orElse(null);
+        return spellAndTrapCards.stream().filter(c -> c.getName().startsWith(cardName)).findAny().orElse(null);
     }
 
 

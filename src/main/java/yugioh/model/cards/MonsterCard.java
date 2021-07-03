@@ -33,7 +33,7 @@ public class MonsterCard extends Card {
     protected boolean isAbleToAttack = true;
     protected boolean isChangedPosition = false;
     protected boolean attacked = false;
-
+    protected boolean hasBeenUsedInGeneral = false;
 
     public MonsterCard() {
         super();

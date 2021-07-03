@@ -20,9 +20,13 @@ public class MainView {
 
     @FXML
     public void enterShopMenu() {
-        LoginView.stage.setScene(LoginView.shopScene);
+        // TODO: 7/3/2021 borrowed the method to test ImportAndExportView
+        LoginView.stage.setScene(LoginView.importAndExportScene);
         LoginView.stage.centerOnScreen();
-        ShopView.run();
+        ImportAndExportView.run();
+//        LoginView.stage.setScene(LoginView.shopScene);
+//        LoginView.stage.centerOnScreen();
+//        ShopView.run();
     }
 
     @FXML

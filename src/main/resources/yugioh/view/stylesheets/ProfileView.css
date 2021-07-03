@@ -16,7 +16,8 @@
 .label {
     -fx-font-family: "Monotype Corsiva";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 27;
+    -fx-font-size: 20;
+    -fx-translate-x: 5;
 }
 
 #nickname, #username {
@@ -32,7 +33,7 @@
     -fx-pref-height: 15;
     -fx-pref-width: 85;
     -fx-border-color: #c1a10a;
-    -fx-translate-x: 94;
+    -fx-translate-x: 65;
 }
 
 .button:hover {

@@ -28,7 +28,6 @@ public class Card {
         specialCardNameToClassNameMap = ImportAndExport.getInstance().readSpecialCardNameToClassNameMap();
     }
 
-    public boolean isOriginal = true;
     @JsonProperty
     protected String name;
     @JsonProperty
@@ -41,6 +40,10 @@ public class Card {
     protected String ownerUsername;
     protected boolean hasBeenUsedInThisTurn = false;
     protected boolean hasBeenSetOrSummoned = false;
+    @JsonProperty
+    protected boolean isConverted = false;
+    @JsonProperty
+    protected boolean isOriginal = true;
 
 
     public Card() {
