@@ -41,7 +41,8 @@
 
     <HBox spacing="10" alignment="CENTER"
           GridPane.rowIndex="4" GridPane.columnSpan="2">
-    <Button text="Log Out" onMouseClicked="#logout"/>
+        <Button text="Create Card" onMouseClicked="#createCard"/>
+        <Button text="Log Out" onMouseClicked="#logout"/>
     </HBox>
 
     <HBox spacing="10" alignment="CENTER"

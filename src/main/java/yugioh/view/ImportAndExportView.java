@@ -66,40 +66,7 @@ public class ImportAndExportView {
         });
     }
 
-    public void mainMenu() {
-        LoginView.stage.setScene(LoginView.mainScene);
-        LoginView.stage.centerOnScreen();
-    }
-
-    public void importButtonClicked() {
-        try {
-            Arrays.stream(Objects.requireNonNull(FILE_CHOOSER.showOpenDialog(new Popup()).listFiles()))
-                    .forEach(f -> ImportAndExport.getInstance().importFile(f));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void exportButtonClicked() {
-        try {
-            List<File> directories = Arrays.stream(Objects.requireNonNull(DIRECTORY_CHOOSER.showDialog(new Popup()).listFiles()))
-                    .filter(File::isDirectory).collect(Collectors.toList());
-            FILE_CHOOSER.setInitialDirectory(directories.get(0));
-            directories.forEach(d -> ImportAndExport.getInstance().exportCard(d, selectedCard));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void runImportPage(List<Card> cards) {
-    }
-
-    public void exportButton() {
-        LoginView.stage.setScene(LoginView.importScene);
-        ALL_CARDS = ShopController.getAllCards();
-        showCards();
-        navigate = 0;
-        LoginView.importScene.lookup("#back").setDisable(true);
     }
 
     private static void showCards() {
@@ -108,7 +75,6 @@ public class ImportAndExportView {
         else secondCard = ALL_CARDS.get(navigate * 2 + 1);
         setImages();
     }
-
 
     private static void setImages() {
         ImageView second = (ImageView) LoginView.shopScene.lookup("#second");
@@ -145,6 +111,38 @@ public class ImportAndExportView {
         tooltip.setShowDelay(Duration.seconds(0));
         tooltip.setStyle("-fx-font-size: 17");
         return tooltip;
+    }
+
+    public void mainMenu() {
+        LoginView.stage.setScene(LoginView.mainScene);
+        LoginView.stage.centerOnScreen();
+    }
+
+    public void importButtonClicked() {
+        try {
+            ImportAndExport.getInstance().importFile(Objects.requireNonNull(FILE_CHOOSER.showOpenDialog(new Popup())));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exportButtonClicked() {
+        try {
+            File directory = Objects.requireNonNull(DIRECTORY_CHOOSER.showDialog(new Popup()));
+            if (!directory.isDirectory()) throw new InputMismatchException();
+            FILE_CHOOSER.setInitialDirectory(directory);
+            ImportAndExport.getInstance().exportCard(directory, selectedCard);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exportButton() {
+        LoginView.stage.setScene(LoginView.importScene);
+        ALL_CARDS = ShopController.getAllCards();
+        showCards();
+        navigate = 0;
+        LoginView.importScene.lookup("#back").setDisable(true);
     }
 
     public void back() {

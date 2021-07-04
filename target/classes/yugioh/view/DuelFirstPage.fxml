@@ -17,7 +17,7 @@
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" fx:id="box1" alignment="CENTER">
         <Label text="Play With Your Rival" fx:id="label1"/>
         <TextField promptText="username" alignment="CENTER"/>
-        <Button text="play" fx:id="play"/>
+        <Button text="play" fx:id="play" onMouseClicked="#playButton"/>
     </VBox>
 
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="2" spacing="10" fx:id="box2" alignment="CENTER">

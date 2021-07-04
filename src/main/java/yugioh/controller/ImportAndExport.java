@@ -191,9 +191,7 @@ public class ImportAndExport {
 
     public void writeObjectToJson(String address, Object object) {
         try {
-            System.out.println("got to writeObjectToJson");
             OBJECT_MAPPER.writeValue(new File(address), object);
-            System.out.println("ended writeObjectToJson");
         } catch (Exception e) {
             e.printStackTrace();
         }

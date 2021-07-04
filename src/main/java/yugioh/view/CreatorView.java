@@ -117,7 +117,6 @@ public class CreatorView {
         var price = !limit.equals("yes") && property.equals("Continuous") ? 200 : 0;
         newCard.setPrice((Card.getCardByName(name).getPrice() + price) * 11/10);
         ShopController.getAllCards().add(newCard);
-        System.out.println("just before writeObjectToJson");
         ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_SPELLANDTRAPS + newCard.getName(), newCard);
     }
 
