@@ -1,6 +1,9 @@
 package yugioh.view;
 
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import yugioh.controller.ImportAndExport;
@@ -11,11 +14,9 @@ import java.util.List;
 public class ImportAndExportView {
 
     public static void run() {
-        var label = (Label) LoginView.importAndExportScene.lookup("#label");
-        var dropped = (Label) LoginView.importAndExportScene.lookup("#dropped");
+        ImageView image = (ImageView) LoginView.importAndExportScene.lookup("#cardPicture");
+        image.setImage(new Image(ImportAndExportView.class.getResourceAsStream("cardimages/empty.jpg")));
         var dragTarget = (VBox) LoginView.importAndExportScene.lookup("#dragTarget");
-        label.setText("Drag the file to me.");
-        dropped.setText("");
         dragTarget.setOnDragOver(event -> {
             if (event.getGestureSource() != dragTarget && event.getDragboard().hasFiles())
                 event.acceptTransferModes(TransferMode.COPY);
@@ -32,7 +33,7 @@ public class ImportAndExportView {
         });
     }
 
-    public static void mainMenu() {
+    public void mainMenu() {
         LoginView.stage.setScene(LoginView.mainScene);
         LoginView.stage.centerOnScreen();
     }

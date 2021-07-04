@@ -20,13 +20,9 @@ public class MainView {
 
     @FXML
     public void enterShopMenu() {
-        // TODO: 7/3/2021 borrowed the method to test ImportAndExportView
-        LoginView.stage.setScene(LoginView.importAndExportScene);
+        LoginView.stage.setScene(LoginView.shopScene);
         LoginView.stage.centerOnScreen();
-        ImportAndExportView.run();
-//        LoginView.stage.setScene(LoginView.shopScene);
-//        LoginView.stage.centerOnScreen();
-//        ShopView.run();
+        ShopView.run();
     }
 
     @FXML
@@ -53,21 +49,18 @@ public class MainView {
     }
 
     @FXML
-    public void playWithAI() {
-        LoginView.stage.setScene(LoginView.duelScene);
-        mainMusic.stop();
-        DuelView.getInstance().runForRPSAgainstAI();
-        DuelView.getInstance().run();
-        //TODO change rps and rounds
+    public void importAndExport() {
+        LoginView.stage.setScene(LoginView.importAndExportScene);
+        LoginView.stage.centerOnScreen();
+        ImportAndExportView.run();
     }
 
     @FXML
-    public void playWithRival() {
-        LoginView.stage.setScene(LoginView.duelScene);
-        mainMusic.stop();
-        DuelView.getInstance().runForRPS();
-        DuelView.getInstance().run();
-        //TODO change rps and rounds
+    public void startNewGame() {
+        LoginView.stage.setScene(LoginView.duelFirstScene);
+        LoginView.stage.centerOnScreen();
+//        DuelView.getInstance().runForRPS();
+//        DuelView.getInstance().run();
     }
     @FXML
     public void logout() {

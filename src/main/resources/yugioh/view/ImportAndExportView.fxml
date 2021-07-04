@@ -8,25 +8,27 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane alignment="CENTER" hgap="10" prefHeight="763" prefWidth="1246" styleClass="root" vgap="10" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.view.ImportAndExportView">
+<?import javafx.scene.image.ImageView?>
+<GridPane alignment="CENTER" hgap="30" prefHeight="763" prefWidth="1246" styleClass="root"
+          vgap="10" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="yugioh.view.ImportAndExportView">
 
-    <Button fx:id="mainMenu" onMouseClicked="#mainMenu" text="Main Menu" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-    <VBox fx:id="dragTarget">
-        <Label fx:id="label" prefHeight="67.0" prefWidth="85.0" text="Label"/>
-        <Label fx:id="dropped" prefHeight="68.0" prefWidth="128.0" text="Label"/>
+
+    <VBox GridPane.columnIndex="0" spacing="20">
+        <VBox fx:id="dragTarget" prefHeight="400" prefWidth="400" styleClass="box" alignment="CENTER">
+            <Label fx:id="label" text="Drag the file to me"/>
+            <Label fx:id="dropped"/>
+        </VBox>
+        <Button text="import" fx:id="import"/>
+        <Button text="export" fx:id="export"/>
+    </VBox>
+
+    <VBox GridPane.columnIndex="1" spacing="50">
+        <ImageView fx:id="cardPicture" styleClass="box" fitHeight="400" fitWidth="300"/>
+        <Button fx:id="mainMenu" onMouseClicked="#mainMenu" text="main menu"/>
     </VBox>
 
     <stylesheets>
         <URL value="@stylesheets/ImportAndExportView.css" />
     </stylesheets>
-   <columnConstraints>
-      <ColumnConstraints />
-      <ColumnConstraints />
-      <ColumnConstraints />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints />
-      <RowConstraints />
-      <RowConstraints />
-   </rowConstraints>
 </GridPane>

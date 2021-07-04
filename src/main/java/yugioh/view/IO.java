@@ -347,6 +347,11 @@ public class IO {
                 It’s clutched in the Captain’s cold hands""");
     }
 
+    public void invalidPicture() {
+        label.setText("there was a problem with your picture! (we only support gif/jpg/png)");
+        popup.show(LoginView.stage);
+    }
+
     public void invalidDeck(String username) {
         label.setText(username + "’s deck is invalid");
         popup.show(LoginView.stage);

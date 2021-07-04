@@ -23,7 +23,7 @@ public class LoginView extends Application {
     public static Scene mainScene;
     public static Scene scoreboardScene;
     public static Scene deckScene;
-    public static Scene duelScene;
+    public static Scene duelFirstScene;
     public static Scene shopScene;
     public static Scene importAndExportScene;
     public static Scene profileScene;
@@ -60,7 +60,7 @@ public class LoginView extends Application {
         profileScene = sceneCreator("ProfileView.fxml");
         scoreboardScene = sceneCreator("ScoreboardView.fxml");
         shopScene = sceneCreator("ShopView.fxml");
-//        duelScene = sceneCreator("DuelView.fxml");
+        duelFirstScene = sceneCreator("DuelFirstPage.fxml");
         importAndExportScene = sceneCreator("ImportAndExportView.fxml");
 //        creatorScene = sceneCreator("CreatorView.fxml");
     }

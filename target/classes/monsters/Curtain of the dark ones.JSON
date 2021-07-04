@@ -1,0 +1,11 @@
+{
+    "name": "Curtain of the dark ones",
+    "level": 2,
+    "attribute": "DARK",
+    "monsterType": "Spellcaster",
+    "cardType": "Normal",
+    "classAttackPower": 600,
+    "classDefensePower": 500,
+    "price": 700,
+    "description": "A curtain that a spellcaster made, it is said to raise a dark power."
+}
