@@ -85,14 +85,14 @@
     -fx-border-radius: 10;
 }
 
-#mainMenu {
+#goBack {
     -fx-text-fill: #1b0f37;
     -fx-border-color: #1b0f37;
     -fx-translate-x: 90;
     -fx-translate-y: 120;
 }
 
-#mainMenu:hover {
+#goBack:hover {
     -fx-background-color: #1b0f37;
     -fx-text-fill: #426d74;
 }

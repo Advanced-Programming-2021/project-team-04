@@ -66,6 +66,11 @@ public class ImportAndExportView {
         });
     }
 
+    public void goBack() {
+        LoginView.stage.setScene(LoginView.importAndExportScene);
+        LoginView.stage.centerOnScreen();
+    }
+
     public static void runImportPage(List<Card> cards) {
     }
 
@@ -77,18 +82,18 @@ public class ImportAndExportView {
     }
 
     private static void setImages() {
-        ImageView second = (ImageView) LoginView.shopScene.lookup("#second");
-        ImageView first = (ImageView) LoginView.shopScene.lookup("#first");
+        ImageView second = (ImageView) LoginView.importScene.lookup("#second");
+        ImageView first = (ImageView) LoginView.importScene.lookup("#first");
         Image secondImage;
         Image firstImage;
         if (secondCard == null)
-            secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+            secondImage = new Image(ImportAndExportView.class.getResourceAsStream("cardimages/empty.jpg"));
         else if (!secondCard.isOriginal() || secondCard.isConverted())
-            secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-        else secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+            secondImage = new Image(ImportAndExportView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+        else secondImage = new Image(ImportAndExportView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
         if (!firstCard.isOriginal() || firstCard.isConverted())
-            firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-        else firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+            firstImage = new Image(ImportAndExportView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+        else firstImage = new Image(ImportAndExportView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
         first.setImage(firstImage);
         second.setImage(secondImage);
         Tooltip.install(first, getToolTip(firstCard));
@@ -146,15 +151,15 @@ public class ImportAndExportView {
     }
 
     public void back() {
-        if (navigate == (ALL_CARDS.size() - 1) / 2) LoginView.shopScene.lookup("#next").setDisable(false);
-        if (navigate == 1) LoginView.shopScene.lookup("#back").setDisable(true);
+        if (navigate == (ALL_CARDS.size() - 1) / 2) LoginView.importScene.lookup("#next").setDisable(false);
+        if (navigate == 1) LoginView.importScene.lookup("#back").setDisable(true);
         navigate--;
         showCards();
     }
 
     public void next() {
-        if (navigate == 0) LoginView.shopScene.lookup("#back").setDisable(false);
-        if (navigate == ((ALL_CARDS.size() - 1) / 2) - 1) LoginView.shopScene.lookup("#next").setDisable(true);
+        if (navigate == 0) LoginView.importScene.lookup("#back").setDisable(false);
+        if (navigate == ((ALL_CARDS.size() - 1) / 2) - 1) LoginView.importScene.lookup("#next").setDisable(true);
         navigate++;
         showCards();
     }

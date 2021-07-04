@@ -1,17 +1,17 @@
 .root {
     -fx-background-color: #000000;
-    -fx-background-image: url("ImportBackground.gif");
+    -fx-background-image: url("clownBG.jpg");
     -fx-background-repeat: stretch;
     -fx-background-size: cover;
     -fx-background-position: center center;
 }
 
 #first, #second {
-    -fx-translate-x: -100;
+    -fx-translate-x: -150;
 }
 
 .navi {
-    -fx-translate-x: -100;
+    -fx-translate-x: -150;
     -fx-background-color: #000000;
     -fx-font-size: 50;
     -fx-text-fill: #ffffff;
@@ -23,9 +23,9 @@
     -fx-background-color: #ffffff;
 }
 
-#mainMenu {
+#goBack {
     -fx-translate-y: -10;
-    -fx-translate-x: 120;
+    -fx-translate-x: 60;
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
@@ -35,14 +35,21 @@
     -fx-font-size: 25.4;
 }
 
-#mainMenu:hover, .buy:hover {
+#goBack:hover {
     -fx-background-color: #ffffff;
     -fx-border-color: #ffffff;
     -fx-text-fill: #52126d;
 }
 
-.address {
-    -fx-font-size: 37;
-    -fx-translate-x: -100;
+.select {
+    -fx-translate-y: 10;
+    -fx-translate-x: -150;
+    -fx-font-family: "Kunstler Script";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ffffff;
+    -fx-text-fill: #52126d;
+    -fx-font-size: 25.4;
 }
 

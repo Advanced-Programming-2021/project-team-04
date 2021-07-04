@@ -20,7 +20,7 @@
     -fx-background-color: #0023ff;
 }
 
-#mainMenu {
+#goBack {
     -fx-font-family: "Kunstler Script";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
@@ -43,7 +43,7 @@
     -fx-translate-y: -130;
 }
 
-#mainMenu:hover, .action:hover, #create:hover {
+#goBack:hover, .action:hover, #create:hover {
     -fx-border-color: #ffffff;
     -fx-background-color: #0023ff;
 }
