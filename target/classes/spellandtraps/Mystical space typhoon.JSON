@@ -1,8 +1,0 @@
-{
-    "name": "Mystical space typhoon",
-    "isSpell": true,
-    "property": "Quick-play",
-    "isLimited":false,
-    "price": 3500,
-    "description": "Target 1 Spell/Trap on the field; destroy that target."
-}
