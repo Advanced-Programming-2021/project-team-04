@@ -10,6 +10,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Popup;
 import javafx.util.Duration;
 import yugioh.controller.ImportAndExport;
+import yugioh.controller.ShopController;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
@@ -91,8 +92,11 @@ public class ImportAndExportView {
     }
 
     public static void runImportPage(List<Card> cards) {
+    }
+
+    public void exportButton() {
         LoginView.stage.setScene(LoginView.importScene);
-        ALL_CARDS = cards;
+        ALL_CARDS = ShopController.getAllCards();
         showCards();
         navigate = 0;
         LoginView.importScene.lookup("#back").setDisable(true);
