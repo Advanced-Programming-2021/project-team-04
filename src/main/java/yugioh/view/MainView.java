@@ -1,6 +1,5 @@
 package yugioh.view;
 
-import javafx.scene.Scene;
 import yugioh.controller.MainController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
@@ -16,7 +15,6 @@ import static yugioh.view.LoginView.sceneCreator;
 public class MainView {
 
     private static MediaPlayer mainMusic;
-    public static MediaPlayer startGameMusic;
     public static boolean isMute;
 
 
@@ -51,34 +49,18 @@ public class MainView {
     }
 
     @FXML
-    public void playWithAI() {
-        LoginView.stage.setScene(LoginView.duelScene);
-        mainMusic.stop();
-        DuelView.getInstance().runForRPSAgainstAI();
-        DuelView.getInstance().run();
-        //TODO change rps and rounds
-    }
-
-    private void createGameScene() {
-        playStartGame();
-
-    }
-
-    public static void playStartGame() {
-        Media startGame = new Media(MainView.class.getResource("London-Grammar-Intro-320.mp3").toExternalForm());
-        startGameMusic = new MediaPlayer(startGame);
-        startGameMusic.setCycleCount(MediaPlayer.INDEFINITE);
-        startGameMusic.play();
+    public void importAndExport() {
+        LoginView.stage.setScene(LoginView.importAndExportScene);
+        LoginView.stage.centerOnScreen();
+        ImportAndExportView.run();
     }
 
     @FXML
-    public void playWithRival() {
-        LoginView.stage.setScene(LoginView.duelScene);
-        mainMusic.stop();
-        createGameScene();
-        DuelView.getInstance().runForRPS();
-        DuelView.getInstance().run();
-        //TODO change rps and rounds
+    public void startNewGame() {
+        LoginView.stage.setScene(LoginView.duelFirstScene);
+        LoginView.stage.centerOnScreen();
+//        DuelView.getInstance().runForRPS();
+//        DuelView.getInstance().run();
     }
     @FXML
     public void logout() {
@@ -96,6 +78,7 @@ public class MainView {
             e.printStackTrace();
         }
     }
+
 
     //TODO change the methods below
 

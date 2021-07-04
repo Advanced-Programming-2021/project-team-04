@@ -6,12 +6,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import yugioh.model.Account;
+import yugioh.model.Field;
 import yugioh.model.PlayerDeck;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
+import yugioh.view.ImportAndExportView;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -25,6 +28,7 @@ public class ImportAndExport {
     public static final String RESOURCES_MONSTERS = "src/main/resources/monsters/";
     public static final String RESOURCES_SPELLANDTRAPS = "src/main/resources/spellandtraps/";
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final CsvMapper CSV_MAPPER = new CsvMapper();
 
     private static ImportAndExport singleInstance = null;
 
@@ -60,8 +64,8 @@ public class ImportAndExport {
         }
     }
 
-    public void exportCard(String cardName) {
-        writeObjectToJson(RESOURCES_IMPORTANDEXPORT + cardName + JSON, Card.getCardByName(cardName));
+    public void exportCard(File directory, Card card) {
+        writeObjectToJson(directory.getAbsolutePath() + "/" + card.getName() + JSON, card);
     }
 
     public Account readAccount(String address) {
@@ -142,16 +146,55 @@ public class ImportAndExport {
         }
     }
 
-    public void writeCSVToJson(File csvFile, String address) {
+    public HashMap<String, String> readAllMonsterEffects() {
         try {
-            writeObjectToJson(address, new CsvMapper().readerFor(Map.class)
-                    .with(CsvSchema.emptySchema().withHeader()).readValues(csvFile).readAll());
-        } catch (Exception ignored) { }
+            return OBJECT_MAPPER.readValue(new File("src/main/resources/utils/AllMonstersEffectMap.JSON"), HashMap.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public HashMap<String, String> readAllSpellAndTrapEffects() {
+        try {
+            return OBJECT_MAPPER.readValue(new File("src/main/resources/utils/AllSpellAndTrapEffectMap.JSON"), HashMap.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public void importFile(File file) {
+        List<Card> cards = readCardsFromFile(file);
+        ImportAndExportView.showCards(cards);
+        cards.stream().filter(Objects::nonNull).forEach(c -> writeObjectToJson(RESOURCES_IMPORTANDEXPORT + c.getName() + JSON, c));
+    }
+
+    public List readCardsFromFile(File file) {
+        var fileExtension = getFileExtension(file);
+        if (fileExtension.equalsIgnoreCase("csv"))
+            try {
+                return CSV_MAPPER.readerFor(Card.class).with(CsvSchema.emptySchema().withHeader()).readValues(file).readAll();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        if (fileExtension.equalsIgnoreCase("json"))
+            try {
+                return List.of(OBJECT_MAPPER.readValue(file, Card.class));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        return List.of();
+    }
+
+    public String getFileExtension(File file) {
+        String fileName = file.getName();
+        int dotIndex = fileName.lastIndexOf('.');
+        return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
     }
 
     public void writeObjectToJson(String address, Object object) {
         try {
             OBJECT_MAPPER.writeValue(new File(address), object);
-        } catch (Exception ignored) { }
+        } catch (Exception ignored) {
+        }
     }
 }

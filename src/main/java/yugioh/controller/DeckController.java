@@ -17,9 +17,9 @@ public class DeckController {
     }
 
     public void createDeck(String deckName) {
-            var thisPlayerDeck = new PlayerDeck(deckName);
-            MainController.getInstance().getLoggedIn().addDeck(thisPlayerDeck);
-            IO.getInstance().deckCreated();
+        var thisPlayerDeck = new PlayerDeck(deckName);
+        MainController.getInstance().getLoggedIn().addDeck(thisPlayerDeck);
+        IO.getInstance().deckCreated();
     }
 
     public void deleteDeck(String deckName) {
@@ -51,11 +51,19 @@ public class DeckController {
         LinkedHashMap<String, Short> mainDeckCards = deck.getMainDeckCards();
         LinkedHashMap<String, Short> sideDeckCards = deck.getSideDeckCards();
         StringBuilder stringBuilder = new StringBuilder(deck.getDeckName()).append(":\n").append("Main Deck:\n");
-        for (String cardName : mainDeckCards.keySet())
+        int counter = 0;
+        for (String cardName : mainDeckCards.keySet()) {
             stringBuilder.append(cardName).append(":").append(mainDeckCards.get(cardName)).append(" - ");
+            counter++;
+            if (counter % 5 == 0) stringBuilder.append("\n");
+        }
         stringBuilder.append("\nSide Deck:\n");
-        for (String cardName : sideDeckCards.keySet())
+        counter = 0;
+        for (String cardName : sideDeckCards.keySet()) {
             stringBuilder.append(cardName).append(":").append(sideDeckCards.get(cardName)).append(" - ");
+            counter++;
+            if (counter % 5 == 0) stringBuilder.append("\n");
+        }
         return stringBuilder.toString();
     }
 }

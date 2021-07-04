@@ -32,6 +32,8 @@ public class Account extends Duelist {
     private int money = STARTING_MONEY;
     @JsonProperty
     private int profilePictureNumber;
+    @JsonProperty
+    private String profilePictureExtension;
 
     public Account(String username, String password, String nickname) {
         this.username = username;
@@ -66,6 +68,14 @@ public class Account extends Duelist {
 
     public int getProfilePictureNumber() {
         return profilePictureNumber;
+    }
+
+    public String getProfilePictureExtension() {
+        return profilePictureExtension;
+    }
+
+    public void setProfilePictureExtension(String profilePictureExtension) {
+        this.profilePictureExtension = profilePictureExtension;
     }
 
     public void setProfilePictureNumber(int profilePicture) {

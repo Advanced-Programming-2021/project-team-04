@@ -1,6 +1,7 @@
 package yugioh.view;
 
 
+import javafx.scene.input.MouseEvent;
 import lombok.Setter;
 import yugioh.controller.DuelController;
 import yugioh.model.AI;
@@ -512,6 +513,5 @@ public class DuelView extends ViewMenu {
             return getMonsterCardFromHand(isOpponent);
         }
     }
-
 
 }

@@ -20,17 +20,20 @@ import java.util.stream.Stream;
 @Setter
 public class DuelController {
 
-    private static final SecureRandom RANDOM = new SecureRandom();
     public static final String ROCK = "r(?:ock)?";
     public static final String SCISSORS = "s(?:cissors)?";
     public static final String PAPER = "p(?:aper)?";
+    private static final SecureRandom RANDOM = new SecureRandom();
 
     private static DuelController singleInstance = null;
+
     private static ArrayList<MonsterCard> deactivatedCards = new ArrayList<>();
+
     private Game game;
     private ArrayList<SpellAndTrapCard> forChain = new ArrayList<>();
     private boolean isChainActive = false;
     private ArrayList<Scanner> toReset = new ArrayList<>();
+
     public static DuelController getInstance() {
         if (singleInstance == null)
             singleInstance = new DuelController();
@@ -314,7 +317,6 @@ public class DuelController {
         deactivatedCards = new ArrayList<>();
     }
 
-
     public void handleSwordOfRevealingLight() {
         SwordsOfRevealingLight sword = (SwordsOfRevealingLight) game.getTheOtherPlayer().getField().getThisActivatedCard("Swords of Revealing Light");
         if (sword != null) {
@@ -415,7 +417,7 @@ public class DuelController {
 
     private void handleAI() {
         try {
-            Thread.sleep(100);
+            Thread.sleep(300);
         } catch (InterruptedException ignored) {
         }
         switch (getGame().getCurrentPhase()) {
@@ -427,7 +429,7 @@ public class DuelController {
             case SECOND_MAIN_PHASE -> AI.getInstance().activateSpell();
         }
         try {
-            Thread.sleep(100);
+            Thread.sleep(300);
         } catch (InterruptedException ignored) {
         }
         nextPhase();
@@ -472,7 +474,12 @@ public class DuelController {
             game.setSelectedCard(null);
             return true;
         }
-        ((MonsterCard) game.getSelectedCard()).changeAttackPower((int) (Stream.concat(game.getCurrentPlayer().getField().getMonsterCards().stream(), game.getTheOtherPlayer().getField().getMonsterCards().stream()).filter(m -> m instanceof CommandKnight).count() * 400));
+        ((MonsterCard) game.getSelectedCard()).changeAttackPower(
+                (int) (Stream.concat(
+                        game.getCurrentPlayer().getField().getMonsterCards().stream(),
+                        game.getTheOtherPlayer().getField().getMonsterCards().stream())
+                        .filter(m -> m instanceof CommandKnight).count()
+                        * 400));
         return false;
     }
 
@@ -712,10 +719,10 @@ public class DuelController {
             texChanger(attacked);
             return;
         }
-        if (attacker.getName().startsWith("The Calculator")) handleCalculator(attacker);
+        if (attacker.getName().startsWith("The Calculator"))
+            handleCalculator(attacker);
         if (attacked.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP))
             handleCalculator(attacked);
-
         if (attacked.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP)
             attackInAttack(attacked, attacker);
         else attackInDefense(attacked, attacker);
@@ -948,9 +955,9 @@ public class DuelController {
             advancedRitualArt(card);
         else if (card.getName().startsWith("Twin Twisters"))
             twinTwisters(card);
-        switch (card.getName()) {
+        else switch (card.getName()) {
             case "Change of Heart" -> changeOfHeart((ChangeOfHeart) card);
-            case "Messenger of peace" -> messengerOfPeace();
+                case "Messenger of peace" -> messengerOfPeace();
             case "Sword of dark destruction", "Black Pendant", "United We Stand", "Magnum Shield" -> equipMonster(card); //TODO
             case "Swords of Revealing Light" -> ((SwordsOfRevealingLight) card).specialMethod(game.getTheOtherPlayer());
         }
@@ -1124,6 +1131,12 @@ public class DuelController {
         }
         if (!getGame().isAI())
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
+//        getAllMonsterCards().stream().filter(m -> umiiruka.getFieldPositiveEffects().stream()
+//        .anyMatch(t -> m.getMonsterType().equals(t))).forEach(a -> {
+//            a.setThisCardAttackPower(a.getThisCardAttackPower() + 500);
+//            a.setThisCardDefensePower(a.getThisCardDefensePower() - 400);
+//        });
+        // TODO: 7/4/2021 replace below ugly piece of shit nested for with above beautiful stream
         for (MonsterCard monsterCard : getAllMonsterCards())
             for (String s : toEffectPositively)
                 if (monsterCard.getMonsterType().equals(s)) {
@@ -1144,6 +1157,9 @@ public class DuelController {
             toEffectPositively[1] = "Beast-Warrior";
         }
         int amount = game.getCurrentPlayer().getField().getGraveyard().size() * 100;
+//        getAllMonsterCards().stream().filter(m -> forest.getFieldPositiveEffects().stream()
+//                .anyMatch(t -> m.getMonsterType().equals(t))).forEach(m -> m.setThisCardAttackPower(m.getThisCardAttackPower() + amount));
+        // TODO: 7/4/2021 replace below ugly piece of shit nested for with above beautiful stream
         for (MonsterCard monsterCard : getAllMonsterCards())
             for (String s : toEffectPositively)
                 if (monsterCard.getMonsterType().equals(s))
@@ -1162,6 +1178,12 @@ public class DuelController {
         }
         if (!getGame().isAI())
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
+//        getAllMonsterCards().stream().filter(m -> forest.getFieldPositiveEffects().stream()
+//                .anyMatch(t -> m.getMonsterType().equals(t))).forEach(m -> {
+//            m.setThisCardDefensePower(m.getThisCardDefensePower() + 200);
+//            m.setThisCardAttackPower(m.getThisCardAttackPower() + 200);
+//        });
+        // TODO: 7/4/2021 replace below ugly piece of shit nested for with above beautiful stream
         for (MonsterCard m : getAllMonsterCards())
             for (String s : toEffectPositively)
                 if (m.getMonsterType().equals(s)) {
@@ -1184,6 +1206,17 @@ public class DuelController {
         }
         if (!getGame().isAI())
             makeChain(getGame().getCurrentPlayer(), game.getTheOtherPlayer());
+//        getAllMonsterCards().stream().filter(m -> yami.getFieldPositiveEffects().stream()
+//                .anyMatch(t -> m.getMonsterType().equals(t))).forEach(m -> {
+//            m.setThisCardDefensePower(m.getThisCardDefensePower() + 200);
+//            m.setThisCardAttackPower(m.getThisCardAttackPower() + 200);
+//        });
+//        getAllMonsterCards().stream().filter(m -> yami.getFieldNegativeEffects().stream()
+//                .anyMatch(t -> m.getMonsterType().equals(t))).forEach(m -> {
+//            m.setThisCardDefensePower(m.getThisCardDefensePower() - 200);
+//            m.setThisCardAttackPower(m.getThisCardAttackPower() - 200);
+//        });
+        // TODO: 7/4/2021 replace below ugly piece of shit nested for with above beautiful stream
         for (MonsterCard monsterCard : getAllMonsterCards())
             for (String s : toEffectPositively)
                 if (monsterCard.getMonsterType().equals(s)) {
@@ -1451,8 +1484,7 @@ public class DuelController {
     private void moveToGraveyardAfterAttack(MonsterCard toBeRemoved, MonsterCard remover) {
         if (toBeRemoved.getName().startsWith("Marshmallon")) return;
         addMonsterToGYFromMonsterZone(toBeRemoved);
-        if (toBeRemoved.getName().startsWith("Exploder Dragon") ||
-                toBeRemoved.getName().startsWith("Yomi Ship")) {
+        if (toBeRemoved.getName().startsWith("Exploder Dragon") || toBeRemoved.getName().startsWith("Yomi Ship")) {
             addMonsterToGYFromMonsterZone(remover);
         }
     }
@@ -1736,7 +1768,7 @@ public class DuelController {
             IO.getInstance().printString("a spacecraft’s structure is its underlying body and it's won once again");
         else {
             if (allMatches)
-                IO.getInstance().printString(winner.getUsername() + " won the whole math with score: " + winner.getScore());
+                IO.getInstance().printString(winner.getUsername() + " won the whole match with score: " + winner.getScore());
             else
                 IO.getInstance().printString(winner.getUsername() + " won the game and the score is: " + winner.getScore());
         }

@@ -108,6 +108,8 @@ public class MainController {
     }
 
     public void setRandomProfile() {
+        if (loggedIn.getProfilePictureExtension() == null)
+            loggedIn.setProfilePictureExtension(".jpg");
         if (loggedIn.getProfilePictureNumber() != 0) return;
         loggedIn.setProfilePictureNumber(random.nextInt(9) + 1);
     }

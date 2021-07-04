@@ -2,7 +2,6 @@ package yugioh.view;
 
 import javafx.scene.control.Tooltip;
 import javafx.util.Duration;
-import lombok.extern.java.Log;
 import yugioh.controller.MainController;
 import yugioh.controller.ShopController;
 import javafx.scene.control.Label;
@@ -16,19 +15,23 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class ShopView {
+
+    private static final ArrayList<Card> ALL_CARDS = ShopController.getAllCards();
+
     private static Card firstCard;
     private static Card secondCard;
     private static int navigate;
-    private static final ArrayList<Card> allCards = ShopController.getAllCards();
 
     public static void run() {
+        navigate = 0;
         showCards();
         LoginView.shopScene.lookup("#back").setDisable(true);
     }
 
     private static void showCards() {
-        firstCard = allCards.get(navigate * 2);
-        secondCard = allCards.get(navigate * 2 + 1);
+        firstCard = ALL_CARDS.get(navigate * 2);
+        if ((navigate * 2 + 1) == ALL_CARDS.size()) secondCard = null;
+        else secondCard = ALL_CARDS.get(navigate * 2 + 1);
         setImages();
         checkAmount();
         checkMoney();
@@ -40,22 +43,19 @@ public class ShopView {
         ImageView second = (ImageView) LoginView.shopScene.lookup("#second");
         Image firstImage;
         Image secondImage;
-        if (!firstCard.isOriginal() || firstCard.isConverted()) {
-           firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-        }
-        else {
-            firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
-        }
-        if (!secondCard.isOriginal() || firstCard.isConverted()) {
+        if (!firstCard.isOriginal() || firstCard.isConverted())
+            firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+        else firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+        if (secondCard == null)
+            secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+        else if (!secondCard.isOriginal() || secondCard.isConverted())
             secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-        }
-        else {
-            secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
-        }
+        else secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
         first.setImage(firstImage);
         second.setImage(secondImage);
         Tooltip.install(first, getToolTip(firstCard));
-        Tooltip.install(second, getToolTip(secondCard));
+        if (secondCard != null) Tooltip.install(second, getToolTip(secondCard));
+        else Tooltip.install(second, new Tooltip("Empty"));
     }
 
     private static Tooltip getToolTip(Card card) {
@@ -81,7 +81,7 @@ public class ShopView {
             int firstAmount = userCards.get(firstCard.getName());
             ((Label) LoginView.shopScene.lookup("#firstAmount")).setText(firstAmount + "");
         } else ((Label) LoginView.shopScene.lookup("#firstAmount")).setText("0");
-        if (userCards.containsKey(secondCard.getName())) {
+        if (secondCard != null && userCards.containsKey(secondCard.getName())) {
             int secondAmount = userCards.get(secondCard.getName());
             ((Label) LoginView.shopScene.lookup("#secondAmount")).setText(secondAmount + "");
         } else ((Label) LoginView.shopScene.lookup("#secondAmount")).setText("0");
@@ -90,7 +90,7 @@ public class ShopView {
     private static void checkMoney() {
         int userMoney = MainController.getInstance().getLoggedIn().getMoney();
         LoginView.shopScene.lookup("#firstBuy").setDisable(userMoney < firstCard.getPrice());
-        LoginView.shopScene.lookup("#secondBuy").setDisable(userMoney < secondCard.getPrice());
+        LoginView.shopScene.lookup("#secondBuy").setDisable(secondCard == null || userMoney < secondCard.getPrice());
     }
 
     public void buyFirstCard() {
@@ -108,7 +108,7 @@ public class ShopView {
     }
 
     public void back() {
-        if (navigate == 37) LoginView.shopScene.lookup("#next").setDisable(false);
+        if (navigate == (ALL_CARDS.size() - 1) / 2) LoginView.shopScene.lookup("#next").setDisable(false);
         if (navigate == 1) LoginView.shopScene.lookup("#back").setDisable(true);
         navigate--;
         showCards();
@@ -116,7 +116,7 @@ public class ShopView {
 
     public void next() {
         if (navigate == 0) LoginView.shopScene.lookup("#back").setDisable(false);
-        if (navigate == 36) LoginView.shopScene.lookup("#next").setDisable(true);
+        if (navigate == ((ALL_CARDS.size() - 1) / 2) - 1) LoginView.shopScene.lookup("#next").setDisable(true);
         navigate++;
         showCards();
     }

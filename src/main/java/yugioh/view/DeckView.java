@@ -226,9 +226,8 @@ public class DeckView {
         Image secondImage;
         if (sideCards.size() > countForDeck) {
             secondCard = Card.getCardByName(sideCards.get(countForDeck));
-            if (!firstCard.isOriginal() || firstCard.isConverted()) {
+            if (!firstCard.isOriginal() || firstCard.isConverted())
                 secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-            }
             else secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
             number.setText(String.valueOf(sideCardsHashMap.get(secondCard.getName())));
             sceneForOneDeck.lookup("#removeSide").setDisable(false);
@@ -246,9 +245,8 @@ public class DeckView {
         if (mainCards.size() > countForDeck) {
             firstCard = Card.getCardByName(mainCards.get(countForDeck));
             number.setText(String.valueOf(mainCardsHashMap.get(firstCard.getName())));
-            if (!firstCard.isOriginal() || firstCard.isConverted()) {
+            if (!firstCard.isOriginal() || firstCard.isConverted())
                 firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-            }
             else firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
             sceneForOneDeck.lookup("#removeMain").setDisable(false);
         } else {
