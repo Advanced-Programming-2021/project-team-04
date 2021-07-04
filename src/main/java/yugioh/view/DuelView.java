@@ -1,6 +1,8 @@
 package yugioh.view;
 
 
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import lombok.Setter;
 import yugioh.controller.DuelController;
@@ -105,24 +107,9 @@ public class DuelView extends ViewMenu {
     }
 
 
-    public void runForRPS() {
-        isRPSDone = false;
-        while (!isRPSDone) {
-            String firstPlayersChoice = getRPSInput();
-            String secondPlayersChoice = getRPSInput();
-            DuelController.getInstance().rockPaperScissor(firstPlayersChoice, secondPlayersChoice);
-        }
-    }
-
-
-    public void runForRPSAgainstAI() {
-        isRPSDone = false;
-        while (!isRPSDone) {
-            String playersChoice = getRPSInput();
-            String AIsChoice = RPS[RANDOM.nextInt(3)];
-            IO.getInstance().printAIsRPS(AIsChoice);
-            DuelController.getInstance().rockPaperScissor(playersChoice, AIsChoice);
-        }
+    public void coin() {
+        LoginView.stage.setScene(LoginView.coinScene);
+        DuelController.getInstance().coin();
     }
 
 
@@ -132,26 +119,19 @@ public class DuelView extends ViewMenu {
     }
 
 
-    public String getRPSInput() {
-        IO.getInstance().pickRPS();
-        String input = IO.getInstance().getInputMessage().toLowerCase();
-        while (!(input.matches("r(?:ock)?") || input.matches("p(?:aper)?") ||
-                input.matches("s(?:cissors)?"))) {
-            IO.getInstance().invalidSelection();
-            input = IO.getInstance().getInputMessage();
-        }
-        return input;
-    }
 
 
     public void chooseStarter(String winnerUsername) {
-        if (winnerUsername.equals(AI.AI_USERNAME)) {
-            DuelController.getInstance().chooseStarter(winnerUsername);
-            return;
-        }
-        IO.getInstance().chooseStarter();
-        String username = IO.getInstance().getInputMessage();
-        DuelController.getInstance().chooseStarter(username);
+//        if (winnerUsername.equals(AI.AI_USERNAME)) {
+//            DuelController.getInstance().chooseStarter(winnerUsername);
+//            return;
+//        }
+        Label label = (Label) LoginView.coinScene.lookup("#toShow");
+        label.setText(winnerUsername + " is our lucky star!\n" +
+                "you may now choose the first player your majesty!");
+        TextField firstPlayer = ((TextField) LoginView.coinScene.lookup("#textField"));
+        DuelController.getInstance().chooseStarter(firstPlayer.getText());
+        firstPlayer.clear();
     }
 
 

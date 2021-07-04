@@ -8,4 +8,8 @@ public class DuelFirstPage {
             LoginView.stage.setScene(LoginView.mainScene);
             LoginView.stage.centerOnScreen();
         }
+
+        public void playButton() {
+            DuelView.getInstance().coin();
+        }
 }

@@ -20,9 +20,6 @@ import java.util.stream.Stream;
 @Setter
 public class DuelController {
 
-    public static final String ROCK = "r(?:ock)?";
-    public static final String SCISSORS = "s(?:cissors)?";
-    public static final String PAPER = "p(?:aper)?";
     private static final SecureRandom RANDOM = new SecureRandom();
 
     private static DuelController singleInstance = null;
@@ -40,28 +37,14 @@ public class DuelController {
         return singleInstance;
     }
 
-    public void rockPaperScissor(String thisPlayer, String theOtherPlayer) {
-        if (thisPlayer.equals(theOtherPlayer)) return;
-        if (thisPlayer.matches(ROCK) && theOtherPlayer.matches(SCISSORS))
-            game.getCurrentPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches(ROCK) && theOtherPlayer.matches(PAPER))
-            game.getTheOtherPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches(SCISSORS) && theOtherPlayer.matches(PAPER))
-            game.getCurrentPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches(SCISSORS) && theOtherPlayer.matches(ROCK))
-            game.getTheOtherPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches(PAPER) && theOtherPlayer.matches(ROCK))
-            game.getCurrentPlayer().increaseCountForRPS();
-        else if (thisPlayer.matches(PAPER) && theOtherPlayer.matches(SCISSORS))
-            game.getTheOtherPlayer().increaseCountForRPS();
-        if ((game.getCurrentPlayer().getCountForRPS() == 2 && game.getTheOtherPlayer().getCountForRPS() == 0) ||
-                game.getCurrentPlayer().getCountForRPS() == 3) {
-            DuelView.getInstance().chooseStarter(game.getCurrentPlayer().getUsername());
-            DuelView.getInstance().setRPSDone(true);
-        } else if ((game.getCurrentPlayer().getCountForRPS() == 0 && game.getTheOtherPlayer().getCountForRPS() == 2) ||
-                game.getTheOtherPlayer().getCountForRPS() == 3) {
-            DuelView.getInstance().chooseStarter(game.getTheOtherPlayer().getUsername());
-            DuelView.getInstance().setRPSDone(true);
+    public void coin() {
+        Random rand = new Random();
+        int chance = rand.nextInt(2);
+        if (chance == 1) {
+            DuelView.getInstance().chooseStarter(game.getCurrentPlayerUsername());
+        }
+        else {
+            DuelView.getInstance().chooseStarter(game.getTheOtherPlayerUsername());
         }
     }
 
@@ -956,11 +939,11 @@ public class DuelController {
         else if (card.getName().startsWith("Twin Twisters"))
             twinTwisters(card);
         else switch (card.getName()) {
-            case "Change of Heart" -> changeOfHeart((ChangeOfHeart) card);
+                case "Change of Heart" -> changeOfHeart((ChangeOfHeart) card);
                 case "Messenger of peace" -> messengerOfPeace();
-            case "Sword of dark destruction", "Black Pendant", "United We Stand", "Magnum Shield" -> equipMonster(card); //TODO
-            case "Swords of Revealing Light" -> ((SwordsOfRevealingLight) card).specialMethod(game.getTheOtherPlayer());
-        }
+                case "Sword of dark destruction", "Black Pendant", "United We Stand", "Magnum Shield" -> equipMonster(card); //TODO
+                case "Swords of Revealing Light" -> ((SwordsOfRevealingLight) card).specialMethod(game.getTheOtherPlayer());
+            }
     }
 
     private void moveSpellOrTrapToGYFromSpellZone(SpellAndTrapCard spellAndTrapCard) {

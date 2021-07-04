@@ -39,6 +39,7 @@ public class IO {
         return scanner.nextLine().trim();
     }
 
+
     public void summoned() {
         System.out.println("summoned successfully");
     }

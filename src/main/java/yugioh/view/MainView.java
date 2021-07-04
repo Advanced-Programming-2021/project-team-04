@@ -1,11 +1,13 @@
 package yugioh.view;
 
+import yugioh.controller.DuelController;
 import yugioh.controller.MainController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import yugioh.model.Game;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -77,6 +79,11 @@ public class MainView {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    public void createCard() {
+        CreatorView.start();
     }
 
 

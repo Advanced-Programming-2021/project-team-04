@@ -1,0 +1,25 @@
+.root {
+    -fx-background-color: #000000;
+    -fx-background-image: url("coinBG.gif");
+    -fx-background-repeat: stretch;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+.label {
+    -fx-font-family: "Rage Italic";
+    -fx-text-fill: #ffffff;
+}
+
+.text-field {
+    -fx-font-family: "Rage Italic";
+    -fx-border-color: #0048ff;
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 40;
+    -fx-border-radius: 40;
+    -fx-pref-width: 160;
+    -fx-border-width: 3;
+    -fx-font-size: 25;
+    -fx-font-weight: bold;
+}
