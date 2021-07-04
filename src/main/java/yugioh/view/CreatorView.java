@@ -19,11 +19,6 @@ public class CreatorView {
         ALL_SPELLANDTRAP_EFFECTS = ImportAndExport.getInstance().readAllSpellAndTrapEffects();
     }
 
-    public static void main(String[] args) {
-        printMonsterEffects();
-        printSpellAndTrapEffects();
-    }
-
     public static void start() {
         System.out.println("Round and round and round it goes," +
                 " and when it deigns to stop, who you might be you cannot know.");
@@ -63,6 +58,7 @@ public class CreatorView {
         if (!name.equals("Not Special")) {
             MonsterCard monsterCard = monsterPrice(attackPower, defencePower, monsterType, cardType, level, name, cardName);
             ShopController.getAllCards().add(monsterCard);
+            ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_MONSTERS + monsterCard.getName(), monsterCard);
         }
         System.out.println("Great! You’ll get used to the world we created. Or you'll try I guess...");
     }
@@ -113,6 +109,7 @@ public class CreatorView {
         var price = !limit.equals("yes") && property.equals("Continuous") ? 200 : 0;
         newCard.setPrice((Card.getCardByName(name).getPrice() + price) * 11/10);
         ShopController.getAllCards().add(newCard);
+        ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_SPELLANDTRAPS + newCard.getName(), newCard);
     }
 
     private static void printSpellAndTrapEffects() {

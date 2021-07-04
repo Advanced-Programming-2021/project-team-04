@@ -1,27 +1,31 @@
 package yugioh.view;
 
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Popup;
+import javafx.util.Duration;
 import yugioh.controller.ImportAndExport;
 import yugioh.model.cards.Card;
+import yugioh.model.cards.MonsterCard;
+import yugioh.model.cards.SpellAndTrapCard;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ImportAndExportView {
 
     private static final FileChooser FILE_CHOOSER = new FileChooser();
     private static final DirectoryChooser DIRECTORY_CHOOSER = new DirectoryChooser();
-
+    private static Card firstCard;
+    private static Card secondCard;
+    private static int navigate;
+    private static List<Card> ALL_CARDS = new ArrayList<>();
     private static Card selectedCard = null;
 
     public static void run() {
@@ -66,10 +70,6 @@ public class ImportAndExportView {
         LoginView.stage.centerOnScreen();
     }
 
-    public static void showCards(List<Card> cards) {
-
-    }
-
     public void importButtonClicked() {
         try {
             Arrays.stream(Objects.requireNonNull(FILE_CHOOSER.showOpenDialog(new Popup()).listFiles()))
@@ -89,4 +89,72 @@ public class ImportAndExportView {
             e.printStackTrace();
         }
     }
+
+    public static void runImportPage(List<Card> cards) {
+        LoginView.stage.setScene(LoginView.importScene);
+        ALL_CARDS = cards;
+        showCards();
+        navigate = 0;
+        LoginView.importScene.lookup("#back").setDisable(true);
+    }
+
+    private static void showCards() {
+        firstCard = ALL_CARDS.get(navigate * 2);
+        if ((navigate * 2 + 1) == ALL_CARDS.size()) secondCard = null;
+        else secondCard = ALL_CARDS.get(navigate * 2 + 1);
+        setImages();
+    }
+
+
+    private static void setImages() {
+        ImageView second = (ImageView) LoginView.shopScene.lookup("#second");
+        ImageView first = (ImageView) LoginView.shopScene.lookup("#first");
+        Image secondImage;
+        Image firstImage;
+        if (secondCard == null)
+            secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+        else if (!secondCard.isOriginal() || secondCard.isConverted())
+            secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+        else secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+        if (!firstCard.isOriginal() || firstCard.isConverted())
+            firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+        else firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+        first.setImage(firstImage);
+        second.setImage(secondImage);
+        Tooltip.install(first, getToolTip(firstCard));
+        if (secondCard != null) Tooltip.install(second, getToolTip(secondCard));
+        else Tooltip.install(second, new Tooltip("Empty"));
+    }
+
+    private static Tooltip getToolTip(Card card) {
+        StringBuilder cardInformation = new StringBuilder(card.getName()).append("\n");
+        if (!(card instanceof MonsterCard)) {
+            SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) card;
+            cardInformation.append(spellAndTrapCard.isSpell() ? "Spell Card" : "Trap Card");
+        } else {
+            MonsterCard monsterCard = (MonsterCard) card;
+            cardInformation.append("Monster Card\nATK: ").append(monsterCard.getClassAttackPower()).
+                    append("\nDEF: ").append(monsterCard.getClassDefensePower());
+        }
+        cardInformation.append("\nPRICE: ").append(card.getPrice());
+        Tooltip tooltip = new Tooltip(cardInformation.toString());
+        tooltip.setShowDelay(Duration.seconds(0));
+        tooltip.setStyle("-fx-font-size: 17");
+        return tooltip;
+    }
+
+    public void back() {
+        if (navigate == (ALL_CARDS.size() - 1) / 2) LoginView.shopScene.lookup("#next").setDisable(false);
+        if (navigate == 1) LoginView.shopScene.lookup("#back").setDisable(true);
+        navigate--;
+        showCards();
+    }
+
+    public void next() {
+        if (navigate == 0) LoginView.shopScene.lookup("#back").setDisable(false);
+        if (navigate == ((ALL_CARDS.size() - 1) / 2) - 1) LoginView.shopScene.lookup("#next").setDisable(true);
+        navigate++;
+        showCards();
+    }
+
 }

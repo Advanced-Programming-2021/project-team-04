@@ -27,7 +27,7 @@ public class LoginView extends Application {
     public static Scene shopScene;
     public static Scene importAndExportScene;
     public static Scene profileScene;
-    public static Scene creatorScene;
+    public static Scene importScene;
     public static MediaPlayer IntroMusic;
     public static boolean isMute;
 
@@ -62,7 +62,7 @@ public class LoginView extends Application {
         shopScene = sceneCreator("ShopView.fxml");
         duelFirstScene = sceneCreator("DuelFirstPage.fxml");
         importAndExportScene = sceneCreator("ImportAndExportView.fxml");
-//        creatorScene = sceneCreator("CreatorView.fxml");
+        importScene = sceneCreator("ImportView.fxml");
     }
 
     public static Scene sceneCreator(String resource) {

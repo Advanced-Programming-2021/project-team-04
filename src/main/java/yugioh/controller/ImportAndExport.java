@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import yugioh.model.Account;
-import yugioh.model.Field;
 import yugioh.model.PlayerDeck;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
@@ -14,7 +13,6 @@ import yugioh.model.cards.SpellAndTrapCard;
 import yugioh.view.ImportAndExportView;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -164,7 +162,7 @@ public class ImportAndExport {
 
     public void importFile(File file) {
         List<Card> cards = readCardsFromFile(file);
-        ImportAndExportView.showCards(cards);
+        ImportAndExportView.runImportPage(cards);
         cards.stream().filter(Objects::nonNull).forEach(c -> writeObjectToJson(RESOURCES_IMPORTANDEXPORT + c.getName() + JSON, c));
     }
 
