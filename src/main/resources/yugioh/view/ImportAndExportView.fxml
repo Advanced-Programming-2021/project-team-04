@@ -19,8 +19,8 @@
             <Label fx:id="label" text="Drag the file to me"/>
             <Label fx:id="dropped"/>
         </VBox>
-        <Button text="import" fx:id="import"/>
-        <Button text="export" fx:id="export"/>
+        <Button text="import" fx:id="import" onMouseClicked="#importButtonClicked"/>
+        <Button text="export" fx:id="export" onMouseClicked="#exportButtonClicked"/>
     </VBox>
 
     <VBox GridPane.columnIndex="1" spacing="50">

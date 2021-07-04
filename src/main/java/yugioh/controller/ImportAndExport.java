@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import yugioh.model.Account;
+import yugioh.model.Field;
 import yugioh.model.PlayerDeck;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
@@ -63,8 +64,8 @@ public class ImportAndExport {
         }
     }
 
-    public void exportCard(String cardName) {
-        writeObjectToJson(RESOURCES_IMPORTANDEXPORT + cardName + JSON, Card.getCardByName(cardName));
+    public void exportCard(File directory, Card card) {
+        writeObjectToJson(directory.getAbsolutePath() + "/" + card.getName() + JSON, card);
     }
 
     public Account readAccount(String address) {
