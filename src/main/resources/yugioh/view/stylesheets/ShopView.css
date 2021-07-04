@@ -23,7 +23,7 @@
     -fx-background-color: #ffffff;
 }
 
-#mainMenu {
+#goBack {
     -fx-translate-y: -10;
     -fx-translate-x: 120;
     -fx-font-family: "Kunstler Script";
@@ -44,7 +44,7 @@
     -fx-translate-x: -100;
 }
 
-#mainMenu:hover, .buy:hover {
+#goBack:hover, .buy:hover {
     -fx-border-color: #ffffff;
     -fx-background-color: #0023ff;
 }

@@ -42,7 +42,7 @@
     -fx-border-color: #c1a10a;
 }
 
-#mainMenu {
+#goBack {
     -fx-pref-width: 150;
     -fx-translate-x: 200;
     -fx-translate-y: -80;

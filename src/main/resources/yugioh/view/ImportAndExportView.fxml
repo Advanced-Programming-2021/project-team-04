@@ -25,7 +25,7 @@
 
     <VBox GridPane.columnIndex="1" spacing="50">
         <ImageView fx:id="cardPicture" styleClass="box" fitHeight="400" fitWidth="300"/>
-        <Button fx:id="mainMenu" onMouseClicked="#mainMenu" text="main menu"/>
+        <Button fx:id="goBack" onMouseClicked="#mainMenu" text="main menu"/>
     </VBox>
 
     <stylesheets>
