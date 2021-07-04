@@ -52,3 +52,10 @@
     -fx-translate-x: -50;
     -fx-translate-y: -22;
 }
+
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: #c1a10a;
+    -fx-text-fill: #c1a10a;
+    -fx-border-radius: 6;
+}
