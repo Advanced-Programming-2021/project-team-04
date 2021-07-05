@@ -61,7 +61,7 @@ public class CreatorView {
         if (!name.equals("Not Special")) {
             var monsterCard = monsterPrice(attackPower, defencePower, monsterType, cardType, level, name, cardName, description);
             ShopController.getAllCards().add(monsterCard);
-            ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_MONSTERS + monsterCard.getName(), monsterCard);
+            ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_CARDS + monsterCard.getName(), monsterCard);
         }
         System.out.println("Great! You’ll get used to the world we created. Or you'll try I guess...");
     }
@@ -117,7 +117,7 @@ public class CreatorView {
         var price = !limit.equals("yes") && property.equals("Continuous") ? 200 : 0;
         newCard.setPrice((Card.getCardByName(name).getPrice() + price) * 11/10);
         ShopController.getAllCards().add(newCard);
-        ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_SPELLANDTRAPS + newCard.getName(), newCard);
+        ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_CARDS + newCard.getName(), newCard);
     }
 
     private static void printSpellAndTrapEffects() {

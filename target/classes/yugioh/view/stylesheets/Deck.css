@@ -29,7 +29,7 @@
 
 #Back {
     -fx-translate-x: -550;
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
     -fx-background-color: #000000;
@@ -39,7 +39,7 @@
 }
 
 .add {
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
     -fx-background-color: #000000;
@@ -50,7 +50,7 @@
 }
 
 .label {
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-font-size: 25.4;
     -fx-text-fill: #000000;
     -fx-translate-x: -93;
@@ -65,7 +65,7 @@
 }
 
 .Delete {
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 120;
     -fx-background-color: #000000;

@@ -24,24 +24,24 @@
 
 
 #mainMenu {
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
     -fx-background-color: #ffffff;
     -fx-border-color: #0023ff;
-    -fx-font-size: 30;
+    -fx-font-size: 25;
     -fx-translate-x: -100;
     -fx-translate-y: -120;
 }
 
 
 .action {
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 150;
     -fx-background-color: #ffffff;
     -fx-border-color: #0023ff;
-    -fx-font-size: 30;
+    -fx-font-size: 25;
     -fx-cell-size: 20;
     -fx-translate-x: -100;
     -fx-translate-y: -130;
@@ -62,12 +62,12 @@
 
 
 #create {
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
     -fx-background-color: #ffffff;
     -fx-border-color: #0023ff;
-    -fx-font-size: 30;
+    -fx-font-size: 20;
     -fx-background-size: 20;
     -fx-translate-x: -100;
     -fx-translate-y: -120;
@@ -77,7 +77,7 @@
 .label {
     -fx-translate-y: -140;
     -fx-translate-x: -100;
-    -fx-font-family: "Kunstler Script";
-    -fx-font-size: 47;
+    -fx-font-family: "Jokerman";
+    -fx-font-size: 37;
     -fx-font-weight: bold;
 }

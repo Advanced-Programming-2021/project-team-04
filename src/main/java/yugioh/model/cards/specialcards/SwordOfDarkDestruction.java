@@ -13,17 +13,6 @@ public class SwordOfDarkDestruction extends SpellAndTrapCard {
 
     public SwordOfDarkDestruction() {
         super();
-        setName("Sword of dark destruction");
-        isSpell = true;
-        property = "Equip";
-        setDescription();
-        isLimited = false;
-        setPrice(4300);
-    }
-
-
-    private void setDescription() {
-        description = "A DARK monster equipped with this card increases its ATK by 400 points and decreases its DEF by 200 points.";
     }
 
 
@@ -41,11 +30,10 @@ public class SwordOfDarkDestruction extends SpellAndTrapCard {
     }
 
 
+    @Override
     public void reset() {
         if (equippedMonster != null) equippedMonster.reset();
         equippedMonster = null;
         isActive = false;
     }
-
-
 }

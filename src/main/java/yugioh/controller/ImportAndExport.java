@@ -3,6 +3,8 @@ package yugioh.controller;
 
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
+import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import yugioh.model.Account;
@@ -10,6 +12,7 @@ import yugioh.model.PlayerDeck;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
+import yugioh.model.cards.specialcards.BlackPendant;
 import yugioh.view.ImportAndExportView;
 
 import java.io.File;
@@ -22,10 +25,9 @@ public class ImportAndExport {
 
     public static final String JSON = ".JSON";
     public static final String RESOURCES_USERS = "src/main/resources/users/";
-    public static final String RESOURCES_IMPORTANDEXPORT = "src/main/resources/importandexport/";
-    public static final String RESOURCES_MONSTERS = "src/main/resources/monsters/";
-    public static final String RESOURCES_SPELLANDTRAPS = "src/main/resources/spellandtraps/";
+    public static final String RESOURCES_CARDS = "src/main/resources/cards/";
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    public static final ObjectMapper WRITER = new ObjectMapper();
     public static final CsvMapper CSV_MAPPER = new CsvMapper();
 
     private static ImportAndExport singleInstance = null;
@@ -33,6 +35,12 @@ public class ImportAndExport {
     static {
         OBJECT_MAPPER.disable(MapperFeature.AUTO_DETECT_CREATORS, MapperFeature.AUTO_DETECT_FIELDS,
                 MapperFeature.AUTO_DETECT_GETTERS, MapperFeature.AUTO_DETECT_IS_GETTERS);
+        PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
+                .allowIfBaseType(Card.class).allowIfBaseType(MonsterCard.class).allowIfBaseType(SpellAndTrapCard.class)
+                .build();
+        WRITER.disable(MapperFeature.AUTO_DETECT_CREATORS, MapperFeature.AUTO_DETECT_FIELDS,
+                MapperFeature.AUTO_DETECT_GETTERS, MapperFeature.AUTO_DETECT_IS_GETTERS);
+        WRITER.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
     }
 
     public static ImportAndExport getInstance() {
@@ -48,18 +56,6 @@ public class ImportAndExport {
     public void readAllUsers() {
         Arrays.stream(Objects.requireNonNull(new File(RESOURCES_USERS).listFiles())).filter(Objects::nonNull)
                 .forEach(f -> Account.addAccount(readAccount(RESOURCES_USERS + f.getName())));
-    }
-
-    public void importCard(String cardName, String type) {
-        if (type.equals("monster")) {
-            var monsterCard = readMonsterCard(RESOURCES_IMPORTANDEXPORT + cardName + JSON);
-            monsterCard.reset();
-            ShopController.getAllCards().add(monsterCard);
-        } else {
-            var spellAndTrapCard = readSpellAndTrapCard(RESOURCES_IMPORTANDEXPORT + cardName + JSON);
-            spellAndTrapCard.reset();
-            ShopController.getAllCards().add(spellAndTrapCard);
-        }
     }
 
     public void exportCard(File directory, Card card) {
@@ -91,57 +87,21 @@ public class ImportAndExport {
     }
 
     public Card readCard(String cardName) throws Exception {
-        if (Card.isCardSpecial(cardName))
-            return (Card) Class.forName(Card.getSpecialCardClassName(cardName)).getConstructor().newInstance();
-        var monsterCard = readMonsterCard(RESOURCES_MONSTERS + cardName + JSON);
-        var spellAndTrapCard = readSpellAndTrapCard(RESOURCES_SPELLANDTRAPS + cardName + JSON);
-        if (monsterCard == null && spellAndTrapCard != null) return spellAndTrapCard;
-        if (monsterCard != null && spellAndTrapCard == null) {
-            monsterCard.reset();
-            return monsterCard;
-        }
-        return null;
+        return Objects.requireNonNull(OBJECT_MAPPER.readValue(new File(RESOURCES_CARDS + cardName + JSON), Card.class));
+    }
+
+    public Card readCard(File file) throws Exception {
+        return Objects.requireNonNull(OBJECT_MAPPER.readValue(file, Card.class));
     }
 
     public ArrayList<Card> readAllCards() {
-        return Stream.concat(
-                Arrays.stream(Objects.requireNonNull(new File(RESOURCES_MONSTERS).listFiles()))
-                        .map(f -> readMonsterCard(f.getPath())).filter(Objects::nonNull).peek(MonsterCard::reset),
-                Arrays.stream(Objects.requireNonNull(new File(RESOURCES_SPELLANDTRAPS).listFiles()))
-                        .map(f -> readSpellAndTrapCard(f.getPath())).filter(Objects::nonNull))
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    public MonsterCard readMonsterCard(String address) {
-        try {
-            return OBJECT_MAPPER.readValue(new File(address), MonsterCard.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public SpellAndTrapCard readSpellAndTrapCard(String address) {
-        try {
-            return OBJECT_MAPPER.readValue(new File(address), SpellAndTrapCard.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public HashMap<String, String> readCardNameToDescriptionMap() {
-        try {
-            return OBJECT_MAPPER.readValue(new File("src/main/resources/utils/MapCardNameToCardDescription.JSON"), HashMap.class);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public HashMap<String, String> readSpecialCardNameToClassNameMap() {
-        try {
-            return OBJECT_MAPPER.readValue(new File("src/main/resources/utils/MapSpecialCardNameToClassName.JSON"), HashMap.class);
-        } catch (Exception e) {
-            return null;
-        }
+        return Arrays.stream(Objects.requireNonNull(new File(RESOURCES_CARDS).listFiles())).map(f -> {
+            try {
+                return readCard(f);
+            } catch (Exception e) {
+                return null;
+            }
+        }).filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new));
     }
 
     public HashMap<String, String> readAllMonsterEffects() {
@@ -163,7 +123,7 @@ public class ImportAndExport {
     public void importFile(File file) {
         List<Card> cards = readCardsFromFile(file);
         ImportAndExportView.runImportPage(cards);
-        cards.stream().filter(Objects::nonNull).forEach(c -> writeObjectToJson(RESOURCES_IMPORTANDEXPORT + c.getName() + JSON, c));
+        cards.stream().filter(Objects::nonNull).forEach(c -> writeObjectToJson(RESOURCES_CARDS + c.getName() + JSON, c));
     }
 
     public List readCardsFromFile(File file) {
@@ -191,7 +151,7 @@ public class ImportAndExport {
 
     public void writeObjectToJson(String address, Object object) {
         try {
-            OBJECT_MAPPER.writeValue(new File(address), object);
+            WRITER.writeValue(new File(address), object);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -30,22 +30,22 @@
 #mainMenu {
     -fx-translate-y: -10;
     -fx-translate-x: 120;
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
     -fx-background-color: #ffffff;
     -fx-border-color: #ffffff;
-    -fx-font-size: 25.4;
+    -fx-font-size: 20;
 }
 
 
 .buy {
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
     -fx-background-color: #ffffff;
     -fx-border-color: #ffffff;
-    -fx-font-size: 25.4;
+    -fx-font-size: 20;
     -fx-translate-x: -100;
 }
 

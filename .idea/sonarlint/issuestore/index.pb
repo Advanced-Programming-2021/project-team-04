@@ -35,8 +35,6 @@ W
 'src/main/java/yugioh/view/MainView.java,f\b\fb857bf48a6929dda0fff3911260db0ef00c32c7
 W
 'src/main/java/yugioh/view/ShopView.java,1\9\1948fd56610ec47c1d821d91e997963a72fef2a7
-f
-6src/main/java/yugioh/model/cards/SpellAndTrapCard.java,d\2\d2268b7d5007a7c5b45e65b5fac6be8564877580
 c
 3src/main/java/yugioh/controller/DeckController.java,5\9\594bc02416664b70f269aafbda24eadbd5965a01
 N

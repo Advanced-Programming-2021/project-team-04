@@ -1,1 +1,1 @@
-{"allPlayerDecks":[],"allCardsHashMap":{},"activePlayerDeck":null,"username":"salesa","nickname":"nick","password":"tma","score":0,"money":100000,"profilePictureNumber":0,"profilePictureExtension":null}
+["yugioh.model.Account",{"allPlayerDecks":["java.util.ArrayList",[]],"allCardsHashMap":["java.util.LinkedHashMap",{}],"activePlayerDeck":null,"username":"salesa","nickname":"nick","password":"tma","score":0,"money":100000,"profilePictureNumber":0,"profilePictureExtension":null}]

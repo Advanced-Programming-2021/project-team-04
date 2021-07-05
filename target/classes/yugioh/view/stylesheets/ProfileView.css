@@ -16,9 +16,9 @@
 
 
 .label {
-    -fx-font-family: "Monotype Corsiva";
+    -fx-font-family: "Jokerman";
     -fx-text-fill: #ffffff;
-    -fx-font-size: 20;
+    -fx-font-size: 15;
     -fx-translate-x: 5;
 }
 
@@ -30,8 +30,8 @@
 
 
 .button {
-    -fx-font-family: "Monotype Corsiva";
-    -fx-font-size: 20;
+    -fx-font-family: "Jokerman";
+    -fx-font-size: 15;
     -fx-background-color: #c1a10a;
     -fx-text-fill: #000000;
     -fx-pref-height: 15;

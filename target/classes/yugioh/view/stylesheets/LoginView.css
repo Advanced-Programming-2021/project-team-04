@@ -7,18 +7,19 @@
 }
 
 #greetings {
-    -fx-font-size: 49;
-    -fx-font-family: "Edwardian Script ITC";
+    -fx-font-size: 27;
+    -fx-font-family: "Jokerman";
     -fx-font-weight: bold;
-    -fx-effect: dropshadow( one-pass-box , #ff02d5, 0, 0.5, 5, 5);
+    -fx-text-fill: #ff02d5;
     -fx-translate-x: -37;
 }
 
 .label {
-    -fx-font-size: 25.2;
-    -fx-font-family: "Kunstler Script";
-    -fx-effect: dropshadow( one-pass-box , #ff02d5, 0, 0.5, 5, 5);
+    -fx-font-size: 15;
+    -fx-font-family: "Jokerman";
+    -fx-text-fill: #ff02d5;
     -fx-translate-x: -37;
+    -fx-translate-y: 10;
 }
 
 .text-field {
@@ -28,12 +29,12 @@
 }
 
 .button {
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 120;
     -fx-background-color: #ff02d5;
     -fx-border-color: #ff02d5;
-    -fx-font-size: 25.2;
+    -fx-font-size: 17;
     -fx-translate-y: +20;
     -fx-translate-x: -37;
 }
@@ -66,5 +67,5 @@
 }
 
 .text-field {
-    -fx-font-size: 15;
+    -fx-font-size: 10;
 }
