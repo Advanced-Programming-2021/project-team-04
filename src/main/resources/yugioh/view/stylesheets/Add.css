@@ -26,23 +26,23 @@
 #Back {
     -fx-translate-y: -5;
     -fx-translate-x: 62;
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
     -fx-background-color: #000000;
     -fx-border-color: #ffffff;
-    -fx-font-size: 25.4;
+    -fx-font-size: 20;
     -fx-text-fill: #ffffff;
 }
 
 .add {
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 237;
     -fx-background-color: #000000;
     -fx-border-color: #ffffff;
     -fx-text-fill: #ffffff;
-    -fx-font-size: 25.4;
+    -fx-font-size: 20;
     -fx-translate-x: -100;
 }
 

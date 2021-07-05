@@ -8,6 +8,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lombok.Setter;
 import yugioh.controller.DuelController;
+import yugioh.controller.MainController;
 import yugioh.model.AI;
 import yugioh.model.cards.Card;
 import yugioh.model.CardStatusInField;
@@ -102,6 +103,10 @@ public class DuelView extends ViewMenu {
     public void coin() {
         LoginView.stage.setScene(LoginView.coinScene);
         DuelController.getInstance().coin();
+    }
+
+    public void back() {
+        LoginView.stage.setScene(LoginView.duelFirstScene);
     }
 
     public void chooseStarter(String winnerUsername) {

@@ -8,7 +8,7 @@
 
 
 .navi {
-    -fx-translate-x: -150;
+    -fx-translate-x: -140;
     -fx-background-color: #000000;
     -fx-font-size: 50;
     -fx-text-fill: #ffffff;
@@ -20,41 +20,54 @@
     -fx-background-color: #ffffff;
 }
 
+.naviN:hover {
+    -fx-text-fill: #000000;
+    -fx-background-color: #ffffff;
+}
+
+.naviN {
+    -fx-translate-x: -260;
+    -fx-background-color: #000000;
+    -fx-font-size: 50;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 0;
+}
+
 #back {
-    -fx-translate-x: -200;
+    -fx-translate-x: -300;
 }
 
 #goBack {
     -fx-translate-y: -10;
-    -fx-translate-x: 60;
-    -fx-font-family: "Kunstler Script";
+    -fx-translate-x: -40;
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
     -fx-background-color: #ffffff;
     -fx-border-color: #ffffff;
-    -fx-text-fill: #52126d;
-    -fx-font-size: 25.4;
+    -fx-text-fill: #a77c00;
+    -fx-font-size: 20;
 }
 
 #goBack:hover, .select:hover {
-    -fx-background-color: #52126d;
-    -fx-border-color: #52126d;
+    -fx-background-color: #a77c00;
+    -fx-border-color: #a77c00;
     -fx-text-fill: #ffffff;
 }
 
 .select {
     -fx-translate-y: 10;
-    -fx-font-family: "Kunstler Script";
+    -fx-font-family: "Jokerman";
     -fx-pref-height: 14;
     -fx-pref-width: 175;
     -fx-background-color: #ffffff;
     -fx-border-color: #ffffff;
-    -fx-text-fill: #52126d;
-    -fx-font-size: 25.4;
+    -fx-text-fill: #a77c00;
+    -fx-font-size: 20;
 }
 
 .box {
-    -fx-translate-x: -150;
+    -fx-translate-x: -250;
 }
 
 

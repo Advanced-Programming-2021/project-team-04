@@ -35,7 +35,7 @@
 
     <HBox spacing="10" alignment="CENTER"
           GridPane.rowIndex="3" GridPane.columnSpan="2">
-        <Button text="Import and Export" onMouseClicked="#importAndExport"/>
+        <Button text="Import and Export" onMouseClicked="#importAndExport" styleClass="import"/>
         <Button text="Start Game" onMouseClicked="#startNewGame"/>
     </HBox>
 

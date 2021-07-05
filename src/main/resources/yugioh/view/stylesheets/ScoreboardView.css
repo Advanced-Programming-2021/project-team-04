@@ -7,18 +7,18 @@
 }
 
 .label {
-    -fx-font-size: 27;
-    -fx-font-family: "Script MT Bold";
+    -fx-font-size: 20;
+    -fx-font-family: "Jokerman";
     -fx-translate-x: -70;
     -fx-translate-y: -150;
 }
 
 .button {
-    -fx-font-family: "Script MT Bold";
+    -fx-font-family: "Jokerman";
     -fx-pref-width: 150;
     -fx-translate-y: 270;
-    -fx-translate-x: 35;
-    -fx-font-size: 20;
+    -fx-translate-x: 50;
+    -fx-font-size: 15;
     -fx-background-color: #FF00C8;
     -fx-text-fill: #3c5162;
     -fx-border-color: #FF00C8;

@@ -17,7 +17,7 @@
 
     <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back"
             onMouseClicked="#back"/>
-    <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="3" fx:id="next"
+    <Button text="&#62;" styleClass="naviN" GridPane.rowIndex="1" GridPane.columnIndex="3" fx:id="next"
             onMouseClicked="#next"/>
 
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" spacing="10" alignment="CENTER" prefWidth="300" styleClass="box">
