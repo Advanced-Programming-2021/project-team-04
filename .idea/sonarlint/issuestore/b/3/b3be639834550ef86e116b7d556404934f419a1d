@@ -1,0 +1,75 @@
+
+A
+java:S1444"+Make this "public static stage" field final(œ‰à
+F
+java:S1444"0Make this "public static loginScene" field final(Èò­à
+G
+java:S1444"1Make this "public static signUpScene" field final(äò‡£
+E
+java:S1444"/Make this "public static mainScene" field final(æñ©²
+P
+java:S1444"5Make this "public static scoreboardScene" field final(£Ê´ıÿÿÿÿ
+E
+java:S1444"/Make this "public static deckScene" field final(õÆ«
+E
+java:S1444"/Make this "public static duelScene" field final(ÎúŠ£
+D
+java:S1444"/Make this "public static shopScene" field final(Š˜˜g
+P
+java:S1444":Make this "public static importAndExportScene" field final(ÍÚµş
+M
+java:S1444"2Make this "public static profileScene" field final(øŸÄıÿÿÿÿ
+M
+java:S1444"2Make this "public static creatorScene" field final(€¸ èøÿÿÿÿ
+K
+java:S1444"0Make this "public static IntroMusic" field final(»éÛßüÿÿÿÿ
+G
+java:S1444 ",Make this "public static isMute" field final(à¡¦Úøÿÿÿÿ
+a
+java:S1192]"FDefine a constant instead of duplicating this literal "#mute" 3 times.(³õ„úÿÿÿÿ
+g
+java:S1104"QMake stage a static final constant or non-public and provide accessors if needed.(œ‰à
+l
+java:S1104"VMake loginScene a static final constant or non-public and provide accessors if needed.(Èò­à
+m
+java:S1104"WMake signUpScene a static final constant or non-public and provide accessors if needed.(äò‡£
+k
+java:S1104"UMake mainScene a static final constant or non-public and provide accessors if needed.(æñ©²
+v
+java:S1104"[Make scoreboardScene a static final constant or non-public and provide accessors if needed.(£Ê´ıÿÿÿÿ
+k
+java:S1104"UMake deckScene a static final constant or non-public and provide accessors if needed.(õÆ«
+k
+java:S1104"UMake duelScene a static final constant or non-public and provide accessors if needed.(ÎúŠ£
+j
+java:S1104"UMake shopScene a static final constant or non-public and provide accessors if needed.(Š˜˜g
+v
+java:S1104"`Make importAndExportScene a static final constant or non-public and provide accessors if needed.(ÍÚµş
+s
+java:S1104"XMake profileScene a static final constant or non-public and provide accessors if needed.(øŸÄıÿÿÿÿ
+s
+java:S1104"XMake creatorScene a static final constant or non-public and provide accessors if needed.(€¸ èøÿÿÿÿ
+q
+java:S1104"VMake IntroMusic a static final constant or non-public and provide accessors if needed.(»éÛßüÿÿÿÿ
+m
+java:S1104 "RMake isMute a static final constant or non-public and provide accessors if needed.(à¡¦Úøÿÿÿÿ
+p
+java:S3008"URename this field "IntroMusic" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(»éÛßüÿÿÿÿ
+‡
+java:S1845Z"lRename method "loginScene" to prevent any misunderstanding/clash with field "loginScene" defined on line 21.(òÜõÚûÿÿÿÿ
+„
+java:S1845`"nRename method "signupScene" to prevent any misunderstanding/clash with field "signUpScene" defined on line 22.(ÍË¢ä
+L
+java:S2696*"6Make the enclosing method "static" or remove this set.(ä°üå
+V	java:S125?"<This block of commented-out lines of code should be removed.(¯²¯®ùÿÿÿÿ
+X	java:S125A"<This block of commented-out lines of code should be removed.(îÕšé8ïÓöç¦/
+E
+java:S6212E"/Declare this local variable with "var" instead.(€ªÁÖ
+E
+java:S6212G"/Declare this local variable with "var" instead.(²ÔÉõ
+X
+java:S2696m"6Make the enclosing method "static" or remove this set.(áÑÎëûÿÿÿÿ8½÷çå¦/
+D
+java:S6212t"/Declare this local variable with "var" instead.(ì¥ÿS
+Q
+java:S2696{"6Make the enclosing method "static" or remove this set.(ü©Åšøÿÿÿÿ

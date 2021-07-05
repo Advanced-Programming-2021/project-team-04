@@ -1,0 +1,44 @@
+.root {
+    -fx-background-color: #000000;
+    -fx-background-image: url("graveyard.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+.navi {
+    -fx-translate-x: -20;
+    -fx-background-color: #000000;
+    -fx-font-size: 50;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 0;
+}
+
+.box {
+    -fx-translate-x: 80;
+}
+
+.navi:hover {
+    -fx-text-fill: #000000;
+    -fx-background-color: #ffffff;
+}
+
+
+.label {
+    -fx-font-family: "Jokerman";
+    -fx-font-size: 25.4;
+    -fx-text-fill: #000000;
+    -fx-translate-x: -93;
+    -fx-padding: 10;
+    -fx-border-color: #000000;
+}
+
+
+.select:hover {
+    -fx-border-color: #000000;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+
+

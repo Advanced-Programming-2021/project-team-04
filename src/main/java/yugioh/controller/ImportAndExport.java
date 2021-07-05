@@ -1,8 +1,11 @@
 package yugioh.controller;
 
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
@@ -12,13 +15,11 @@ import yugioh.model.PlayerDeck;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
-import yugioh.model.cards.specialcards.BlackPendant;
 import yugioh.view.ImportAndExportView;
 
 import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class ImportAndExport {
@@ -27,7 +28,6 @@ public class ImportAndExport {
     public static final String RESOURCES_USERS = "src/main/resources/users/";
     public static final String RESOURCES_CARDS = "src/main/resources/cards/";
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    public static final ObjectMapper WRITER = new ObjectMapper();
     public static final CsvMapper CSV_MAPPER = new CsvMapper();
 
     private static ImportAndExport singleInstance = null;
@@ -35,18 +35,32 @@ public class ImportAndExport {
     static {
         OBJECT_MAPPER.disable(MapperFeature.AUTO_DETECT_CREATORS, MapperFeature.AUTO_DETECT_FIELDS,
                 MapperFeature.AUTO_DETECT_GETTERS, MapperFeature.AUTO_DETECT_IS_GETTERS);
-        PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
-                .allowIfBaseType(Card.class).allowIfBaseType(MonsterCard.class).allowIfBaseType(SpellAndTrapCard.class)
-                .build();
-        WRITER.disable(MapperFeature.AUTO_DETECT_CREATORS, MapperFeature.AUTO_DETECT_FIELDS,
-                MapperFeature.AUTO_DETECT_GETTERS, MapperFeature.AUTO_DETECT_IS_GETTERS);
-        WRITER.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
+        OBJECT_MAPPER.activateDefaultTyping(getTypeValidator(), ObjectMapper.DefaultTyping.NON_FINAL);
     }
 
     public static ImportAndExport getInstance() {
         if (singleInstance == null)
             singleInstance = new ImportAndExport();
         return singleInstance;
+    }
+
+    private static PolymorphicTypeValidator getTypeValidator() {
+        return new PolymorphicTypeValidator() {
+            @Override
+            public Validity validateBaseType(MapperConfig<?> mapperConfig, JavaType javaType) {
+                return Validity.ALLOWED;
+            }
+
+            @Override
+            public Validity validateSubClassName(MapperConfig<?> mapperConfig, JavaType javaType, String s) {
+                return Validity.ALLOWED;
+            }
+
+            @Override
+            public Validity validateSubType(MapperConfig<?> mapperConfig, JavaType javaType, JavaType javaType1) {
+                return Validity.ALLOWED;
+            }
+        };
     }
 
     public void writeAllUsers() {
@@ -69,6 +83,7 @@ public class ImportAndExport {
             account.setAbleToAttack(true);
             return account;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -99,6 +114,7 @@ public class ImportAndExport {
             try {
                 return readCard(f);
             } catch (Exception e) {
+                e.printStackTrace();
                 return null;
             }
         }).filter(Objects::nonNull).collect(Collectors.toCollection(ArrayList::new));
@@ -151,7 +167,7 @@ public class ImportAndExport {
 
     public void writeObjectToJson(String address, Object object) {
         try {
-            WRITER.writeValue(new File(address), object);
+            OBJECT_MAPPER.writeValue(new File(address), object);
         } catch (Exception e) {
             e.printStackTrace();
         }

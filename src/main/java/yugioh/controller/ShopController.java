@@ -24,7 +24,7 @@ public class ShopController {
 
     static {
         allCards = new ArrayList<>();
-        addSpecialCards();
+//        addSpecialCards();
         allCards.addAll(ImportAndExport.getInstance().readAllCards());
         sort();
     }
@@ -63,16 +63,16 @@ public class ShopController {
     }
 
 
-    private static void addSpecialCards() {
-        allCards.add(new ChangeOfHeart());
-        allCards.add(new CommandKnight());
-        allCards.add(new UnitedWeStand());
-        allCards.add(new SwordsOfRevealingLight());
-        allCards.add(new SwordOfDarkDestruction());
-        allCards.add(new BlackPendant());
-        allCards.add(new MagnumShield());
-        allCards.add(new Scanner());
-    }
+//    private static void addSpecialCards() {
+//        allCards.add(new ChangeOfHeart());
+//        allCards.add(new CommandKnight());
+//        allCards.add(new UnitedWeStand());
+//        allCards.add(new SwordsOfRevealingLight());
+//        allCards.add(new SwordOfDarkDestruction());
+//        allCards.add(new BlackPendant());
+//        allCards.add(new MagnumShield());
+//        allCards.add(new Scanner());
+//    }
 
 
     private static void sort() {

@@ -7,8 +7,6 @@ d
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 X
 (src/main/java/yugioh/model/GameDeck.java,6\2\62bcd3749f36658e2b6102bac50cc5486fd8a05d
-W
-'src/main/java/yugioh/model/Account.java,1\b\1b867d6b8721502011e646e7c212d5c5a7026335
 Z
 *src/main/java/yugioh/model/PlayerDeck.java,5\4\5407799759553aef0d45b4d969c686f1f21029f8
 W
@@ -37,5 +35,3 @@ W
 'src/main/java/yugioh/view/ShopView.java,1\9\1948fd56610ec47c1d821d91e997963a72fef2a7
 c
 3src/main/java/yugioh/controller/DeckController.java,5\9\594bc02416664b70f269aafbda24eadbd5965a01
-N
-src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7

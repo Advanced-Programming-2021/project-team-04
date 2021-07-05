@@ -1,0 +1,19 @@
+
+d
+java:S1192–"FDefine a constant instead of duplicating this literal "#back" 3 times.(Ïƒ­Â8û‘Â˜§/
+S
+java:S1128"8Remove this unused import 'java.util.stream.Collectors'.(Óóº´úÿÿÿÿ
+£
+java:S1186J"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(íÓµàúÿÿÿÿ8Œ’Â˜§/
+v
+java:S3008"TRename this field "ALL_CARDS" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(°Úƒşÿÿÿÿ8Œ’Â˜§/
+L
+java:S6212s"/Declare this local variable with "var" instead.(ÇúÕ¯8 ’Â˜§/
+T
+java:S2696“"6Make the enclosing method "static" or remove this set.(ü„¼8£’Â˜§/
+R
+java:S2696•"6Make the enclosing method "static" or remove this set.(¸ˆÏıÿÿÿÿ
+T
+java:S2696œ"6Make the enclosing method "static" or remove this set.(Ìûå›8¥’Â˜§/
+S
+java:S2696£"6Make the enclosing method "static" or remove this set.(åÍøV8¦’Â˜§/
