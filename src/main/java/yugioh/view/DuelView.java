@@ -3,6 +3,8 @@ package yugioh.view;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import lombok.Setter;
 import yugioh.controller.DuelController;
@@ -27,10 +29,7 @@ public class DuelView extends ViewMenu {
     private static final SecureRandom RANDOM = new SecureRandom();
 
 
-    private static final String[] RPS = {"r", "p", "s"};
-
-
-    private static DuelView singleInstance = null;
+    private static DuelView singleInstance;
 
 
     private final Pattern selectCardPattern = Pattern.compile("^s(?:elect)? " +
@@ -38,13 +37,6 @@ public class DuelView extends ViewMenu {
     private final Pattern attackPattern = Pattern.compile("att(?:ack)? (?<number>\\d+)");
     private final Pattern cheatDecreaseLPPattern = Pattern.compile("Death(?: to)?(?: the)? Mechanisms (?<number>\\d+)");
     private final Pattern cheatIncreaseLPPattern = Pattern.compile("Underworld Blues (?<number>\\d+)");
-
-
-    @Setter
-    private boolean isRPSDone = false;
-
-
-    private DuelView() { }
 
 
     public static DuelView getInstance() {
@@ -112,27 +104,27 @@ public class DuelView extends ViewMenu {
         DuelController.getInstance().coin();
     }
 
+    public void chooseStarter(String winnerUsername) {
+        Label label = (Label) LoginView.coinScene.lookup("#toShow");
+        label.setText(winnerUsername + " is our lucky star!\nyou may now choose the\nfirst player your majesty!");
+    }
+
+    public void onEnter(KeyEvent keyEvent) {
+        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+            TextField firstPlayer = (TextField) keyEvent.getTarget();
+            if (DuelController.getInstance().chooseStarter(firstPlayer.getText())) {
+                //TODO set actual game scene
+            }
+            firstPlayer.clear();
+        }
+    }
+
 
     public boolean wantsToActivate(String cardName) {
         IO.getInstance().wantToActivate(cardName);
         return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
     }
 
-
-
-
-    public void chooseStarter(String winnerUsername) {
-//        if (winnerUsername.equals(AI.AI_USERNAME)) {
-//            DuelController.getInstance().chooseStarter(winnerUsername);
-//            return;
-//        }
-        Label label = (Label) LoginView.coinScene.lookup("#toShow");
-        label.setText(winnerUsername + " is our lucky star!\n" +
-                "you may now choose the first player your majesty!");
-        TextField firstPlayer = ((TextField) LoginView.coinScene.lookup("#textField"));
-        DuelController.getInstance().chooseStarter(firstPlayer.getText());
-        firstPlayer.clear();
-    }
 
 
     public int getTribute() {

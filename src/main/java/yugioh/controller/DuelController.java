@@ -40,19 +40,20 @@ public class DuelController {
     public void coin() {
         Random rand = new Random();
         int chance = rand.nextInt(2);
-        if (chance == 1) {
-            DuelView.getInstance().chooseStarter(game.getCurrentPlayerUsername());
-        }
-        else {
-            DuelView.getInstance().chooseStarter(game.getTheOtherPlayerUsername());
-        }
+        if (chance == 1) DuelView.getInstance().chooseStarter(game.getCurrentPlayerUsername());
+        else DuelView.getInstance().chooseStarter(game.getTheOtherPlayerUsername());
     }
 
-    public void chooseStarter(String username) {
-        if (!game.getCurrentPlayer().getUsername().equals(username)) game.changeTurn();
+    public boolean chooseStarter(String username) {
+        if (game.getTheOtherPlayer().getUsername().equals(username)) game.changeTurn();
+        else if (!game.getCurrentPlayer().getUsername().equals(username)) {
+            IO.getInstance().notAPlayer(username);
+            return false;
+        }
         game.getCurrentPlayer().setAbleToDraw(false);
         game.getCurrentPlayer().setAbleToAttack(false);
         drawPhase();
+        return true;
     }
 
     public void drawPhase() {

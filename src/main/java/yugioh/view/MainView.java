@@ -61,9 +61,11 @@ public class MainView {
     public void startNewGame() {
         LoginView.stage.setScene(LoginView.duelFirstScene);
         LoginView.stage.centerOnScreen();
+        DuelFirstPage.run();
 //        DuelView.getInstance().runForRPS();
 //        DuelView.getInstance().run();
     }
+
     @FXML
     public void logout() {
         MainController.getInstance().setLoggedIn(null);

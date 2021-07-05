@@ -1,5 +1,7 @@
 package yugioh.view;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import yugioh.controller.MainController;
 import yugioh.controller.ScoreboardController;
 import javafx.scene.control.Label;

@@ -1,0 +1,8 @@
+{
+    "name": "Dark Hole",
+    "isSpell": true,
+    "property": "Normal",
+    "isLimited": false,
+    "price": 2500,
+    "description": "Destroy all monsters on the field."
+}

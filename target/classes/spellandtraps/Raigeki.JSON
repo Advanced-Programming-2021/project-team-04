@@ -1,0 +1,8 @@
+{
+    "name": "Raigeki",
+    "isSpell": true,
+    "property": "Normal",
+    "isLimited": true,
+    "price": 2500,
+    "description": "Destroy all monsters your opponent controls."
+}

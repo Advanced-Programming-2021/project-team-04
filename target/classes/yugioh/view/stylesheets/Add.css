@@ -1,0 +1,56 @@
+.root {
+    -fx-background-color: #000000;
+    -fx-background-image: url("addbackground.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+#first, #second {
+    -fx-translate-x: -100;
+}
+
+.navi {
+    -fx-translate-x: -100;
+    -fx-background-color: #000000;
+    -fx-font-size: 50;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 0;
+}
+
+.navi:hover {
+    -fx-text-fill: #000000;
+    -fx-background-color: #ffffff;
+}
+
+#Back {
+    -fx-translate-y: -5;
+    -fx-translate-x: 62;
+    -fx-font-family: "Kunstler Script";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-background-color: #000000;
+    -fx-border-color: #ffffff;
+    -fx-font-size: 25.4;
+    -fx-text-fill: #ffffff;
+}
+
+.add {
+    -fx-font-family: "Kunstler Script";
+    -fx-pref-height: 14;
+    -fx-pref-width: 237;
+    -fx-background-color: #000000;
+    -fx-border-color: #ffffff;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 25.4;
+    -fx-translate-x: -100;
+}
+
+#Back:hover, .add:hover {
+    -fx-border-color: #000000;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}
+
+
+

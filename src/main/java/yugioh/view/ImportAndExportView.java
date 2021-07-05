@@ -131,6 +131,17 @@ public class ImportAndExportView {
         }
     }
 
+    public void selectFirst() {
+        selectedCard = firstCard;
+        exportButtonClicked();
+    }
+
+    public void selectSecond() {
+        if (secondCard == null) return;
+        selectedCard = secondCard;
+        exportButtonClicked();
+    }
+
     public void exportButtonClicked() {
         try {
             File directory = Objects.requireNonNull(DIRECTORY_CHOOSER.showDialog(new Popup()));
@@ -139,14 +150,15 @@ public class ImportAndExportView {
             ImportAndExport.getInstance().exportCard(directory, selectedCard);
         } catch (Exception e) {
             e.printStackTrace();
+            //TODO throws exception when window is closed, probably should ignore exception
         }
     }
 
     public void exportButton() {
         LoginView.stage.setScene(LoginView.importScene);
         ALL_CARDS = ShopController.getAllCards();
-        showCards();
         navigate = 0;
+        showCards();
         LoginView.importScene.lookup("#back").setDisable(true);
     }
 

@@ -50,7 +50,7 @@ public class MainController {
 
 
     private boolean errorForNewGame(String username, int rounds) {
-        if (!Account.getAllAccounts().contains(Account.getAccountByUsername(username))) {
+        if (!Account.getAllAccounts().contains(Account.getAccountByUsername(username)) || username.equals(loggedIn.getUsername())) {
             IO.getInstance().playerDoesntExist();
             return false;
         }

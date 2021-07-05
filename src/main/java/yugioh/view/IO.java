@@ -348,6 +348,11 @@ public class IO {
                 It’s clutched in the Captain’s cold hands""");
     }
 
+    public void notAPlayer(String username) {
+        label.setText(username + " is not a player in this game!");
+        popup.show(LoginView.stage);
+    }
+
     public void invalidPicture() {
         label.setText("there was a problem with your picture! (we only support gif/jpg/png)");
         popup.show(LoginView.stage);
@@ -453,7 +458,8 @@ public class IO {
     }
 
     public void deckCreated() {
-        System.out.println("deck created successfully!");
+        label.setText("deck created successfully!");
+        popup.show(LoginView.stage);
     }
 
     public void deckDeleted() {
