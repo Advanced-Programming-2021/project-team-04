@@ -20,7 +20,7 @@
        </HBox>
        <HBox alignment="CENTER">
            <Button text="Start" styleClass="start"/>
-           <Button text="Back" onMouseClicked="#back"/>
+           <Button text="Back" onMouseClicked="#backToFirstPage"/>
        </HBox>
    </VBox>
 

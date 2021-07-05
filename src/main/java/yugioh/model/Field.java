@@ -48,13 +48,6 @@ public class Field {
     }
 
 
-    public String showGraveyard() {
-        var toPrint = new StringBuilder();
-        graveyard.forEach(c -> toPrint.append(c.getName()).append(": ").append(c.getDescription()).append("\n"));
-        if (!toPrint.isEmpty()) toPrint.setLength(toPrint.length() - 1);
-        return toPrint.toString();
-    }
-
 
     public ArrayList<MonsterCard> ritualMonsterCards() {
         return (ArrayList<MonsterCard>) hand.stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)

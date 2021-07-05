@@ -1404,11 +1404,6 @@ public class DuelController {
         monsterCard.setMonsterCardModeInField(monsterCardModeInField);
     }
 
-    public void showGraveyard() {
-        String toPrint = game.getCurrentPlayer().getField().showGraveyard();
-        IO.getInstance().printString(toPrint);
-    }
-
     public void showSelectedCard() {
         if (!errorsForShowingSelectedCard()) return;
         IO.getInstance().printString(game.getSelectedCard().toString());

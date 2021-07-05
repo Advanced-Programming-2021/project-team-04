@@ -35,8 +35,6 @@ public class BlackPendant extends SpellAndTrapCard {
 
     public void equipMonster() {
         equippedMonster.setThisCardAttackPower(equippedMonster.getThisCardAttackPower() + 500);
-
-
     }
 
 

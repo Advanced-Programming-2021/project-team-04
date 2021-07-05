@@ -3,6 +3,8 @@ package yugioh.view;
 
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -19,6 +21,7 @@ import yugioh.model.cards.SpellAndTrapCard;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -26,12 +29,13 @@ import java.util.stream.Collectors;
 
 public class DuelView extends ViewMenu {
 
-
-    private static final SecureRandom RANDOM = new SecureRandom();
-
-
     private static DuelView singleInstance;
-
+    private static ArrayList<String> myGY;
+    private static ArrayList<String> opponentGY;
+    private static int count;
+    private static Card firstCard;
+    private static Card secondCard;
+    private static final Card emptyCard = new Card();
 
     private final Pattern selectCardPattern = Pattern.compile("^s(?:elect)? " +
             "(?=.*(?:-(?:(?:-monster|-spell|-hand)|[msh])|-(?:-field|f)))(?=.*(?<number>\\d+)).+");
@@ -105,7 +109,7 @@ public class DuelView extends ViewMenu {
         DuelController.getInstance().coin();
     }
 
-    public void back() {
+    public void backToFirstPage() {
         LoginView.stage.setScene(LoginView.duelFirstScene);
     }
 
@@ -143,16 +147,79 @@ public class DuelView extends ViewMenu {
                 cardStatusInField == CardStatusInField.FIELD_ZONE ? 0 : Integer.parseInt(matcher.group("number")) - 1);
     }
 
+    public void select() {
 
-    public void showGraveyard() {
-        DuelController.getInstance().showGraveyard();
-        while (true) {
-            String command = IO.getInstance().getInputMessage();
-            if (command.matches("back")) break;
-            IO.getInstance().printInvalidCommand();
-        }
     }
 
+    public void previous() {
+        count--;
+        handleButtons();
+        showCards();
+    }
+
+    public void next() {
+        count++;
+        handleButtons();
+        showCards();
+    }
+
+    public void backToGame() {
+
+    }
+
+    public void showGraveyard() {
+        ArrayList<Card> myGraveYard = DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard();
+        ArrayList<Card> opponentGraveYard = DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard();
+        for (Card card : myGraveYard) myGY.add(card.getName());
+        for (Card card : opponentGraveYard) opponentGY.add(card.getName());
+        count = 0;
+        showCards();
+        LoginView.setSize(LoginView.graveyardScene);
+        LoginView.stage.setScene(LoginView.graveyardScene);
+        LoginView.stage.centerOnScreen();
+        handleButtons();
+    }
+
+    private void handleButtons() {
+        LoginView.graveyardScene.lookup("#back").setDisable(count == 0);
+        LoginView.graveyardScene.lookup("#next").setDisable(count >= myGY.size() - 1 && count >= opponentGY.size() - 1);
+    }
+
+    private void showCards() {
+        if (count < 0) count= 0;
+        ImageView first = (ImageView) LoginView.graveyardScene.lookup("#first");
+        first.setImage(myGYImage());
+        ImageView second = (ImageView) LoginView.graveyardScene.lookup("#second");
+        second.setImage(opponentGYImage());
+    }
+
+    private Image opponentGYImage() {
+        Image secondImage;
+        if (opponentGY.size() > count) {
+            secondCard = Card.getCardByName(opponentGY.get(count));
+            if (!firstCard.isOriginal() || firstCard.isConverted())
+                secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+            else secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+        } else {
+            secondCard = emptyCard;
+            secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+        }
+        return secondImage;
+    }
+
+    private Image myGYImage() {
+        Image firstImage;
+        if (myGY.size() > count) {
+            firstCard = Card.getCardByName(myGY.get(count));
+            if (!firstCard.isOriginal() || firstCard.isConverted())
+                firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+            else firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+        } else {
+            firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+            firstCard = emptyCard;
+        }
+        return firstImage;
+    }
 
     @Override
     public void showCurrentMenu() {
@@ -490,5 +557,7 @@ public class DuelView extends ViewMenu {
             return getMonsterCardFromHand(isOpponent);
         }
     }
+
+
 
 }
