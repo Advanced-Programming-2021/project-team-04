@@ -89,4 +89,8 @@ public abstract class Duelist {
         this.LP += amount;
         if (this.LP <= 0) DuelController.getInstance().getGame().finishGame(this);
     }
+
+    public String toString() {
+        return "username: " + username + "\nnickname: " + nickname;
+    }
 }

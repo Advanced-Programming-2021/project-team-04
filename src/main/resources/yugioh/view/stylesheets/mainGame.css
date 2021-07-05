@@ -1,0 +1,19 @@
+.root {
+    -fx-background-color: #000000;
+    -fx-background-image: url("maingame.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+.button {
+    -fx-background-color: #000000;
+    -fx-border-color: #ffffff;
+    -fx-text-fill: #ffffff;
+    -fx-border-radius: 3;
+}
+
+.button:hover {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #000000;
+}

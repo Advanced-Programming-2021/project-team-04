@@ -1,33 +1,34 @@
 package yugioh.view;
 
 
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import lombok.Setter;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import yugioh.controller.DuelController;
-import yugioh.controller.MainController;
-import yugioh.model.AI;
+import yugioh.model.Account;
+import yugioh.model.MonsterCardModeInField;
 import yugioh.model.cards.Card;
 import yugioh.model.CardStatusInField;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
 
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
-public class DuelView extends ViewMenu {
+public class DuelView {
 
     private static DuelView singleInstance;
     private static ArrayList<String> myGY;
@@ -37,74 +38,170 @@ public class DuelView extends ViewMenu {
     private static Card secondCard;
     private static final Card emptyCard = new Card();
 
-    private final Pattern selectCardPattern = Pattern.compile("^s(?:elect)? " +
-            "(?=.*(?:-(?:(?:-monster|-spell|-hand)|[msh])|-(?:-field|f)))(?=.*(?<number>\\d+)).+");
-    private final Pattern attackPattern = Pattern.compile("att(?:ack)? (?<number>\\d+)");
-    private final Pattern cheatDecreaseLPPattern = Pattern.compile("Death(?: to)?(?: the)? Mechanisms (?<number>\\d+)");
-    private final Pattern cheatIncreaseLPPattern = Pattern.compile("Underworld Blues (?<number>\\d+)");
-
+    private static Stage secondStage;
+    private static Account player1;
+    private static Account player2;
 
     public static DuelView getInstance() {
-        if (singleInstance == null)
-            singleInstance = new DuelView();
+        if (singleInstance == null) singleInstance = new DuelView();
         return singleInstance;
     }
 
+    private static void run() {
+        player1 = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
+        player2 = (Account) DuelController.getInstance().getGame().getTheOtherPlayer();
+        setProfiles(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setProfiles(player2, player1, LoginView.mainGameSceneTwo);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
+        LoginView.mainGameSceneTwo.getRoot().setMouseTransparent(true);
+    }
 
-    @Override
-    public void run() {
-        String command;
-        while (!DuelController.getInstance().getGame().isGameFinished() &&
-                !(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
-                !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
-            Matcher selectCardMatcher = selectCardPattern.matcher(command);
-            Matcher attackMatcher = attackPattern.matcher(command);
-            Matcher cheatDecreaseLPMatcher = cheatDecreaseLPPattern.matcher(command);
-            Matcher cheatIncreaseLPMatcher = cheatIncreaseLPPattern.matcher(command);
-            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
-                showCurrentMenu();
-            else if (command.matches("select -d|deselect"))
-                DuelController.getInstance().deselectCard();
-            else if (selectCardMatcher.matches())
-                selectCard(selectCardMatcher, !command.contains("-o"), CardStatusInField.getCardStatusInField(command));
-            else if (command.matches("sum(?:mon)?"))
-                DuelController.getInstance().summon();
-            else if (command.matches("set?"))
-                DuelController.getInstance().set();
-            else if (command.matches("set -(?:-position|p) (?:att(?:ack)?|def(?:ense)?)"))
-                DuelController.getInstance().setPosition(command.contains("att"));
-            else if (command.matches("f(?:lip)?-sum(?:mon)?"))
-                DuelController.getInstance().flipSummon();
-            else if (attackMatcher.matches())
-                DuelController.getInstance().attack(Integer.parseInt(attackMatcher.group("number")) - 1);
-            else if (command.matches("att(?:ack)? d(?:ir(?:ect)?)?"))
-                DuelController.getInstance().directAttack();
-            else if (command.matches("activ(?:at)?e(?: effect)?"))
-                DuelController.getInstance().activateSpell();
-            else if (command.matches("(?:show )?grave(?:yard)?"))
-                showGraveyard();
-            else if (command.matches("(?:c(?:ard)? )?show -(?:-select(?:ed)?|s)"))
-                DuelController.getInstance().showSelectedCard();
-            else if (command.matches("sur(?:render)?"))
-                DuelController.getInstance().surrender();
-            else if (command.matches("next(?: phase)?"))
-                DuelController.getInstance().nextPhase();
-            else if (cheatDecreaseLPMatcher.matches())
-                DuelController.getInstance().cheatDecreaseLP(Integer.parseInt(cheatDecreaseLPMatcher.group("number")));
-            else if (cheatIncreaseLPMatcher.matches())
-                DuelController.getInstance().cheatIncreaseLP(Integer.parseInt(cheatIncreaseLPMatcher.group("number")));
-            else if (command.matches("Person(?: of)? Interest"))
-                DuelController.getInstance().cheatSeeMyDeck();
-            else if (command.matches("Conspiracy(?: to)? Commit Treason"))
-                DuelController.getInstance().cheatSetWinner();
-            else if (command.matches("Drunk Space Pirate"))
-                DuelController.getInstance().cheatShowRivalHand();
-            else IO.getInstance().printInvalidCommand();
+    public static void handleTurn(Account currentPlayer) {
+        boolean isPlayer1sTurn = currentPlayer.getUsername().equals(player1.getUsername());
+        LoginView.mainGameSceneTwo.getRoot().setMouseTransparent(isPlayer1sTurn);
+        LoginView.mainGameSceneOne.getRoot().setMouseTransparent(!isPlayer1sTurn);
+    }
+
+    private static void setProfiles(Account player, Account otherPlayer, Scene scene) {
+        ImageView opponentProfile = (ImageView) scene.lookup("#opponentProfile");
+        ImageView profile = (ImageView) scene.lookup("#profile");
+        Image playerImage = new Image(DuelView.class.getResourceAsStream("profiles/" +
+                player.getProfilePictureNumber() + player.getProfilePictureExtension()));
+        Image otherPlayerImage = new Image(DuelView.class.getResourceAsStream("profiles/" +
+                otherPlayer.getProfilePictureNumber() + otherPlayer.getProfilePictureExtension()));
+        opponentProfile.setImage(otherPlayerImage);
+        profile.setImage(playerImage);
+        setToolTip(player.toString(), profile);
+        setToolTip(otherPlayer.toString(), opponentProfile);
+    }
+
+    private static void setCardImages(Account player, Account otherPlayer, Scene scene) {
+        setHandImages(player, scene);
+        setMonsterZone(player.getField().getMonsterCards(), scene, "#monster");
+        setMonsterZone(otherPlayer.getField().getMonsterCards(), scene, "#opponentMonster");
+        setSpellZone(player.getField().getSpellAndTrapCards(), scene, "#spell");
+        setSpellZone(otherPlayer.getField().getSpellAndTrapCards(), scene, "#opponentSpell");
+        setCardImage(player.getField().getFieldZone(), (ImageView) scene.lookup("#field"), true, "field zone");
+        setCardImage(otherPlayer.getField().getFieldZone(), (ImageView) scene.lookup("#opponentField"), true, "field zone");
+        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) scene.lookup("#selectedCard"),
+                false, "selected card");
+    }
+
+    private static void setSpellZone(ArrayList<SpellAndTrapCard> cards, Scene scene, String id) {
+        int size = cards.size();
+        for (int i = 1; i <= 5; i++) {
+            if (i > size) setCardImage(null, (ImageView) scene.lookup(id + i), id.equals("#spell"), "spell zone");
+            else setCardImage(cards.get(i - 1), (ImageView) scene.lookup(id + i), id.equals("#spell"), "spell zone");
         }
     }
 
+    private static void setMonsterZone(ArrayList<MonsterCard> cards, Scene scene, String id) {
+        int size = cards.size();
+        for (int i = 1; i <= 5; i++) {
+            if (i > size) setCardImage(null, (ImageView) scene.lookup(id + i), id.equals("#monster"), "monster zone");
+            else
+                setCardImage(cards.get(i - 1), (ImageView) scene.lookup(id + i), id.equals("#monster"), "monster zone");
+        }
+    }
 
-    public void coin() {
+    private static void setHandImages(Account player, Scene scene) {
+        ArrayList<Card> hand = player.getField().getHand();
+        int handSize = hand.size();
+        for (int i = 1; i <= 6; i++) {
+            if (i > handSize) setCardImage(null, (ImageView) scene.lookup("#hand" + i), true, "player hand");
+            else setCardImage(hand.get(i - 1), (ImageView) scene.lookup("#hand" + i), true, "player hand");
+        }
+    }
+
+    private static void setCardImage(Card card, ImageView imageView, boolean isMine, String place) {
+        if (card == null) {
+            imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/void.jpg")));
+            setToolTip(place + "\nempty", imageView);
+            return;
+        }
+        if (card instanceof MonsterCard) {
+            MonsterCard monsterCard = (MonsterCard) card;
+            if (monsterCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN
+                    && !place.equals("player hand")) {
+                imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/hidden.jpg")));
+                if (isMine) setToolTip(place + "\n" + monsterCard.toString(), imageView);
+                else setToolTip(place + "\nhidden", imageView);
+            } else {
+                imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/" + monsterCard.getName() + ".jpg")));
+                setToolTip(place + "\n" + monsterCard.toString(), imageView);
+            }
+        } else {
+            SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) card;
+            if (!spellAndTrapCard.isActive() && !place.equals("player hand")) {
+                imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/hidden.jpg")));
+                if (isMine) setToolTip(place + "\n" + spellAndTrapCard.toString(), imageView);
+                else setToolTip(place + "\nhidden", imageView);
+            }
+        }
+    }
+
+    private static void setToolTip(String text, ImageView imageView) {
+        Tooltip tooltip = new Tooltip(text);
+        tooltip.setShowDelay(Duration.seconds(0));
+        tooltip.setStyle("-fx-font-size: 16");
+        Tooltip.install(imageView, tooltip);
+    }
+
+
+//    public void run() {
+//        String command;
+//        while (!DuelController.getInstance().getGame().isGameFinished() &&
+//                !(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
+//                !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
+//            Matcher selectCardMatcher = selectCardPattern.matcher(command);
+//            Matcher attackMatcher = attackPattern.matcher(command);
+//            Matcher cheatDecreaseLPMatcher = cheatDecreaseLPPattern.matcher(command);
+//            Matcher cheatIncreaseLPMatcher = cheatIncreaseLPPattern.matcher(command);
+//            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
+//                showCurrentMenu();
+//            else if (command.matches("select -d|deselect"))
+//                DuelController.getInstance().deselectCard();
+//            else if (selectCardMatcher.matches())
+//                selectCard(selectCardMatcher, !command.contains("-o"), CardStatusInField.getCardStatusInField(command));
+//            else if (command.matches("sum(?:mon)?"))
+//                DuelController.getInstance().summon();
+//            else if (command.matches("set?"))
+//                DuelController.getInstance().set();
+//            else if (command.matches("set -(?:-position|p) (?:att(?:ack)?|def(?:ense)?)"))
+//                DuelController.getInstance().setPosition(command.contains("att"));
+//            else if (command.matches("f(?:lip)?-sum(?:mon)?"))
+//                DuelController.getInstance().flipSummon();
+//            else if (attackMatcher.matches())
+//                DuelController.getInstance().attack(Integer.parseInt(attackMatcher.group("number")) - 1);
+//            else if (command.matches("att(?:ack)? d(?:ir(?:ect)?)?"))
+//                DuelController.getInstance().directAttack();
+//            else if (command.matches("activ(?:at)?e(?: effect)?"))
+//                DuelController.getInstance().activateSpell();
+//            else if (command.matches("(?:show )?grave(?:yard)?"))
+//                showGraveyard();
+//            else if (command.matches("(?:c(?:ard)? )?show -(?:-select(?:ed)?|s)"))
+//                DuelController.getInstance().showSelectedCard();
+//            else if (command.matches("sur(?:render)?"))
+//                DuelController.getInstance().surrender();
+//            else if (command.matches("next(?: phase)?"))
+//                DuelController.getInstance().nextPhase();
+//            else if (cheatDecreaseLPMatcher.matches())
+//                DuelController.getInstance().cheatDecreaseLP(Integer.parseInt(cheatDecreaseLPMatcher.group("number")));
+//            else if (cheatIncreaseLPMatcher.matches())
+//                DuelController.getInstance().cheatIncreaseLP(Integer.parseInt(cheatIncreaseLPMatcher.group("number")));
+//            else if (command.matches("Person(?: of)? Interest"))
+//                DuelController.getInstance().cheatSeeMyDeck();
+//            else if (command.matches("Conspiracy(?: to)? Commit Treason"))
+//                DuelController.getInstance().cheatSetWinner();
+//            else if (command.matches("Drunk Space Pirate"))
+//                DuelController.getInstance().cheatShowRivalHand();
+//            else IO.getInstance().printInvalidCommand();
+//        }
+//    }
+
+
+    public static void coin() {
         LoginView.stage.setScene(LoginView.coinScene);
         DuelController.getInstance().coin();
     }
@@ -118,14 +215,16 @@ public class DuelView extends ViewMenu {
         label.setText(winnerUsername + " is our lucky star!\nyou may now choose the\nfirst player your majesty!");
     }
 
-    public void onEnter(KeyEvent keyEvent) {
-        if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-            TextField firstPlayer = (TextField) keyEvent.getTarget();
-            if (DuelController.getInstance().chooseStarter(firstPlayer.getText())) {
-                //TODO set actual game scene
-            }
-            firstPlayer.clear();
+    public void start() {
+        TextField firstPlayer = (TextField) LoginView.coinScene.lookup("#textField");
+        if (DuelController.getInstance().chooseStarter(firstPlayer.getText())) {
+            LoginView.stage.setScene(LoginView.mainGameSceneOne);
+            secondStage = new Stage();
+            secondStage.setScene(LoginView.mainGameSceneTwo);
+            secondStage.show();
+            run();
         }
+        firstPlayer.clear();
     }
 
 
@@ -133,7 +232,6 @@ public class DuelView extends ViewMenu {
         IO.getInstance().wantToActivate(cardName);
         return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
     }
-
 
 
     public int getTribute() {
@@ -186,7 +284,7 @@ public class DuelView extends ViewMenu {
     }
 
     private void showCards() {
-        if (count < 0) count= 0;
+        if (count < 0) count = 0;
         ImageView first = (ImageView) LoginView.graveyardScene.lookup("#first");
         first.setImage(myGYImage());
         ImageView second = (ImageView) LoginView.graveyardScene.lookup("#second");
@@ -199,7 +297,8 @@ public class DuelView extends ViewMenu {
             secondCard = Card.getCardByName(opponentGY.get(count));
             if (!firstCard.isOriginal() || firstCard.isConverted())
                 secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-            else secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+            else
+                secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
         } else {
             secondCard = emptyCard;
             secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
@@ -213,7 +312,8 @@ public class DuelView extends ViewMenu {
             firstCard = Card.getCardByName(myGY.get(count));
             if (!firstCard.isOriginal() || firstCard.isConverted())
                 firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-            else firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+            else
+                firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
         } else {
             firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
             firstCard = emptyCard;
@@ -221,7 +321,7 @@ public class DuelView extends ViewMenu {
         return firstImage;
     }
 
-    @Override
+
     public void showCurrentMenu() {
         IO.getInstance().printDuelMenuName();
     }
@@ -272,7 +372,7 @@ public class DuelView extends ViewMenu {
     }
 
 
-    private ArrayList<MonsterCard> getTributeMonsterCards(){
+    private ArrayList<MonsterCard> getTributeMonsterCards() {
         var input = IO.getInstance().getInputMessage();
         if (input.equals("cancel")) return null;
         return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
@@ -557,7 +657,4 @@ public class DuelView extends ViewMenu {
             return getMonsterCardFromHand(isOpponent);
         }
     }
-
-
-
 }

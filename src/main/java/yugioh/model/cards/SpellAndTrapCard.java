@@ -34,8 +34,7 @@ public class SpellAndTrapCard extends Card {
 
     @Override
     public String toString() {
-        return "Name: " + this.name + "\n" + (isSpell ? "Spell" : "Trap") +
-                "\nType: " + this.property + "\nDescription: " + this.description;
+        return "Name: " + this.name + "\n" + (isSpell ? "Spell" : "Trap");
     }
 
 

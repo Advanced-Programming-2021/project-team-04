@@ -25,6 +25,6 @@ public class DuelFirstPage {
         int rounds = ((ToggleButton) LoginView.duelFirstScene.lookup("#oneRound")).isSelected() ? 1 : 3;
         String username = ((TextField) LoginView.duelFirstScene.lookup("#username")).getText();
         if (MainController.getInstance().newDuel(username, rounds))
-            DuelView.getInstance().coin();
+            DuelView.coin();
     }
 }

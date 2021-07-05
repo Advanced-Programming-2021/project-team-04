@@ -63,7 +63,7 @@ public class ShopView {
         if (card instanceof MonsterCard) {
             MonsterCard monsterCard = (MonsterCard) card;
             cardInformation.append("Monster Card\nATK: ").append(monsterCard.getClassAttackPower()).
-                    append("\nDEF: ").append(monsterCard.getClassDefensePower());
+                    append("\nDEF: ").append(monsterCard.getClassDefensePower()).append("\nLEVEL: ").append(monsterCard.getLevel());
         } else {
             SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) card;
             cardInformation.append(spellAndTrapCard.isSpell() ? "Spell Card" : "Trap Card");
