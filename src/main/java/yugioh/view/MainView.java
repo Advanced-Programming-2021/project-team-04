@@ -16,7 +16,8 @@ import static yugioh.view.LoginView.sceneCreator;
 
 public class MainView {
 
-    private static MediaPlayer mainMusic;
+    public static MediaPlayer mainMusic;
+    public static MediaPlayer gameMusic;
     public static boolean isMute;
 
 
@@ -61,6 +62,7 @@ public class MainView {
     public void startNewGame() {
         LoginView.stage.setScene(LoginView.duelFirstScene);
         LoginView.stage.centerOnScreen();
+        playGameMusic();
         DuelFirstPage.run();
 //        DuelView.getInstance().runForRPS();
 //        DuelView.getInstance().run();
@@ -112,6 +114,14 @@ public class MainView {
         mainMusic = new MediaPlayer(main);
         mainMusic.setCycleCount(MediaPlayer.INDEFINITE);
         mainMusic.play();
+    }
+
+    public static void playGameMusic() {
+        mainMusic.pause();
+        Media main = new Media(MainView.class.getResource("London-Grammar-Intro-320.mp3").toExternalForm());
+        gameMusic = new MediaPlayer(main);
+        gameMusic.setCycleCount(MediaPlayer.INDEFINITE);
+        gameMusic.play();
     }
 
     public void mute(MouseEvent mouseEvent) {
