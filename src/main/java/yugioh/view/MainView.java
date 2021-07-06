@@ -117,7 +117,7 @@ public class MainView {
     }
 
     public static void playGameMusic() {
-        mainMusic.pause();
+        if (mainMusic != null) mainMusic.pause();
         Media main = new Media(MainView.class.getResource("London-Grammar-Intro-320.mp3").toExternalForm());
         gameMusic = new MediaPlayer(main);
         gameMusic.setCycleCount(MediaPlayer.INDEFINITE);

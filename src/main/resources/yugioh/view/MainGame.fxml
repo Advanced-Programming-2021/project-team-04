@@ -63,7 +63,7 @@
     <VBox GridPane.rowIndex="3" GridPane.columnIndex="9" prefHeight="120" prefWidth="90" spacing="6">
         <Button text="summon" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#summon"/>
         <Button text="deselect" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#deselect"/>
-        <Button text="pause" prefHeight="36" prefWidth="90" textAlignment="CENTER"/>
+        <Button text="settings" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#settings"/>
     </VBox>
 
     <ImageView GridPane.rowIndex="4" GridPane.columnIndex="2" fitHeight="120" fitWidth="90" fx:id="hand1"/>

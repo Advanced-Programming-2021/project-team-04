@@ -525,7 +525,7 @@ public class IO {
         System.out.println("not enough money");
     }
 
-    private void addFunctionButton(Button cancelButton, Popup popup) {
+    public void addFunctionButton(Button cancelButton, Popup popup) {
         cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {

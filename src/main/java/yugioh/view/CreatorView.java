@@ -1,7 +1,9 @@
 package yugioh.view;
 
 import yugioh.controller.ImportAndExport;
+import yugioh.controller.MainController;
 import yugioh.controller.ShopController;
+import yugioh.model.Account;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
@@ -60,9 +62,9 @@ public class CreatorView {
                 "Ché c'ho una frase scritta in testa, ma non l'ho mai detta\n" +
                 "give me the description Marlena");
         var description = IO.getInstance().getInputMessage();
-            var monsterCard = monsterPrice(attackPower, defencePower, monsterType, cardType, level, name, cardName, description);
-            ShopController.getAllCards().add(monsterCard);
-            ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_CARDS + monsterCard.getName(), monsterCard);
+        var monsterCard = monsterPrice(attackPower, defencePower, monsterType, cardType, level, name, cardName, description);
+        ShopController.getAllCards().add(monsterCard);
+        ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_CARDS + monsterCard.getName(), monsterCard);
         System.out.println("Great! You’ll get used to the world we created. Or you'll try I guess...");
     }
 
@@ -70,7 +72,7 @@ public class CreatorView {
         var monsterCard = (MonsterCard) Card.getCardByName(name);
         var price = 0;
         if (monsterCard.getClassAttackPower() < attackPower) price += 400;
-        if (monsterCard.getClassDefensePower() < defencePower) price +=400;
+        if (monsterCard.getClassDefensePower() < defencePower) price += 400;
         if (monsterCard.getLevel() < level) price += 400;
         var newCard = new MonsterCard();
         newCard.setName(cardName + " " + name);
@@ -82,8 +84,10 @@ public class CreatorView {
         newCard.setCardType(cardType);
         newCard.setMonsterType(monsterType);
         newCard.setDescription(description);
-        newCard.setPrice((monsterCard.getPrice() + price) * 11/10);
+        int money = (monsterCard.getPrice() + price) * 11 / 10;
+        newCard.setPrice(money);
         newCard.setOriginal(false);
+        MainController.getInstance().getLoggedIn().setMoney(MainController.getInstance().getLoggedIn().getMoney() - money);
         return newCard;
     }
 
@@ -116,7 +120,9 @@ public class CreatorView {
         newCard.setFieldPositiveEffects(typesPositive);
         newCard.setDescription(description);
         var price = !limit.equals("yes") && property.equals("Continuous") ? 200 : 0;
-        newCard.setPrice((Card.getCardByName(name).getPrice() + price) * 11/10);
+        int money = (Card.getCardByName(name).getPrice() + price) * 11 / 10;
+        newCard.setPrice(money);
+        MainController.getInstance().getLoggedIn().setMoney(MainController.getInstance().getLoggedIn().getMoney() - money);
         ShopController.getAllCards().add(newCard);
         ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_CARDS + newCard.getName(), newCard);
     }

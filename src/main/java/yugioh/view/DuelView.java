@@ -1,8 +1,10 @@
 package yugioh.view;
 
 
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -10,6 +12,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import yugioh.controller.DuelController;
@@ -271,6 +276,29 @@ public class DuelView {
         setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#monster");
     }
 
+    public void settings() {
+        popUp();
+    }
+
+    private void popUp() {
+        Popup popup = new Popup();
+        HBox hBox = new HBox();
+        hBox.setSpacing(10);
+        hBox.setAlignment(Pos.CENTER);
+        Button exit = new Button("Exit");
+        Button pause = new Button("Pause");
+        Button cancelButton = new Button("Cancel");
+        hBox.getChildren().add(exit);
+        hBox.getChildren().add(pause);
+        hBox.getChildren().add(cancelButton);
+        popup.getContent().add(hBox);
+        IO.getInstance().addFunctionButton(cancelButton, popup);
+        hBox.setStyle("-fx-background-color: #3c3c3c; -fx-padding: 20px; -fx-font-family: Jokerman; -fx-border-color: #ffffff");
+        exit.setStyle("-fx-background-color: #000000; -fx-opacity: 50; -fx-font-family: Jokerman; -fx-text-fill: #ffffff");
+        pause.setStyle("-fx-background-color: #000000; -fx-opacity: 50; -fx-font-family: Jokerman; -fx-text-fill: #ffffff");
+        cancelButton.setStyle("-fx-background-color: #000000; -fx-opacity: 50; -fx-font-family: Jokerman; -fx-text-fill: #ffffff");
+        popup.show(LoginView.stage);
+    }
 
     public void flipSummon() {
         DuelController.getInstance().flipSummon();
