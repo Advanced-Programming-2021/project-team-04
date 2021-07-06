@@ -52,17 +52,17 @@ public class CreatorView {
         var cardType = IO.getInstance().getInputMessage();
         System.out.println("Lastly, enter your card's level.");
         var level = Integer.parseInt(IO.getInstance().getInputMessage());
-        System.out.println("you'll see a list down here. choose the name of the effect you want to add to your card.");
+        System.out.println("you'll see a list down here. choose the name of the effect you want to add to your card.\n" +
+                "if you want to add more than one effect, simply write the names of the effects with a space between");
         printMonsterEffects();
-        var name = IO.getInstance().getInputMessage();System.out.println("Restiamo un po' di tempo ancora, tanto non c'è fretta\n" +
+        var name = IO.getInstance().getInputMessage();
+        System.out.println("Restiamo un po' di tempo ancora, tanto non c'è fretta\n" +
                 "Ché c'ho una frase scritta in testa, ma non l'ho mai detta\n" +
                 "give me the description Marlena");
         var description = IO.getInstance().getInputMessage();
-        if (!name.equals("Not Special")) {
             var monsterCard = monsterPrice(attackPower, defencePower, monsterType, cardType, level, name, cardName, description);
             ShopController.getAllCards().add(monsterCard);
             ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_CARDS + monsterCard.getName(), monsterCard);
-        }
         System.out.println("Great! You’ll get used to the world we created. Or you'll try I guess...");
     }
 
@@ -90,7 +90,8 @@ public class CreatorView {
     private static void createSpell(boolean isSpell, String cardName) {
         System.out.println("It is the need to tear and rend and coat their faces slick with the blood of the guilty that pulses through every fibre of them. Is your card limited?");
         var limit = IO.getInstance().getInputMessage();
-        System.out.println("The thumping need inside their head to hate, and to be right within that hate. Type down the name of effect you want from the list below");
+        System.out.println("The thumping need inside their head to hate, and to be right within that hate. Type down the name of effect you want from the list below.\n" +
+                "if you want to add more than one effect, simply write the names of the effects with a space between");
         printSpellAndTrapEffects();
         var name = IO.getInstance().getInputMessage();
         System.out.println("If the card you created is a field card that you wish to change the type of cards it affects positively," +

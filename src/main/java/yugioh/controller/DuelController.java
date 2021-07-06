@@ -96,32 +96,18 @@ public class DuelController {
         ArrayList<MonsterCard> myMonsters = new ArrayList<>(field.getMonsterCards());
         ArrayList<MonsterCard> opponentMonsters = new ArrayList<>(opponentField.getMonsterCards());
         myMonsters.forEach(m -> {
-            if (m.getName().startsWith("Herald of Creation") && !m.isHasBeenUsedInThisTurn() &&
+            if (m.getName().contains("Herald of Creation") && !m.isHasBeenUsedInThisTurn() &&
                     !(m.getMonsterCardModeInField().equals(MonsterCardModeInField.DEFENSE_FACE_DOWN))) {
                 heraldOfCreation();
                 m.setHasBeenUsedInThisTurn(true);
             }
-            if (m.getName().startsWith("Command Knight")) {
-                if (m.isOriginal()) {
-                    ((CommandKnight) m).specialMethod();
-                } else {
-                    CommandKnight commandKnight = new CommandKnight();
-                    commandKnight.setConverted(true);
-                    m = commandKnight;
-                    commandKnight.specialMethod();
-                }
+            if (m.getName().equals("Command Knight")) {
+                ((CommandKnight) m).specialMethod();
                 m.setHasBeenUsedInThisTurn(true);
             }
         });
-        opponentMonsters.stream().filter(m -> m.getName().startsWith("Command Knight")).forEach(m -> {
-            if (m.isOriginal()) {
-                ((CommandKnight) m).specialMethod();
-            } else {
-                CommandKnight commandKnight = new CommandKnight();
-                commandKnight.setConverted(true);
-                m = commandKnight;
-                commandKnight.specialMethod();
-            }
+        opponentMonsters.stream().filter(m -> m.getName().equals("Command Knight")).forEach(m -> {
+            ((CommandKnight) m).specialMethod();
             m.setHasBeenUsedInThisTurn(true);
         });
     }
@@ -168,17 +154,17 @@ public class DuelController {
     }
 
     private void handleField(Field field, Field opponentField) {
-        if ((field.getFieldZone() != null && field.getFieldZone().getName().startsWith("Umiiruka")) ||
-                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().startsWith("Umiiruka")))
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().contains("Umiiruka")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().contains("Umiiruka")))
             umiiruka();
-        if ((field.getFieldZone() != null && field.getFieldZone().getName().startsWith("Forest")) ||
-                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().startsWith("Forest")))
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().contains("Forest")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().contains("Forest")))
             forest();
-        if ((field.getFieldZone() != null && field.getFieldZone().getName().startsWith("Closed Forest")) ||
-                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().startsWith("Closed Forest")))
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().contains("Closed Forest")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().contains("Closed Forest")))
             closedForest();
-        if ((field.getFieldZone() != null && field.getFieldZone().getName().startsWith("Yami")) ||
-                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().startsWith("Yami")))
+        if ((field.getFieldZone() != null && field.getFieldZone().getName().contains("Yami")) ||
+                (opponentField.getFieldZone() != null && opponentField.getFieldZone().getName().contains("Yami")))
             yami();
     }
 
@@ -437,17 +423,17 @@ public class DuelController {
 
     private boolean handleSpecialCasesBeforeSummon() {
         if (getGame().getCurrentPlayer() instanceof Account && !isSummonValid()) return true;
-        if (game.getSelectedCard().getName().startsWith("The Tricky") && DuelView.getInstance().ordinaryOrSpecial()) {
+        if (game.getSelectedCard().getName().contains("The Tricky") && DuelView.getInstance().ordinaryOrSpecial()) {
             theTricky();
             return true;
         }
-        if (game.getSelectedCard().getName().startsWith("Gate Guardian")) {
+        if (game.getSelectedCard().getName().contains("Gate Guardian")) {
             if (DuelView.getInstance().summonGateGuardian()) {
                 gateGuardian();
             }
             return true;
         }
-        if (game.getSelectedCard().getName().startsWith("Beast King Barbaros")) {
+        if (game.getSelectedCard().getName().contains("Beast King Barbaros")) {
             int howToSummon = DuelView.getInstance().barbaros();
             if (howToSummon != 1) {
                 barbaros(howToSummon);
@@ -468,7 +454,7 @@ public class DuelController {
     }
 
     private void handleSpecialCasesAfterSummon() {
-        if (game.getSelectedCard().getName().startsWith("Terratiger, the Empowered Warrior"))
+        if (game.getSelectedCard().getName().contains("Terratiger, the Empowered Warrior"))
             terraTigerMethod();
         else if (game.getSelectedCard() instanceof CommandKnight)
             ((CommandKnight) game.getSelectedCard()).specialMethod();
@@ -552,7 +538,7 @@ public class DuelController {
     public void setMonster() {
         if (!isSettingMonsterValid()) return;
         MonsterCard selectedCard = (MonsterCard) game.getSelectedCard();
-        if (selectedCard.getName().startsWith("Gate Guardian")) {
+        if (selectedCard.getName().contains("Gate Guardian")) {
             IO.getInstance().cantSet();
             return;
         }
@@ -659,7 +645,7 @@ public class DuelController {
         if (!isFlipSummonValid()) return;
         MonsterCard monsterCard = (MonsterCard) game.getSelectedCard();
         if (handleTrapHole(monsterCard)) return;
-        if (monsterCard.getName().startsWith("ManEater Bug")) forManEaterBug();
+        if (monsterCard.getName().contains("ManEater Bug")) forManEaterBug();
         game.setSelectedCard(null);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
         IO.getInstance().flipSummoned();
@@ -694,16 +680,16 @@ public class DuelController {
             mirrorForce(mirrorForceCard, attacker.getOwner());
             return;
         }
-        if (attacked.getName().startsWith("Suijin") &&
+        if (attacked.getName().contains("Suijin") &&
                 DuelView.getInstance().wantsToActivate(attacked.getName())) {
             handleSuijin(attacked, attacker);
         }
-        if (attacked.getName().startsWith("Texchanger") &&
+        if (attacked.getName().contains("Texchanger") &&
                 DuelView.getInstance().wantsToActivate(attacked.getName())) {
             texChanger(attacked);
             return;
         }
-        if (attacker.getName().startsWith("The Calculator"))
+        if (attacker.getName().contains("The Calculator"))
             handleCalculator(attacker);
         if (attacked.getMonsterCardModeInField().equals(MonsterCardModeInField.ATTACK_FACE_UP))
             handleCalculator(attacked);
@@ -751,7 +737,7 @@ public class DuelController {
     }
 
     private void attackInDefense(MonsterCard attacked, MonsterCard attacker) {
-        if (attacked.getName().startsWith("Marshmallon")) game.getCurrentPlayer().changeLP(-1000);
+        if (attacked.getName().contains("Marshmallon")) game.getCurrentPlayer().changeLP(-1000);
         if (attacked.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN)
             if (attacked.getThisCardDefensePower() < attacker.getThisCardAttackPower()) {
                 moveToGraveyardAfterAttack(attacked, attacker);
@@ -769,7 +755,7 @@ public class DuelController {
     private void attackInAttack(MonsterCard attacked, MonsterCard attacker) {
         if (attacked.getThisCardAttackPower() < attacker.getThisCardAttackPower()) {
             moveToGraveyardAfterAttack(attacked, attacker);
-            if (!attacked.getName().startsWith("Exploder Dragon")) {
+            if (!attacked.getName().contains("Exploder Dragon")) {
                 int damage = attacked.getThisCardAttackPower() - attacker.getThisCardAttackPower();
                 game.getTheOtherPlayer().changeLP(damage);
             }
@@ -780,7 +766,7 @@ public class DuelController {
             moveToGraveyardAfterAttack(attacked, attacker);
             return;
         }
-        if (!attacker.getName().startsWith("Exploder Dragon")) {
+        if (!attacker.getName().contains("Exploder Dragon")) {
             int damage = attacker.getThisCardAttackPower() - attacked.getThisCardAttackPower();
             game.getCurrentPlayer().changeLP(damage);
         }
@@ -913,31 +899,31 @@ public class DuelController {
     }
 
     private void callSpellAndTrapMethod(SpellAndTrapCard card) {
-        if (card.getName().startsWith("Monster Reborn"))
+        if (card.getName().contains("Monster Reborn"))
             monsterReborn(card);
-        else if (card.getName().startsWith("Terraforming"))
+        else if (card.getName().contains("Terraforming"))
             terraforming(card);
-        else if (card.getName().startsWith("Pot of Greed"))
+        else if (card.getName().contains("Pot of Greed"))
             potOfGreed(card);
-        else if (card.getName().startsWith("Raigeki"))
+        else if (card.getName().contains("Raigeki"))
             raigeki(card);
-        else if (card.getName().startsWith("Harpie's Feather Duster"))
+        else if (card.getName().contains("Harpie's Feather Duster"))
             harpiesFeatherDuster(card);
-        else if (card.getName().startsWith("Dark Hole"))
+        else if (card.getName().contains("Dark Hole"))
             darkHole(card);
-        else if (card.getName().startsWith("Mystical space typhoon"))
+        else if (card.getName().contains("Mystical space typhoon"))
             mysticalSpaceTyphoon(card);
-        else if (card.getName().startsWith("Yami"))
+        else if (card.getName().contains("Yami"))
             yami();
-        else if (card.getName().startsWith("Forest"))
+        else if (card.getName().contains("Forest"))
             forest();
-        else if (card.getName().startsWith("Closed Forest"))
+        else if (card.getName().contains("Closed Forest"))
             closedForest();
-        else if (card.getName().startsWith("Umiiruka"))
+        else if (card.getName().contains("Umiiruka"))
             umiiruka();
-        else if (card.getName().startsWith("Advanced Ritual Art"))
+        else if (card.getName().contains("Advanced Ritual Art"))
             advancedRitualArt(card);
-        else if (card.getName().startsWith("Twin Twisters"))
+        else if (card.getName().contains("Twin Twisters"))
             twinTwisters(card);
         else switch (card.getName()) {
                 case "Change of Heart" -> changeOfHeart((ChangeOfHeart) card);
@@ -1461,9 +1447,9 @@ public class DuelController {
     }
 
     private void moveToGraveyardAfterAttack(MonsterCard toBeRemoved, MonsterCard remover) {
-        if (toBeRemoved.getName().startsWith("Marshmallon")) return;
+        if (toBeRemoved.getName().contains("Marshmallon")) return;
         addMonsterToGYFromMonsterZone(toBeRemoved);
-        if (toBeRemoved.getName().startsWith("Exploder Dragon") || toBeRemoved.getName().startsWith("Yomi Ship")) {
+        if (toBeRemoved.getName().contains("Exploder Dragon") || toBeRemoved.getName().startsWith("Yomi Ship")) {
             addMonsterToGYFromMonsterZone(remover);
         }
     }
@@ -1738,9 +1724,6 @@ public class DuelController {
             }
     }
 
-    public void commandKnight() {
-
-    }
 
     public void wonGame(boolean allMatches, boolean isAI, Account winner) {
         if (isAI)
