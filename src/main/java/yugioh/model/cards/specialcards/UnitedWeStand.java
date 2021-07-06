@@ -7,22 +7,11 @@ import yugioh.model.cards.SpellAndTrapCard;
 
 
 public class UnitedWeStand extends SpellAndTrapCard {
-    private MonsterCard equippedMonster = null;
 
+    private MonsterCard equippedMonster = null;
 
     public UnitedWeStand() {
         super();
-        setName("United We Stand");
-        isSpell = true;
-        property = "Equip";
-        setDescription();
-        isLimited = false;
-        setPrice(4300);
-    }
-
-
-    private void setDescription() {
-        description = "The equipped monster gains 800 ATK/DEF for each face-up monster you control.";
     }
 
 
@@ -38,19 +27,15 @@ public class UnitedWeStand extends SpellAndTrapCard {
 
 
     private int amountOfAttackToAdd() {
-        int counter = 0;
-        for (MonsterCard monsterCard : this.getOwner().getField().getMonsterCards())
-            if (monsterCard.getMonsterCardModeInField() != MonsterCardModeInField.DEFENSE_FACE_DOWN)
-                counter++;
-        return counter * 800;
+        return (int) (this.getOwner().getField().getMonsterCards().stream()
+                .filter(m -> m.getMonsterCardModeInField() != MonsterCardModeInField.DEFENSE_FACE_DOWN).count() * 800);
     }
 
 
+    @Override
     public void reset() {
         if (equippedMonster != null) equippedMonster.reset();
         equippedMonster = null;
         isActive = false;
     }
-
-
 }

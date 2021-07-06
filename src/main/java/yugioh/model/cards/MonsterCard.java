@@ -39,7 +39,6 @@ public class MonsterCard extends Card {
         super();
     }
 
-
     public void setMonsterCardModeInField(MonsterCardModeInField monsterCardModeInField) {
         this.monsterCardModeInField = monsterCardModeInField;
         this.isChangedPosition = true;
@@ -65,7 +64,7 @@ public class MonsterCard extends Card {
 
     @Override
     public String toString() {
-        return "Name: " + this.name + "\nLevel: " + this.level + "\nType: " + this.monsterType
-                +"\nATK: " + getThisCardAttackPower() + "\nDEF: " + this.thisCardDefensePower + "\nDescription: " + this.description;
+        return "Name: " + this.name + "\nLevel: " + this.level +"\nATK: " + getThisCardAttackPower()
+                + "\nDEF: " + this.thisCardDefensePower;
     }
 }

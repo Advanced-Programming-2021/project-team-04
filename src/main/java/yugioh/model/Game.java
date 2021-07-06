@@ -5,6 +5,7 @@ import yugioh.controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.cards.Card;
+import yugioh.view.DuelView;
 
 
 import java.util.*;
@@ -71,6 +72,7 @@ public class Game {
         currentPlayer = theOtherPlayer;
         theOtherPlayer = temp;
         summonedInThisTurn = false;
+        DuelView.handleTurn((Account) currentPlayer);
     }
 
 

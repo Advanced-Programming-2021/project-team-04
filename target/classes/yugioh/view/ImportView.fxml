@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import java.net.URL?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="yugioh.view.ImportAndExportView"
+          prefHeight="763" prefWidth="1246" alignment="CENTER" hgap="10" vgap="10" styleClass="root">
+
+    <Button text="Back" fx:id="goBack" GridPane.columnIndex="0" GridPane.rowIndex="0" onMouseClicked="#goBack"/>
+
+    <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back"
+            onMouseClicked="#back"/>
+    <Button text="&#62;" styleClass="naviN" GridPane.rowIndex="1" GridPane.columnIndex="3" fx:id="next"
+            onMouseClicked="#next"/>
+
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" spacing="10" alignment="CENTER" prefWidth="300" styleClass="box">
+        <ImageView fx:id="first" fitHeight="400" fitWidth="300"/>
+        <Button text="Select" styleClass="select" onMouseClicked="#selectFirst"/>
+    </VBox>
+
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" spacing="10" alignment="CENTER" prefWidth="300" styleClass="box">
+        <ImageView fx:id="second" fitHeight="400" fitWidth="300"/>
+        <Button text="Select" styleClass="select" onMouseClicked="#selectSecond"/>
+    </VBox>
+
+    <stylesheets>
+        <URL value="@stylesheets/ImportView.css"/>
+    </stylesheets>
+</GridPane>

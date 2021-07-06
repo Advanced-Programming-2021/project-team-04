@@ -1,8 +1,0 @@
-{
-    "name": "Advanced Ritual Art",
-    "isSpell": true,
-    "property": "Ritual",
-    "isLimited":false,
-    "price": 3000,
-    "description": "This card can be used to Ritual Summon any 1 Ritual Monster. You must also send Normal Monsters from your Deck to the Graveyard whose total Levels equal the Level of that Ritual Monster."
-}

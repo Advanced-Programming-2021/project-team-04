@@ -15,17 +15,6 @@ public class ChangeOfHeart extends SpellAndTrapCard {
 
     public ChangeOfHeart() {
         super();
-        setName("Change of Heart");
-        isSpell = true;
-        property = "Normal";
-        setDescription();
-        setAllowedNumber(1);
-        setPrice(2500);
-    }
-
-
-    private void setDescription() {
-        description = "Target 1 monster your opponent controls; take control of it until the End Phase.";
     }
 
 
@@ -38,6 +27,7 @@ public class ChangeOfHeart extends SpellAndTrapCard {
     }
 
 
+    @Override
     public void reset() {
         if (isActive()) {
             if (hijackedCard != null) {

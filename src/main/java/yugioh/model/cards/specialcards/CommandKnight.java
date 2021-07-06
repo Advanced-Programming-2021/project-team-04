@@ -15,23 +15,6 @@ public class CommandKnight extends MonsterCard {
 
     public CommandKnight() {
         super();
-        setName("Command Knight");
-        setLevel(4);
-        setMonsterType("Warrior");
-        setCardType("Effect");
-        setClassAttackPower(1000);
-        setClassDefensePower(1000);
-        setThisCardAttackPower(1000);
-        setThisCardDefensePower(1000);
-        setPrice(2100);
-        setDescription();
-    }
-
-
-    private void setDescription() {
-        this.description = "All Warrior-Type monsters you control gain 400 ATK. " +
-                "If you control another monster, monsters your opponent " +
-                "controls cannot target this card for an attack.";
     }
 
 

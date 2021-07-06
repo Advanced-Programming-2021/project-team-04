@@ -1,8 +1,0 @@
-{
-    "name": "Monster Reborn",
-    "isSpell": true,
-    "property": "Normal",
-    "isLimited": true,
-    "price": 2500,
-    "description": "Target 1 monster in either GY; Special Summon it."
-}

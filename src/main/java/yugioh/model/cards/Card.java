@@ -19,13 +19,9 @@ public class Card {
 
 
     protected static ArrayList<Card> allCards;
-    protected static HashMap<String, String> nameToDescriptionMap;
-    protected static HashMap<String, String> specialCardNameToClassNameMap;
 
     static {
         allCards = new ArrayList<>();
-        nameToDescriptionMap = ImportAndExport.getInstance().readCardNameToDescriptionMap();
-        specialCardNameToClassNameMap = ImportAndExport.getInstance().readSpecialCardNameToClassNameMap();
     }
 
     @JsonProperty
@@ -52,18 +48,6 @@ public class Card {
 
     public static Card getCardByName(String name) {
         return allCards.stream().filter(c -> c.getName().equals(name)).findFirst().orElse(null);
-    }
-
-    public static String getDescriptionByName(String name) {
-        return nameToDescriptionMap.get(name);
-    }
-
-    public static boolean isCardSpecial(String cardName) {
-        return specialCardNameToClassNameMap.containsKey(cardName);
-    }
-
-    public static String getSpecialCardClassName(String cardName) {
-        return specialCardNameToClassNameMap.get(cardName);
     }
 
     public Duelist getOwner() {

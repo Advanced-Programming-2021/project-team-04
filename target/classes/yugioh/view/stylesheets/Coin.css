@@ -1,0 +1,55 @@
+.root {
+    -fx-background-color: #000000;
+    -fx-background-image: url("coinBG.gif");
+    -fx-background-repeat: stretch;
+    background-size: auto 100%;
+    -fx-background-position: center center;
+}
+
+.label {
+    -fx-font-family: "Jokerman";
+    -fx-text-fill: #7ba5ee;
+    -fx-font-size: 30;
+}
+
+.text-field {
+    -fx-font-family: "Jokerman";
+    -fx-border-color: #7ba5ee;
+    -fx-background-color: transparent;
+    -fx-text-fill: #7ba5ee;
+    -fx-background-radius: 40;
+    -fx-border-radius: 20;
+    -fx-pref-width: 160;
+    -fx-border-width: 3;
+    -fx-font-size: 20;
+    -fx-font-weight: bold;
+    -fx-translate-y: 30;
+}
+
+.button {
+    -fx-font-family: "Jokerman";
+    -fx-text-fill: #000000;
+    -fx-background-color: #7ba5ee;
+    -fx-font-size: 20;
+    -fx-translate-y: 40;
+    -fx-translate-x: 5;
+}
+
+.start {
+    -fx-font-family: "Jokerman";
+    -fx-text-fill: #000000;
+    -fx-background-color: #7ba5ee;
+    -fx-font-size: 20;
+    -fx-translate-y: 40;
+    -fx-translate-x: -5;
+}
+
+.button:hover {
+    -fx-text-fill: #7ba5ee;
+    -fx-background-color: #000000;
+}
+
+.start:hover {
+    -fx-text-fill: #7ba5ee;
+    -fx-background-color: #000000;
+}

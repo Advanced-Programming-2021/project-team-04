@@ -1,0 +1,38 @@
+
+G
+java:S1444",Make this "public static isMute" field final(à¡¦Úøÿÿÿÿ
+m
+java:S1104"RMake isMute a static final constant or non-public and provide accessors if needed.(à¡¦Úøÿÿÿÿ
+T
+java:S1135"2Complete the task associated to this TODO comment.(íÙÔ”üÿÿÿÿ8‰œêç¦/
+X	java:S125"<This block of commented-out lines of code should be removed.(ÖçØã8ˆœêç¦/
+L
+java:S26960"6Make the enclosing method "static" or remove this set.(¹éµË
+M
+java:S1135="2Complete the task associated to this TODO comment.(ÕıÈ¨úÿÿÿÿ
+M
+java:S1135F"2Complete the task associated to this TODO comment.(ÕıÈ¨úÿÿÿÿ
+K
+java:S2696P"6Make the enclosing method "static" or remove this set.(äúÙ_
+M
+java:S1135Z"2Complete the task associated to this TODO comment.(¾’Äœşÿÿÿÿ
+J
+java:S6212]"/Declare this local variable with "var" instead.(Òğ¯ˆüÿÿÿÿ
+E
+java:S6212^"/Declare this local variable with "var" instead.(ÕÙ€
+E
+java:S6212`"/Declare this local variable with "var" instead.(ïóŞ 
+E
+java:S6212e"/Declare this local variable with "var" instead.(·•‡
+E
+java:S6212f"/Declare this local variable with "var" instead.(ÕÙ€
+E
+java:S6212h"/Declare this local variable with "var" instead.(ïóŞ 
+E
+java:S6212m"/Declare this local variable with "var" instead.(ºèåÂ
+Q
+java:S2696t"6Make the enclosing method "static" or remove this set.(ü©Åšøÿÿÿÿ
+R
+java:S1144\"7Remove this unused private "cheatIncreaseScore" method.(„ĞÉ™şÿÿÿÿ
+R
+java:S1144d"7Remove this unused private "cheatIncreaseMoney" method.(îü‰©ûÿÿÿÿ
