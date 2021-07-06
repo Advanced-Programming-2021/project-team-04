@@ -7,37 +7,75 @@
 }
 
 .navi {
-    -fx-translate-x: -20;
+    -fx-translate-x: 310;
+    -fx-translate-y: -30;
     -fx-background-color: #000000;
     -fx-font-size: 50;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #ab7b41;
     -fx-padding: 0;
 }
 
+.Back {
+    -fx-translate-y: -80;
+    -fx-translate-x: -140;
+    -fx-text-fill: #000000;
+    -fx-border-color: #000000;
+    -fx-background-color: #ab7b41;
+    -fx-font-family: "Jokerman";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-text-alignment: center;
+}
+
+.Back:hover {
+    -fx-border-color: #ab7b41;
+    -fx-background-color: #000000;
+    -fx-text-fill: #ab7b41;
+}
+
 .box {
-    -fx-translate-x: 80;
+    -fx-translate-x: 280;
 }
 
 .navi:hover {
     -fx-text-fill: #000000;
-    -fx-background-color: #ffffff;
+    -fx-background-color: #ab7b41;
 }
 
 
 .label {
     -fx-font-family: "Jokerman";
-    -fx-font-size: 25.4;
-    -fx-text-fill: #000000;
-    -fx-translate-x: -93;
+    -fx-font-size: 20;
+    -fx-text-fill: #ab7b41;
+    -fx-translate-x: 30;
+    -fx-translate-y: -60;
+    -fx-text-alignment: center;
     -fx-padding: 10;
-    -fx-border-color: #000000;
+    -fx-border-color: #ab7b41;
 }
 
 
 .select:hover {
-    -fx-border-color: #000000;
-    -fx-background-color: #ffffff;
+    -fx-border-color: #ab7b41;
+    -fx-background-color: #000000;
+    -fx-text-fill: #ab7b41;
+}
+
+.photo {
+    -fx-translate-y: -60;
+    -fx-translate-x: 30;
+}
+
+.select {
+    -fx-translate-y: -60;
+    -fx-translate-x: 30;
     -fx-text-fill: #000000;
+    -fx-border-color: #000000;
+    -fx-background-color: #ab7b41;
+    -fx-font-family: "Jokerman";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-text-alignment: center;
 }
 
 

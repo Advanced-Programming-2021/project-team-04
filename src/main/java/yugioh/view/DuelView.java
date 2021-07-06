@@ -13,7 +13,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import yugioh.controller.DuelController;
+import yugioh.controller.MainController;
 import yugioh.model.Account;
+import yugioh.model.Game;
 import yugioh.model.MonsterCardModeInField;
 import yugioh.model.cards.Card;
 import yugioh.model.CardStatusInField;
@@ -249,6 +251,49 @@ public class DuelView {
 
     }
 
+    public void deselect() {
+        DuelController.getInstance().deselectCard();
+    }
+
+    public void attack() {
+
+    }
+
+    public void activate() {
+        DuelController.getInstance().activateSpell();
+        setSpellZone(player1.getField().getSpellAndTrapCards(), LoginView.mainGameSceneOne, "#spell");
+    }
+
+    public void set() {
+        DuelController.getInstance().set();
+        setHandImages(player1, LoginView.mainGameSceneOne);
+        setSpellZone(player1.getField().getSpellAndTrapCards(), LoginView.mainGameSceneOne, "#spell");
+        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#monster");
+    }
+
+
+    public void flipSummon() {
+        DuelController.getInstance().flipSummon();
+        setHandImages(player1, LoginView.mainGameSceneOne);
+        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#monster");
+    }
+
+    public void summon() {
+        DuelController.getInstance().summon();
+        setHandImages(player1, LoginView.mainGameSceneOne);
+        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#monster");
+    }
+
+    public void nextPhase() {
+        DuelController.getInstance().nextPhase();
+        setHandImages(player1, LoginView.mainGameSceneOne);
+        setSpellZone(player1.getField().getSpellAndTrapCards(), LoginView.mainGameSceneOne, "#spell");
+        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#monster");
+        setHandImages(player2, LoginView.mainGameSceneTwo);
+        setSpellZone(player2.getField().getSpellAndTrapCards(), LoginView.mainGameSceneTwo, "#spell");
+        setMonsterZone(player2.getField().getMonsterCards(), LoginView.mainGameSceneTwo, "#monster");
+    }
+
     public void previous() {
         count--;
         handleButtons();
@@ -262,10 +307,12 @@ public class DuelView {
     }
 
     public void backToGame() {
-
+        LoginView.stage.setScene(LoginView.mainGameSceneOne);
     }
 
     public void showGraveyard() {
+        myGY = new ArrayList<>();
+        opponentGY = new ArrayList<>();
         ArrayList<Card> myGraveYard = DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard();
         ArrayList<Card> opponentGraveYard = DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard();
         for (Card card : myGraveYard) myGY.add(card.getName());
@@ -279,7 +326,7 @@ public class DuelView {
     }
 
     private void handleButtons() {
-        LoginView.graveyardScene.lookup("#back").setDisable(count == 0);
+        LoginView.graveyardScene.lookup("#backToFirstPage").setDisable(count == 0);
         LoginView.graveyardScene.lookup("#next").setDisable(count >= myGY.size() - 1 && count >= opponentGY.size() - 1);
     }
 
