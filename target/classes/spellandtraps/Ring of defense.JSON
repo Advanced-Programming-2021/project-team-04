@@ -1,8 +1,0 @@
-{
-    "name": "Ring of defense",
-    "isSpell": true,
-    "property": "Quick-play",
-    "isLimited":false,
-    "price": 3500,
-    "description": "When a Trap effect that inflicts damage is activated: Make that effect damage 0."
-}
