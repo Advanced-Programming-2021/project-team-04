@@ -7,14 +7,14 @@
 }
 
 .button {
-    -fx-background-color: #000000;
+    -fx-background-color: #ffffff;
     -fx-border-color: #ffffff;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #000000;
     -fx-font-family: "Jokerman";
     -fx-border-radius: 3;
 }
 
 .button:hover {
-    -fx-background-color: #ffffff;
-    -fx-text-fill: #000000;
+    -fx-background-color: #000000;
+    -fx-text-fill: #ffffff;
 }

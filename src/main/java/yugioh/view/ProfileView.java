@@ -34,7 +34,7 @@ public class ProfileView {
                 MainController.getInstance().getLoggedIn().getProfilePictureNumber() +
                 MainController.getInstance().getLoggedIn().getProfilePictureExtension()));
         profilePicture.setImage(image);
-        Tooltip tooltip = new Tooltip("drag and drop a photo\nto change your avatar :)");
+        Tooltip tooltip = new Tooltip("drag and drop a photo\nto change your avatar");
         tooltip.setShowDelay(Duration.seconds(0));
         Tooltip.install(profilePicture, tooltip);
         handleDragAndDrop(profilePicture);

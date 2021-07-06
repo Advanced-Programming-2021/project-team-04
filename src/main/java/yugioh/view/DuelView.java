@@ -1,6 +1,7 @@
 package yugioh.view;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -14,6 +15,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape3D;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -57,11 +60,11 @@ public class DuelView {
     private static void run() {
         player1 = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         player2 = (Account) DuelController.getInstance().getGame().getTheOtherPlayer();
-        setProfiles(player1, player2, LoginView.mainGameSceneOne);
         setCardImages(player1, player2, LoginView.mainGameSceneOne);
-        setProfiles(player2, player1, LoginView.mainGameSceneTwo);
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
         LoginView.mainGameSceneTwo.getRoot().setMouseTransparent(true);
+        setProfiles(player1, player2, LoginView.mainGameSceneOne);
+        setProfiles(player2, player1, LoginView.mainGameSceneTwo);
     }
 
     public static void handleTurn(Account currentPlayer) {
