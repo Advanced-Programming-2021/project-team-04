@@ -13,10 +13,6 @@ W
 'src/main/java/yugioh/model/Duelist.java,8\1\819d24590efa1e1d831760b8875ea29a221e08d7
 f
 6src/main/java/yugioh/model/MonsterCardModeInField.java,d\7\d79208ad187fa5a1998572e2a58a0bac27658471
-9
-	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
-W
-'src/main/java/yugioh/view/DuelView.java,0\4\0438af703da6aff76f796160275aade9fd03904e
 Q
 !src/main/java/yugioh/view/IO.java,0\0\00e5ff8beb5d1f99d116a5e0161114ac0c636a47
 Z
@@ -27,8 +23,6 @@ W
 'src/main/java/yugioh/view/DeckView.java,7\7\77aa933a50e9b6b49e72e7853b312395cf842a96
 U
 %src/main/java/yugioh/model/Field.java,e\a\ea96a6ae57439137336b659c7f5ce7141197fadd
-X
-(src/main/java/yugioh/view/LoginView.java,b\3\b3be639834550ef86e116b7d556404934f419a1d
 W
 'src/main/java/yugioh/view/MainView.java,f\b\fb857bf48a6929dda0fff3911260db0ef00c32c7
 W

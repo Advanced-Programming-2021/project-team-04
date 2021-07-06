@@ -52,18 +52,18 @@
     <ImageView GridPane.rowIndex="3" GridPane.columnIndex="6" fitHeight="120" fitWidth="90" fx:id="spell4"/>
 
     <VBox GridPane.rowIndex="3" GridPane.columnIndex="7" prefHeight="120" prefWidth="90" spacing="6">
-        <Button text="attack" prefHeight="36" prefWidth="90" textAlignment="CENTER"/>
-        <Button text="set" prefHeight="36" prefWidth="90" textAlignment="CENTER"/>
-        <Button text="activate" prefHeight="36" prefWidth="90" textAlignment="CENTER"/>
+        <Button text="attack" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#attack"/>
+        <Button text="set" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#set"/>
+        <Button text="activate" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#activate"/>
     </VBox>
     <VBox GridPane.rowIndex="3" GridPane.columnIndex="8" prefHeight="120" prefWidth="90" spacing="10" alignment="CENTER">
-        <Button text="flip&#10;summon" prefHeight="55" prefWidth="90" textAlignment="CENTER"/>
-        <Button text="next&#10;phase" prefHeight="55" prefWidth="90" textAlignment="CENTER"/>
+        <Button text="flip&#10;summon" prefHeight="55" prefWidth="90" textAlignment="CENTER" onMouseClicked="#flipSummon"/>
+        <Button text="next&#10;phase" prefHeight="55" prefWidth="90" textAlignment="CENTER" onMouseClicked="#nextPhase"/>
     </VBox>
     <VBox GridPane.rowIndex="3" GridPane.columnIndex="9" prefHeight="120" prefWidth="90" spacing="6">
-        <Button text="summon" prefHeight="36" prefWidth="90" textAlignment="CENTER"/>
-        <Button text="deselect" prefHeight="36" prefWidth="90" textAlignment="CENTER"/>
-        <Button text="pause" prefHeight="36" prefWidth="90" textAlignment="CENTER"/>
+        <Button text="summon" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#summon"/>
+        <Button text="deselect" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#deselect"/>
+        <Button text="settings" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#settings"/>
     </VBox>
 
     <ImageView GridPane.rowIndex="4" GridPane.columnIndex="2" fitHeight="120" fitWidth="90" fx:id="hand1"/>
@@ -75,7 +75,7 @@
 
     <VBox GridPane.rowIndex="4" GridPane.columnIndex="8" prefHeight="120" prefWidth="90" spacing="10">
         <Button text="cheat" prefHeight="55" prefWidth="90" textAlignment="CENTER"/>
-        <Button text="graveyard" prefHeight="55" prefWidth="90" textAlignment="CENTER"/>
+        <Button text="graveyard" prefHeight="55" prefWidth="90" textAlignment="CENTER" onMouseClicked="#showGraveyard"/>
     </VBox>
 
     <ImageView GridPane.rowIndex="4" GridPane.columnIndex="9" fitHeight="120" fitWidth="90" fx:id="field"/>
