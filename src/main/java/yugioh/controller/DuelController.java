@@ -136,14 +136,7 @@ public class DuelController {
     private void handleEquip(Field field) { //TODO
         var swordOfDarkDestruction = (SwordOfDarkDestruction) field.getThisActivatedCard("Sword of dark destruction");
         if (swordOfDarkDestruction != null) {
-            if (swordOfDarkDestruction.isOriginal())
                 swordOfDarkDestruction.equipMonster();
-            else {
-                SwordOfDarkDestruction dark = new SwordOfDarkDestruction();
-                dark.setConverted(true);
-                swordOfDarkDestruction = dark;
-                dark.equipMonster();
-            }
         }
         var blackPendant = (BlackPendant) field.getThisActivatedCard("Black Pendant");
         if (blackPendant != null) blackPendant.equipMonster();

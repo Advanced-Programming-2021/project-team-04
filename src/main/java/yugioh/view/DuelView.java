@@ -3,6 +3,7 @@ package yugioh.view;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,8 +11,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Shape3D;
 import javafx.stage.Popup;
@@ -41,7 +42,7 @@ public class DuelView {
     private static Card firstCard;
     private static Card secondCard;
     private static final Card emptyCard = new Card();
-
+    private static int counter;
     private static Stage secondStage;
     private static Account player1;
     private static Account player2;
@@ -86,9 +87,6 @@ public class DuelView {
         LoginView.mainGameSceneOne.getRoot().setMouseTransparent(!isPlayer1sTurn);
     }
 
-    public void mute(MouseEvent mouseEvent) {
-        //TODO mute
-    }
 
     private static void setProfiles(Account player, Account otherPlayer, Scene scene) {
         ImageView opponentProfile = (ImageView) scene.lookup("#opponentProfile");
@@ -860,5 +858,27 @@ public class DuelView {
             IO.getInstance().invalidSelection();
             return getMonsterCardFromHand(isOpponent);
         }
+    }
+
+    public void muteGame(MouseEvent mouseEvent) {
+        MainView.isGameMute = ((ToggleButton) mouseEvent.getTarget()).isSelected();
+        if (MainView.isGameMute) MainView.gameMusic.pause();
+        else if (MainView.gameMusic == null) MainView.playGameMusic();
+        else MainView.gameMusic.play();
+    }
+
+    public void changeBackground() {
+        if (counter == 17)
+            counter = 0;
+        GridPane content = (GridPane) LoginView.mainGameSceneOne.lookup("#gridpane");
+        content.setBackground(new Background(
+                new BackgroundImage(
+                        new Image(DuelView.class.getResourceAsStream("stylesheets/" + counter + ".jpg")),
+                        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT,
+                        new BackgroundPosition(Side.LEFT, 0, true, Side.BOTTOM, 0, true),
+                        new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
+                ))
+        );
+        counter++;
     }
 }

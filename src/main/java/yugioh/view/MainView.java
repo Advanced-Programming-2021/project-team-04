@@ -19,7 +19,7 @@ public class MainView {
     public static MediaPlayer mainMusic;
     public static MediaPlayer gameMusic;
     public static boolean isMute;
-
+    public static boolean isGameMute;
 
     @FXML
     public void enterShopMenu() {
@@ -112,4 +112,5 @@ public class MainView {
         else if (mainMusic == null) playMainMusic();
         else mainMusic.play();
     }
+
 }
