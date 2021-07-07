@@ -1,0 +1,32 @@
+.root {
+    -fx-background-color: #000000;
+    -fx-background-image: url("finishGame.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+.Back {
+    -fx-border-color: #000000;
+    -fx-background-color: #ff30a2;
+    -fx-font-family: "Jokerman";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-text-alignment: center;
+}
+
+.text {
+    -fx-text-fill: #8edbff;
+    -fx-font-family: "Jokerman";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-text-alignment: center;
+}
+
+.congrats {
+    -fx-text-fill: #fffeab;
+    -fx-font-family: "Jokerman";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-text-alignment: center;
+}

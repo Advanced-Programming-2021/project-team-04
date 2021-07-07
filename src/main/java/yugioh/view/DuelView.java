@@ -285,6 +285,10 @@ public class DuelView {
         LoginView.stage.setScene(LoginView.duelFirstScene);
     }
 
+    public void backToMainPage() {
+        LoginView.stage.setScene(LoginView.mainScene);
+    }
+
     public void chooseStarter(String winnerUsername) {
         Label label = (Label) LoginView.coinScene.lookup("#toShow");
         label.setText(winnerUsername + " is our lucky star!\nyou may now choose the\nfirst player your majesty!");
@@ -341,6 +345,13 @@ public class DuelView {
 
     }
 
+    public static void finishGame(String username) {
+        Label label = (Label) LoginView.finishGame.lookup("#congrats");
+        label.setText("Congrats " + username + "\n" + "Hold fast to the joy of the rise; despise all thoughts you might descend.");
+        label.setStyle("-fx-text-fill: #00F2FF");
+        LoginView.stage.setScene(LoginView.finishGame);
+    }
+
     public void activate() {
         DuelController.getInstance().activateSpell();
         Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
@@ -359,9 +370,9 @@ public class DuelView {
 
     public void set() {
         DuelController.getInstance().set();
-        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         Scene myScene = LoginView.mainGameSceneOne;
         Scene opponentScene = LoginView.mainGameSceneTwo;
+        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         if (player2.getUsername().equals(currentPlayer.getUsername())) {
             myScene = LoginView.mainGameSceneTwo;
             opponentScene = LoginView.mainGameSceneOne;
@@ -401,8 +412,8 @@ public class DuelView {
 
     public void flipSummon() {
         DuelController.getInstance().flipSummon();
-        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         Scene myScene = LoginView.mainGameSceneOne;
+        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         Scene opponentScene = LoginView.mainGameSceneTwo;
         if (player2.getUsername().equals(currentPlayer.getUsername())) {
             myScene = LoginView.mainGameSceneTwo;
@@ -416,9 +427,9 @@ public class DuelView {
 
     public void summon() {
         DuelController.getInstance().summon();
+        Scene opponentScene = LoginView.mainGameSceneTwo;
         Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         Scene myScene = LoginView.mainGameSceneOne;
-        Scene opponentScene = LoginView.mainGameSceneTwo;
         if (player2.getUsername().equals(currentPlayer.getUsername())) {
             myScene = LoginView.mainGameSceneTwo;
             opponentScene = LoginView.mainGameSceneOne;

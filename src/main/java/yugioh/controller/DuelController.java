@@ -1727,13 +1727,13 @@ public class DuelController {
 
     public void wonGame(boolean allMatches, boolean isAI, Account winner) {
         if (isAI)
-            IO.getInstance().printString("a spacecraft’s structure is its underlying body and it's won once again");
+            IO.getInstance().setText("a spacecraft’s structure is its underlying body and it's won once again");
         else {
             if (allMatches)
-                IO.getInstance().printString(winner.getUsername() + " won the whole match with score: " + winner.getScore());
+                IO.getInstance().setText(winner.getUsername() + " won the whole match with score: " + winner.getScore());
             else
-                IO.getInstance().printString(winner.getUsername() + " won the game and the score is: " + winner.getScore());
+                IO.getInstance().setText(winner.getUsername() + " won the game and the score is: " + winner.getScore());
         }
+        DuelView.finishGame(winner.getUsername());
     }
-
 }
