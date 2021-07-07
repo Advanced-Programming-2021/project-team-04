@@ -23,9 +23,10 @@
 }
 
 .text-field {
-    -fx-pref-height: 21;
+    -fx-pref-height: 31;
     -fx-translate-y: +10;
     -fx-translate-x: -37;
+    -fx-font-size: 30;
 }
 
 .button {

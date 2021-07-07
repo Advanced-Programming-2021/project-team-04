@@ -20,7 +20,6 @@ import java.nio.file.Paths;
 public class ProfileView {
 
     public static void run() {
-        MainController.getInstance().setRandomProfile();
         setProfilePictureFirstTime();
         ((Label) LoginView.profileScene.lookup("#username"))
                 .setText(MainController.getInstance().getLoggedIn().getUsername());

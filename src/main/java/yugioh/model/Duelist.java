@@ -5,6 +5,7 @@ import yugioh.controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.cards.MonsterCard;
+import yugioh.view.DuelView;
 
 import java.util.*;
 
@@ -88,6 +89,7 @@ public abstract class Duelist {
     public void changeLP(int amount) {
         this.LP += amount;
         if (this.LP <= 0) DuelController.getInstance().getGame().finishGame(this);
+        DuelView.setLP(username, LP);
     }
 
     public String toString() {
