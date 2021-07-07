@@ -9,10 +9,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
@@ -635,11 +632,6 @@ public class DuelView {
     }
 
 
-    public void showCurrentMenu() {
-        IO.getInstance().printDuelMenuName();
-    }
-
-
     public MonsterCard getRitualCard() {
         IO.getInstance().chooseRitualCard();
         String ritualCardNumber = IO.getInstance().getInputMessage();
@@ -647,7 +639,6 @@ public class DuelView {
         try {
             return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(ritualCardNumber) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getRitualCard();
         }
     }
@@ -660,7 +651,6 @@ public class DuelView {
         try {
             return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(Integer.parseInt(monsterCardNumber) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getOpponentMonster();
         }
     }
@@ -705,7 +695,6 @@ public class DuelView {
         try {
             return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(number) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getMonsterCardFromHand();
         }
     }
@@ -718,7 +707,6 @@ public class DuelView {
         try {
             return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getFromMyGY();
         }
     }
@@ -731,7 +719,6 @@ public class DuelView {
         try {
             return DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getCardFromMyGY();
         }
     }
@@ -744,7 +731,6 @@ public class DuelView {
         try {
             return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getCardFromOpponentGY();
         }
     }
@@ -757,7 +743,6 @@ public class DuelView {
         try {
             return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getFromOpponentGY();
         }
     }
@@ -777,7 +762,6 @@ public class DuelView {
         try {
             return (SpellAndTrapCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getDeckZone().get(Integer.parseInt(number) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getFieldSpellFromDeck();
         }
     }
@@ -790,7 +774,6 @@ public class DuelView {
         try {
             return DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(Integer.parseInt(monsterCardNumber) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getMonsterToEquip();
         }
     }
@@ -803,7 +786,6 @@ public class DuelView {
         try {
             return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(Integer.parseInt(monsterCardNumber) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getHijackedCard();
         }
     }
@@ -838,7 +820,6 @@ public class DuelView {
         try {
             return DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(cardNumber) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getCardFromHand();
         }
     }
@@ -851,7 +832,6 @@ public class DuelView {
         try {
             return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(Integer.parseInt(cardNumber) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getCardFromOpponentHand();
         }
     }
@@ -887,7 +867,6 @@ public class DuelView {
         try {
             return DuelController.getInstance().getGame().getCurrentPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getFromMyField();
         }
     }
@@ -899,7 +878,6 @@ public class DuelView {
         try {
             return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getFromOpponentField();
         }
     }
@@ -940,7 +918,6 @@ public class DuelView {
         try {
             return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getDeckZone().get(Integer.parseInt(number) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getFromMyDeck(isOpponent);
         }
     }
@@ -953,7 +930,6 @@ public class DuelView {
         try {
             return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getFromMyGY(isOpponent);
         }
     }
@@ -966,7 +942,6 @@ public class DuelView {
         try {
             return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(Integer.parseInt(number) - 1);
         } catch (Exception e) {
-            IO.getInstance().invalidSelection();
             return getMonsterCardFromHand(isOpponent);
         }
     }

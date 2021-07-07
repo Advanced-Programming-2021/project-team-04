@@ -306,7 +306,6 @@ public class DuelController {
             case SPELL_FIELD -> game.setSelectedCard(thisPlayer.getField().getSpellAndTrapCards().get(number));
             case FIELD_ZONE -> game.setSelectedCard(thisPlayer.getField().getFieldZone());
         }
-        IO.getInstance().cardSelected();
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
@@ -318,22 +317,18 @@ public class DuelController {
     private boolean errorForSelecting(Duelist thisPlayer, int number, CardStatusInField cardStatusInField) {
         if (cardStatusInField.equals(CardStatusInField.HAND) &&
                 (number >= thisPlayer.getField().getHand().size() || number < 0)) {
-            IO.getInstance().invalidSelection();
             return false;
         }
         if (cardStatusInField.equals(CardStatusInField.MONSTER_FIELD) &&
                 (number >= thisPlayer.getField().getMonsterCards().size() || number < 0)) {
-            IO.getInstance().invalidSelection();
             return false;
         }
         if (cardStatusInField.equals(CardStatusInField.SPELL_FIELD) &&
                 (number >= thisPlayer.getField().getSpellAndTrapCards().size() || number < 0)) {
-            IO.getInstance().invalidSelection();
             return false;
         }
         if (cardStatusInField.equals(CardStatusInField.FIELD_ZONE) &&
                 thisPlayer.getField().getFieldZone() == null) {
-            IO.getInstance().noCardInPosition();
             return false;
         }
         return true;
@@ -345,7 +340,6 @@ public class DuelController {
             return;
         }
         game.setSelectedCard(null);
-        IO.getInstance().cardDeselected();
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
@@ -489,7 +483,6 @@ public class DuelController {
 
     public boolean isTributeValid(int number) {
         if (game.getCurrentPlayer().getField().getMonsterCards().size() <= number) {
-            IO.getInstance().noMonster();
             return false;
         }
         return true;
@@ -544,7 +537,6 @@ public class DuelController {
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
         game.setSummonedInThisTurn(true);
-        IO.getInstance().setSuccessfully();
     }
 
     private boolean isSettingMonsterValid() {
@@ -595,7 +587,6 @@ public class DuelController {
         if (selectedCard instanceof CommandKnight)
             ((CommandKnight) selectedCard).specialMethod();
         game.setSelectedCard(null);
-        IO.getInstance().positionChanged();
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
@@ -605,7 +596,6 @@ public class DuelController {
         if ((isAttack && selectedCard.getMonsterCardModeInField() == MonsterCardModeInField.ATTACK_FACE_UP) ||
                 (!isAttack && (selectedCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_UP ||
                         selectedCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN))) {
-            IO.getInstance().alreadyInPosition();
             return false;
         }
         if (selectedCard.isHasBeenSetOrSummoned()) {
@@ -643,7 +633,6 @@ public class DuelController {
         if (monsterCard.getName().contains("ManEater Bug")) forManEaterBug();
         game.setSelectedCard(null);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
-        IO.getInstance().flipSummoned();
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
@@ -796,7 +785,6 @@ public class DuelController {
         int damage = selectedCard.getThisCardAttackPower();
         selectedCard.setAttacked(true);
         game.setSelectedCard(null);
-        IO.getInstance().receivedDamage(damage);
         game.getTheOtherPlayer().changeLP(-damage);
         if (game.getTheOtherPlayer().getLP() <= 0) return;
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
@@ -848,7 +836,6 @@ public class DuelController {
         selectedCard.setActive(true);
         callSpellAndTrapMethod(selectedCard);
         game.setSelectedCard(null);
-        if (selectedCard.isActive()) IO.getInstance().spellActivated();
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
@@ -1301,7 +1288,6 @@ public class DuelController {
         game.getCurrentPlayer().getField().getSpellAndTrapCards().add((SpellAndTrapCard) game.getSelectedCard());
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
-        IO.getInstance().setSuccessfully();
     }
 
     private boolean isSettingSpellAndTrapValid() {

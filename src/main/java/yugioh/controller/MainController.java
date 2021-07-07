@@ -54,7 +54,6 @@ public class MainController {
             return false;
         }
         if (rounds != 1 && rounds != 3) {
-            IO.getInstance().invalidNumOfRounds();
             return false;
         }
         Account player2 = Account.getAccountByUsername(username);
@@ -88,7 +87,6 @@ public class MainController {
             return false;
         }
         if (rounds != 1 && rounds != 3) {
-            IO.getInstance().invalidNumOfRounds();
             return false;
         }
         return true;

@@ -39,39 +39,6 @@ public class IO {
         return scanner.nextLine().trim();
     }
 
-
-    public void summoned() {
-        System.out.println("summoned successfully");
-    }
-
-    public void revealCard(String cardName) {
-        System.out.print("opponent’s monster card was " + cardName + " and ");
-    }
-
-    public void lostInDefense(int damage) {
-        System.out.println("no card is destroyed and you received " + damage + " battle damage");
-    }
-
-    public void drawInDefense() {
-        System.out.println("no card is destroyed");
-    }
-
-    public void wonInDefense() {
-        System.out.println("the defense position monster is destroyed");
-    }
-
-    public void lostInAttack(int damage) {
-        System.out.println("Your monster card is destroyed and you received " + damage + " battle damage");
-    }
-
-    public void drawInAttack() {
-        System.out.println("both you and your opponent monster cards are destroyed and no one receives damage");
-    }
-
-    public void wonAttackInAttack(int damage) {
-        System.out.println("your opponent’s monster is destroyed and your opponent receives " + damage + " battle damage");
-    }
-
     public void cardsToExchange() {
         System.out.println("enter the name of the cards you want to exchange:" +
                 "\n(card from side deck * card from main deck");
@@ -151,18 +118,6 @@ public class IO {
         System.out.println("enter the number of the card you want to tribute:");
     }
 
-    public void chooseStarter() {
-        System.out.println("choose who should begin the game:");
-    }
-
-    public void pickRPS() {
-        System.out.println("choose rock or paper or scissors:");
-    }
-
-    public void printAIsRPS(String rps) {
-        System.out.println("computer chose: " + rps );
-    }
-
     public void wantToActivate(String cardName) {
         System.out.println("do you want to activate " + cardName + "?");
     }
@@ -180,11 +135,13 @@ public class IO {
     }
 
     public void invalidCard() {
-        System.out.println("selected card is not valid");
+        label.setText("selected card is not valid");
+        popup.show(LoginView.stage);
     }
 
     public void cardNotVisible() {
-        System.out.println("card is not visible");
+        label.setText("card is not visible");
+        popup.show(LoginView.stage);
     }
 
     public void printString(String toPrint) {
@@ -192,123 +149,113 @@ public class IO {
     }
 
     public void invalidTributeSum() {
-        System.out.println("selected monsters levels don’t match with ritual monster");
+        label.setText("selected monsters levels don’t match with ritual monster");
+        popup.show(LoginView.stage);
     }
 
     public void cannotRitualSummon() {
-        System.out.println("there is no way you could ritual summon a monster");
+        label.setText("there is no way you could ritual summon a monster");
+        popup.show(LoginView.stage);
     }
 
     public void cannotRitualSummonThisCard() {
-        System.out.println("you can't ritual summon this card");
+        label.setText("you can't ritual summon this card");
+        popup.show(LoginView.stage);
     }
 
     public void cannotSet() {
-        System.out.println("you can’t set this card");
-    }
-
-    public void preparationsNotDone() {
-        System.out.println("preparations of this spell are not done yet");
+        label.setText("you can’t set this card");
+        popup.show(LoginView.stage);
     }
 
     public void spellZoneFull() {
-        System.out.println("spell card zone is full");
+        label.setText("spell card zone is full");
+        popup.show(LoginView.stage);
     }
 
     public void alreadyActive() {
-        System.out.println("you have already activated this card");
+        label.setText("you have already activated this card");
+        popup.show(LoginView.stage);
     }
 
     public void onlySpells() {
-        System.out.println("activate effect is only for spell cards.");
-    }
-
-    public void spellActivated() {
-        System.out.println("spell activated");
-    }
-
-    public void receivedDamage(int damage) {
-        System.out.println("you opponent receives " + damage + " battle damage");
+        label.setText("activate effect is only for spell cards.");
+        popup.show(LoginView.stage);
     }
 
     public void cannotDirectAttack() {
-        System.out.println("you can’t attack the opponent directly");
+        label.setText("you can’t attack the opponent directly");
+        popup.show(LoginView.stage);
     }
 
     public void noCardHere() {
-        System.out.println("there is no card to attack here");
+        label.setText("there is no card to attack here");
+        popup.show(LoginView.stage);
     }
 
     public void alreadyAttacked() {
-        System.out.println("this card already attacked");
+        label.setText("this card already attacked");
+        popup.show(LoginView.stage);
     }
 
     public void cannotFlipSummon() {
-        System.out.println("you can’t flip summon this card");
+        label.setText("you can’t flip summon this card");
+        popup.show(LoginView.stage);
     }
 
     public void cannotAttackThisCard() {
-        System.out.println("you can’t attack this card");
+        label.setText("you can’t attack this card");
+        popup.show(LoginView.stage);
     }
 
     public void cannotAttack() {
-        System.out.println("you can’t attack with this card");
-    }
-
-    public void positionChanged() {
-        System.out.println("monster card position changed successfully");
-    }
-
-    public void flipSummoned() {
-        System.out.println("flip summoned successfully");
+        label.setText("you can’t attack with this card");
+        popup.show(LoginView.stage);
     }
 
     public void alreadyChangedPosition() {
-        System.out.println("you already changed this card position in this turn");
-    }
-
-    public void alreadyInPosition() {
-        System.out.println("this card is already in the wanted position");
+        label.setText("you already changed this card position in this turn");
+        popup.show(LoginView.stage);
     }
 
     public void cannotChangePosition() {
-        System.out.println("you can’t change this card's position");
-    }
-
-    public void setSuccessfully() {
-        System.out.println("set successfully");
+        label.setText("you can’t change this card's position");
+        popup.show(LoginView.stage);
     }
 
     public void cantSet() {
-        System.out.println("you can’t set this card");
-    }
-
-    public void noMonster() {
-        System.out.println("there no monsters one this address");
+        label.setText("you can’t set this card");
+        popup.show(LoginView.stage);
     }
 
     public void notEnoughTribute() {
-        System.out.println("there are not enough cards for tribute");
+        label.setText("there are not enough cards for tribute");
+        popup.show(LoginView.stage);
     }
 
     public void alreadySummonedOrSet() {
-        System.out.println("you already summoned/set on this turn");
+        label.setText("you already summoned/set on this turn");
+        popup.show(LoginView.stage);
     }
 
     public void monsterZoneFull() {
-        System.out.println("monster card zone is full");
+        label.setText("monster card zone is full");
+        popup.show(LoginView.stage);
     }
 
     public void wrongPhase() {
-        System.out.println("action not allowed in this phase");
+        label.setText("action not allowed in this phase");
+        popup.show(LoginView.stage);
     }
 
     public void cantSummon() {
-        System.out.println("you can’t summon this card");
+        label.setText("you can’t summon this card");
+        popup.show(LoginView.stage);
     }
 
     public void cardNotSelected() {
-        System.out.println("no card is selected yet");
+        label.setText("no card is selected yet");
+        popup.show(LoginView.stage);
     }
 
     public void enterANewPassword() {
@@ -373,11 +320,6 @@ public class IO {
         popup.show(LoginView.stage);
     }
 
-    public void invalidNumOfRounds() {
-        System.out.println("number of rounds is not supported");
-
-    }
-
     public void playerDoesntExist() {
         label.setText("there is no player with this username");
         popup.show(LoginView.stage);
@@ -399,23 +341,8 @@ public class IO {
     }
 
     public void noCardSelected() {
-        System.out.println("no card is selected yet");
-    }
-
-    public void cardDeselected() {
-        System.out.println("card deselected");
-    }
-
-    public void noCardInPosition() {
-        System.out.println("no card found in the given position");
-    }
-
-    public void invalidSelection() {
-        System.out.println("invalid selection");
-    }
-
-    public void cardSelected() {
-        System.out.println("card selected");
+        label.setText("no card is selected yet");
+        popup.show(LoginView.stage);
     }
 
     public void printPhase(String phase) {
@@ -423,114 +350,30 @@ public class IO {
         ((Label) LoginView.mainGameSceneTwo.lookup("#currentPhase")).setText(phase);
     }
 
-    public void cardDoesntExistInSideDeck(String cardName) {
-        System.out.println("card with name " + cardName + " does not exist in side deck");
-    }
-
-    public void cardDoesntExistInMainDeck(String cardName) {
-        System.out.println("card with name " + cardName + " does not exist in main deck");
-    }
-
     public void tooManyCards(String deckName, String cardName) {
-        System.out.println("there are already too many cards with name " + cardName + " in deck " + deckName);
+        label.setText("there are already too many cards with name " + cardName + " in deck " + deckName);
+        popup.show(LoginView.stage);
     }
 
     public void sideDeckIsFull() {
-        System.out.println("side deck is full");
+        label.setText("side deck is full");
+        popup.show(LoginView.stage);
     }
 
     public void mainDeckIsFull() {
-        System.out.println("main deck is full");
-    }
-
-    public void cardDoesntExist(String cardName) {
-        System.out.println("card with name " + cardName + " does not exist");
-    }
-
-    public void deckDoesntExist(String deckName) {
-        System.out.println("deck with name " + deckName + " does not exist");
+        label.setText("main deck is full");
+        popup.show(LoginView.stage);
     }
 
     public void deckExists(String deckName) {
-        System.out.println("deck with name " + deckName + " already exists");
-    }
-
-    public void cardRemoved() {
-        System.out.println("card removed form deck successfully");
-    }
-
-    public void cardAddedToDeck() {
-        System.out.println("card added to deck successfully");
+        label.setText("deck with name " + deckName + " already exists");
+        popup.show(LoginView.stage);
     }
 
     public void deckCreated() {
         label.setText("deck created successfully!");
         popup.show(LoginView.stage);
     }
-
-    public void deckDeleted() {
-        System.out.println("deck deleted successfully");
-    }
-
-    public void deckActivated() {
-        System.out.println("deck activated successfully");
-    }
-
-    public void printImportExportMenuName() {
-        System.out.println("Import and Export Menu");
-    }
-    public void printLoginMenuName() {
-        System.out.println("Login Menu");
-    }
-
-    public void printMainMenuName() {
-        System.out.println("Main Menu");
-    }
-
-    public void printDuelMenuName() {
-        System.out.println("Duel Menu");
-    }
-
-    public void printDeckMenuName() {
-        System.out.println("Deck Menu");
-    }
-
-    public void printScoreboardMenuName() {
-        System.out.println("Scoreboard Menu");
-    }
-
-    public void printProfileMenuName() {
-        System.out.println("Profile Menu");
-    }
-
-    public void printShopMenuName() {
-        System.out.println("Shop Menu");
-    }
-
-    public void printMenuNavigationImpossible() {
-        System.out.println("menu navigation is not possible");
-    }
-
-    public void printLoginFirst() {
-        System.out.println("please login first");
-    }
-
-    public void printInvalidCommand() {
-        System.out.println("invalid command");
-    }
-
-    public void printUserLoggedOut() {
-        System.out.println("user logged out successfully!");
-    }
-
-    public void printInvalidCardName() {
-        System.out.println("there is no card with this name");
-    }
-
-    public void printDoesntHaveEnoughMoney() {
-        System.out.println("not enough money");
-    }
-
     public void addFunctionButton(Button cancelButton, Popup popup) {
         cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
