@@ -152,6 +152,8 @@ public class DuelView {
                 return new Triple<>(false, CardStatusInField.MONSTER_FIELD, i);
             if (scene.lookup("#opponentSpell" + i).getBoundsInParent().contains(point))
                 return new Triple<>(false, CardStatusInField.SPELL_FIELD, i);
+        }
+        for (var i = 1; i <= 5; i++) {
             if (scene.lookup("#monster" + i).getBoundsInParent().contains(point))
                 return new Triple<>(true, CardStatusInField.MONSTER_FIELD, i);
             if (scene.lookup("#spell" + i).getBoundsInParent().contains(point))
