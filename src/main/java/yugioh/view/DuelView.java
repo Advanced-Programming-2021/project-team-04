@@ -9,10 +9,7 @@ import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
@@ -155,6 +152,8 @@ public class DuelView {
                 return new Triple<>(false, CardStatusInField.MONSTER_FIELD, i);
             if (scene.lookup("#opponentSpell" + i).getBoundsInParent().contains(point))
                 return new Triple<>(false, CardStatusInField.SPELL_FIELD, i);
+        }
+        for (var i = 1; i <= 5; i++) {
             if (scene.lookup("#monster" + i).getBoundsInParent().contains(point))
                 return new Triple<>(true, CardStatusInField.MONSTER_FIELD, i);
             if (scene.lookup("#spell" + i).getBoundsInParent().contains(point))
