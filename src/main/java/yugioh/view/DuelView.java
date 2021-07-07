@@ -2,6 +2,7 @@ package yugioh.view;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
@@ -43,7 +44,7 @@ public class DuelView {
     private static Card secondCard;
     private static final Card emptyCard = new Card();
     private static int counter;
-    private static Stage secondStage;
+    public static Stage secondStage;
     private static Account player1;
     private static Account player2;
 
@@ -52,7 +53,7 @@ public class DuelView {
         return singleInstance;
     }
 
-    private static void run() {
+    public static void run() {
         handleTurn((Account) DuelController.getInstance().getGame().getCurrentPlayer());
         setCardImages(player1, player2, LoginView.mainGameSceneOne);
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
@@ -394,16 +395,22 @@ public class DuelView {
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
         Button exit = new Button("Exit");
-        Button pause = new Button("Pause");
+        exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                secondStage.close();
+                DuelFirstPage.handleResume();
+                LoginView.stage.setScene(LoginView.duelFirstScene);
+                popup.hide();
+            }
+        });
         Button cancelButton = new Button("Cancel");
         hBox.getChildren().add(exit);
-        hBox.getChildren().add(pause);
         hBox.getChildren().add(cancelButton);
         popup.getContent().add(hBox);
         IO.getInstance().addFunctionButton(cancelButton, popup);
         hBox.setStyle("-fx-background-color: #3c3c3c; -fx-padding: 20px; -fx-font-family: Jokerman; -fx-border-color: #ffffff");
         exit.setStyle("-fx-background-color: #000000; -fx-opacity: 50; -fx-font-family: Jokerman; -fx-text-fill: #ffffff");
-        pause.setStyle("-fx-background-color: #000000; -fx-opacity: 50; -fx-font-family: Jokerman; -fx-text-fill: #ffffff");
         cancelButton.setStyle("-fx-background-color: #000000; -fx-opacity: 50; -fx-font-family: Jokerman; -fx-text-fill: #ffffff");
         popup.show(LoginView.stage);
     }

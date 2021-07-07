@@ -1,5 +1,6 @@
 package yugioh.view;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -14,6 +15,7 @@ public class DuelFirstPage {
     public static void run() {
         LoginView.duelFirstScene.lookup("#oneRound").getStyleClass().remove("radio-button");
         LoginView.duelFirstScene.lookup("#threeRounds").getStyleClass().remove("radio-button");
+        handleResume();
     }
 
     public void mainMenu() {
@@ -26,5 +28,16 @@ public class DuelFirstPage {
         String username = ((TextField) LoginView.duelFirstScene.lookup("#username")).getText();
         if (MainController.getInstance().newDuel(username, rounds))
             DuelView.coin();
+    }
+
+    public void resumeButton() {
+        DuelView.secondStage.show();
+        LoginView.stage.setScene(LoginView.mainGameSceneOne);
+        DuelView.run();
+    }
+
+    public static void handleResume() {
+        Button button = (Button) LoginView.duelFirstScene.lookup("#resume");
+        button.setDisable(DuelController.getInstance().getGame() == null);
     }
 }

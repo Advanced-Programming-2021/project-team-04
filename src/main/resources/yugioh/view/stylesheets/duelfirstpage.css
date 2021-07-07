@@ -163,3 +163,18 @@
     -fx-text-fill: #ffffff;
     -fx-border-color: #1b0f37;
 }
+
+.resume {
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+    -fx-translate-x: 240;
+    -fx-translate-y: 170;
+    -fx-font-family: "Jokerman";
+    -fx-border-color: #1b0f37;
+    -fx-background-color: transparent;
+    -fx-text-fill: #1b0f37;
+    -fx-background-radius: 40;
+    -fx-border-radius: 40;
+    -fx-pref-width: 160;
+    -fx-border-width: 3;
+}

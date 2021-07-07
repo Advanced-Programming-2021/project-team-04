@@ -1718,7 +1718,7 @@ public class DuelController {
     }
 
 
-    public void wonGame(boolean allMatches, boolean isAI, Account winner) {
+    public void wonGame(boolean allMatches, boolean isAI, Account winner, boolean isFinished) {
         if (isAI)
             IO.getInstance().setText("a spacecraft’s structure is its underlying body and it's won once again");
         else {
@@ -1728,5 +1728,6 @@ public class DuelController {
                 IO.getInstance().setText(winner.getUsername() + " won the game and the score is: " + winner.getScore());
         }
         DuelView.finishGame(winner.getUsername());
+        if (isFinished) game = null;
     }
 }
