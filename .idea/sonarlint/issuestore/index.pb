@@ -9,8 +9,6 @@ X
 (src/main/java/yugioh/model/GameDeck.java,6\2\62bcd3749f36658e2b6102bac50cc5486fd8a05d
 Z
 *src/main/java/yugioh/model/PlayerDeck.java,5\4\5407799759553aef0d45b4d969c686f1f21029f8
-W
-'src/main/java/yugioh/model/Duelist.java,8\1\819d24590efa1e1d831760b8875ea29a221e08d7
 f
 6src/main/java/yugioh/model/MonsterCardModeInField.java,d\7\d79208ad187fa5a1998572e2a58a0bac27658471
 Q
@@ -29,3 +27,5 @@ W
 'src/main/java/yugioh/view/ShopView.java,1\9\1948fd56610ec47c1d821d91e997963a72fef2a7
 c
 3src/main/java/yugioh/controller/DeckController.java,5\9\594bc02416664b70f269aafbda24eadbd5965a01
+W
+'src/main/java/yugioh/model/Duelist.java,8\1\819d24590efa1e1d831760b8875ea29a221e08d7

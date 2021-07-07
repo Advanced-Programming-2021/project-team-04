@@ -1,4 +1,4 @@
-package yugioh.view;
+package yugioh.utils;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -8,10 +8,18 @@ import lombok.Setter;
 
 import java.util.*;
 
-public class DragUtils {
+public abstract class DragUtils {
+
+    private static final Double ON_DRAG_RELEASE_SPEED = 400.0;
+
+    public static double getDurationByCoordination(double x1, double y1, double x2, double y2) {
+        x1 -= x2;
+        y1 -= y2;
+        return Math.sqrt(x1 * x1 + y1 * y1) / ON_DRAG_RELEASE_SPEED;
+    }
 
     public enum Event {
-        NONE, DRAG_START, DRAG, DRAG_END
+        DRAG_START, DRAG, DRAG_END
     }
 
     public interface Listener {
@@ -38,12 +46,8 @@ public class DragUtils {
             this.eventNode.addEventHandler(MouseEvent.ANY, this);
         }
 
-        public final boolean addDraggedNode(final Node node) {
-            if (!this.dragNodes.containsKey(node)) {
-                this.dragNodes.put(node, List.of(node.getTranslateX(), node.getTranslateY()));
-                return true;
-            }
-            return false;
+        public final void addDraggedNode(final Node node) {
+            this.dragNodes.computeIfAbsent(node, k -> List.of(k.getTranslateX(), k.getTranslateY()));
         }
 
         public final void addListener(final Listener listener) {
@@ -58,6 +62,7 @@ public class DragUtils {
         public final void handle(final MouseEvent event) {
             if (MouseEvent.MOUSE_PRESSED == event.getEventType()) {
                 if (this.eventNode.contains(event.getX(), event.getY())) {
+                    dragNodes.keySet().forEach(Node::toFront);
                     this.lastMouseX = event.getSceneX();
                     this.lastMouseY = event.getSceneY();
                     event.consume();

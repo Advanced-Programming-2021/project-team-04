@@ -1,47 +1,50 @@
 package yugioh.view;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import javafx.animation.TranslateTransition;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape3D;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import yugioh.controller.DuelController;
-import yugioh.controller.MainController;
-import yugioh.model.*;
+import yugioh.model.Account;
+import yugioh.model.CardStatusInField;
+import yugioh.model.MonsterCardModeInField;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
-
+import yugioh.utils.DragUtils;
+import yugioh.utils.Triple;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
 public class DuelView {
 
+    private static final Card emptyCard = new Card();
     private static DuelView singleInstance;
     private static ArrayList<String> myGY;
     private static ArrayList<String> opponentGY;
     private static int count;
     private static Card firstCard;
     private static Card secondCard;
-    private static final Card emptyCard = new Card();
-
     private static Stage secondStage;
     private static Account player1;
     private static Account player2;
@@ -55,10 +58,106 @@ public class DuelView {
         handleTurn((Account) DuelController.getInstance().getGame().getCurrentPlayer());
         setCardImages(player1, player2, LoginView.mainGameSceneOne);
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
+        makeCardsDraggable(LoginView.mainGameSceneOne);
+        makeCardsDraggable(LoginView.mainGameSceneTwo);
+        handleOpponentCardsDrop(LoginView.mainGameSceneOne);
+        handleOpponentCardsDrop(LoginView.mainGameSceneTwo);
         setProfiles(player1, player2, LoginView.mainGameSceneOne);
         setProfiles(player2, player1, LoginView.mainGameSceneTwo);
         setLP(player1.getUsername(), player1.getLP());
         setLP(player2.getUsername(), player2.getLP());
+    }
+
+    private static void makeCardsDraggable(Scene scene) {
+        for (var i = 1; i <= 5; i++) {
+            setDraggable(scene.lookup("#monster" + i));
+            setDraggable(scene.lookup("#spell" + i));
+        }
+        for (var i = 1; i <= 6; i++) {
+            setDraggable(scene.lookup("#hand" + i));
+        }
+        setDraggable(scene.lookup("#field"));
+    }
+
+    private static void setDraggable(Node node) {
+        if (Objects.isNull(node)) return;
+        DragUtils.DragHandler dragHandler = new DragUtils.DragHandler(node);
+        dragHandler.addListener((listenerDragHandler, listenerDragEvent) -> dragHandler.getDragNodes().forEach((dragNode, coordination) -> {
+            if (listenerDragEvent == DragUtils.Event.DRAG_START)
+                DuelController.getInstance().selectCard(true, CardStatusInField.MONSTER_FIELD, Integer.parseInt(dragNode.getId().substring(dragNode.getId().length() - 1)) - 1);
+            if (listenerDragEvent == DragUtils.Event.DRAG_END) {
+                if (dragNode.getId().startsWith("monster")) {
+                    var target = getCardByCoordination(new Point2D(dragHandler.getLastMouseX(), dragHandler.getLastMouseY()), node.getScene());
+                    if (Objects.nonNull(target) && !target.getFirst() && target.getSecond() == CardStatusInField.MONSTER_FIELD)
+                        DuelController.getInstance().attack(target.getThird() - 1);
+                }
+                var transition = new TranslateTransition();
+                transition.setNode(dragNode);
+                transition.setToX(coordination.get(0));
+                transition.setToY(coordination.get(1));
+                transition.setDuration(Duration.seconds(DragUtils.getDurationByCoordination(coordination.get(0), coordination.get(1), dragNode.getTranslateX(), dragNode.getTranslateY())));
+                transition.play();
+            }
+        }));
+    }
+
+    private static void handleOpponentCardsDrop(Scene scene) {
+        for (var i = 1; i <= 5; i++)
+            makeOpponentMonsterAttackable(scene.lookup("#opponentMonster" + i));
+    }
+
+
+    private static void makeOpponentMonsterAttackable(Node node) {
+        // TODO: 7/7/2021 a failed project, check if I can pull this off
+//        setOpponentMonsterOnDragEntered(node);
+//        setOpponentMonsterOnDragExited(node);
+//        setOpponentMonsterOnDragDone(node);
+    }
+
+//    private static void setOpponentMonsterOnDragDone(Node node) {
+//        node.setOnDragDone(event -> {
+//            System.out.println("drag done");
+//            node.setStyle("box-shadow: 0px 0px FFFFFF;");
+//            event.consume();
+//        });
+//    }
+
+//    private static void setOpponentMonsterOnDragExited(Node node) {
+//        node.setOnDrag(event -> {
+//            System.out.println("drag exited");
+//            node.setStyle("box-shadow: 0px 0px FFFFFF;");
+//            event.consume();
+//        });
+//    }
+
+//    private static void setOpponentMonsterOnDragEntered(Node node) {
+//        node.addEventHandler(DragEvent.DRAG_ENTERED_TARGET, event -> {
+//            event.acceptTransferModes(TransferMode.ANY);
+//            System.out.println("drag entered");
+//            node.setStyle("box-shadow: 5px 10px F00000;");
+//            event.consume();
+//        });
+//    }
+
+    private static Triple<Boolean, CardStatusInField, Integer> getCardByCoordination(Point2D point, Scene scene) {
+        if (scene.lookup("#opponentField").getBoundsInParent().contains(point))
+            return new Triple<>(false, CardStatusInField.FIELD_ZONE, 0);
+        for (var i = 1; i <= 5; i++) {
+            if (scene.lookup("#opponentMonster" + i).getBoundsInParent().contains(point))
+                return new Triple<>(false, CardStatusInField.MONSTER_FIELD, i);
+            if (scene.lookup("#opponentSpell" + i).getBoundsInParent().contains(point))
+                return new Triple<>(false, CardStatusInField.SPELL_FIELD, i);
+            if (scene.lookup("#monster" + i).getBoundsInParent().contains(point))
+                return new Triple<>(true, CardStatusInField.MONSTER_FIELD, i);
+            if (scene.lookup("#spell" + i).getBoundsInParent().contains(point))
+                return new Triple<>(true, CardStatusInField.SPELL_FIELD, i);
+        }
+        for (var i = 1; i <= 6; i++)
+            if (scene.lookup("#hand" + i).getBoundsInParent().contains(point))
+                return new Triple<>(true, CardStatusInField.HAND, i);
+        if (scene.lookup("#field").getBoundsInParent().contains(point))
+            return new Triple<>(true, CardStatusInField.FIELD_ZONE, 0);
+        return null;
     }
 
     public static void setLP(String username, int LP) {
@@ -84,10 +183,6 @@ public class DuelView {
         boolean isPlayer1sTurn = currentPlayer.getUsername().equals(player1.getUsername());
         LoginView.mainGameSceneTwo.getRoot().setMouseTransparent(isPlayer1sTurn);
         LoginView.mainGameSceneOne.getRoot().setMouseTransparent(!isPlayer1sTurn);
-    }
-
-    public void mute(MouseEvent mouseEvent) {
-        //TODO mute
     }
 
     private static void setProfiles(Account player, Account otherPlayer, Scene scene) {
@@ -178,6 +273,15 @@ public class DuelView {
         Tooltip.install(imageView, tooltip);
     }
 
+    public static void coin() {
+        LoginView.stage.setScene(LoginView.coinScene);
+        DuelController.getInstance().coin();
+    }
+
+    public void mute(MouseEvent mouseEvent) {
+        //TODO mute
+    }
+
     public void selectOpponentMonster(MouseEvent mouseEvent) {
         int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(15));
         selectCard(number, CardStatusInField.MONSTER_FIELD, false);
@@ -209,18 +313,6 @@ public class DuelView {
     public void selectHand(MouseEvent mouseEvent) {
         int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(4));
         selectCard(number, CardStatusInField.HAND, true);
-    }
-
-
-    public void selectCard(int number, CardStatusInField cardStatusInField, boolean isMine) {
-        Scene scene;
-        if (player1.getUsername().equals(DuelController.getInstance().getGame().getCurrentPlayer().getUsername()))
-            scene = LoginView.mainGameSceneOne;
-        else
-            scene = LoginView.mainGameSceneTwo;
-        DuelController.getInstance().selectCard(isMine, cardStatusInField, number - 1);
-        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) scene.lookup("#selectedCard"),
-                isMine, "selected card");
     }
 
 
@@ -275,10 +367,15 @@ public class DuelView {
 //        }
 //    }
 
-
-    public static void coin() {
-        LoginView.stage.setScene(LoginView.coinScene);
-        DuelController.getInstance().coin();
+    public void selectCard(int number, CardStatusInField cardStatusInField, boolean isMine) {
+        Scene scene;
+        if (player1.getUsername().equals(DuelController.getInstance().getGame().getCurrentPlayer().getUsername()))
+            scene = LoginView.mainGameSceneOne;
+        else
+            scene = LoginView.mainGameSceneTwo;
+        DuelController.getInstance().selectCard(isMine, cardStatusInField, number - 1);
+        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) scene.lookup("#selectedCard"),
+                isMine, "selected card");
     }
 
     public void backToFirstPage() {
