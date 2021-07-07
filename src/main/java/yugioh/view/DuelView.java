@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -22,11 +19,8 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import yugioh.controller.DuelController;
 import yugioh.controller.MainController;
-import yugioh.model.Account;
-import yugioh.model.Game;
-import yugioh.model.MonsterCardModeInField;
+import yugioh.model.*;
 import yugioh.model.cards.Card;
-import yugioh.model.CardStatusInField;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
@@ -58,19 +52,42 @@ public class DuelView {
     }
 
     private static void run() {
-        player1 = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
-        player2 = (Account) DuelController.getInstance().getGame().getTheOtherPlayer();
+        handleTurn((Account) DuelController.getInstance().getGame().getCurrentPlayer());
         setCardImages(player1, player2, LoginView.mainGameSceneOne);
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
-        LoginView.mainGameSceneTwo.getRoot().setMouseTransparent(true);
         setProfiles(player1, player2, LoginView.mainGameSceneOne);
         setProfiles(player2, player1, LoginView.mainGameSceneTwo);
+        setLP(player1.getUsername(), player1.getLP());
+        setLP(player2.getUsername(), player2.getLP());
+    }
+
+    public static void setLP(String username, int LP) {
+        String style = "-fx-text-fill: RGB(" + (8000 - LP) / 40 + ", " + LP / 40 + ", 0);";
+        if (username.equals(player1.getUsername())) {
+            Label label = ((Label) LoginView.mainGameSceneOne.lookup("#LP"));
+            label.setText(String.valueOf(LP));
+            label.setStyle(style);
+            label = ((Label) LoginView.mainGameSceneTwo.lookup("#opponentLP"));
+            label.setText(String.valueOf(LP));
+            label.setStyle(style);
+        } else {
+            Label label = ((Label) LoginView.mainGameSceneTwo.lookup("#LP"));
+            label.setText(String.valueOf(LP));
+            label.setStyle(style);
+            label = ((Label) LoginView.mainGameSceneOne.lookup("#opponentLP"));
+            label.setText(String.valueOf(LP));
+            label.setStyle(style);
+        }
     }
 
     public static void handleTurn(Account currentPlayer) {
         boolean isPlayer1sTurn = currentPlayer.getUsername().equals(player1.getUsername());
         LoginView.mainGameSceneTwo.getRoot().setMouseTransparent(isPlayer1sTurn);
         LoginView.mainGameSceneOne.getRoot().setMouseTransparent(!isPlayer1sTurn);
+    }
+
+    public void mute(MouseEvent mouseEvent) {
+        //TODO mute
     }
 
     private static void setProfiles(Account player, Account otherPlayer, Scene scene) {
@@ -133,7 +150,7 @@ public class DuelView {
         if (card instanceof MonsterCard) {
             MonsterCard monsterCard = (MonsterCard) card;
             if (monsterCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN
-                    && !place.equals("player hand")) {
+                    && !place.equals("player hand") && !(isMine && place.equals("selected card"))) {
                 imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/hidden.jpg")));
                 if (isMine) setToolTip(place + "\n" + monsterCard.toString(), imageView);
                 else setToolTip(place + "\nhidden", imageView);
@@ -143,10 +160,13 @@ public class DuelView {
             }
         } else {
             SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) card;
-            if (!spellAndTrapCard.isActive() && !place.equals("player hand")) {
+            if (!spellAndTrapCard.isActive() && !place.equals("player hand") && !(isMine && place.equals("selected card"))) {
                 imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/hidden.jpg")));
                 if (isMine) setToolTip(place + "\n" + spellAndTrapCard.toString(), imageView);
                 else setToolTip(place + "\nhidden", imageView);
+            } else {
+                imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/" + spellAndTrapCard.getName() + ".jpg")));
+                setToolTip(place + "\n" + spellAndTrapCard.toString(), imageView);
             }
         }
     }
@@ -156,6 +176,51 @@ public class DuelView {
         tooltip.setShowDelay(Duration.seconds(0));
         tooltip.setStyle("-fx-font-size: 16");
         Tooltip.install(imageView, tooltip);
+    }
+
+    public void selectOpponentMonster(MouseEvent mouseEvent) {
+        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(15));
+        selectCard(number, CardStatusInField.MONSTER_FIELD, false);
+    }
+
+    public void selectOpponentSpell(MouseEvent mouseEvent) {
+        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(13));
+        selectCard(number, CardStatusInField.SPELL_FIELD, false);
+    }
+
+    public void selectOpponentField() {
+        selectCard(0, CardStatusInField.SPELL_FIELD, false);
+    }
+
+    public void selectMonster(MouseEvent mouseEvent) {
+        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(7));
+        selectCard(number, CardStatusInField.MONSTER_FIELD, true);
+    }
+
+    public void selectSpell(MouseEvent mouseEvent) {
+        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(5));
+        selectCard(number, CardStatusInField.SPELL_FIELD, true);
+    }
+
+    public void selectField() {
+        selectCard(0, CardStatusInField.SPELL_FIELD, true);
+    }
+
+    public void selectHand(MouseEvent mouseEvent) {
+        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(4));
+        selectCard(number, CardStatusInField.HAND, true);
+    }
+
+
+    public void selectCard(int number, CardStatusInField cardStatusInField, boolean isMine) {
+        Scene scene;
+        if (player1.getUsername().equals(DuelController.getInstance().getGame().getCurrentPlayer().getUsername()))
+            scene = LoginView.mainGameSceneOne;
+        else
+            scene = LoginView.mainGameSceneTwo;
+        DuelController.getInstance().selectCard(isMine, cardStatusInField, number - 1);
+        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) scene.lookup("#selectedCard"),
+                isMine, "selected card");
     }
 
 
@@ -226,6 +291,8 @@ public class DuelView {
     }
 
     public void start() {
+        player1 = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
+        player2 = (Account) DuelController.getInstance().getGame().getTheOtherPlayer();
         TextField firstPlayer = (TextField) LoginView.coinScene.lookup("#textField");
         if (DuelController.getInstance().chooseStarter(firstPlayer.getText())) {
             LoginView.stage.setScene(LoginView.mainGameSceneOne);
@@ -261,6 +328,13 @@ public class DuelView {
 
     public void deselect() {
         DuelController.getInstance().deselectCard();
+        Scene scene;
+        if (player1.getUsername().equals(DuelController.getInstance().getGame().getCurrentPlayer().getUsername()))
+            scene = LoginView.mainGameSceneOne;
+        else
+            scene = LoginView.mainGameSceneTwo;
+        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) scene.lookup("#selectedCard"),
+                false, "selected card");
     }
 
     public void attack() {
@@ -269,14 +343,36 @@ public class DuelView {
 
     public void activate() {
         DuelController.getInstance().activateSpell();
-        setSpellZone(player1.getField().getSpellAndTrapCards(), LoginView.mainGameSceneOne, "#spell");
+        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
+        Scene myScene = LoginView.mainGameSceneOne;
+        Scene opponentScene = LoginView.mainGameSceneTwo;
+        if (player2.getUsername().equals(currentPlayer.getUsername())) {
+            myScene = LoginView.mainGameSceneTwo;
+            opponentScene = LoginView.mainGameSceneOne;
+        }
+        setHandImages(currentPlayer, myScene);
+        setSpellZone(currentPlayer.getField().getSpellAndTrapCards(), myScene, "#spell");
+        setSpellZone(currentPlayer.getField().getSpellAndTrapCards(), opponentScene, "#opponentSpell");
+        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) myScene.lookup("#selectedCard"),
+                false, "selected card");
     }
 
     public void set() {
         DuelController.getInstance().set();
-        setHandImages(player1, LoginView.mainGameSceneOne);
-        setSpellZone(player1.getField().getSpellAndTrapCards(), LoginView.mainGameSceneOne, "#spell");
-        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#monster");
+        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
+        Scene myScene = LoginView.mainGameSceneOne;
+        Scene opponentScene = LoginView.mainGameSceneTwo;
+        if (player2.getUsername().equals(currentPlayer.getUsername())) {
+            myScene = LoginView.mainGameSceneTwo;
+            opponentScene = LoginView.mainGameSceneOne;
+        }
+        setHandImages(currentPlayer, myScene);
+        setSpellZone(currentPlayer.getField().getSpellAndTrapCards(), myScene, "#spell");
+        setMonsterZone(currentPlayer.getField().getMonsterCards(), myScene, "#monster");
+        setSpellZone(currentPlayer.getField().getSpellAndTrapCards(), opponentScene, "#opponentSpell");
+        setMonsterZone(currentPlayer.getField().getMonsterCards(), opponentScene, "#opponentMonster");
+        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) myScene.lookup("#selectedCard"),
+                false, "selected card");
     }
 
     public void settings() {
@@ -305,14 +401,33 @@ public class DuelView {
 
     public void flipSummon() {
         DuelController.getInstance().flipSummon();
-        setHandImages(player1, LoginView.mainGameSceneOne);
-        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#monster");
+        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
+        Scene myScene = LoginView.mainGameSceneOne;
+        Scene opponentScene = LoginView.mainGameSceneTwo;
+        if (player2.getUsername().equals(currentPlayer.getUsername())) {
+            myScene = LoginView.mainGameSceneTwo;
+            opponentScene = LoginView.mainGameSceneOne;
+        }
+        setMonsterZone(currentPlayer.getField().getMonsterCards(), myScene, "#monster");
+        setMonsterZone(currentPlayer.getField().getMonsterCards(), opponentScene, "#opponentMonster");
+        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) myScene.lookup("#selectedCard"),
+                false, "selected card");
     }
 
     public void summon() {
         DuelController.getInstance().summon();
-        setHandImages(player1, LoginView.mainGameSceneOne);
-        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#monster");
+        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
+        Scene myScene = LoginView.mainGameSceneOne;
+        Scene opponentScene = LoginView.mainGameSceneTwo;
+        if (player2.getUsername().equals(currentPlayer.getUsername())) {
+            myScene = LoginView.mainGameSceneTwo;
+            opponentScene = LoginView.mainGameSceneOne;
+        }
+        setHandImages(currentPlayer, myScene);
+        setMonsterZone(currentPlayer.getField().getMonsterCards(), myScene, "#monster");
+        setMonsterZone(currentPlayer.getField().getMonsterCards(), opponentScene, "#opponentMonster");
+        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) myScene.lookup("#selectedCard"),
+                false, "selected card");
     }
 
     public void nextPhase() {

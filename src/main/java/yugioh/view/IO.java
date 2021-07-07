@@ -414,7 +414,8 @@ public class IO {
     }
 
     public void printPhase(String phase) {
-        System.out.println("phase: " + phase);
+        ((Label) LoginView.mainGameSceneOne.lookup("#currentPhase")).setText(phase);
+        ((Label) LoginView.mainGameSceneTwo.lookup("#currentPhase")).setText(phase);
     }
 
     public void cardDoesntExistInSideDeck(String cardName) {

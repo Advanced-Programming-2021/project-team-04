@@ -17,7 +17,6 @@ public class MainController {
 
 
     private static MainController singleInstance = null;
-    private Random random = new Random();
 
 
     private Account loggedIn;
@@ -105,12 +104,5 @@ public class MainController {
     public void cheatIncreaseScore(int amount) {
         loggedIn.setScore(loggedIn.getScore() + amount);
         IO.getInstance().cheatIncreaseScore();
-    }
-
-    public void setRandomProfile() {
-        if (loggedIn.getProfilePictureExtension() == null)
-            loggedIn.setProfilePictureExtension(".jpg");
-        if (loggedIn.getProfilePictureNumber() != 0) return;
-        loggedIn.setProfilePictureNumber(random.nextInt(9) + 1);
     }
 }

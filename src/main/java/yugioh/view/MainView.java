@@ -91,24 +91,6 @@ public class MainView {
     }
 
 
-    //TODO change the methods below
-
-    private void cheatIncreaseScore(String string) {
-        Pattern pattern = Pattern.compile("The Aurora Strikes (\\d+)");
-        Matcher matcher = pattern.matcher(string);
-        matcher.find();
-        int amount = Integer.parseInt(matcher.group(1));
-        MainController.getInstance().cheatIncreaseScore(amount);
-    }
-
-    private void cheatIncreaseMoney(String string) {
-        Pattern pattern = Pattern.compile("The Hanged Man Rusts (\\d+)");
-        Matcher matcher = pattern.matcher(string);
-        matcher.find();
-        int amount = Integer.parseInt(matcher.group(1));
-        MainController.getInstance().cheatIncreaseMoney(amount);
-    }
-
     public static void playMainMusic() {
         Media main = new Media(MainView.class.getResource("OurBoyJack.mp3").toExternalForm());
         mainMusic = new MediaPlayer(main);

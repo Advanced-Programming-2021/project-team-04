@@ -57,7 +57,7 @@ public class DuelController {
     }
 
     public void drawPhase() {
-        IO.getInstance().printPhase("draw phase");
+        IO.getInstance().printPhase("draw\nphase");
         if (game.getTheOtherPlayer().getField().getSetSpellAndTrapCard("Time Seal") != null)
             game.getCurrentPlayer().setAbleToDraw(false);
         if (!game.getCurrentPlayer().isAbleToDraw()) {
@@ -76,7 +76,7 @@ public class DuelController {
     }
 
     private void standbyPhase() {
-        IO.getInstance().printPhase("standby phase");
+        IO.getInstance().printPhase("standby\nphase");
         handleSpecialCards(game.getCurrentPlayer().getField(), game.getTheOtherPlayer().getField());
         ArrayList<Scanner> scanners = game.getCurrentPlayer().getField().getActiveScanners();
         scanners.forEach(singleInstance::forScanner);
@@ -250,12 +250,12 @@ public class DuelController {
     }
 
     private void firstMainPhase() {
-        IO.getInstance().printPhase("main phase 1");
+        IO.getInstance().printPhase("main\nphase 1");
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     public void battlePhase() {
-        IO.getInstance().printPhase("battle phase");
+        IO.getInstance().printPhase("battle\nphase");
         if (!game.getCurrentPlayer().isAbleToAttack()) {
             game.getCurrentPlayer().setAbleToAttack(true);
             nextPhase();
@@ -263,12 +263,12 @@ public class DuelController {
     }
 
     private void secondMainPhase() {
-        IO.getInstance().printPhase("main phase 2");
+        IO.getInstance().printPhase("main\nphase 2");
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     public void endPhase() {
-        IO.getInstance().printPhase("end phase");
+        IO.getInstance().printPhase("end\nphase");
         reset();
         handleSwordOfRevealingLight();
     }

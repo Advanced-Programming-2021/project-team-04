@@ -5,8 +5,12 @@ import yugioh.model.AI;
 import yugioh.model.Account;
 import yugioh.view.IO;
 
+import java.util.Random;
+
 
 public class LoginController {
+
+    private Random random = new Random();
     private static LoginController singleInstance = null;
 
 
@@ -28,8 +32,15 @@ public class LoginController {
 
     public void createUser(String username, String password, String nickname) {
         if (errorsForCreatingUser(username, nickname)) {
-            new Account(username, password, nickname);
+            setRandomProfile(new Account(username, password, nickname));
         }
+    }
+
+    public void setRandomProfile(Account account) {
+        if (account.getProfilePictureExtension() == null)
+            account.setProfilePictureExtension(".jpg");
+        if (account.getProfilePictureNumber() != 0) return;
+        account.setProfilePictureNumber(random.nextInt(9) + 1);
     }
 
 
