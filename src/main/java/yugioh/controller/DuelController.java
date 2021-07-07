@@ -136,14 +136,7 @@ public class DuelController {
     private void handleEquip(Field field) { //TODO
         var swordOfDarkDestruction = (SwordOfDarkDestruction) field.getThisActivatedCard("Sword of dark destruction");
         if (swordOfDarkDestruction != null) {
-            if (swordOfDarkDestruction.isOriginal())
                 swordOfDarkDestruction.equipMonster();
-            else {
-                SwordOfDarkDestruction dark = new SwordOfDarkDestruction();
-                dark.setConverted(true);
-                swordOfDarkDestruction = dark;
-                dark.equipMonster();
-            }
         }
         var blackPendant = (BlackPendant) field.getThisActivatedCard("Black Pendant");
         if (blackPendant != null) blackPendant.equipMonster();
@@ -1727,15 +1720,16 @@ public class DuelController {
     }
 
 
-    public void wonGame(boolean allMatches, boolean isAI, Account winner) {
+    public void wonGame(boolean allMatches, boolean isAI, Account winner, boolean isFinished) {
         if (isAI)
-            IO.getInstance().printString("a spacecraft’s structure is its underlying body and it's won once again");
+            IO.getInstance().setText("a spacecraft’s structure is its underlying body and it's won once again");
         else {
             if (allMatches)
-                IO.getInstance().printString(winner.getUsername() + " won the whole match with score: " + winner.getScore());
+                IO.getInstance().setText(winner.getUsername() + " won the whole match with score: " + winner.getScore());
             else
-                IO.getInstance().printString(winner.getUsername() + " won the game and the score is: " + winner.getScore());
+                IO.getInstance().setText(winner.getUsername() + " won the game and the score is: " + winner.getScore());
         }
+        DuelView.finishGame(winner.getUsername());
+        if (isFinished) game = null;
     }
-
 }

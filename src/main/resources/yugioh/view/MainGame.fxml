@@ -8,7 +8,7 @@
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="yugioh.view.DuelView"
-          alignment="CENTER" hgap="10" vgap="10" styleClass="root">
+          alignment="CENTER" hgap="10" vgap="10" styleClass="root" fx:id="gridpane">
 
     <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fitHeight="120" fitWidth="90" fx:id="opponentSpell4" id="opponentSpell4" onMouseClicked="#selectOpponentSpell"/>
     <ImageView GridPane.rowIndex="0" GridPane.columnIndex="1" fitHeight="120" fitWidth="90" fx:id="opponentSpell2" id="opponentSpell2" onMouseClicked="#selectOpponentSpell"/>
@@ -30,11 +30,11 @@
     <ImageView GridPane.rowIndex="0" GridPane.columnIndex="7" fitHeight="120" fitWidth="90" fx:id="opponentField" id="opponentField" onMouseClicked="#selectOpponentField"/>
 
     <VBox GridPane.rowIndex="0" GridPane.columnIndex="8" prefWidth="90" prefHeight="120" alignment="CENTER">
-        <Button prefHeight="50" prefWidth="90" text="change&#10;background"/>
+        <Button prefHeight="50" prefWidth="90" text="change&#10;background" onMouseClicked="#changeBackground"/>
     </VBox>
 
     <VBox GridPane.rowIndex="0" GridPane.columnIndex="9" prefWidth="90" prefHeight="120" alignment="CENTER">
-        <ToggleButton prefHeight="90" prefWidth="90" fx:id="mute" onMouseClicked="#mute"/>
+        <ToggleButton prefHeight="90" prefWidth="90" fx:id="mute" onMouseClicked="#muteGame"/>
     </VBox>
 
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="9" GridPane.rowSpan="2" prefHeight="240" prefWidth="90" alignment="CENTER" styleClass="info">

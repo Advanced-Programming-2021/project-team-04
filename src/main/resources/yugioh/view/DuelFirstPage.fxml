@@ -15,7 +15,10 @@
     <Label GridPane.columnSpan="2" GridPane.rowIndex="0" text="WELCOME TO OUR MADHOUSE..." fx:id="mainText"/>
 
     <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" fx:id="box1" alignment="CENTER">
-        <Label text="Play With Your Rival" fx:id="label1"/>
+        <HBox>
+            <Label text="Play With Your Rival" fx:id="label1"/>
+            <Button text="Resume" styleClass="resume" fx:id="resume" onMouseClicked="#resumeButton"/>
+        </HBox>
         <TextField promptText="username" alignment="CENTER" fx:id="username"/>
         <Button text="play" fx:id="play" onMouseClicked="#playButton"/>
     </VBox>

@@ -321,6 +321,11 @@ public class IO {
         popup.show(LoginView.stage);
     }
 
+    public void setText(String text) {
+        label.setText(text);
+        popup.show(LoginView.stage);
+    }
+
     public void passwordChanged() {
         label.setText("password changed successfully!");
         popup.show(LoginView.stage);

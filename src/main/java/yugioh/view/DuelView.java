@@ -3,7 +3,10 @@ package yugioh.view;
 
 import javafx.animation.TranslateTransition;
 import javafx.geometry.Point2D;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,6 +19,10 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Shape3D;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -38,14 +45,15 @@ import java.util.stream.Collectors;
 
 public class DuelView {
 
-    private static final Card emptyCard = new Card();
     private static DuelView singleInstance;
     private static ArrayList<String> myGY;
     private static ArrayList<String> opponentGY;
     private static int count;
     private static Card firstCard;
     private static Card secondCard;
-    private static Stage secondStage;
+    private static final Card emptyCard = new Card();
+    private static int counter;
+    public static Stage secondStage;
     private static Account player1;
     private static Account player2;
 
@@ -54,7 +62,7 @@ public class DuelView {
         return singleInstance;
     }
 
-    private static void run() {
+    public static void run() {
         handleTurn((Account) DuelController.getInstance().getGame().getCurrentPlayer());
         setCardImages(player1, player2, LoginView.mainGameSceneOne);
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
@@ -273,15 +281,6 @@ public class DuelView {
         Tooltip.install(imageView, tooltip);
     }
 
-    public static void coin() {
-        LoginView.stage.setScene(LoginView.coinScene);
-        DuelController.getInstance().coin();
-    }
-
-    public void mute(MouseEvent mouseEvent) {
-        //TODO mute
-    }
-
     public void selectOpponentMonster(MouseEvent mouseEvent) {
         int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(15));
         selectCard(number, CardStatusInField.MONSTER_FIELD, false);
@@ -313,6 +312,18 @@ public class DuelView {
     public void selectHand(MouseEvent mouseEvent) {
         int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(4));
         selectCard(number, CardStatusInField.HAND, true);
+    }
+
+
+    public void selectCard(int number, CardStatusInField cardStatusInField, boolean isMine) {
+        Scene scene;
+        if (player1.getUsername().equals(DuelController.getInstance().getGame().getCurrentPlayer().getUsername()))
+            scene = LoginView.mainGameSceneOne;
+        else
+            scene = LoginView.mainGameSceneTwo;
+        DuelController.getInstance().selectCard(isMine, cardStatusInField, number - 1);
+        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) scene.lookup("#selectedCard"),
+                isMine, "selected card");
     }
 
 
@@ -367,19 +378,18 @@ public class DuelView {
 //        }
 //    }
 
-    public void selectCard(int number, CardStatusInField cardStatusInField, boolean isMine) {
-        Scene scene;
-        if (player1.getUsername().equals(DuelController.getInstance().getGame().getCurrentPlayer().getUsername()))
-            scene = LoginView.mainGameSceneOne;
-        else
-            scene = LoginView.mainGameSceneTwo;
-        DuelController.getInstance().selectCard(isMine, cardStatusInField, number - 1);
-        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) scene.lookup("#selectedCard"),
-                isMine, "selected card");
+
+    public static void coin() {
+        LoginView.stage.setScene(LoginView.coinScene);
+        DuelController.getInstance().coin();
     }
 
     public void backToFirstPage() {
         LoginView.stage.setScene(LoginView.duelFirstScene);
+    }
+
+    public void backToMainPage() {
+        LoginView.stage.setScene(LoginView.mainScene);
     }
 
     public void chooseStarter(String winnerUsername) {
@@ -438,6 +448,13 @@ public class DuelView {
 
     }
 
+    public static void finishGame(String username) {
+        Label label = (Label) LoginView.finishGame.lookup("#congrats");
+        label.setText("Congrats " + username + "\n" + "Hold fast to the joy of the rise; despise all thoughts you might descend.");
+        label.setStyle("-fx-text-fill: #00F2FF");
+        LoginView.stage.setScene(LoginView.finishGame);
+    }
+
     public void activate() {
         DuelController.getInstance().activateSpell();
         Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
@@ -456,9 +473,9 @@ public class DuelView {
 
     public void set() {
         DuelController.getInstance().set();
-        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         Scene myScene = LoginView.mainGameSceneOne;
         Scene opponentScene = LoginView.mainGameSceneTwo;
+        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         if (player2.getUsername().equals(currentPlayer.getUsername())) {
             myScene = LoginView.mainGameSceneTwo;
             opponentScene = LoginView.mainGameSceneOne;
@@ -482,24 +499,30 @@ public class DuelView {
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
         Button exit = new Button("Exit");
-        Button pause = new Button("Pause");
+        exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                secondStage.close();
+                DuelFirstPage.handleResume();
+                LoginView.stage.setScene(LoginView.duelFirstScene);
+                popup.hide();
+            }
+        });
         Button cancelButton = new Button("Cancel");
         hBox.getChildren().add(exit);
-        hBox.getChildren().add(pause);
         hBox.getChildren().add(cancelButton);
         popup.getContent().add(hBox);
         IO.getInstance().addFunctionButton(cancelButton, popup);
         hBox.setStyle("-fx-background-color: #3c3c3c; -fx-padding: 20px; -fx-font-family: Jokerman; -fx-border-color: #ffffff");
         exit.setStyle("-fx-background-color: #000000; -fx-opacity: 50; -fx-font-family: Jokerman; -fx-text-fill: #ffffff");
-        pause.setStyle("-fx-background-color: #000000; -fx-opacity: 50; -fx-font-family: Jokerman; -fx-text-fill: #ffffff");
         cancelButton.setStyle("-fx-background-color: #000000; -fx-opacity: 50; -fx-font-family: Jokerman; -fx-text-fill: #ffffff");
         popup.show(LoginView.stage);
     }
 
     public void flipSummon() {
         DuelController.getInstance().flipSummon();
-        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         Scene myScene = LoginView.mainGameSceneOne;
+        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         Scene opponentScene = LoginView.mainGameSceneTwo;
         if (player2.getUsername().equals(currentPlayer.getUsername())) {
             myScene = LoginView.mainGameSceneTwo;
@@ -513,9 +536,9 @@ public class DuelView {
 
     public void summon() {
         DuelController.getInstance().summon();
+        Scene opponentScene = LoginView.mainGameSceneTwo;
         Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         Scene myScene = LoginView.mainGameSceneOne;
-        Scene opponentScene = LoginView.mainGameSceneTwo;
         if (player2.getUsername().equals(currentPlayer.getUsername())) {
             myScene = LoginView.mainGameSceneTwo;
             opponentScene = LoginView.mainGameSceneOne;
@@ -946,5 +969,27 @@ public class DuelView {
             IO.getInstance().invalidSelection();
             return getMonsterCardFromHand(isOpponent);
         }
+    }
+
+    public void muteGame(MouseEvent mouseEvent) {
+        MainView.isGameMute = ((ToggleButton) mouseEvent.getTarget()).isSelected();
+        if (MainView.isGameMute) MainView.gameMusic.pause();
+        else if (MainView.gameMusic == null) MainView.playGameMusic();
+        else MainView.gameMusic.play();
+    }
+
+    public void changeBackground() {
+        if (counter == 17)
+            counter = 0;
+        GridPane content = (GridPane) LoginView.mainGameSceneOne.lookup("#gridpane");
+        content.setBackground(new Background(
+                new BackgroundImage(
+                        new Image(DuelView.class.getResourceAsStream("stylesheets/" + counter + ".jpg")),
+                        BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT,
+                        new BackgroundPosition(Side.LEFT, 0, true, Side.BOTTOM, 0, true),
+                        new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
+                ))
+        );
+        counter++;
     }
 }

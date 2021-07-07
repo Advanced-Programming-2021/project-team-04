@@ -32,6 +32,7 @@ public class LoginView extends Application {
     public static Scene graveyardScene;
     public static Scene mainGameSceneOne;
     public static Scene mainGameSceneTwo;
+    public static Scene finishGame;
     public static MediaPlayer IntroMusic;
     public static boolean isMute;
 
@@ -71,6 +72,7 @@ public class LoginView extends Application {
         graveyardScene = sceneCreator("Graveyard.fxml");
         mainGameSceneOne = sceneCreator("MainGame.fxml");
         mainGameSceneTwo = sceneCreator("MainGame.fxml");
+        finishGame = sceneCreator("FinishGame.fxml");
     }
 
     public static Scene sceneCreator(String resource) {
