@@ -296,6 +296,8 @@ public class DuelController {
     }
 
     public void selectCard(boolean myCard, CardStatusInField cardStatusInField, int number) {
+        // TODO: 7/7/2021 remove these
+        System.out.println("inside selectCard: myCard=" + myCard + ",cardStatusInField=" + cardStatusInField + ",number=" + number);
         Duelist thisPlayer = getPlayerByCard(myCard);
         if (!errorForSelecting(thisPlayer, number, cardStatusInField)) return;
         switch (cardStatusInField) {
