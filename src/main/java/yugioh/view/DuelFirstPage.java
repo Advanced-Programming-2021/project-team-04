@@ -31,6 +31,7 @@ public class DuelFirstPage {
     }
 
     public void resumeButton() {
+        MainView.gameMusic.play();
         DuelView.secondStage.show();
         LoginView.stage.setScene(LoginView.mainGameSceneOne);
         DuelView.run();

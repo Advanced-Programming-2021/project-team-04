@@ -60,6 +60,7 @@ public class DuelView {
     private static int navigateChoose;
     private static Card firstOption;
     private static Card secondOption;
+    private static ArrayList<MonsterCard> wanted = new ArrayList<>();
 
     public static DuelView getInstance() {
         if (singleInstance == null) singleInstance = new DuelView();
@@ -393,6 +394,54 @@ public class DuelView {
 //        }
 //    }
 
+    private static void chooseForMoreThanOne() {
+        navigateChoose = 0;
+        LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(true);
+        if (toChoseFrom.size() <= 2) LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(true);
+        showMoreOptions();
+        choosing.setScene(LoginView.choosingForMoreThanOneScene);
+        choosing.showAndWait();
+    }
+
+    private static void showMoreOptions() {
+        firstOption = toChoseFrom.get(navigateChoose * 2);
+        if (navigateChoose * 2 + 1 == toChoseFrom.size()) secondOption = null;
+        else secondOption = toChoseFrom.get(navigateChoose * 2 + 1);
+        showMoreImages();
+    }
+
+    private static void showMoreImages() {
+        ImageView cardOne = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardOne");
+        ImageView cardTwo = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardTwo");
+        Image imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
+        Image imageTwo;
+        if (secondOption == null) {
+            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+            LoginView.choosingForMoreThanOneScene.lookup("#selectTwo").setDisable(true);
+        } else
+            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondOption.getName() + ".jpg"));
+        cardOne.setImage(imageOne);
+        cardTwo.setImage(imageTwo);
+    }
+
+    public void nextOptionsM() {
+        if (navigateChoose == 0) LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(false);
+        if (navigateChoose == ((toChoseFrom.size() - 1) / 2) - 1)
+            LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(true);
+        navigateChoose++;
+        showMoreOptions();
+    }
+
+    public void previousOptionsM() {
+        if (navigateChoose == (toChoseFrom.size() - 1) / 2) {
+            LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(false);
+            LoginView.choosingForMoreThanOneScene.lookup("#selectTwo").setDisable(false);
+        }
+        if (navigateChoose == 1) LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(true);
+        navigateChoose--;
+        showMoreOptions();
+    }
+
 
     private static void chooseCard() {
         navigateChoose = 0;
@@ -442,6 +491,17 @@ public class DuelView {
         showOptions();
     }
 
+
+    public void addFirstCToArraylist() {
+        chosen = firstOption;
+        wanted.add((MonsterCard) chosen);
+    }
+
+    public void addSecondCToArraylist() {
+        chosen = secondOption;
+        wanted.add((MonsterCard) chosen);
+    }
+
     public void pickOptionOne() {
         chosen = firstOption;
         choosing.close();
@@ -454,6 +514,7 @@ public class DuelView {
 
     public void cancel() {
         chosen = null;
+        wanted = new ArrayList<>();
         choosing.close();
     }
 
@@ -502,16 +563,6 @@ public class DuelView {
         return Integer.parseInt(IO.getInstance().getInputMessage()) - 1;
     }
 
-
-    private void selectCard(Matcher matcher, boolean isPlayersCard, CardStatusInField cardStatusInField) {
-        DuelController.getInstance().selectCard(isPlayersCard, cardStatusInField,
-                cardStatusInField == CardStatusInField.FIELD_ZONE ? 0 : Integer.parseInt(matcher.group("number")) - 1);
-    }
-
-    public void select() {
-
-    }
-
     public void deselect() {
         DuelController.getInstance().deselectCard();
         Scene scene;
@@ -525,14 +576,18 @@ public class DuelView {
 
     public void attack() {
         DuelController.getInstance().directAttack();
+        MainView.playAttackSong();
     }
 
     public static void finishGame(String username) {
+        MainView.gameMusic.stop();
+        MainView.gameFinishedSong();
         Label label = (Label) LoginView.finishGame.lookup("#congrats");
         label.setText("Congrats " + username + "\n" + "Hold fast to the joy of the rise; despise all thoughts you might descend.");
-        label.setStyle("-fx-text-fill: #00F2FF");
+        label.setStyle("-fx-text-fill: #00F2FF; -fx-font-size: 24");
         LoginView.stage.setScene(LoginView.finishGame);
     }
+
 
     public void activate() {
         DuelController.getInstance().activateSpell();
@@ -552,6 +607,7 @@ public class DuelView {
 
     public void set() {
         DuelController.getInstance().set();
+        MainView.playSpellSong();
         Scene myScene = LoginView.mainGameSceneOne;
         Scene opponentScene = LoginView.mainGameSceneTwo;
         Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
@@ -582,6 +638,7 @@ public class DuelView {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 secondStage.close();
+                MainView.gameMusic.pause();
                 DuelFirstPage.handleResume();
                 LoginView.stage.setScene(LoginView.duelFirstScene);
                 popup.hide();
@@ -615,6 +672,7 @@ public class DuelView {
 
     public void summon() {
         DuelController.getInstance().summon();
+        MainView.monsterSong();
         Scene opponentScene = LoginView.mainGameSceneTwo;
         Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         Scene myScene = LoginView.mainGameSceneOne;
@@ -723,7 +781,10 @@ public class DuelView {
 
     public void muteGame(MouseEvent mouseEvent) {
         MainView.isGameMute = ((ToggleButton) mouseEvent.getTarget()).isSelected();
-        if (MainView.isGameMute) MainView.gameMusic.pause();
+        if (MainView.isGameMute) {
+            MainView.gameMusic.pause();
+            if (MainView.gameFinished != null) MainView.gameFinished.pause();
+        }
         else if (MainView.gameMusic == null) MainView.playGameMusic();
         else MainView.gameMusic.play();
     }
@@ -804,9 +865,12 @@ public class DuelView {
 
 
     private ArrayList<MonsterCard> getTributeMonsterCards() {
-        var input = IO.getInstance().getInputMessage();
-        if (input.equals("cancel")) return null;
-        return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
+//        var input = IO.getInstance().getInputMessage();
+//        if (input.equals("cancel")) return null;
+//        return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
+    toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
+    chooseForMoreThanOne();
+    return wanted;
     }
 
 

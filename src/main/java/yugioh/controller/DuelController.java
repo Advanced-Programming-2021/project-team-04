@@ -787,7 +787,7 @@ public class DuelController {
         selectedCard.setAttacked(true);
         game.setSelectedCard(null);
         game.getTheOtherPlayer().changeLP(-damage);
-        if (game.getTheOtherPlayer().getLP() <= 0) return;
+        if (game == null || game.getTheOtherPlayer().getLP() <= 0) return;
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
@@ -1715,7 +1715,10 @@ public class DuelController {
             else
                 IO.getInstance().setText(winner.getUsername() + " won the game and the score is: " + winner.getScore());
         }
+        if (isFinished) {
         DuelView.finishGame(winner.getUsername());
-        if (isFinished) game = null;
+        game = null;
+        DuelView.secondStage.close();
+        }
     }
 }

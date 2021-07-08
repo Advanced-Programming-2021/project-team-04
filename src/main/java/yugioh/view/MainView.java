@@ -18,6 +18,10 @@ public class MainView {
 
     public static MediaPlayer mainMusic;
     public static MediaPlayer gameMusic;
+    public static MediaPlayer attack;
+    public static MediaPlayer gameFinished;
+    public static MediaPlayer spell;
+    public static MediaPlayer monster;
     public static boolean isMute;
     public static boolean isGameMute;
 
@@ -111,6 +115,34 @@ public class MainView {
         if (isMute) mainMusic.pause();
         else if (mainMusic == null) playMainMusic();
         else mainMusic.play();
+    }
+
+    public static void playAttackSong() {
+        Media main = new Media(MainView.class.getResource("attack.mp3").toExternalForm());
+        attack = new MediaPlayer(main);
+        attack.setCycleCount(1);
+        attack.play();
+    }
+
+    public static void playSpellSong() {
+        Media main = new Media(MainView.class.getResource("SetSpell.mp3").toExternalForm());
+        spell = new MediaPlayer(main);
+        spell.setCycleCount(1);
+        spell.play();
+    }
+
+    public static void gameFinishedSong() {
+        Media main = new Media(MainView.class.getResource("GameFinished.mp3").toExternalForm());
+        gameFinished = new MediaPlayer(main);
+        gameFinished.setCycleCount(1);
+        gameFinished.play();
+    }
+
+    public static void monsterSong() {
+        Media main = new Media(MainView.class.getResource("monster.mp3").toExternalForm());
+        monster = new MediaPlayer(main);
+        monster.setCycleCount(1);
+        monster.play();
     }
 
 }
