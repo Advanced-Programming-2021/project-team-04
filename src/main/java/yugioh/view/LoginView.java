@@ -48,7 +48,7 @@ public class LoginView extends Application {
         createAllScenes();
         playIntroMusic();
         LoginView.stage = stage;
-        stage.setTitle("YO GI OH");
+        stage.setTitle("YU GI OH");
         stage.setScene(signUpScene);
         stage.show();
         stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
