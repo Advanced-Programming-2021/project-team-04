@@ -68,7 +68,7 @@
     <ImageView GridPane.rowIndex="3" GridPane.columnIndex="6" fitHeight="120" fitWidth="90" fx:id="spell4" id="spell4" onMouseClicked="#selectSpell"/>
 
     <VBox GridPane.rowIndex="3" GridPane.columnIndex="7" prefHeight="120" prefWidth="90" spacing="6">
-        <Button text="attack" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#attack"/>
+        <Button text="direct attack" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#attack"/>
         <Button text="set" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#set"/>
         <Button text="activate" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#activate"/>
     </VBox>

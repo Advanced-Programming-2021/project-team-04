@@ -683,6 +683,7 @@ public class DuelController {
         attacker.setAttacked(true);
         game.setSelectedCard(null);
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
+        DuelView.setMonsterZones();
     }
 
     private void handleCalculator(MonsterCard monsterCard) {
@@ -1320,7 +1321,6 @@ public class DuelController {
         if (!errorForRitualSummon()) return false;
         MonsterCard ritualMonster = DuelView.getInstance().getRitualCard();
         ArrayList<MonsterCard> toTribute = DuelView.getInstance().getTributes();
-//        System.out.println(toTribute);
         if (Objects.isNull(toTribute)) return false;
         while (!isSumOfTributesValid(toTribute, ritualMonster)) {
             toTribute = DuelView.getInstance().getTributes();
