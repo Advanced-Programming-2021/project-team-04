@@ -237,7 +237,7 @@ public class DuelView {
         setCardImage(player.getField().getFieldZone(), (ImageView) scene.lookup("#field"), true, "field zone");
         setCardImage(otherPlayer.getField().getFieldZone(), (ImageView) scene.lookup("#opponentField"), true, "field zone");
         setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) scene.lookup("#selectedCard"),
-                false, "selected card");
+                DuelController.getInstance().getGame().getCurrentPlayer().getUsername().equals(player.getUsername()), "selected card");
     }
 
     private static void setSpellZone(ArrayList<SpellAndTrapCard> cards, Scene scene, String id) {
@@ -306,14 +306,15 @@ public class DuelView {
     private static void chooseForMoreThanOne() {
         navigateChoose = 0;
         LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(true);
-        if (toChoseFrom.size() <= 2) LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(true);
+        LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(toChoseFrom.size() <= 2);
         showMoreOptions();
         choosing.setScene(LoginView.choosingForMoreThanOneScene);
         choosing.showAndWait();
     }
 
     private static void showMoreOptions() {
-        firstOption = toChoseFrom.get(navigateChoose * 2);
+        if (toChoseFrom.size() == 0) firstOption = null;
+        else firstOption = toChoseFrom.get(navigateChoose * 2);
         if (navigateChoose * 2 + 1 == toChoseFrom.size()) secondOption = null;
         else secondOption = toChoseFrom.get(navigateChoose * 2 + 1);
         showMoreImages();
@@ -322,8 +323,13 @@ public class DuelView {
     private static void showMoreImages() {
         ImageView cardOne = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardOne");
         ImageView cardTwo = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardTwo");
-        Image imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
+        Image imageOne;
         Image imageTwo;
+        if (firstOption == null) {
+            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+            LoginView.choosingForMoreThanOneScene.lookup("#selectOne").setDisable(true);
+        } else
+            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
         if (secondOption == null) {
             imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
             LoginView.choosingForMoreThanOneScene.lookup("#selectTwo").setDisable(true);
@@ -336,14 +342,15 @@ public class DuelView {
     private static void chooseCard() {
         navigateChoose = 0;
         LoginView.choosingScene.lookup("#back").setDisable(true);
-        if (toChoseFrom.size() <= 2) LoginView.choosingScene.lookup("#next").setDisable(true);
+        LoginView.choosingScene.lookup("#next").setDisable(toChoseFrom.size() <= 2);
         showOptions();
         choosing.setScene(LoginView.choosingScene);
         choosing.showAndWait();
     }
 
     private static void showOptions() {
-        firstOption = toChoseFrom.get(navigateChoose * 2);
+        if (toChoseFrom.size() == 0) firstOption = null;
+        else firstOption = toChoseFrom.get(navigateChoose * 2);
         if (navigateChoose * 2 + 1 == toChoseFrom.size()) secondOption = null;
         else secondOption = toChoseFrom.get(navigateChoose * 2 + 1);
         setImages();
@@ -352,8 +359,13 @@ public class DuelView {
     private static void setImages() {
         ImageView cardOne = (ImageView) LoginView.choosingScene.lookup("#cardOne");
         ImageView cardTwo = (ImageView) LoginView.choosingScene.lookup("#cardTwo");
-        Image imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
+        Image imageOne;
         Image imageTwo;
+        if (firstOption == null) {
+            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+            LoginView.choosingScene.lookup("#selectOne").setDisable(true);
+        } else
+            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
         if (secondOption == null) {
             imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
             LoginView.choosingScene.lookup("#selectTwo").setDisable(true);
@@ -592,37 +604,15 @@ public class DuelView {
     public void activate() {
         DuelController.getInstance().activateSpell();
         Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
-        Scene myScene = LoginView.mainGameSceneOne;
-        Scene opponentScene = LoginView.mainGameSceneTwo;
-        if (player2.getUsername().equals(currentPlayer.getUsername())) {
-            myScene = LoginView.mainGameSceneTwo;
-            opponentScene = LoginView.mainGameSceneOne;
-        }
-        setHandImages(currentPlayer, myScene);
-        setSpellZone(currentPlayer.getField().getSpellAndTrapCards(), myScene, "#spell");
-        setSpellZone(currentPlayer.getField().getSpellAndTrapCards(), opponentScene, "#opponentSpell");
-        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) myScene.lookup("#selectedCard"),
-                false, "selected card");
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);;
     }
 
     public void set() {
         DuelController.getInstance().set();
         MainView.playSpellSong();
-        Scene myScene = LoginView.mainGameSceneOne;
-        Scene opponentScene = LoginView.mainGameSceneTwo;
-        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
-        if (player2.getUsername().equals(currentPlayer.getUsername())) {
-            myScene = LoginView.mainGameSceneTwo;
-            opponentScene = LoginView.mainGameSceneOne;
-        }
-        setHandImages(currentPlayer, myScene);
-        setSpellZone(currentPlayer.getField().getSpellAndTrapCards(), myScene, "#spell");
-        setMonsterZone(currentPlayer.getField().getMonsterCards(), myScene, "#monster");
-        setSpellZone(currentPlayer.getField().getSpellAndTrapCards(), opponentScene, "#opponentSpell");
-        setMonsterZone(currentPlayer.getField().getMonsterCards(), opponentScene, "#opponentMonster");
-        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) myScene.lookup("#selectedCard"),
-                false, "selected card");
-    }
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);    }
 
     public void settings() {
         popUp();
@@ -657,44 +647,21 @@ public class DuelView {
 
     public void flipSummon() {
         DuelController.getInstance().flipSummon();
-        Scene myScene = LoginView.mainGameSceneOne;
-        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
-        Scene opponentScene = LoginView.mainGameSceneTwo;
-        if (player2.getUsername().equals(currentPlayer.getUsername())) {
-            myScene = LoginView.mainGameSceneTwo;
-            opponentScene = LoginView.mainGameSceneOne;
-        }
-        setMonsterZone(currentPlayer.getField().getMonsterCards(), myScene, "#monster");
-        setMonsterZone(currentPlayer.getField().getMonsterCards(), opponentScene, "#opponentMonster");
-        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) myScene.lookup("#selectedCard"),
-                false, "selected card");
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
     }
 
     public void summon() {
         DuelController.getInstance().summon();
         MainView.monsterSong();
-        Scene opponentScene = LoginView.mainGameSceneTwo;
-        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
-        Scene myScene = LoginView.mainGameSceneOne;
-        if (player2.getUsername().equals(currentPlayer.getUsername())) {
-            myScene = LoginView.mainGameSceneTwo;
-            opponentScene = LoginView.mainGameSceneOne;
-        }
-        setHandImages(currentPlayer, myScene);
-        setMonsterZone(currentPlayer.getField().getMonsterCards(), myScene, "#monster");
-        setMonsterZone(currentPlayer.getField().getMonsterCards(), opponentScene, "#opponentMonster");
-        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) myScene.lookup("#selectedCard"),
-                false, "selected card");
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
     }
 
     public void nextPhase() {
         DuelController.getInstance().nextPhase();
-        setHandImages(player1, LoginView.mainGameSceneOne);
-        setSpellZone(player1.getField().getSpellAndTrapCards(), LoginView.mainGameSceneOne, "#spell");
-        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#monster");
-        setHandImages(player2, LoginView.mainGameSceneTwo);
-        setSpellZone(player2.getField().getSpellAndTrapCards(), LoginView.mainGameSceneTwo, "#spell");
-        setMonsterZone(player2.getField().getMonsterCards(), LoginView.mainGameSceneTwo, "#monster");
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
     }
 
     public void previous() {
@@ -843,32 +810,33 @@ public class DuelView {
     }
 
 
-    public ArrayList<MonsterCard> getTributes() {
-        IO.getInstance().chooseTributes();
-        try {
-            return getTributeMonsterCards();
-        } catch (Exception exception) {
-            return getTributesAgain();
-        }
-        //???? what was i on
-    }
+//    public ArrayList<MonsterCard> getTributes() {
+//        IO.getInstance().chooseTributes();
+//        try {
+//            return getTributeMonsterCards();
+//        } catch (Exception exception) {
+//            return getTributesAgain();
+//        }
+//        //???? what was i on
+//    }
+//
+//
+//    private ArrayList<MonsterCard> getTributesAgain() {
+//        try {
+//            return getTributeMonsterCards();
+//        } catch (Exception exception) {
+//            return getTributesAgain();
+//        }
+//    }
 
 
-    private ArrayList<MonsterCard> getTributesAgain() {
-        try {
-            return getTributeMonsterCards();
-        } catch (Exception exception) {
-            return getTributesAgain();
-        }
-    }
-
-
-    private ArrayList<MonsterCard> getTributeMonsterCards() {
+    public ArrayList<MonsterCard> getTributeMonsterCards() {
 //        var input = IO.getInstance().getInputMessage();
 //        if (input.equals("cancel")) return null;
 //        return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
         toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
         chooseForMoreThanOne();
+        System.out.println("heh");
         return wanted;
     }
 
