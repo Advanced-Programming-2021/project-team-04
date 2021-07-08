@@ -1,0 +1,83 @@
+.root {
+    -fx-background-color: #000000;
+    -fx-background-image: url("deckbackground.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+
+.navi {
+    -fx-translate-x: -100;
+    -fx-translate-y: -360;
+    -fx-background-color: #000000;
+    -fx-font-size: 40;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 0;
+}
+
+
+.navi:hover {
+    -fx-text-fill: #000000;
+    -fx-background-color: #0023ff;
+}
+
+
+#mainMenu {
+    -fx-font-family: "Jokerman";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #0023ff;
+    -fx-font-size: 25;
+    -fx-translate-x: -100;
+    -fx-translate-y: -120;
+}
+
+
+.action {
+    -fx-font-family: "Jokerman";
+    -fx-pref-height: 14;
+    -fx-pref-width: 150;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #0023ff;
+    -fx-font-size: 25;
+    -fx-cell-size: 20;
+    -fx-translate-x: -100;
+    -fx-translate-y: -130;
+}
+
+
+#mainMenu:hover, .action:hover, #create:hover {
+    -fx-border-color: #ffffff;
+    -fx-background-color: #0023ff;
+}
+
+
+.text-field {
+    -fx-translate-x: -100;
+    -fx-translate-y: -130;
+    -fx-font-size: 15;
+}
+
+
+#create {
+    -fx-font-family: "Jokerman";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #0023ff;
+    -fx-font-size: 20;
+    -fx-background-size: 20;
+    -fx-translate-x: -100;
+    -fx-translate-y: -120;
+}
+
+
+.label {
+    -fx-translate-y: -140;
+    -fx-translate-x: -100;
+    -fx-font-family: "Jokerman";
+    -fx-font-size: 37;
+    -fx-font-weight: bold;
+}

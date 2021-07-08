@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import java.net.URL?>
+<GridPane alignment="CENTER_LEFT" hgap="30" prefHeight="763" prefWidth="1246" styleClass="root"
+          vgap="40" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+          fx:controller="yugioh.view.DuelFirstPage">
+
+
+    <Label GridPane.columnSpan="2" GridPane.rowIndex="0" text="WELCOME TO OUR MADHOUSE..." fx:id="mainText"/>
+
+    <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="10" fx:id="box1" alignment="CENTER">
+        <HBox>
+            <Label text="Play With Your Rival" fx:id="label1"/>
+            <Button text="Resume" styleClass="resume" fx:id="resume" onMouseClicked="#resumeButton"/>
+        </HBox>
+        <TextField promptText="username" alignment="CENTER" fx:id="username"/>
+        <Button text="play" fx:id="play" onMouseClicked="#playButton"/>
+    </VBox>
+
+    <VBox GridPane.columnIndex="0" GridPane.rowIndex="2" spacing="10" fx:id="box2" alignment="CENTER">
+        <Label text="Play With Our Frankenstein" fx:id="label2"/>
+        <Label text="choose a level" fx:id="label3"/>
+        <Button text="NEWBIE"/>
+        <Button text="DUH"/>
+        <Button text="SMARTY-PANTS"/>
+    </VBox>
+
+    <VBox fx:id="box3" GridPane.rowIndex="2" GridPane.columnIndex="1" spacing="15">
+        <VBox fx:id="box4" alignment="CENTER" spacing="10">
+            <Label text="Rounds?" fx:id="label4"/>
+            <RadioButton text="1" selected="true" styleClass="button" fx:id="oneRound">
+                <toggleGroup>
+                    <ToggleGroup fx:id="group"/>
+                </toggleGroup>
+            </RadioButton>
+            <RadioButton text="3" styleClass="button" fx:id="threeRounds">
+                <toggleGroup>
+                    <fx:reference source="group"/>
+                </toggleGroup>
+            </RadioButton>
+        </VBox>
+        <Button onMouseClicked="#mainMenu" text="Main Menu" fx:id="mainMenu"/>
+    </VBox>
+    <stylesheets>
+        <URL value="@stylesheets/duelfirstpage.css"/>
+    </stylesheets>
+</GridPane>

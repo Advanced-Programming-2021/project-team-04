@@ -1,0 +1,52 @@
+.root {
+    -fx-background-color: #000000;
+    -fx-background-image: url("choosingbackground.jpg");
+    -fx-background-repeat: stretch;
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+}
+
+#firstBox {
+    -fx-translate-x: -200;
+}
+
+#secondBox {
+    -fx-translate-x: 240;
+}
+
+.button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #80c28f;
+    -fx-border-color: #80c28f;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-font-family: "Jokerman";
+    -fx-pref-height: 14;
+    -fx-pref-width: 175;
+    -fx-font-size: 18;
+    -fx-border-width: 3;
+}
+
+.button:hover {
+    -fx-background-color: #80c28f;
+    -fx-text-fill: #000000;
+}
+
+#back {
+    -fx-shape: "M 5,50 97.5,5 97.5,95 Z";
+}
+
+#next {
+    -fx-shape: "M 95,50 5,95 5,5 z";
+}
+
+#next, #back {
+    -fx-translate-x: 160;
+    -fx-pref-width: 50;
+    -fx-translate-y: 50;
+}
+
+#cancel {
+    -fx-translate-y: 50;
+    -fx-translate-x: -230;
+}
