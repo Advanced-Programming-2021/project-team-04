@@ -394,6 +394,17 @@ public class DuelController {
         nextPhase();
     }
 
+    public void setOrSummon() {
+        if (!(game.getSelectedCard() instanceof MonsterCard)) {
+            IO.getInstance().cantSummon();
+            return;
+        }
+        var selectedMonsterCard = (MonsterCard) game.getSelectedCard();
+        if (selectedMonsterCard.getThisCardAttackPower() >= selectedMonsterCard.getThisCardDefensePower())
+            summon();
+        else set();
+    }
+
     public void summon() {
         if (handleSpecialCasesBeforeSummon()) return;
         summonWithTribute();

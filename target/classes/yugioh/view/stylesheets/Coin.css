@@ -8,48 +8,49 @@
 
 .label {
     -fx-font-family: "Jokerman";
-    -fx-text-fill: #7ba5ee;
+    -fx-text-fill: #ffe369;
     -fx-font-size: 30;
+    -fx-translate-y: -250;
 }
 
 .text-field {
     -fx-font-family: "Jokerman";
-    -fx-border-color: #7ba5ee;
+    -fx-border-color: #ffe369;
     -fx-background-color: transparent;
-    -fx-text-fill: #7ba5ee;
+    -fx-text-fill: #ffe369;
     -fx-background-radius: 40;
     -fx-border-radius: 20;
     -fx-pref-width: 160;
     -fx-border-width: 3;
     -fx-font-size: 20;
     -fx-font-weight: bold;
-    -fx-translate-y: 30;
+    -fx-translate-y: -220;
 }
 
 .button {
     -fx-font-family: "Jokerman";
     -fx-text-fill: #000000;
-    -fx-background-color: #7ba5ee;
+    -fx-background-color: #ffe369;
     -fx-font-size: 20;
-    -fx-translate-y: 40;
-    -fx-translate-x: 5;
+    -fx-translate-y: 100;
+    -fx-translate-x: 10;
 }
 
 .start {
     -fx-font-family: "Jokerman";
     -fx-text-fill: #000000;
-    -fx-background-color: #7ba5ee;
+    -fx-background-color: #ffe369;
     -fx-font-size: 20;
-    -fx-translate-y: 40;
-    -fx-translate-x: -5;
+    -fx-translate-y: 100;
+    -fx-translate-x: -10;
 }
 
 .button:hover {
-    -fx-text-fill: #7ba5ee;
+    -fx-text-fill: #ffe369;
     -fx-background-color: #000000;
 }
 
 .start:hover {
-    -fx-text-fill: #7ba5ee;
+    -fx-text-fill: #ffe369;
     -fx-background-color: #000000;
 }

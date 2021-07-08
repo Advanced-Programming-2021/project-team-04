@@ -19,8 +19,6 @@ Z
 -src/main/java/yugioh/view/ScoreboardView.java,8\b\8bde6d4d66649b6a640eb352eb2e803ad9f17a7b
 W
 'src/main/java/yugioh/view/DeckView.java,7\7\77aa933a50e9b6b49e72e7853b312395cf842a96
-U
-%src/main/java/yugioh/model/Field.java,e\a\ea96a6ae57439137336b659c7f5ce7141197fadd
 W
 'src/main/java/yugioh/view/MainView.java,f\b\fb857bf48a6929dda0fff3911260db0ef00c32c7
 W

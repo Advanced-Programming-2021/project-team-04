@@ -1,1 +1,0 @@
-["yugioh.model.Account",{"allPlayerDecks":["java.util.ArrayList",[]],"allCardsHashMap":["java.util.LinkedHashMap",{}],"activePlayerDeck":null,"username":"username","nickname":"nickname","password":"123","score":0,"money":100000,"profilePictureNumber":7,"profilePictureExtension":".jpg"}]
