@@ -121,11 +121,6 @@ public class DeckView {
 
     private static void setOnTransitionFinished(ImageView animation, TranslateTransition nextTransition, TranslateTransition currentTransition) {
         currentTransition.setOnFinished(actionEvent -> {
-            try {
-                Thread.currentThread().wait(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             var deck = allDecks.get(count);
             if (countForCard == deck.getMainDeckCards().keySet().size())
                 countForCard = 0;
@@ -134,13 +129,8 @@ public class DeckView {
             } catch (Exception e) {
                 animation.setImage(getNullCardImage());
             }
-            try {
-                Thread.currentThread().wait(200);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             actionEvent.consume();
-            nextTransition.play();
+            nextTransition.playFrom(Duration.seconds(0.4));
         });
     }
 
