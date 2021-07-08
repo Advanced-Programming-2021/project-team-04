@@ -1,8 +1,10 @@
 package yugioh.utils;
 
+import javafx.animation.TranslateTransition;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Duration;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +18,15 @@ public abstract class DragUtils {
         x1 -= x2;
         y1 -= y2;
         return Math.sqrt(x1 * x1 + y1 * y1) / ON_DRAG_RELEASE_SPEED;
+    }
+
+    public static void playGoingBackTransition(Node dragNode, List<Double> coordination) {
+        var transition = new TranslateTransition();
+        transition.setNode(dragNode);
+        transition.setToX(coordination.get(0));
+        transition.setToY(coordination.get(1));
+        transition.setDuration(Duration.seconds(getDurationByCoordination(coordination.get(0), coordination.get(1), dragNode.getTranslateX(), dragNode.getTranslateY())));
+        transition.play();
     }
 
     public enum Event {

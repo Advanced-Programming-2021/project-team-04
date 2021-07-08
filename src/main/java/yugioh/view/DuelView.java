@@ -1,10 +1,8 @@
 package yugioh.view;
 
 
-import javafx.animation.TranslateTransition;
-import javafx.geometry.Point2D;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
@@ -12,14 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Shape3D;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -34,23 +26,20 @@ import yugioh.utils.DragUtils;
 import yugioh.utils.Triple;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.stream.Collectors;
 
 
 public class DuelView {
 
+    private static final Card emptyCard = new Card();
+    public static Stage secondStage;
     private static DuelView singleInstance;
     private static ArrayList<String> myGY;
     private static ArrayList<String> opponentGY;
     private static int count;
     private static Card firstCard;
     private static Card secondCard;
-    private static final Card emptyCard = new Card();
     private static int counter;
-    public static Stage secondStage;
     private static Account player1;
     private static Account player2;
 
@@ -91,33 +80,52 @@ public class DuelView {
 
     private static void makeCardsDraggable(Scene scene) {
         for (var i = 1; i <= 5; i++) {
-            setDraggable(scene.lookup("#monster" + i));
-            setDraggable(scene.lookup("#spell" + i));
+            setMonsterDraggable(scene.lookup("#monster" + i));
+//            setMonsterDraggable(scene.lookup("#spell" + i));
         }
         for (var i = 1; i <= 6; i++) {
-            setDraggable(scene.lookup("#hand" + i));
+            setHandDraggable(scene.lookup("#hand" + i));
         }
-        setDraggable(scene.lookup("#field"));
+//        setMonsterDraggable(scene.lookup("#field"));
     }
 
-    private static void setDraggable(Node node) {
+    private static void setMonsterDraggable(Node node) {
         if (Objects.isNull(node)) return;
-        DragUtils.DragHandler dragHandler = new DragUtils.DragHandler(node);
+        var dragHandler = new DragUtils.DragHandler(node);
         dragHandler.addListener((listenerDragHandler, listenerDragEvent) -> dragHandler.getDragNodes().forEach((dragNode, coordination) -> {
             if (listenerDragEvent == DragUtils.Event.DRAG_START)
                 DuelController.getInstance().selectCard(true, CardStatusInField.MONSTER_FIELD, Integer.parseInt(dragNode.getId().substring(dragNode.getId().length() - 1)) - 1);
             if (listenerDragEvent == DragUtils.Event.DRAG_END) {
-                if (dragNode.getId().startsWith("monster")) {
-                    var target = getCardByCoordination(new Point2D(dragHandler.getLastMouseX(), dragHandler.getLastMouseY()), node.getScene());
-                    if (Objects.nonNull(target) && !target.getFirst() && target.getSecond() == CardStatusInField.MONSTER_FIELD)
-                        DuelController.getInstance().attack(target.getThird() - 1);
+                var target = getCardByCoordination(new Point2D(dragHandler.getLastMouseX(), dragHandler.getLastMouseY()), node.getScene());
+                if (Objects.nonNull(target) && !target.getFirst() && target.getSecond() == CardStatusInField.MONSTER_FIELD)
+                    DuelController.getInstance().attack(target.getThird() - 1);
+                DragUtils.playGoingBackTransition(dragNode, coordination);
+            }
+        }));
+    }
+
+    private static void setHandDraggable(Node node) {
+        if (Objects.isNull(node)) return;
+        var dragHandler = new DragUtils.DragHandler(node);
+        dragHandler.addListener((listenerDragHandler, listenerDragEvent) -> dragHandler.getDragNodes().forEach((dragNode, coordination) -> {
+            if (listenerDragEvent == DragUtils.Event.DRAG_START)
+                DuelController.getInstance().selectCard(true, CardStatusInField.HAND, Integer.parseInt(dragNode.getId().substring(dragNode.getId().length() - 1)) - 1);
+            if (listenerDragEvent == DragUtils.Event.DRAG_END) {
+                var target = getCardByCoordination(new Point2D(dragHandler.getLastMouseX(), dragHandler.getLastMouseY()), node.getScene());
+                if (Objects.nonNull(target) && target.getFirst()) {
+                    if (target.getSecond() == CardStatusInField.MONSTER_FIELD) {
+                        DuelController.getInstance().setOrSummon();
+                        dragNode.setTranslateX(coordination.get(0));
+                        dragNode.setTranslateY(coordination.get(1));
+                    }
+                    if (target.getSecond() == CardStatusInField.SPELL_FIELD || target.getSecond() == CardStatusInField.FIELD_ZONE) {
+                        DuelController.getInstance().activateSpell();
+                        dragNode.setTranslateX(coordination.get(0));
+                        dragNode.setTranslateY(coordination.get(1));
+                    }
+                } else {
+                    DragUtils.playGoingBackTransition(dragNode, coordination);
                 }
-                var transition = new TranslateTransition();
-                transition.setNode(dragNode);
-                transition.setToX(coordination.get(0));
-                transition.setToY(coordination.get(1));
-                transition.setDuration(Duration.seconds(DragUtils.getDurationByCoordination(coordination.get(0), coordination.get(1), dragNode.getTranslateX(), dragNode.getTranslateY())));
-                transition.play();
             }
         }));
     }
@@ -126,7 +134,6 @@ public class DuelView {
         for (var i = 1; i <= 5; i++)
             makeOpponentMonsterAttackable(scene.lookup("#opponentMonster" + i));
     }
-
 
     private static void makeOpponentMonsterAttackable(Node node) {
         // TODO: 7/7/2021 a failed project, check if I can pull this off
@@ -169,6 +176,8 @@ public class DuelView {
             if (scene.lookup("#opponentSpell" + i).getBoundsInParent().contains(point))
                 return new Triple<>(false, CardStatusInField.SPELL_FIELD, i);
         }
+        if (scene.lookup("#field").getBoundsInParent().contains(point))
+            return new Triple<>(true, CardStatusInField.FIELD_ZONE, 0);
         for (var i = 1; i <= 5; i++) {
             if (scene.lookup("#monster" + i).getBoundsInParent().contains(point))
                 return new Triple<>(true, CardStatusInField.MONSTER_FIELD, i);
@@ -178,8 +187,6 @@ public class DuelView {
         for (var i = 1; i <= 6; i++)
             if (scene.lookup("#hand" + i).getBoundsInParent().contains(point))
                 return new Triple<>(true, CardStatusInField.HAND, i);
-        if (scene.lookup("#field").getBoundsInParent().contains(point))
-            return new Triple<>(true, CardStatusInField.FIELD_ZONE, 0);
         return null;
     }
 
@@ -296,50 +303,78 @@ public class DuelView {
         Tooltip.install(imageView, tooltip);
     }
 
-    public void selectOpponentMonster(MouseEvent mouseEvent) {
-        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(15));
-        selectCard(number, CardStatusInField.MONSTER_FIELD, false);
+    private static void chooseForMoreThanOne() {
+        navigateChoose = 0;
+        LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(true);
+        if (toChoseFrom.size() <= 2) LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(true);
+        showMoreOptions();
+        choosing.setScene(LoginView.choosingForMoreThanOneScene);
+        choosing.showAndWait();
     }
 
-    public void selectOpponentSpell(MouseEvent mouseEvent) {
-        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(13));
-        selectCard(number, CardStatusInField.SPELL_FIELD, false);
+    private static void showMoreOptions() {
+        firstOption = toChoseFrom.get(navigateChoose * 2);
+        if (navigateChoose * 2 + 1 == toChoseFrom.size()) secondOption = null;
+        else secondOption = toChoseFrom.get(navigateChoose * 2 + 1);
+        showMoreImages();
     }
 
-    public void selectOpponentField() {
-        selectCard(0, CardStatusInField.SPELL_FIELD, false);
-
+    private static void showMoreImages() {
+        ImageView cardOne = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardOne");
+        ImageView cardTwo = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardTwo");
+        Image imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
+        Image imageTwo;
+        if (secondOption == null) {
+            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+            LoginView.choosingForMoreThanOneScene.lookup("#selectTwo").setDisable(true);
+        } else
+            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondOption.getName() + ".jpg"));
+        cardOne.setImage(imageOne);
+        cardTwo.setImage(imageTwo);
     }
 
-    public void selectMonster(MouseEvent mouseEvent) {
-        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(7));
-        selectCard(number, CardStatusInField.MONSTER_FIELD, true);
+    private static void chooseCard() {
+        navigateChoose = 0;
+        LoginView.choosingScene.lookup("#back").setDisable(true);
+        if (toChoseFrom.size() <= 2) LoginView.choosingScene.lookup("#next").setDisable(true);
+        showOptions();
+        choosing.setScene(LoginView.choosingScene);
+        choosing.showAndWait();
     }
 
-    public void selectSpell(MouseEvent mouseEvent) {
-        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(5));
-        selectCard(number, CardStatusInField.SPELL_FIELD, true);
+    private static void showOptions() {
+        firstOption = toChoseFrom.get(navigateChoose * 2);
+        if (navigateChoose * 2 + 1 == toChoseFrom.size()) secondOption = null;
+        else secondOption = toChoseFrom.get(navigateChoose * 2 + 1);
+        setImages();
     }
 
-    public void selectField() {
-        selectCard(0, CardStatusInField.SPELL_FIELD, true);
+    private static void setImages() {
+        ImageView cardOne = (ImageView) LoginView.choosingScene.lookup("#cardOne");
+        ImageView cardTwo = (ImageView) LoginView.choosingScene.lookup("#cardTwo");
+        Image imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
+        Image imageTwo;
+        if (secondOption == null) {
+            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+            LoginView.choosingScene.lookup("#selectTwo").setDisable(true);
+        } else
+            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondOption.getName() + ".jpg"));
+        cardOne.setImage(imageOne);
+        cardTwo.setImage(imageTwo);
     }
 
-    public void selectHand(MouseEvent mouseEvent) {
-        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(4));
-        selectCard(number, CardStatusInField.HAND, true);
+    public static void coin() {
+        LoginView.stage.setScene(LoginView.coinScene);
+        DuelController.getInstance().coin();
     }
 
-
-    public void selectCard(int number, CardStatusInField cardStatusInField, boolean isMine) {
-        Scene scene;
-        if (player1.getUsername().equals(DuelController.getInstance().getGame().getCurrentPlayer().getUsername()))
-            scene = LoginView.mainGameSceneOne;
-        else
-            scene = LoginView.mainGameSceneTwo;
-        DuelController.getInstance().selectCard(isMine, cardStatusInField, number - 1);
-        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) scene.lookup("#selectedCard"),
-                isMine, "selected card");
+    public static void finishGame(String username) {
+        MainView.gameMusic.stop();
+        MainView.gameFinishedSong();
+        Label label = (Label) LoginView.finishGame.lookup("#congrats");
+        label.setText("Congrats " + username + "\n" + "Hold fast to the joy of the rise; despise all thoughts you might descend.");
+        label.setStyle("-fx-text-fill: #00F2FF; -fx-font-size: 24");
+        LoginView.stage.setScene(LoginView.finishGame);
     }
 
 
@@ -394,34 +429,49 @@ public class DuelView {
 //        }
 //    }
 
-    private static void chooseForMoreThanOne() {
-        navigateChoose = 0;
-        LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(true);
-        if (toChoseFrom.size() <= 2) LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(true);
-        showMoreOptions();
-        choosing.setScene(LoginView.choosingForMoreThanOneScene);
-        choosing.showAndWait();
+    public void selectOpponentMonster(MouseEvent mouseEvent) {
+        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(15));
+        selectCard(number, CardStatusInField.MONSTER_FIELD, false);
     }
 
-    private static void showMoreOptions() {
-        firstOption = toChoseFrom.get(navigateChoose * 2);
-        if (navigateChoose * 2 + 1 == toChoseFrom.size()) secondOption = null;
-        else secondOption = toChoseFrom.get(navigateChoose * 2 + 1);
-        showMoreImages();
+    public void selectOpponentSpell(MouseEvent mouseEvent) {
+        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(13));
+        selectCard(number, CardStatusInField.SPELL_FIELD, false);
     }
 
-    private static void showMoreImages() {
-        ImageView cardOne = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardOne");
-        ImageView cardTwo = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardTwo");
-        Image imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
-        Image imageTwo;
-        if (secondOption == null) {
-            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
-            LoginView.choosingForMoreThanOneScene.lookup("#selectTwo").setDisable(true);
-        } else
-            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondOption.getName() + ".jpg"));
-        cardOne.setImage(imageOne);
-        cardTwo.setImage(imageTwo);
+    public void selectOpponentField() {
+        selectCard(0, CardStatusInField.SPELL_FIELD, false);
+
+    }
+
+    public void selectMonster(MouseEvent mouseEvent) {
+        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(7));
+        selectCard(number, CardStatusInField.MONSTER_FIELD, true);
+    }
+
+    public void selectSpell(MouseEvent mouseEvent) {
+        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(5));
+        selectCard(number, CardStatusInField.SPELL_FIELD, true);
+    }
+
+    public void selectField() {
+        selectCard(0, CardStatusInField.SPELL_FIELD, true);
+    }
+
+    public void selectHand(MouseEvent mouseEvent) {
+        int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(4));
+        selectCard(number, CardStatusInField.HAND, true);
+    }
+
+    public void selectCard(int number, CardStatusInField cardStatusInField, boolean isMine) {
+        Scene scene;
+        if (player1.getUsername().equals(DuelController.getInstance().getGame().getCurrentPlayer().getUsername()))
+            scene = LoginView.mainGameSceneOne;
+        else
+            scene = LoginView.mainGameSceneTwo;
+        DuelController.getInstance().selectCard(isMine, cardStatusInField, number - 1);
+        setCardImage(DuelController.getInstance().getGame().getSelectedCard(), (ImageView) scene.lookup("#selectedCard"),
+                isMine, "selected card");
     }
 
     public void nextOptionsM() {
@@ -442,37 +492,6 @@ public class DuelView {
         showMoreOptions();
     }
 
-
-    private static void chooseCard() {
-        navigateChoose = 0;
-        LoginView.choosingScene.lookup("#back").setDisable(true);
-        if (toChoseFrom.size() <= 2) LoginView.choosingScene.lookup("#next").setDisable(true);
-        showOptions();
-        choosing.setScene(LoginView.choosingScene);
-        choosing.showAndWait();
-    }
-
-    private static void showOptions() {
-        firstOption = toChoseFrom.get(navigateChoose * 2);
-        if (navigateChoose * 2 + 1 == toChoseFrom.size()) secondOption = null;
-        else secondOption = toChoseFrom.get(navigateChoose * 2 + 1);
-        setImages();
-    }
-
-    private static void setImages() {
-        ImageView cardOne = (ImageView) LoginView.choosingScene.lookup("#cardOne");
-        ImageView cardTwo = (ImageView) LoginView.choosingScene.lookup("#cardTwo");
-        Image imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
-        Image imageTwo;
-        if (secondOption == null) {
-            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
-            LoginView.choosingScene.lookup("#selectTwo").setDisable(true);
-        } else
-            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondOption.getName() + ".jpg"));
-        cardOne.setImage(imageOne);
-        cardTwo.setImage(imageTwo);
-    }
-
     public void nextOptions() {
         if (navigateChoose == 0) LoginView.choosingScene.lookup("#back").setDisable(false);
         if (navigateChoose == ((toChoseFrom.size() - 1) / 2) - 1)
@@ -490,7 +509,6 @@ public class DuelView {
         navigateChoose--;
         showOptions();
     }
-
 
     public void addFirstCToArraylist() {
         chosen = firstOption;
@@ -516,12 +534,6 @@ public class DuelView {
         chosen = null;
         wanted = new ArrayList<>();
         choosing.close();
-    }
-
-
-    public static void coin() {
-        LoginView.stage.setScene(LoginView.coinScene);
-        DuelController.getInstance().coin();
     }
 
     public void backToFirstPage() {
@@ -551,12 +563,10 @@ public class DuelView {
         firstPlayer.clear();
     }
 
-
     public boolean wantsToActivate(String cardName) {
         IO.getInstance().wantToActivate(cardName);
         return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
     }
-
 
     public int getTribute() {
         IO.getInstance().chooseTribute();
@@ -578,16 +588,6 @@ public class DuelView {
         DuelController.getInstance().directAttack();
         MainView.playAttackSong();
     }
-
-    public static void finishGame(String username) {
-        MainView.gameMusic.stop();
-        MainView.gameFinishedSong();
-        Label label = (Label) LoginView.finishGame.lookup("#congrats");
-        label.setText("Congrats " + username + "\n" + "Hold fast to the joy of the rise; despise all thoughts you might descend.");
-        label.setStyle("-fx-text-fill: #00F2FF; -fx-font-size: 24");
-        LoginView.stage.setScene(LoginView.finishGame);
-    }
-
 
     public void activate() {
         DuelController.getInstance().activateSpell();
@@ -784,8 +784,7 @@ public class DuelView {
         if (MainView.isGameMute) {
             MainView.gameMusic.pause();
             if (MainView.gameFinished != null) MainView.gameFinished.pause();
-        }
-        else if (MainView.gameMusic == null) MainView.playGameMusic();
+        } else if (MainView.gameMusic == null) MainView.playGameMusic();
         else MainView.gameMusic.play();
     }
 
@@ -868,9 +867,9 @@ public class DuelView {
 //        var input = IO.getInstance().getInputMessage();
 //        if (input.equals("cancel")) return null;
 //        return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
-    toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
-    chooseForMoreThanOne();
-    return wanted;
+        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
+        chooseForMoreThanOne();
+        return wanted;
     }
 
 
