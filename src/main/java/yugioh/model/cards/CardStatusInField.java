@@ -1,4 +1,4 @@
-package yugioh.model;
+package yugioh.model.cards;
 
 public enum CardStatusInField {
     MONSTER_FIELD, SPELL_FIELD, FIELD_ZONE, HAND;

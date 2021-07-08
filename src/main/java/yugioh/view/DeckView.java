@@ -1,30 +1,32 @@
 package yugioh.view;
 
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Tooltip;
-import javafx.scene.input.MouseDragEvent;
-import javafx.scene.input.MouseEvent;
-import javafx.util.Duration;
-import yugioh.controller.DeckController;
-import yugioh.controller.MainController;
+import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+import yugioh.controller.DeckController;
+import yugioh.controller.ImportAndExport;
+import yugioh.controller.MainController;
 import yugioh.model.PlayerDeck;
 import yugioh.model.cards.Card;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Objects;
 
 public class DeckView {
 
+    private static final Card EMPTY_CARD = new Card();
     private static ArrayList<PlayerDeck> allDecks;
     private static ArrayList<String> allCards;
     private static int count;
@@ -34,19 +36,19 @@ public class DeckView {
     private static LinkedHashMap<String, Short> sideCardsHashMap;
     private static int countForDeck;
     private static int countForAdd;
+    private static int countForCard;
     private static Card firstCard;
     private static Card secondCard;
     private static Scene sceneForAdding;
     private static Scene sceneForOneDeck;
-    private static final Card emptyCard = new Card();
-
 
     public static void run() {
-        animationFunction();
+        handleAnimation();
         allDecks = MainController.getInstance().getLoggedIn().getAllPlayerDecks();
         countForDeck = 0;
         countForAdd = 0;
         count = 0;
+        countForCard = 0;
         updateLists();
         showDetails();
         handleButtons();
@@ -94,6 +96,69 @@ public class DeckView {
         tooltip.setStyle("-fx-font-size: 27");
         deckName.setTooltip(tooltip);
         tooltip.setShowDelay(Duration.seconds(0));
+    }
+
+    private static void handleAnimation() {
+        ImageView animation = (ImageView) LoginView.deckScene.lookup("#animation");
+        var forwardTranslateTransition = new TranslateTransition();
+        initializeTransition(animation, forwardTranslateTransition, "#edit", "#activate");
+        var backwardTranslateTransition = new TranslateTransition();
+        initializeTransition(animation, backwardTranslateTransition, "#activate", "#edit");
+        Image forNow = new Image(DeckView.class.getResource("cardimages/" + "empty.jpg").toExternalForm(), 300, 300, true, true);
+        setOnTransitionFinished(animation, backwardTranslateTransition, forwardTranslateTransition);
+        setOnTransitionFinished(animation, forwardTranslateTransition, backwardTranslateTransition);
+        forwardTranslateTransition.play();
+    }
+
+    private static void initializeTransition(ImageView animation, TranslateTransition forwardTranslateTransition, String firstButton, String secondButton) {
+        forwardTranslateTransition.setFromX(LoginView.deckScene.lookup(firstButton).getTranslateX());
+        forwardTranslateTransition.setToX(LoginView.deckScene.lookup(secondButton).getTranslateX());
+        forwardTranslateTransition.setNode(animation);
+        forwardTranslateTransition.setAutoReverse(false);
+        forwardTranslateTransition.setCycleCount(1);
+        forwardTranslateTransition.setDuration(Duration.seconds(2));
+    }
+
+    private static void setOnTransitionFinished(ImageView animation, TranslateTransition nextTransition, TranslateTransition currentTransition) {
+        currentTransition.setOnFinished(actionEvent -> {
+            try {
+                actionEvent.wait(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            var deck = allDecks.get(count);
+            if (countForCard == deck.getMainDeckCards().keySet().size())
+                countForCard = 0;
+            try {
+                animation.setImage(deck.getMainDeckCards().keySet().isEmpty() ? getNullCardImage() : getImageByCard(ImportAndExport.getInstance().readCard((String) deck.getMainDeckCards().keySet().toArray()[countForCard])));
+            } catch (Exception e) {
+                animation.setImage(getNullCardImage());
+            }
+            try {
+                actionEvent.wait(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            actionEvent.consume();
+            nextTransition.play();
+        });
+    }
+
+    private static Image getImageByCard(Card card) {
+        try {
+            return new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/" + card.getName() + ".jpg")));
+        } catch (Exception e) {
+            return getNullCardImage();
+        }
+    }
+
+    private static Image getNullCardImage() {
+        return new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/void.jpg")));
+    }
+
+    private static void handleButtonForCards() {
+        sceneForOneDeck.lookup("#back").setDisable(countForDeck == 0);
+        sceneForOneDeck.lookup("#next").setDisable(countForDeck >= mainCards.size() - 1 && countForDeck >= sideCards.size() - 1);
     }
 
     public void next() {
@@ -230,22 +295,17 @@ public class DeckView {
             secondCard = Card.getCardByName(sideCards.get(countForDeck));
             if (!firstCard.isOriginal() || firstCard.isConverted())
                 secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-            else secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+            else
+                secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
             number.setText(String.valueOf(sideCardsHashMap.get(secondCard.getName())));
             sceneForOneDeck.lookup("#removeSide").setDisable(false);
         } else {
-            secondCard = emptyCard;
+            secondCard = EMPTY_CARD;
             secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
             sceneForOneDeck.lookup("#removeSide").setDisable(true);
             number.setText("");
         }
         return secondImage;
-    }
-
-    private static void animationFunction() {
-       ImageView animation = (ImageView) LoginView.deckScene.lookup("#animation");
-       Image forNow = new Image(DeckView.class.getResource("cardimages/" + "empty.jpg").toExternalForm(), 300, 300, true, true);
-       animation.setImage(forNow);
     }
 
     private Image mainImage(Label number) {
@@ -255,21 +315,16 @@ public class DeckView {
             number.setText(String.valueOf(mainCardsHashMap.get(firstCard.getName())));
             if (!firstCard.isOriginal() || firstCard.isConverted())
                 firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-            else firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+            else
+                firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
             sceneForOneDeck.lookup("#removeMain").setDisable(false);
         } else {
-            firstCard = emptyCard;
+            firstCard = EMPTY_CARD;
             number.setText("");
             firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
             sceneForOneDeck.lookup("#removeMain").setDisable(true);
         }
         return firstImage;
-    }
-
-
-    private static void handleButtonForCards() {
-        sceneForOneDeck.lookup("#back").setDisable(countForDeck == 0);
-        sceneForOneDeck.lookup("#next").setDisable(countForDeck >= mainCards.size() - 1 && countForDeck >= sideCards.size() - 1);
     }
 
     public void nextForDeck() {
