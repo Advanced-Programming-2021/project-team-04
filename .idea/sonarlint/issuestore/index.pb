@@ -3,8 +3,6 @@ d
 4src/main/java/yugioh/controller/LoginController.java,5\5\55c80f04c0c4d7b2cdb08dceaabdbd1781d137dc
 X
 (src/main/java/yugioh/model/GameDeck.java,6\2\62bcd3749f36658e2b6102bac50cc5486fd8a05d
-f
-6src/main/java/yugioh/model/MonsterCardModeInField.java,d\7\d79208ad187fa5a1998572e2a58a0bac27658471
 Q
 !src/main/java/yugioh/view/IO.java,0\0\00e5ff8beb5d1f99d116a5e0161114ac0c636a47
 Z

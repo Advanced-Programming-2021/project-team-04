@@ -1,9 +1,7 @@
 package yugioh.view;
 
 
-import javafx.animation.TranslateTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -21,7 +19,6 @@ import yugioh.model.cards.Card;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Objects;
 
 public class DeckView {
@@ -100,27 +97,17 @@ public class DeckView {
 
     private static void handleAnimation() {
         ImageView animation = (ImageView) LoginView.deckScene.lookup("#animation");
-        var forwardTranslateTransition = new TranslateTransition();
-        initializeTransition(animation, forwardTranslateTransition, "#edit", "#activate");
-        var backwardTranslateTransition = new TranslateTransition();
-        initializeTransition(animation, backwardTranslateTransition, "#activate", "#edit");
-        Image forNow = new Image(DeckView.class.getResource("cardimages/" + "empty.jpg").toExternalForm(), 300, 300, true, true);
-        setOnTransitionFinished(animation, backwardTranslateTransition, forwardTranslateTransition);
-        setOnTransitionFinished(animation, forwardTranslateTransition, backwardTranslateTransition);
-        forwardTranslateTransition.play();
+        var transition = new SequentialTransition(getNewTranslateTransition("#edit", "#activate"), getNewPauseAndChangeImageTransition(animation), new PauseTransition(Duration.seconds(0.25)), getNewTranslateTransition("#activate", "#edit"), getNewPauseAndChangeImageTransition(animation), new PauseTransition(Duration.seconds(0.25)));
+        transition.setNode(animation);
+        transition.setInterpolator(Interpolator.EASE_BOTH);
+        transition.setCycleCount(Animation.INDEFINITE);
+        transition.play();
     }
 
-    private static void initializeTransition(ImageView animation, TranslateTransition forwardTranslateTransition, String firstButton, String secondButton) {
-        forwardTranslateTransition.setFromX(LoginView.deckScene.lookup(firstButton).getTranslateX());
-        forwardTranslateTransition.setToX(LoginView.deckScene.lookup(secondButton).getTranslateX());
-        forwardTranslateTransition.setNode(animation);
-        forwardTranslateTransition.setAutoReverse(false);
-        forwardTranslateTransition.setCycleCount(1);
-        forwardTranslateTransition.setDuration(Duration.seconds(2));
-    }
-
-    private static void setOnTransitionFinished(ImageView animation, TranslateTransition nextTransition, TranslateTransition currentTransition) {
-        currentTransition.setOnFinished(actionEvent -> {
+    private static PauseTransition getNewPauseAndChangeImageTransition(ImageView animation) {
+        var pauseAndChangeImageTransition = new PauseTransition();
+        pauseAndChangeImageTransition.setDuration(Duration.seconds(0.25));
+        pauseAndChangeImageTransition.setOnFinished(event -> {
             var deck = allDecks.get(count);
             if (countForCard == deck.getMainDeckCards().keySet().size())
                 countForCard = 0;
@@ -129,21 +116,31 @@ public class DeckView {
             } catch (Exception e) {
                 animation.setImage(getNullCardImage());
             }
-            actionEvent.consume();
-            nextTransition.playFrom(Duration.seconds(0.4));
+            countForCard++;
+            event.consume();
         });
+        return pauseAndChangeImageTransition;
+    }
+
+    private static TranslateTransition getNewTranslateTransition(String firstButton, String secondButton) {
+        var translateTransition = new TranslateTransition();
+        translateTransition.setFromX(LoginView.deckScene.getX() - LoginView.deckScene.lookup(firstButton).getBoundsInParent().getCenterX());
+        translateTransition.setToX(LoginView.deckScene.getX() - LoginView.deckScene.lookup(secondButton).getBoundsInParent().getCenterX());
+        translateTransition.setDuration(Duration.seconds(2));
+        translateTransition.setInterpolator(Interpolator.EASE_BOTH);
+        return translateTransition;
     }
 
     private static Image getImageByCard(Card card) {
         try {
-            return new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/" + card.getName() + ".jpg")));
+            return new Image(Objects.requireNonNull(DeckView.class.getResource("cardimages/" + card.getName() + ".jpg")).toExternalForm(), 300, 300, true, true);
         } catch (Exception e) {
             return getNullCardImage();
         }
     }
 
     private static Image getNullCardImage() {
-        return new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/void.jpg")));
+        return new Image(Objects.requireNonNull(DeckView.class.getResource("cardimages/void.jpg")).toExternalForm(), 300, 300, true, true);
     }
 
     private static void handleButtonForCards() {
