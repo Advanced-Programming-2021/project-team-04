@@ -1,7 +1,7 @@
 package yugioh.model.cards.specialcards;
 
 
-import yugioh.model.MonsterCardModeInField;
+import yugioh.model.cards.MonsterCardModeInField;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 

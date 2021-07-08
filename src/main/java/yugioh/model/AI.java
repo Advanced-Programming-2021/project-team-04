@@ -5,7 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import yugioh.controller.DuelController;
 import yugioh.controller.ImportAndExport;
+import yugioh.model.cards.CardStatusInField;
 import yugioh.model.cards.MonsterCard;
+import yugioh.model.cards.MonsterCardModeInField;
 import yugioh.model.cards.SpellAndTrapCard;
 
 

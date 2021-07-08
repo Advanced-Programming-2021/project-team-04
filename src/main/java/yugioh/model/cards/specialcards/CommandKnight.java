@@ -3,7 +3,7 @@ package yugioh.model.cards.specialcards;
 
 import yugioh.controller.DuelController;
 import yugioh.model.Account;
-import yugioh.model.MonsterCardModeInField;
+import yugioh.model.cards.MonsterCardModeInField;
 import yugioh.model.cards.MonsterCard;
 
 
