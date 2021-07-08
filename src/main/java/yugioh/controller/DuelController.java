@@ -1331,11 +1331,11 @@ public class DuelController {
     public boolean ritualSummon() {
         if (!errorForRitualSummon()) return false;
         MonsterCard ritualMonster = DuelView.getInstance().getRitualCard();
-        ArrayList<MonsterCard> toTribute = DuelView.getInstance().getTributes();
+        ArrayList<MonsterCard> toTribute = DuelView.getInstance().getTributeMonsterCards();
         if (Objects.isNull(toTribute)) return false;
         while (!isSumOfTributesValid(toTribute, ritualMonster)) {
-            toTribute = DuelView.getInstance().getTributes();
             IO.getInstance().invalidTributeSum();
+            toTribute = DuelView.getInstance().getTributeMonsterCards();
         }
         chooseMonsterMode(ritualMonster);
         game.getCurrentPlayer().getField().getMonsterCards().add(ritualMonster);
@@ -1382,10 +1382,6 @@ public class DuelController {
         monsterCard.setMonsterCardModeInField(monsterCardModeInField);
     }
 
-    public void showSelectedCard() {
-        if (!errorsForShowingSelectedCard()) return;
-        IO.getInstance().printString(game.getSelectedCard().toString());
-    }
 
     private boolean errorsForShowingSelectedCard() {
         if (game.getSelectedCard() == null) {
