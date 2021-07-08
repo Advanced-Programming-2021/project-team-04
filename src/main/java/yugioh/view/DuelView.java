@@ -306,14 +306,15 @@ public class DuelView {
     private static void chooseForMoreThanOne() {
         navigateChoose = 0;
         LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(true);
-        if (toChoseFrom.size() <= 2) LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(true);
+        LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(toChoseFrom.size() <= 2);
         showMoreOptions();
         choosing.setScene(LoginView.choosingForMoreThanOneScene);
         choosing.showAndWait();
     }
 
     private static void showMoreOptions() {
-        firstOption = toChoseFrom.get(navigateChoose * 2);
+        if (toChoseFrom.size() == 0) firstOption = null;
+        else firstOption = toChoseFrom.get(navigateChoose * 2);
         if (navigateChoose * 2 + 1 == toChoseFrom.size()) secondOption = null;
         else secondOption = toChoseFrom.get(navigateChoose * 2 + 1);
         showMoreImages();
@@ -322,8 +323,13 @@ public class DuelView {
     private static void showMoreImages() {
         ImageView cardOne = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardOne");
         ImageView cardTwo = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardTwo");
-        Image imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
+        Image imageOne;
         Image imageTwo;
+        if (firstOption == null) {
+            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+            LoginView.choosingForMoreThanOneScene.lookup("#selectOne").setDisable(true);
+        } else
+            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
         if (secondOption == null) {
             imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
             LoginView.choosingForMoreThanOneScene.lookup("#selectTwo").setDisable(true);
@@ -336,14 +342,15 @@ public class DuelView {
     private static void chooseCard() {
         navigateChoose = 0;
         LoginView.choosingScene.lookup("#back").setDisable(true);
-        if (toChoseFrom.size() <= 2) LoginView.choosingScene.lookup("#next").setDisable(true);
+        LoginView.choosingScene.lookup("#next").setDisable(toChoseFrom.size() <= 2);
         showOptions();
         choosing.setScene(LoginView.choosingScene);
         choosing.showAndWait();
     }
 
     private static void showOptions() {
-        firstOption = toChoseFrom.get(navigateChoose * 2);
+        if (toChoseFrom.size() == 0) firstOption = null;
+        else firstOption = toChoseFrom.get(navigateChoose * 2);
         if (navigateChoose * 2 + 1 == toChoseFrom.size()) secondOption = null;
         else secondOption = toChoseFrom.get(navigateChoose * 2 + 1);
         setImages();
@@ -352,8 +359,13 @@ public class DuelView {
     private static void setImages() {
         ImageView cardOne = (ImageView) LoginView.choosingScene.lookup("#cardOne");
         ImageView cardTwo = (ImageView) LoginView.choosingScene.lookup("#cardTwo");
-        Image imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
+        Image imageOne;
         Image imageTwo;
+        if (firstOption == null) {
+            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+            LoginView.choosingScene.lookup("#selectOne").setDisable(true);
+        } else
+            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
         if (secondOption == null) {
             imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
             LoginView.choosingScene.lookup("#selectTwo").setDisable(true);
