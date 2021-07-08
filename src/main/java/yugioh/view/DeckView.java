@@ -122,7 +122,7 @@ public class DeckView {
     private static void setOnTransitionFinished(ImageView animation, TranslateTransition nextTransition, TranslateTransition currentTransition) {
         currentTransition.setOnFinished(actionEvent -> {
             try {
-                actionEvent.wait(200);
+                Thread.currentThread().wait(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -135,7 +135,7 @@ public class DeckView {
                 animation.setImage(getNullCardImage());
             }
             try {
-                actionEvent.wait(200);
+                Thread.currentThread().wait(200);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
