@@ -1605,8 +1605,7 @@ public class DuelController {
         if (!canMakeChain(theOtherPlayer) && !canMakeChain(currentPlayer)) return;
         Duelist temp = theOtherPlayer;
         if (canMakeChain(theOtherPlayer) && canMakeChain(currentPlayer)) {
-            IO.getInstance().makeChain();
-            String command = IO.getInstance().getInputMessage();
+            String command = DuelView.getInstance().makeChain();
             if (command.toLowerCase().matches("n|no")) {
                 chainForOnePersonWithoutCondition(currentPlayer);
                 activateCards();
@@ -1629,8 +1628,7 @@ public class DuelController {
     }
 
     private void chainForOnePersonWithoutCondition(Duelist currentPlayer) {
-        IO.getInstance().addToChain();
-        String command = IO.getInstance().getInputMessage();
+        String command = DuelView.getInstance().addForChain();
         if (command.toLowerCase().matches("n|no")) return;
         while (true) {
             if (actionForChain(currentPlayer)) return;
@@ -1638,8 +1636,7 @@ public class DuelController {
     }
 
     public boolean actionForChain(Duelist temp) {
-        IO.getInstance().selectCardToAdd();
-        String inputMessage = IO.getInstance().getInputMessage();
+        String inputMessage = DuelView.getInstance().addForChain();
         if (inputMessage.equalsIgnoreCase("cancel")) return true;
         SpellAndTrapCard card = temp.getField().getThisActivatedCard(inputMessage);
         forChain.add(card);

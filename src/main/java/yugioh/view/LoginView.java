@@ -35,7 +35,6 @@ public class LoginView extends Application {
     public static Scene finishGame;
     public static Scene choosingScene;
     public static Scene console;
-    public static Scene choosingForMoreThanOneScene;
     public static MediaPlayer IntroMusic;
     public static boolean isMute;
 
@@ -77,7 +76,6 @@ public class LoginView extends Application {
         mainGameSceneTwo = sceneCreator("MainGame.fxml");
         finishGame = sceneCreator("FinishGame.fxml");
         choosingScene = sceneCreator("choosing.fxml");
-        choosingForMoreThanOneScene = sceneCreator("choosingMoreThanOne.fxml");
         console = sceneCreator("console.fxml");
     }
 
