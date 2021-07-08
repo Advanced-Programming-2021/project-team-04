@@ -1,6 +1,7 @@
 package yugioh.view;
 
 
+import javafx.fxml.FXML;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
@@ -41,6 +42,7 @@ public class DeckView {
 
 
     public static void run() {
+        animationFunction();
         allDecks = MainController.getInstance().getLoggedIn().getAllPlayerDecks();
         countForDeck = 0;
         countForAdd = 0;
@@ -238,6 +240,12 @@ public class DeckView {
             number.setText("");
         }
         return secondImage;
+    }
+
+    private static void animationFunction() {
+       ImageView animation = (ImageView) LoginView.deckScene.lookup("#animation");
+       Image forNow = new Image(DeckView.class.getResource("cardimages/" + "empty.jpg").toExternalForm(), 300, 300, true, true);
+       animation.setImage(forNow);
     }
 
     private Image mainImage(Label number) {
