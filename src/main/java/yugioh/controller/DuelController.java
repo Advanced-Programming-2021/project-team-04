@@ -692,7 +692,6 @@ public class DuelController {
         attacker.setAttacked(true);
         game.setSelectedCard(null);
         showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
-        DuelView.setMonsterZones();
     }
 
     private void handleCalculator(MonsterCard monsterCard) {

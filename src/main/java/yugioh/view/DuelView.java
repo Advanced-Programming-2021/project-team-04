@@ -71,13 +71,6 @@ public class DuelView {
         setLP(player2.getUsername(), player2.getLP());
     }
 
-    public static void setMonsterZones() {
-        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#monster");
-        setMonsterZone(player2.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#opponentMonster");
-        setMonsterZone(player2.getField().getMonsterCards(), LoginView.mainGameSceneTwo, "#monster");
-        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneTwo, "#opponentMonster");
-    }
-
     private static void makeCardsDraggable(Scene scene) {
         for (var i = 1; i <= 5; i++) {
             setMonsterDraggable(scene.lookup("#monster" + i));
@@ -97,8 +90,11 @@ public class DuelView {
                 DuelController.getInstance().selectCard(true, CardStatusInField.MONSTER_FIELD, Integer.parseInt(dragNode.getId().substring(dragNode.getId().length() - 1)) - 1);
             if (listenerDragEvent == DragUtils.Event.DRAG_END) {
                 var target = getCardByCoordination(new Point2D(dragHandler.getLastMouseX(), dragHandler.getLastMouseY()), node.getScene());
-                if (Objects.nonNull(target) && !target.getFirst() && target.getSecond() == CardStatusInField.MONSTER_FIELD)
+                if (Objects.nonNull(target) && !target.getFirst() && target.getSecond() == CardStatusInField.MONSTER_FIELD) {
                     DuelController.getInstance().attack(target.getThird() - 1);
+                    setCardImages(player1, player2, LoginView.mainGameSceneOne);
+                    setCardImages(player2, player1, LoginView.mainGameSceneTwo);
+                }
                 DragUtils.playGoingBackTransition(dragNode, coordination);
             }
         }));
