@@ -492,7 +492,7 @@ public class DuelView {
         TextInputDialog textInputDialog = new TextInputDialog("type the card's name to add it to chain");
         textInputDialog.setHeaderText("The Vast");
         textInputDialog.showAndWait();
-        return textInputDialog.getContentText();
+        return textInputDialog.getEditor().getText();
     }
 
     public void cancel() {
@@ -508,7 +508,7 @@ public class DuelView {
         dialog.setHeaderText("The Flesh");
         dialog.setContentText("wanna make a chain?");
         dialog.showAndWait();
-        return dialog.getContentText();
+        return dialog.getSelectedItem().toString();
     }
 
     public void start() {
@@ -533,7 +533,7 @@ public class DuelView {
         dialog.setHeaderText("The Stranger");
         dialog.setContentText("do you want to activate " + cardName + "?");
         dialog.showAndWait();
-        String answer = dialog.getContentText();
+        String answer = dialog.getSelectedItem().toString();
         return answer.matches("yeah");
     }
 
@@ -545,7 +545,7 @@ public class DuelView {
         ChoiceDialog choiceDialog = new ChoiceDialog(numbers[0], numbers);
         choiceDialog.setContentText("choose the card you seek the blood of:");
         choiceDialog.setHeaderText("The Lonely");
-        return Integer.parseInt(choiceDialog.getContentText().substring(0, 1));
+        return Integer.parseInt(choiceDialog.getSelectedItem().toString().substring(0, 1));
     }
 
     public void deselect() {
@@ -780,7 +780,7 @@ public class DuelView {
                 "if you changed your mind, type cancel.");
         textInputDialog.setHeaderText("The Hunt");
         textInputDialog.showAndWait();
-        var input = textInputDialog.getContentText();
+        var input = textInputDialog.getEditor().getText();
         if (input.equals("cancel")) return null;
         return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
     }
@@ -794,7 +794,7 @@ public class DuelView {
         dialog.setHeaderText("The Flesh");
         dialog.setContentText("Choose your monster's mode");
         dialog.showAndWait();
-        return dialog.getContentText();
+        return dialog.getSelectedItem().toString();
     }
 
 
@@ -889,7 +889,7 @@ public class DuelView {
         dialog.setHeaderText("The Eye");
         dialog.setContentText("wanna choose from your own cards? self destruction 100");
         dialog.showAndWait();
-        String answer = dialog.getContentText();
+        String answer = dialog.getSelectedItem().toString();
         return answer.matches("yeah");
     }
 
@@ -954,7 +954,7 @@ public class DuelView {
         dialog.setHeaderText("The Spiral");
         dialog.setContentText("wanna activate " + name + " and burn the place down?");
         dialog.showAndWait();
-        String answer = dialog.getContentText();
+        String answer = dialog.getSelectedItem().toString();
         return answer.matches("hell yes");
     }
 
@@ -967,7 +967,7 @@ public class DuelView {
         dialog.setHeaderText("The Spiral");
         dialog.setContentText("Straight or Spiral?");
         dialog.showAndWait();
-        String answer = dialog.getContentText();
+        String answer = dialog.getSelectedItem().toString();
         return !answer.matches("ordinary");
     }
 
@@ -980,7 +980,7 @@ public class DuelView {
         dialog.setHeaderText("The Desolation");
         dialog.setContentText("how many cards do you want to throw in hell?");
         dialog.showAndWait();
-        String answer = dialog.getContentText();
+        String answer = dialog.getSelectedItem().toString();
         return Integer.parseInt(answer);
     }
 
@@ -1023,7 +1023,7 @@ public class DuelView {
         dialog.setHeaderText("The Dark");
         dialog.setContentText("do you want to summon this card with three tributes?");
         dialog.showAndWait();
-        String answer = dialog.getContentText();
+        String answer = dialog.getSelectedItem().toString();
         return answer.equals("hell yes");
     }
 
@@ -1037,7 +1037,7 @@ public class DuelView {
         dialog.setHeaderText("The Corruption");
         dialog.setContentText("how to summon the hell-hound:");
         dialog.showAndWait();
-        String answer = dialog.getContentText().substring(0, 1);
+        String answer = dialog.getSelectedItem().toString().substring(0, 1);
         return Integer.parseInt(answer);
     }
 
@@ -1050,7 +1050,7 @@ public class DuelView {
         dialog.setHeaderText("The Spiral");
         dialog.setContentText("how about killing the messenger of peace?\npeace is overrated anyway...");
         dialog.showAndWait();
-        String answer = dialog.getContentText();
+        String answer = dialog.getSelectedItem().toString();
         return answer.equals("hell yes");
     }
 
@@ -1097,10 +1097,10 @@ public class DuelView {
 
 
     public String getCardName() {
-        TextInputDialog textInputDialog = new TextInputDialog("enter the name of the card you intend to enslave");
+        TextInputDialog textInputDialog = new TextInputDialog("enter the name of the card you intend to murder");
         textInputDialog.setHeaderText("The Slaughter");
         textInputDialog.showAndWait();
-        return textInputDialog.getContentText();
+        return textInputDialog.getEditor().getText();
     }
 
 
@@ -1112,7 +1112,7 @@ public class DuelView {
         dialog.setHeaderText("The Eye");
         dialog.setContentText("wanna exchange?");
         dialog.showAndWait();
-        String answer = dialog.getContentText();
+        String answer = dialog.getSelectedItem().toString();
         return answer.matches("yeah");
     }
 

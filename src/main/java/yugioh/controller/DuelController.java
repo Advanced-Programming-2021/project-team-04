@@ -1627,8 +1627,8 @@ public class DuelController {
     }
 
     private void chainForOnePersonWithoutCondition(Duelist currentPlayer) {
-        String command = DuelView.getInstance().addForChain();
-        if (command.toLowerCase().matches("n|no")) return;
+        String command = DuelView.getInstance().makeChain();
+        if (command.toLowerCase().matches("no")) return;
         while (true) {
             if (actionForChain(currentPlayer)) return;
         }
