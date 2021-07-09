@@ -399,8 +399,8 @@ public class DuelController {
         }
         var selectedMonsterCard = (MonsterCard) game.getSelectedCard();
         if (selectedMonsterCard.getThisCardAttackPower() >= selectedMonsterCard.getThisCardDefensePower())
-            DuelView.summon();
-        else DuelView.set();
+            DuelView.getInstance().summon();
+        else DuelView.getInstance().set();
     }
 
     public void summon() {
