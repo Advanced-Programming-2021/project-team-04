@@ -36,11 +36,6 @@ public class IO {
         return scanner.nextLine().trim();
     }
 
-    public void cardsToExchange() {
-        System.out.println("enter the name of the cards you want to exchange:" +
-                "\n(card from side deck * card from main deck");
-    }
-
 
     public void invalidCard() {
         label.setText("selected card is not valid");
@@ -52,10 +47,6 @@ public class IO {
         popup.show(LoginView.stage);
     }
 
-    public void printString(String toPrint) {
-        System.out.println(toPrint);
-    }
-
     public void invalidTributeSum() {
         label.setText("selected monsters levels don’t match with ritual monster");
         popup.show(LoginView.stage);
@@ -63,11 +54,6 @@ public class IO {
 
     public void cannotRitualSummon() {
         label.setText("there is no way you could ritual summon a monster");
-        popup.show(LoginView.stage);
-    }
-
-    public void cannotRitualSummonThisCard() {
-        label.setText("you can't ritual summon this card");
         popup.show(LoginView.stage);
     }
 
@@ -191,13 +177,6 @@ public class IO {
         popup.show(LoginView.stage);
     }
 
-    public void cheatIncreaseMoney() {
-        System.out.println("""
-                Deep within the depth of the station
-                You’d find the key that brings your salvation
-                Ornate and hidden past pain and privation
-                It’s clutched in the Captain’s cold hands""");
-    }
 
     public void notAPlayer(String username) {
         label.setText(username + " is not a player in this game!");

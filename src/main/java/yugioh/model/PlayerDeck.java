@@ -77,7 +77,7 @@ public class PlayerDeck {
         }
         var count = (mainDeckCards.containsKey(cardName) ? mainDeckCards.get(cardName) : 0) +
                 (sideDeckCards.containsKey(cardName) ? sideDeckCards.get(cardName) : 0);
-        return count != 3 && Objects.requireNonNull(Card.getCardByName(cardName)).getAllowedNumber() != count;
+        return count <= 3 && Objects.requireNonNull(Card.getCardByName(cardName)).getAllowedNumber() <= count;
     }
 
 

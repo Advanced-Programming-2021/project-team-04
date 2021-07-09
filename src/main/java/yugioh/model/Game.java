@@ -100,12 +100,6 @@ public class Game {
         if (handleWinnerAndLoser(loser, winner)) return;
         initializeGame();
         DuelController.getInstance().chooseStarter(winner.getUsername());
-        if (winner instanceof Account) {
-            DuelController.getInstance().exchangeCardsWithSideDeck((Account) winner);
-        }
-        if (loser instanceof Account) {
-            DuelController.getInstance().exchangeCardsWithSideDeck((Account) loser);
-        }
     }
 
     private boolean handleWinnerAndLoser(Duelist loser, Duelist winner) {

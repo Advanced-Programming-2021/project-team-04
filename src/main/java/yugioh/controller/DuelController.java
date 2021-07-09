@@ -67,7 +67,6 @@ public class DuelController {
         if (field.getHand().size() == 6) return;
         field.getHand().add(field.getDeckZone().get(0));
         field.getDeckZone().remove(0);
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     private void standbyPhase() {
@@ -203,43 +202,9 @@ public class DuelController {
         return monsterZoneString;
     }
 
-    private void showGameBoard(Duelist opponent, Duelist current) {
-        String opponentNickname = opponent.getNickname() + ": " + opponent.getLP();
-        int opponentHandCount = opponent.getField().getHand().size();
-        int opponentDeckNumber = opponent.getField().getDeckZone().size();
-        int opponentGraveYardCount = opponent.getField().getGraveyard().size();
-        var opponentFieldZone = "O ";
-        if (opponent.getField().getFieldZone() == null) opponentFieldZone = "E ";
-        String[] opponentSpellZone = makeSpellZone(opponent.getField().getSpellAndTrapCards());
-        String[] opponentMonsterZone = makeMonsterZone(opponent.getField().getMonsterCards());
-        String currentNickname = current.getNickname() + ": " + current.getLP();
-        int currentDeckNumber = current.getField().getDeckZone().size();
-        int currentGraveYardCount = current.getField().getGraveyard().size();
-        int currentHandCount = current.getField().getHand().size();
-        var currentFieldZone = "O ";
-        if (current.getField().getFieldZone() == null) currentFieldZone = "E ";
-        String[] currentSpellZone = makeSpellZone(current.getField().getSpellAndTrapCards());
-        String[] currentMonsterZone = makeMonsterZone(current.getField().getMonsterCards());
-        var board = new StringBuilder();
-        board.append(opponentNickname).append("\n");
-        board.append("\tc ".repeat(opponentHandCount));
-        board.append("\n").append(opponentDeckNumber).append("\n\t");
-        board.append(opponentSpellZone[3]).append("\t").append(opponentSpellZone[1]).append("\t").append(opponentSpellZone[0]).append("\t").append(opponentSpellZone[2]).append("\t").append(opponentSpellZone[4]).append("\n\t");
-        board.append(opponentMonsterZone[3]).append("\t").append(opponentMonsterZone[1]).append("\t").append(opponentMonsterZone[0]).append("\t").append(opponentMonsterZone[2]).append("\t").append(opponentMonsterZone[4]).append("\n");
-        board.append(opponentGraveYardCount).append("\t\t\t\t\t\t").append(opponentFieldZone).append("\n");
-        board.append("\n--------------------------\n\n");
-        board.append(currentFieldZone).append("\t\t\t\t\t\t").append(currentGraveYardCount).append("\n\t");
-        board.append(currentMonsterZone[4]).append("\t").append(currentMonsterZone[2]).append("\t").append(currentMonsterZone[0]).append("\t").append(currentMonsterZone[1]).append("\t").append(currentMonsterZone[3]).append("\n\t");
-        board.append(currentSpellZone[4]).append("\t").append(currentSpellZone[2]).append("\t").append(currentSpellZone[0]).append("\t").append(currentSpellZone[1]).append("\t").append(currentSpellZone[3]).append("\n");
-        board.append("  \t\t\t\t\t\t").append(currentDeckNumber).append("\n");
-        board.append("c \t".repeat(currentHandCount));
-        board.append("\n").append(currentNickname);
-        IO.getInstance().printString(board.toString());
-    }
 
     private void firstMainPhase() {
         IO.getInstance().printPhase("main\nphase 1");
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     public void battlePhase() {
@@ -252,7 +217,6 @@ public class DuelController {
 
     private void secondMainPhase() {
         IO.getInstance().printPhase("main\nphase 2");
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     public void endPhase() {
@@ -298,7 +262,6 @@ public class DuelController {
             case SPELL_FIELD -> game.setSelectedCard(thisPlayer.getField().getSpellAndTrapCards().get(number));
             case FIELD_ZONE -> game.setSelectedCard(thisPlayer.getField().getFieldZone());
         }
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
 
@@ -329,7 +292,6 @@ public class DuelController {
             return;
         }
         game.setSelectedCard(null);
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     public void nextPhase() {
@@ -406,7 +368,6 @@ public class DuelController {
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
         game.setSummonedInThisTurn(true);
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
         torrentialTribute();
     }
 
@@ -584,7 +545,6 @@ public class DuelController {
         if (selectedCard instanceof CommandKnight)
             ((CommandKnight) selectedCard).specialMethod();
         game.setSelectedCard(null);
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     private boolean isSetPositionValid(boolean isAttack) {
@@ -630,7 +590,6 @@ public class DuelController {
         if (monsterCard.getName().contains(CardEffects.MAN_EATER_BUG)) forManEaterBug();
         game.setSelectedCard(null);
         monsterCard.setMonsterCardModeInField(MonsterCardModeInField.ATTACK_FACE_UP);
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     private boolean isFlipSummonValid() {
@@ -679,7 +638,6 @@ public class DuelController {
         else attackInDefense(attacked, attacker);
         attacker.setAttacked(true);
         game.setSelectedCard(null);
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     private void handleCalculator(MonsterCard monsterCard) {
@@ -783,7 +741,6 @@ public class DuelController {
         game.setSelectedCard(null);
         game.getTheOtherPlayer().changeLP(-damage);
         if (game == null || game.getTheOtherPlayer().getLP() <= 0) return;
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     public boolean isDirectAttackValid() {
@@ -832,7 +789,6 @@ public class DuelController {
         selectedCard.setActive(true);
         callSpellAndTrapMethod(selectedCard);
         game.setSelectedCard(null);
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     public void selfAbsorption() {
@@ -1281,7 +1237,6 @@ public class DuelController {
     public void set() {
         if (game.getSelectedCard() instanceof MonsterCard) setMonster();
         else setSpellAndTrap();
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     public boolean ritualSummon() {
@@ -1504,7 +1459,6 @@ public class DuelController {
         game.getSelectedCard().setHasBeenSetOrSummoned(true);
         game.setSelectedCard(null);
         game.setSummonedInThisTurn(true);
-        showGameBoard(game.getTheOtherPlayer(), game.getCurrentPlayer());
     }
 
     public void texChanger(MonsterCard attacked) {
@@ -1607,13 +1561,6 @@ public class DuelController {
             case CardEffects.MYSTICAL_SPACE_TYPHOON -> mysticalSpaceTyphoon(card);
             case CardEffects.TIME_SEAL -> timeSeal(card, opponent);
             case CardEffects.CALL_OF_THE_HAUNTED -> callOfTheHaunted(card, card.getOwner().getField(), card.getOwner().equals(game.getCurrentPlayer()));
-        }
-    }
-
-    public void exchangeCardsWithSideDeck(Account account) {
-        if (DuelView.getInstance().wantsToExchange()) {
-            String[] names = DuelView.getInstance().cardsToExchange();
-            account.getField().exchangeCards(names[0], names[1]);
         }
     }
 

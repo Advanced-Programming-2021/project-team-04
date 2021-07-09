@@ -308,11 +308,15 @@ public class DuelView {
         DuelController.getInstance().coin();
     }
 
+    public void surrender() {
+        DuelController.getInstance().surrender();
+    }
+
     public static void finishGame(String username) {
         MainView.gameMusic.stop();
         MainView.gameFinishedSong();
         Label label = (Label) LoginView.finishGame.lookup("#congrats");
-        label.setText("Congrats " + username + "\n" + "Hold fast to the joy of the rise; despise all thoughts you might descend.");
+        label.setText("Congrats " + username + "\n" + "Hold fast to the joy of the rise;\ndespise all thoughts you might descend.");
         label.setStyle("-fx-text-fill: #00F2FF; -fx-font-size: 24");
         LoginView.stage.setScene(LoginView.finishGame);
     }
@@ -417,6 +421,8 @@ public class DuelView {
 
     public void backToMainPage() {
         LoginView.stage.setScene(LoginView.mainScene);
+        MainView.gameFinished.stop();
+        MainView.mainMusic.play();
     }
 
     public void chooseStarter(String winnerUsername) {
@@ -927,15 +933,6 @@ public class DuelView {
         dialog.showAndWait();
         String answer = dialog.getSelectedItem().toString();
         return answer.matches("yeah");
-    }
-
-
-    public String[] cardsToExchange() {
-        IO.getInstance().cardsToExchange();
-        //card from side deck
-        // *
-        //card from main deck
-        return IO.getInstance().getInputMessage().split(" \\* ");
     }
 
 

@@ -86,16 +86,4 @@ public class MainController {
         }
         return rounds == 1 || rounds == 3;
     }
-
-
-    public void cheatIncreaseMoney(int amount) {
-        loggedIn.setMoney(loggedIn.getMoney() + amount);
-        IO.getInstance().cheatIncreaseMoney();
-    }
-
-
-    public void cheatIncreaseScore(int amount) {
-        loggedIn.setScore(loggedIn.getScore() + amount);
-        IO.getInstance().cheatIncreaseScore();
-    }
 }

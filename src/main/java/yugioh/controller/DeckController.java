@@ -18,9 +18,19 @@ public class DeckController {
     }
 
     public void createDeck(String deckName) {
-        var thisPlayerDeck = new PlayerDeck(deckName);
-        MainController.getInstance().getLoggedIn().addDeck(thisPlayerDeck);
-        IO.getInstance().deckCreated();
+        if (errorForCreation(deckName)) {
+            var thisPlayerDeck = new PlayerDeck(deckName);
+            MainController.getInstance().getLoggedIn().addDeck(thisPlayerDeck);
+            IO.getInstance().deckCreated();
+        }
+    }
+
+    private boolean errorForCreation(String deckName) {
+        if (MainController.getInstance().getLoggedIn().getDeckByName(deckName) != null) {
+            IO.getInstance().deckExists(deckName);
+            return false;
+        }
+        return true;
     }
 
     public void deleteDeck(String deckName) {
@@ -37,8 +47,25 @@ public class DeckController {
 
     public void addCardToDeck(String deckName, String cardName, boolean isMainDeck) {
         Account thisPlayer = MainController.getInstance().getLoggedIn();
-        if (isMainDeck) thisPlayer.getDeckByName(deckName).addCardToMainDeck(cardName);
-        else thisPlayer.getDeckByName(deckName).addCardToSideDeck(cardName);
+        if (errorForAddingCard(deckName, cardName, isMainDeck)) {
+            if (isMainDeck) thisPlayer.getDeckByName(deckName).addCardToMainDeck(cardName);
+            else thisPlayer.getDeckByName(deckName).addCardToSideDeck(cardName);
+        }
+    }
+
+    private boolean errorForAddingCard(String deckName, String cardName, boolean isMainDeck) {
+        Account thisPlayer = MainController.getInstance().getLoggedIn();
+        if (isMainDeck && thisPlayer.getDeckByName(deckName).isMainDeckFull()) {
+            IO.getInstance().mainDeckIsFull();
+            return false;
+        } else if (!isMainDeck && thisPlayer.getDeckByName(deckName).isSideDeckFull()) {
+            IO.getInstance().sideDeckIsFull();
+            return false;
+        } else if (!thisPlayer.getDeckByName(deckName).isAddingCardValid(cardName)) {
+            IO.getInstance().tooManyCards(deckName, cardName);
+            return false;
+        }
+        return true;
     }
 
     public void removeCardFromDeck(String deckName, String cardName, boolean isMainDeck) {

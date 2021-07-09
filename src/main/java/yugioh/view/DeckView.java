@@ -193,18 +193,22 @@ public class DeckView {
     }
 
     public void addFirstCardToMain() {
+        if (firstCard == null) return;
         DeckController.getInstance().addCardToDeck(allDecks.get(count).getDeckName(), allCards.get(countForAdd), true);
     }
 
     public void addFirstCardToSide() {
+        if (firstCard == null) return;
         DeckController.getInstance().addCardToDeck(allDecks.get(count).getDeckName(), allCards.get(countForAdd), false);
     }
 
     public void addSecondCardToMain() {
+        if (secondCard == null) return;
         DeckController.getInstance().addCardToDeck(allDecks.get(count).getDeckName(), allCards.get(countForAdd + 1), true);
     }
 
     public void addSecondCardToSide() {
+        if (secondCard == null) return;
         DeckController.getInstance().addCardToDeck(allDecks.get(count).getDeckName(), allCards.get(countForAdd + 1), false);
     }
 
@@ -260,12 +264,22 @@ public class DeckView {
     }
 
     private void showPlayerCards() {
-        firstCard = Card.getCardByName(allCards.get(countForAdd));
-        secondCard = Card.getCardByName(allCards.get(countForAdd + 1));
+        if (allCards.size() == 0) firstCard = null;
+        else firstCard = Card.getCardByName(allCards.get(countForAdd));
+        if (allCards.size() <= 1) secondCard = null;
+        else secondCard = Card.getCardByName(allCards.get(countForAdd + 1));
         ImageView first = (ImageView) sceneForAdding.lookup("#first");
         ImageView second = (ImageView) sceneForAdding.lookup("#second");
-        Image firstImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg")));
-        Image secondImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg")));
+        Image firstImage;
+        Image secondImage;
+        if (firstCard == null)
+            firstImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/empty.jpg")));
+        else
+            firstImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg")));
+        if (secondCard == null)
+            secondImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/empty.jpg")));
+        else
+            secondImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg")));
         first.setImage(firstImage);
         second.setImage(secondImage);
     }
