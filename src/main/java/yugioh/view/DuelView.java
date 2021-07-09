@@ -26,7 +26,9 @@ import yugioh.utils.DragUtils;
 import yugioh.utils.Triple;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 public class DuelView {
@@ -50,8 +52,6 @@ public class DuelView {
     private static int navigateChoose;
     private static Card firstOption;
     private static Card secondOption;
-    private static ArrayList<MonsterCard> wanted = new ArrayList<>();
-
     public static DuelView getInstance() {
         if (singleInstance == null) singleInstance = new DuelView();
         return singleInstance;
@@ -68,13 +68,6 @@ public class DuelView {
         setProfiles(player2, player1, LoginView.mainGameSceneTwo);
         setLP(player1.getUsername(), player1.getLP());
         setLP(player2.getUsername(), player2.getLP());
-    }
-
-    public static void setMonsterZones() {
-        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#monster");
-        setMonsterZone(player2.getField().getMonsterCards(), LoginView.mainGameSceneOne, "#opponentMonster");
-        setMonsterZone(player2.getField().getMonsterCards(), LoginView.mainGameSceneTwo, "#monster");
-        setMonsterZone(player1.getField().getMonsterCards(), LoginView.mainGameSceneTwo, "#opponentMonster");
     }
 
     private static void makeCardsDraggable(Scene scene) {
@@ -267,41 +260,6 @@ public class DuelView {
         Tooltip.install(imageView, tooltip);
     }
 
-    private static void chooseForMoreThanOne() {
-        navigateChoose = 0;
-        LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(true);
-        LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(toChooseFrom.size() <= 2);
-        showMoreOptions();
-        choosing.setScene(LoginView.choosingForMoreThanOneScene);
-        choosing.showAndWait();
-    }
-
-    private static void showMoreOptions() {
-        if (toChooseFrom.size() == 0) firstOption = null;
-        else firstOption = toChooseFrom.get(navigateChoose * 2);
-        if (navigateChoose * 2 + 1 == toChooseFrom.size()) secondOption = null;
-        else secondOption = toChooseFrom.get(navigateChoose * 2 + 1);
-        showMoreImages();
-    }
-
-    private static void showMoreImages() {
-        ImageView cardOne = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardOne");
-        ImageView cardTwo = (ImageView) LoginView.choosingForMoreThanOneScene.lookup("#cardTwo");
-        Image imageOne;
-        Image imageTwo;
-        if (firstOption == null) {
-            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
-            LoginView.choosingForMoreThanOneScene.lookup("#selectOne").setDisable(true);
-        } else
-            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
-        if (secondOption == null) {
-            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
-            LoginView.choosingForMoreThanOneScene.lookup("#selectTwo").setDisable(true);
-        } else
-            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondOption.getName() + ".jpg"));
-        cardOne.setImage(imageOne);
-        cardTwo.setImage(imageTwo);
-    }
 
     private static void chooseCard() {
         navigateChoose = 0;
@@ -420,24 +378,6 @@ public class DuelView {
                 isMine, "selected card");
     }
 
-    public void nextOptionsM() {
-        if (navigateChoose == 0) LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(false);
-        if (navigateChoose == ((toChooseFrom.size() - 1) / 2) - 1)
-            LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(true);
-        navigateChoose++;
-        showMoreOptions();
-    }
-
-    public void previousOptionsM() {
-        if (navigateChoose == (toChooseFrom.size() - 1) / 2) {
-            LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(false);
-            LoginView.choosingForMoreThanOneScene.lookup("#selectTwo").setDisable(false);
-        }
-        if (navigateChoose == 1) LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(true);
-        navigateChoose--;
-        showMoreOptions();
-    }
-
     public void nextOptions() {
         if (navigateChoose == 0) LoginView.choosingScene.lookup("#back").setDisable(false);
         if (navigateChoose == ((toChooseFrom.size() - 1) / 2) - 1)
@@ -456,16 +396,6 @@ public class DuelView {
         showOptions();
     }
 
-    public void addFirstCToArraylist() {
-        chosen = firstOption;
-        wanted.add((MonsterCard) chosen);
-    }
-
-    public void addSecondCToArraylist() {
-        chosen = secondOption;
-        wanted.add((MonsterCard) chosen);
-    }
-
     public void pickOptionOne() {
         chosen = firstOption;
         choosing.close();
@@ -473,12 +403,6 @@ public class DuelView {
 
     public void pickOptionTwo() {
         chosen = secondOption;
-        choosing.close();
-    }
-
-    public void cancel() {
-        chosen = null;
-        wanted = new ArrayList<>();
         choosing.close();
     }
 
@@ -493,6 +417,29 @@ public class DuelView {
     public void chooseStarter(String winnerUsername) {
         Label label = (Label) LoginView.coinScene.lookup("#toShow");
         label.setText(winnerUsername + " is our lucky star!\nyou may now choose the\nfirst player your majesty!");
+    }
+
+    public String addForChain() {
+        TextInputDialog textInputDialog = new TextInputDialog("type the card's name to add it to chain");
+        textInputDialog.setHeaderText("The Vast");
+        textInputDialog.showAndWait();
+        return textInputDialog.getContentText();
+    }
+
+    public void cancel() {
+        chosen = null;
+        choosing.close();
+    }
+
+    public String makeChain() {
+        String[] numbers = new String[2];
+        numbers[0] = "yes";
+        numbers[1] = "no";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Flesh");
+        dialog.setContentText("wanna make a chain?");
+        dialog.showAndWait();
+        return dialog.getContentText();
     }
 
     public void start() {
@@ -510,13 +457,26 @@ public class DuelView {
     }
 
     public boolean wantsToActivate(String cardName) {
-        IO.getInstance().wantToActivate(cardName);
-        return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
+        String[] numbers = new String[2];
+        numbers[0] = "yeah";
+        numbers[1] = "nuh";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Stranger");
+        dialog.setContentText("do you want to activate " + cardName + "?");
+        dialog.showAndWait();
+        String answer = dialog.getContentText();
+        return answer.matches("yeah");
     }
 
     public int getTribute() {
-        IO.getInstance().chooseTribute();
-        return Integer.parseInt(IO.getInstance().getInputMessage()) - 1;
+        ArrayList<MonsterCard> allMonsters = DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards();
+        String[] numbers = new String[allMonsters.size()];
+        for (int i = 1; i < allMonsters.size(); i++)
+            numbers[i] = i + ":" + allMonsters.get(i).getName();
+        ChoiceDialog choiceDialog = new ChoiceDialog(numbers[0], numbers);
+        choiceDialog.setContentText("choose the card you seek the blood of:");
+        choiceDialog.setHeaderText("The Lonely");
+        return Integer.parseInt(choiceDialog.getContentText().substring(0, 1));
     }
 
     public void deselectButtonClicked() {
@@ -533,6 +493,18 @@ public class DuelView {
     public void attackButtonClicked() {
         DuelController.getInstance().directAttack();
         MainView.playAttackSong();
+    }
+
+    public void activate() {
+        DuelController.getInstance().activateSpell();
+        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
+    }
+
+    public void set() {
+        DuelController.getInstance().set();
+        MainView.playSpellSong();
         setCardImages(player1, player2, LoginView.mainGameSceneOne);
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
     }
@@ -735,40 +707,26 @@ public class DuelView {
     }
 
 
-//    public ArrayList<MonsterCard> getTributes() {
-//        IO.getInstance().chooseTributes();
-//        try {
-//            return getTributeMonsterCards();
-//        } catch (Exception exception) {
-//            return getTributesAgain();
-//        }
-//        //???? what was i on
-//    }
-//
-//
-//    private ArrayList<MonsterCard> getTributesAgain() {
-//        try {
-//            return getTributeMonsterCards();
-//        } catch (Exception exception) {
-//            return getTributesAgain();
-//        }
-//    }
-
-
     public ArrayList<MonsterCard> getTributeMonsterCards() {
-//        var input = IO.getInstance().getInputMessage();
-//        if (input.equals("cancel")) return null;
-//        return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
-        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
-        chooseForMoreThanOne();
-        System.out.println("heh");
-        return wanted;
+        TextInputDialog textInputDialog = new TextInputDialog("enter the number of cards with a space between.\n" +
+                "if you changed your mind, type cancel.");
+        textInputDialog.setHeaderText("The Hunt");
+        textInputDialog.showAndWait();
+        var input = textInputDialog.getContentText();
+        if (input.equals("cancel")) return null;
+        return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
     }
 
 
     public String monsterMode() {
-        IO.getInstance().chooseMonsterMode();
-        return IO.getInstance().getInputMessage();
+        String[] numbers = new String[2];
+        numbers[0] = "Attack";
+        numbers[1] = "Defense";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Flesh");
+        dialog.setContentText("Choose your monster's mode");
+        dialog.showAndWait();
+        return dialog.getContentText();
     }
 
 
@@ -856,8 +814,15 @@ public class DuelView {
 
 
     public boolean isMine() {
-        IO.getInstance().isMine();
-        return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
+        String[] numbers = new String[2];
+        numbers[0] = "yeah";
+        numbers[1] = "nuh";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Eye");
+        dialog.setContentText("wanna choose from your own cards? self destruction 100");
+        dialog.showAndWait();
+        String answer = dialog.getContentText();
+        return answer.matches("yeah");
     }
 
 
@@ -914,22 +879,41 @@ public class DuelView {
     public boolean wantsToActivateTrap(String name, String username) {
         if (DuelController.getInstance().handleMirageDragon(username))
             return false;
-        IO.getInstance().wantToActivate(name);
-        return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
+        String[] numbers = new String[2];
+        numbers[0] = "hell yes";
+        numbers[1] = "sorry to disappoint";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Spiral");
+        dialog.setContentText("wanna activate " + name + " and burn the place down?");
+        dialog.showAndWait();
+        String answer = dialog.getContentText();
+        return answer.matches("hell yes");
     }
 
 
     public boolean ordinaryOrSpecial() {
-        IO.getInstance().summonMode();
-        String ordinaryOrSpecial = IO.getInstance().getInputMessage().toLowerCase();
-        return !ordinaryOrSpecial.matches("o(?:rd(?:inary)?)?");
+        String[] numbers = new String[2];
+        numbers[0] = "ordinary";
+        numbers[1] = "special";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Spiral");
+        dialog.setContentText("Straight or Spiral?");
+        dialog.showAndWait();
+        String answer = dialog.getContentText();
+        return !answer.matches("ordinary");
     }
 
 
     public int numOfSpellCardsToDestroy() {
-        IO.getInstance().numOfCards();
-        String number = IO.getInstance().getInputMessage();
-        return Integer.parseInt(number);
+        String[] numbers = new String[2];
+        numbers[0] = "1";
+        numbers[1] = "2";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Desolation");
+        dialog.setContentText("how many cards do you want to throw in hell?");
+        dialog.showAndWait();
+        String answer = dialog.getContentText();
+        return Integer.parseInt(answer);
     }
 
 
@@ -964,26 +948,42 @@ public class DuelView {
 
 
     public boolean summonGateGuardian() {
-        IO.getInstance().gateGuardian();
-        String input = IO.getInstance().getInputMessage().toLowerCase();
-        return input.matches("y(?:es)?");
+        String[] numbers = new String[2];
+        numbers[0] = "hell yes";
+        numbers[1] = "sorry to disappoint";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Dark");
+        dialog.setContentText("do you want to summon this card with three tributes?");
+        dialog.showAndWait();
+        String answer = dialog.getContentText();
+        return answer.equals("hell yes");
     }
 
 
     public int barbaros() {
-        IO.getInstance().barbaros();
-        String summonMode = IO.getInstance().getInputMessage();
-        return Integer.parseInt(summonMode);
-        // 1 summonButtonClicked with 2 tributes
-        // 2 summonButtonClicked normally
-        // 3 summonButtonClicked with 3 tributes
+        String[] numbers = new String[3];
+        numbers[0] = "1: basic 2 tributes";
+        numbers[1] = "2: too coward to kill anyone, prefering attack reduction";
+        numbers[2] = "3: three tributes full murder mood on";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Corruption");
+        dialog.setContentText("how to summon the hell-hound:");
+        dialog.showAndWait();
+        String answer = dialog.getContentText().substring(0, 1);
+        return Integer.parseInt(answer);
     }
 
 
     public boolean killMessengerOfPeace() {
-        IO.getInstance().killMessengerOfPeace();
-        String input = IO.getInstance().getInputMessage().toLowerCase();
-        return input.matches("y(?:es)?");
+        String[] numbers = new String[2];
+        numbers[0] = "hell yes";
+        numbers[1] = "sorry to disappoint";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Spiral");
+        dialog.setContentText("how about killing the messenger of peace?\npeace is overrated anyway...");
+        dialog.showAndWait();
+        String answer = dialog.getContentText();
+        return answer.equals("hell yes");
     }
 
 
@@ -1016,21 +1016,36 @@ public class DuelView {
 
 
     public int whereToSummonFrom() {
-        String originOfSummon = IO.getInstance().getInputMessage();
-        return Integer.parseInt(originOfSummon);
-        // 1 hand
-        // 2 deck
-        // 3 gy
+        String[] numbers = new String[3];
+        numbers[0] = "1 hand";
+        numbers[1] = "2 deck";
+        numbers[3] = "3 graveyard";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Buried");
+        dialog.setContentText("summon the hell-hound from:");
+        dialog.showAndWait();
+        return Integer.parseInt(dialog.getSelectedItem().toString().substring(0, 1));
     }
 
 
     public String getCardName() {
-        return IO.getInstance().getInputMessage();
+        TextInputDialog textInputDialog = new TextInputDialog("enter the name of the card you intend to enslave");
+        textInputDialog.setHeaderText("The Slaughter");
+        textInputDialog.showAndWait();
+        return textInputDialog.getContentText();
     }
 
 
     public boolean wantsToExchange() {
-        return IO.getInstance().getInputMessage().toLowerCase().matches("y(?:es)?");
+        String[] numbers = new String[2];
+        numbers[0] = "yeah";
+        numbers[1] = "nuh";
+        ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
+        dialog.setHeaderText("The Eye");
+        dialog.setContentText("wanna exchange?");
+        dialog.showAndWait();
+        String answer = dialog.getContentText();
+        return answer.matches("yeah");
     }
 
 

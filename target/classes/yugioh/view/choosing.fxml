@@ -6,8 +6,8 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.image.ImageView?>
 <?import java.net.URL?>
+<?import javafx.scene.image.ImageView?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="yugioh.view.DuelView"
@@ -15,16 +15,16 @@
 
     <VBox fx:id="firstBox" GridPane.columnIndex="0" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
         <ImageView fx:id="cardOne" fitHeight="400" fitWidth="300"/>
-        <Button text="select" fx:id="selectOne" onMouseClicked="#addFirstCToArraylist"/>
+        <Button text="select" fx:id="selectOne" onMouseClicked="#pickOptionOne"/>
     </VBox>
 
     <Button text="cancel" fx:id="cancel" GridPane.columnIndex="0" GridPane.rowIndex="1" onMouseClicked="#cancel"/>
-    <Button GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="back" onMouseClicked="#previousOptionsM"/>
-    <Button GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="next" onMouseClicked="#nextOptionsM"/>
+    <Button GridPane.columnIndex="0" GridPane.rowIndex="1" fx:id="back" onMouseClicked="#previousOptions"/>
+    <Button GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="next" onMouseClicked="#nextOptions"/>
 
     <VBox fx:id="secondBox" GridPane.columnIndex="1" GridPane.rowIndex="0" alignment="CENTER" spacing="10">
         <ImageView fx:id="cardTwo" fitHeight="400" fitWidth="300"/>
-        <Button text="select" fx:id="selectTwo" onMouseClicked="#addSecondCToArraylist"/>
+        <Button text="select" fx:id="selectTwo" onMouseClicked="#pickOptionTwo"/>
     </VBox>
 
 
