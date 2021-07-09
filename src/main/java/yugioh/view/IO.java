@@ -195,12 +195,8 @@ public class IO {
     }
 
     public void cheatIncreaseScore() {
-        System.out.println("""
-                The space pirate crew of the Aurora
-                Known as the Mechanisms
-                Had been watching all this time, fascinated
-                For when you're immortal
-                A good war is a very pleasant distraction, indeed""");
+        label.setText("Bodies are strange. Rather glad they're not my concern anymore.");
+        popup.show(LoginView.stage);
     }
 
     public void cheatIncreaseMoney() {

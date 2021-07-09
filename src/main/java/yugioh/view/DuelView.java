@@ -15,6 +15,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import lombok.extern.java.Log;
 import yugioh.controller.DuelController;
 import yugioh.model.Account;
 import yugioh.model.cards.CardStatusInField;
@@ -28,6 +29,8 @@ import yugioh.utils.Triple;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 
@@ -1073,5 +1076,39 @@ public class DuelView {
                 toChooseFrom.add(card);
         chooseCard();
         return (MonsterCard) chosen;
+    }
+
+    public void madness() {
+        LoginView.stage.setScene(LoginView.console);
+    }
+
+    public void cheat() {
+        Pattern cheatDecreaseLPPattern = Pattern.compile("Death(?: to)?(?: the)? Mechanisms (?<number>\\d+)");
+        Pattern cheatIncreaseLPPattern = Pattern.compile("Underworld Blues (?<number>\\d+)");
+        TextField secret = (TextField) LoginView.console.lookup("#secret");
+        String text = secret.getText();
+        secret.clear();
+        Matcher cheatDecreaseLPMatcher = cheatDecreaseLPPattern.matcher(text);
+        Matcher cheatIncreaseLPMatcher = cheatIncreaseLPPattern.matcher(text);
+        if (cheatIncreaseLPMatcher.matches()) {
+            DuelController.getInstance().cheatIncreaseLP(Integer.parseInt(cheatIncreaseLPMatcher.group("number")));
+        }
+        else if (cheatDecreaseLPMatcher.matches()) {
+            DuelController.getInstance().cheatDecreaseLP(Integer.parseInt(cheatDecreaseLPMatcher.group("number")));
+        }
+        else if (text.matches("Person(?: of)? Interest")) {
+            String sixCards = DuelController.getInstance().cheatSeeMyDeck();
+            Label label = (Label) LoginView.cheatScene.lookup("#spillTheTea");
+            label.setText(sixCards);
+            LoginView.stage.setScene(LoginView.cheatScene);
+        }
+        else if (text.matches("Conspiracy(?: to)? Commit Treason"))
+            DuelController.getInstance().cheatSetWinner();
+        else if (text.matches("Drunk Space Pirate")) {
+            String hand = DuelController.getInstance().cheatShowRivalHand();
+            Label label = (Label) LoginView.cheatScene.lookup("#spillTheTea");
+            label.setText(hand);
+            LoginView.stage.setScene(LoginView.cheatScene);
+        }
     }
 }

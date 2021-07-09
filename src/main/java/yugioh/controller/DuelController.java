@@ -1401,30 +1401,32 @@ public class DuelController {
         return true;
     }
 
-    public void cheatShowRivalHand() {
+    public String cheatShowRivalHand() {
         var rivalHand = new StringBuilder();
         game.getTheOtherPlayer().getField().getHand().forEach(c -> rivalHand.append(c.getName()).append("\n"));
         if (!rivalHand.isEmpty()) rivalHand.setLength(rivalHand.length() - 1);
-        IO.getInstance().printString(rivalHand.toString());
+        return rivalHand.toString();
     }
 
     public void cheatIncreaseLP(int amount) {
         game.getCurrentPlayer().changeLP(amount);
+        IO.getInstance().cheatIncreaseScore();
     }
 
     public void cheatSetWinner() {
         game.finishGame(game.getTheOtherPlayer());
     }
 
-    public void cheatSeeMyDeck() {
-        var toPrint = new StringBuilder();
-        game.getCurrentPlayer().getField().getDeckZone().stream().filter(Objects::nonNull).forEach(c -> toPrint.append(c.getName()).append("\n"));
-        toPrint.setLength(toPrint.length() - 1);
-        IO.getInstance().printString(toPrint.toString());
+    public String cheatSeeMyDeck() {
+        StringBuilder sixCards = new StringBuilder();
+        for (int i = 0; i < 5; i++)
+            sixCards.append(i).append(": ").append(game.getCurrentPlayer().getField().getDeckZone().get(i).getName()).append("\n");
+        return sixCards.substring(0, sixCards.length() - 1);
     }
 
     public void cheatDecreaseLP(int amount) {
         game.getTheOtherPlayer().changeLP(-amount);
+        IO.getInstance().cheatIncreaseScore();
     }
 
     public void surrender() {

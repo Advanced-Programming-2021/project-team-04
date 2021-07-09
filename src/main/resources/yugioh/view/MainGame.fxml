@@ -90,7 +90,7 @@
     <ImageView GridPane.rowIndex="4" GridPane.columnIndex="7" fitHeight="120" fitWidth="90" fx:id="hand6" id="hand6" onMouseClicked="#selectHand"/>
 
     <VBox GridPane.rowIndex="4" GridPane.columnIndex="8" prefHeight="120" prefWidth="90" spacing="10">
-        <Button text="cheat" prefHeight="55" prefWidth="90" textAlignment="CENTER"/>
+        <Button text="cheat" prefHeight="55" prefWidth="90" textAlignment="CENTER" onMouseClicked="#madness"/>
         <Button text="graveyard" prefHeight="55" prefWidth="90" textAlignment="CENTER" onMouseClicked="#showGraveyardButtonClicked"/>
     </VBox>
 

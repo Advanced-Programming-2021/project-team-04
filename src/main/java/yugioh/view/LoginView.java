@@ -35,6 +35,7 @@ public class LoginView extends Application {
     public static Scene finishGame;
     public static Scene choosingScene;
     public static Scene console;
+    public static Scene cheatScene;
     public static MediaPlayer IntroMusic;
     public static boolean isMute;
 
@@ -77,6 +78,7 @@ public class LoginView extends Application {
         finishGame = sceneCreator("FinishGame.fxml");
         choosingScene = sceneCreator("choosing.fxml");
         console = sceneCreator("console.fxml");
+        cheatScene = sceneCreator("cheatScene.fxml");
     }
 
     public static Scene sceneCreator(String resource) {
@@ -127,7 +129,7 @@ public class LoginView extends Application {
     }
 
     public static void playIntroMusic() {
-        Media main = new Media(LoginView.class.getResource("TheAuroraStrikes.mp3").toExternalForm());
+        Media main = new Media(LoginView.class.getResource("London-Grammar-Intro-320.mp3").toExternalForm());
         IntroMusic = new MediaPlayer(main);
         IntroMusic.setCycleCount(MediaPlayer.INDEFINITE);
         IntroMusic.play();

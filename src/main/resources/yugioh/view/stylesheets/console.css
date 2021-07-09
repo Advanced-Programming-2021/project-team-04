@@ -15,10 +15,10 @@
     -fx-translate-x: -150;
 }
 
-.text-field {
+.secret {
     -fx-font-family: "Jokerman";
     -fx-border-color: #ffffff;
-    -fx-text-fill: #47829f;
+    -fx-text-fill: #ff0000;
     -fx-background-color: #000000;
     -fx-font-size: 20;
     -fx-alignment: center;
@@ -29,19 +29,19 @@
 .distortion {
     -fx-font-family: "Jokerman";
     -fx-border-color: #ffffff;
-    -fx-text-fill: #47829f;
+    -fx-text-fill: #ff0000;
     -fx-background-color: #000000;
     -fx-font-size: 20;
     -fx-alignment: center;
     -fx-text-alignment: center;
     -fx-translate-y: -150;
-    -fx-translate-x: 235;
+    -fx-translate-x: 245;
 }
 
 .main {
     -fx-font-family: "Jokerman";
     -fx-border-color: #ffffff;
-    -fx-text-fill: #47829f;
+    -fx-text-fill: #ff0000;
     -fx-background-color: #000000;
     -fx-font-size: 20;
     -fx-alignment: center;
@@ -49,3 +49,12 @@
     -fx-translate-x: 230;
 }
 
+.main:hover {
+    -fx-text-fill: #000000;
+    -fx-background-color: #ff0000;
+}
+
+distortion:hover {
+    -fx-text-fill: #000000;
+    -fx-background-color: #ff0000;
+}
