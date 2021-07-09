@@ -31,7 +31,8 @@ import java.util.Objects;
 
 public class DuelView {
 
-    private static final Card emptyCard = new Card();
+    private static final Card EMPTY_CARD = new Card();
+
     public static Stage secondStage;
     private static DuelView singleInstance;
     private static ArrayList<String> myGY;
@@ -45,7 +46,7 @@ public class DuelView {
 
     private static Card chosen;
     private static Stage choosing;
-    private static ArrayList<Card> toChoseFrom;
+    private static ArrayList<Card> toChooseFrom;
     private static int navigateChoose;
     private static Card firstOption;
     private static Card secondOption;
@@ -63,8 +64,6 @@ public class DuelView {
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
         makeCardsDraggable(LoginView.mainGameSceneOne);
         makeCardsDraggable(LoginView.mainGameSceneTwo);
-        handleOpponentCardsDrop(LoginView.mainGameSceneOne);
-        handleOpponentCardsDrop(LoginView.mainGameSceneTwo);
         setProfiles(player1, player2, LoginView.mainGameSceneOne);
         setProfiles(player2, player1, LoginView.mainGameSceneTwo);
         setLP(player1.getUsername(), player1.getLP());
@@ -97,8 +96,12 @@ public class DuelView {
                 DuelController.getInstance().selectCard(true, CardStatusInField.MONSTER_FIELD, Integer.parseInt(dragNode.getId().substring(dragNode.getId().length() - 1)) - 1);
             if (listenerDragEvent == DragUtils.Event.DRAG_END) {
                 var target = getCardByCoordination(new Point2D(dragHandler.getLastMouseX(), dragHandler.getLastMouseY()), node.getScene());
-                if (Objects.nonNull(target) && !target.getFirst() && target.getSecond() == CardStatusInField.MONSTER_FIELD)
+                if (Objects.nonNull(target) && !target.getFirst() && target.getSecond() == CardStatusInField.MONSTER_FIELD) {
                     DuelController.getInstance().attack(target.getThird() - 1);
+                    MainView.playAttackSong();
+                    setCardImages(player1, player2, LoginView.mainGameSceneOne);
+                    setCardImages(player2, player1, LoginView.mainGameSceneTwo);
+                }
                 DragUtils.playGoingBackTransition(dragNode, coordination);
             }
         }));
@@ -119,53 +122,14 @@ public class DuelView {
                         dragNode.setTranslateY(coordination.get(1));
                     }
                     if (target.getSecond() == CardStatusInField.SPELL_FIELD || target.getSecond() == CardStatusInField.FIELD_ZONE) {
-                        DuelController.getInstance().activateSpell();
+                        activate();
                         dragNode.setTranslateX(coordination.get(0));
                         dragNode.setTranslateY(coordination.get(1));
                     }
-                } else {
-                    DragUtils.playGoingBackTransition(dragNode, coordination);
-                }
+                } else DragUtils.playGoingBackTransition(dragNode, coordination);
             }
         }));
     }
-
-    private static void handleOpponentCardsDrop(Scene scene) {
-        for (var i = 1; i <= 5; i++)
-            makeOpponentMonsterAttackable(scene.lookup("#opponentMonster" + i));
-    }
-
-    private static void makeOpponentMonsterAttackable(Node node) {
-        // TODO: 7/7/2021 a failed project, check if I can pull this off
-//        setOpponentMonsterOnDragEntered(node);
-//        setOpponentMonsterOnDragExited(node);
-//        setOpponentMonsterOnDragDone(node);
-    }
-
-//    private static void setOpponentMonsterOnDragDone(Node node) {
-//        node.setOnDragDone(event -> {
-//            System.out.println("drag done");
-//            node.setStyle("box-shadow: 0px 0px FFFFFF;");
-//            event.consume();
-//        });
-//    }
-
-//    private static void setOpponentMonsterOnDragExited(Node node) {
-//        node.setOnDrag(event -> {
-//            System.out.println("drag exited");
-//            node.setStyle("box-shadow: 0px 0px FFFFFF;");
-//            event.consume();
-//        });
-//    }
-
-//    private static void setOpponentMonsterOnDragEntered(Node node) {
-//        node.addEventHandler(DragEvent.DRAG_ENTERED_TARGET, event -> {
-//            event.acceptTransferModes(TransferMode.ANY);
-//            System.out.println("drag entered");
-//            node.setStyle("box-shadow: 5px 10px F00000;");
-//            event.consume();
-//        });
-//    }
 
     private static Triple<Boolean, CardStatusInField, Integer> getCardByCoordination(Point2D point, Scene scene) {
         if (scene.lookup("#opponentField").getBoundsInParent().contains(point))
@@ -306,17 +270,17 @@ public class DuelView {
     private static void chooseForMoreThanOne() {
         navigateChoose = 0;
         LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(true);
-        LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(toChoseFrom.size() <= 2);
+        LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(toChooseFrom.size() <= 2);
         showMoreOptions();
         choosing.setScene(LoginView.choosingForMoreThanOneScene);
         choosing.showAndWait();
     }
 
     private static void showMoreOptions() {
-        if (toChoseFrom.size() == 0) firstOption = null;
-        else firstOption = toChoseFrom.get(navigateChoose * 2);
-        if (navigateChoose * 2 + 1 == toChoseFrom.size()) secondOption = null;
-        else secondOption = toChoseFrom.get(navigateChoose * 2 + 1);
+        if (toChooseFrom.size() == 0) firstOption = null;
+        else firstOption = toChooseFrom.get(navigateChoose * 2);
+        if (navigateChoose * 2 + 1 == toChooseFrom.size()) secondOption = null;
+        else secondOption = toChooseFrom.get(navigateChoose * 2 + 1);
         showMoreImages();
     }
 
@@ -342,17 +306,17 @@ public class DuelView {
     private static void chooseCard() {
         navigateChoose = 0;
         LoginView.choosingScene.lookup("#back").setDisable(true);
-        LoginView.choosingScene.lookup("#next").setDisable(toChoseFrom.size() <= 2);
+        LoginView.choosingScene.lookup("#next").setDisable(toChooseFrom.size() <= 2);
         showOptions();
         choosing.setScene(LoginView.choosingScene);
         choosing.showAndWait();
     }
 
     private static void showOptions() {
-        if (toChoseFrom.size() == 0) firstOption = null;
-        else firstOption = toChoseFrom.get(navigateChoose * 2);
-        if (navigateChoose * 2 + 1 == toChoseFrom.size()) secondOption = null;
-        else secondOption = toChoseFrom.get(navigateChoose * 2 + 1);
+        if (toChooseFrom.isEmpty()) firstOption = null;
+        else firstOption = toChooseFrom.get(navigateChoose * 2);
+        if (navigateChoose * 2 + 1 == toChooseFrom.size()) secondOption = null;
+        else secondOption = toChooseFrom.get(navigateChoose * 2 + 1);
         setImages();
     }
 
@@ -389,57 +353,27 @@ public class DuelView {
         LoginView.stage.setScene(LoginView.finishGame);
     }
 
+    public static void summon() {
+        DuelController.getInstance().summon();
+        MainView.monsterSong();
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
+    }
 
-//    public void run() {
-//        String command;
-//        while (!DuelController.getInstance().getGame().isGameFinished() &&
-//                !(command = IO.getInstance().getInputMessage()).matches("(?:menu )?exit") &&
-//                !command.matches("(?:menu )?enter [Mm]ain(?: menu)?")) {
-//            Matcher selectCardMatcher = selectCardPattern.matcher(command);
-//            Matcher attackMatcher = attackPattern.matcher(command);
-//            Matcher cheatDecreaseLPMatcher = cheatDecreaseLPPattern.matcher(command);
-//            Matcher cheatIncreaseLPMatcher = cheatIncreaseLPPattern.matcher(command);
-//            if (command.matches("(?:menu )?s(?:how)?-c(?:urrent)?"))
-//                showCurrentMenu();
-//            else if (command.matches("select -d|deselect"))
-//                DuelController.getInstance().deselectCard();
-//            else if (selectCardMatcher.matches())
-//                selectCard(selectCardMatcher, !command.contains("-o"), CardStatusInField.getCardStatusInField(command));
-//            else if (command.matches("sum(?:mon)?"))
-//                DuelController.getInstance().summon();
-//            else if (command.matches("set?"))
-//                DuelController.getInstance().set();
-//            else if (command.matches("set -(?:-position|p) (?:att(?:ack)?|def(?:ense)?)"))
-//                DuelController.getInstance().setPosition(command.contains("att"));
-//            else if (command.matches("f(?:lip)?-sum(?:mon)?"))
-//                DuelController.getInstance().flipSummon();
-//            else if (attackMatcher.matches())
-//                DuelController.getInstance().attack(Integer.parseInt(attackMatcher.group("number")) - 1);
-//            else if (command.matches("att(?:ack)? d(?:ir(?:ect)?)?"))
-//                DuelController.getInstance().directAttack();
-//            else if (command.matches("activ(?:at)?e(?: effect)?"))
-//                DuelController.getInstance().activateSpell();
-//            else if (command.matches("(?:show )?grave(?:yard)?"))
-//                showGraveyard();
-//            else if (command.matches("(?:c(?:ard)? )?show -(?:-select(?:ed)?|s)"))
-//                DuelController.getInstance().showSelectedCard();
-//            else if (command.matches("sur(?:render)?"))
-//                DuelController.getInstance().surrender();
-//            else if (command.matches("next(?: phase)?"))
-//                DuelController.getInstance().nextPhase();
-//            else if (cheatDecreaseLPMatcher.matches())
-//                DuelController.getInstance().cheatDecreaseLP(Integer.parseInt(cheatDecreaseLPMatcher.group("number")));
-//            else if (cheatIncreaseLPMatcher.matches())
-//                DuelController.getInstance().cheatIncreaseLP(Integer.parseInt(cheatIncreaseLPMatcher.group("number")));
-//            else if (command.matches("Person(?: of)? Interest"))
-//                DuelController.getInstance().cheatSeeMyDeck();
-//            else if (command.matches("Conspiracy(?: to)? Commit Treason"))
-//                DuelController.getInstance().cheatSetWinner();
-//            else if (command.matches("Drunk Space Pirate"))
-//                DuelController.getInstance().cheatShowRivalHand();
-//            else IO.getInstance().printInvalidCommand();
-//        }
-//    }
+    public static void set() {
+        DuelController.getInstance().set();
+        MainView.playSpellSong();
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
+    }
+
+    public static void activate() {
+        DuelController.getInstance().activateSpell();
+        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
+    }
+
 
     public void selectOpponentMonster(MouseEvent mouseEvent) {
         int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(15));
@@ -488,14 +422,14 @@ public class DuelView {
 
     public void nextOptionsM() {
         if (navigateChoose == 0) LoginView.choosingForMoreThanOneScene.lookup("#back").setDisable(false);
-        if (navigateChoose == ((toChoseFrom.size() - 1) / 2) - 1)
+        if (navigateChoose == ((toChooseFrom.size() - 1) / 2) - 1)
             LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(true);
         navigateChoose++;
         showMoreOptions();
     }
 
     public void previousOptionsM() {
-        if (navigateChoose == (toChoseFrom.size() - 1) / 2) {
+        if (navigateChoose == (toChooseFrom.size() - 1) / 2) {
             LoginView.choosingForMoreThanOneScene.lookup("#next").setDisable(false);
             LoginView.choosingForMoreThanOneScene.lookup("#selectTwo").setDisable(false);
         }
@@ -506,14 +440,14 @@ public class DuelView {
 
     public void nextOptions() {
         if (navigateChoose == 0) LoginView.choosingScene.lookup("#back").setDisable(false);
-        if (navigateChoose == ((toChoseFrom.size() - 1) / 2) - 1)
+        if (navigateChoose == ((toChooseFrom.size() - 1) / 2) - 1)
             LoginView.choosingScene.lookup("#next").setDisable(true);
         navigateChoose++;
         showOptions();
     }
 
     public void previousOptions() {
-        if (navigateChoose == (toChoseFrom.size() - 1) / 2) {
+        if (navigateChoose == (toChooseFrom.size() - 1) / 2) {
             LoginView.choosingScene.lookup("#next").setDisable(false);
             LoginView.choosingScene.lookup("#selectTwo").setDisable(false);
         }
@@ -585,7 +519,7 @@ public class DuelView {
         return Integer.parseInt(IO.getInstance().getInputMessage()) - 1;
     }
 
-    public void deselect() {
+    public void deselectButtonClicked() {
         DuelController.getInstance().deselectCard();
         Scene scene;
         if (player1.getUsername().equals(DuelController.getInstance().getGame().getCurrentPlayer().getUsername()))
@@ -596,25 +530,22 @@ public class DuelView {
                 false, "selected card");
     }
 
-    public void attack() {
+    public void attackButtonClicked() {
         DuelController.getInstance().directAttack();
         MainView.playAttackSong();
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
     }
 
-    public void activate() {
-        DuelController.getInstance().activateSpell();
-        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
-        setCardImages(player1, player2, LoginView.mainGameSceneOne);
-        setCardImages(player2, player1, LoginView.mainGameSceneTwo);;
+    public void activateButtonClicked() {
+        activate();
     }
 
-    public void set() {
-        DuelController.getInstance().set();
-        MainView.playSpellSong();
-        setCardImages(player1, player2, LoginView.mainGameSceneOne);
-        setCardImages(player2, player1, LoginView.mainGameSceneTwo);    }
+    public void setButtonClicked() {
+        set();
+    }
 
-    public void settings() {
+    public void settingsButtonClicked() {
         popUp();
     }
 
@@ -624,15 +555,12 @@ public class DuelView {
         hBox.setSpacing(10);
         hBox.setAlignment(Pos.CENTER);
         Button exit = new Button("Exit");
-        exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                secondStage.close();
-                MainView.gameMusic.pause();
-                DuelFirstPage.handleResume();
-                LoginView.stage.setScene(LoginView.duelFirstScene);
-                popup.hide();
-            }
+        exit.setOnMouseClicked(mouseEvent -> {
+            secondStage.close();
+            MainView.gameMusic.pause();
+            DuelFirstPage.handleResume();
+            LoginView.stage.setScene(LoginView.duelFirstScene);
+            popup.hide();
         });
         Button cancelButton = new Button("Cancel");
         hBox.getChildren().add(exit);
@@ -645,20 +573,17 @@ public class DuelView {
         popup.show(LoginView.stage);
     }
 
-    public void flipSummon() {
+    public void flipSummonButtonClicked() {
         DuelController.getInstance().flipSummon();
         setCardImages(player1, player2, LoginView.mainGameSceneOne);
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
     }
 
-    public void summon() {
-        DuelController.getInstance().summon();
-        MainView.monsterSong();
-        setCardImages(player1, player2, LoginView.mainGameSceneOne);
-        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
+    public void summonButtonClicked() {
+        summon();
     }
 
-    public void nextPhase() {
+    public void nextPhaseButtonClicked() {
         DuelController.getInstance().nextPhase();
         setCardImages(player1, player2, LoginView.mainGameSceneOne);
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
@@ -683,7 +608,7 @@ public class DuelView {
             secondStage.setScene(LoginView.mainGameSceneTwo);
     }
 
-    public void showGraveyard() {
+    public void showGraveyardButtonClicked() {
         myGY = new ArrayList<>();
         opponentGY = new ArrayList<>();
         ArrayList<Card> myGraveYard = DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard();
@@ -725,7 +650,7 @@ public class DuelView {
             else
                 secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
         } else {
-            secondCard = emptyCard;
+            secondCard = EMPTY_CARD;
             secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
         }
         return secondImage;
@@ -741,7 +666,7 @@ public class DuelView {
                 firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
         } else {
             firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
-            firstCard = emptyCard;
+            firstCard = EMPTY_CARD;
         }
         return firstImage;
     }
@@ -755,7 +680,7 @@ public class DuelView {
         else MainView.gameMusic.play();
     }
 
-    public void changeBackground() {
+    public void changeBackgroundButtonClicked() {
         Scene scene;
         if (DuelController.getInstance().getGame().getCurrentPlayer().getUsername().equals(player1.getUsername()))
             scene = LoginView.mainGameSceneOne;
@@ -786,10 +711,10 @@ public class DuelView {
 //            return getRitualCard();
 //        }
         ArrayList<Card> hand = DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand();
-        toChoseFrom = new ArrayList<>();
+        toChooseFrom = new ArrayList<>();
         for (Card card : hand)
             if (card instanceof MonsterCard && ((MonsterCard) card).getCardType().equals("Ritual"))
-                toChoseFrom.add(card);
+                toChooseFrom.add(card);
         chooseCard();
         return (MonsterCard) chosen;
     }
@@ -804,7 +729,7 @@ public class DuelView {
 //        } catch (Exception e) {
 //            return getOpponentMonster();
 //        }
-        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards());
+        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards());
         chooseCard();
         return (MonsterCard) chosen;
     }
@@ -834,7 +759,7 @@ public class DuelView {
 //        var input = IO.getInstance().getInputMessage();
 //        if (input.equals("cancel")) return null;
 //        return Arrays.stream(input.split(" ")).map(Integer::parseInt).map(i -> DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(i - 1)).collect(Collectors.toCollection(ArrayList::new));
-        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
+        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
         chooseForMoreThanOne();
         System.out.println("heh");
         return wanted;
@@ -856,7 +781,7 @@ public class DuelView {
 //        } catch (Exception e) {
 //            return getMonsterCardFromHand();
 //        }
-        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand());
+        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand());
         chooseCard();
         return (MonsterCard) chosen;
     }
@@ -872,10 +797,10 @@ public class DuelView {
 //            return getFromMyGY();
 //        }
         ArrayList<Card> graveyard = DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard();
-        toChoseFrom = new ArrayList<>();
+        toChooseFrom = new ArrayList<>();
         for (Card card : graveyard)
             if (card instanceof MonsterCard)
-                toChoseFrom.add(card);
+                toChooseFrom.add(card);
         chooseCard();
         return (MonsterCard) chosen;
     }
@@ -890,7 +815,7 @@ public class DuelView {
 //        } catch (Exception e) {
 //            return getCardFromMyGY();
 //        }
-        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard());
+        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard());
         chooseCard();
         return chosen;
     }
@@ -905,7 +830,7 @@ public class DuelView {
 //        } catch (Exception e) {
 //            return getCardFromOpponentGY();
 //        }
-        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard());
+        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard());
         chooseCard();
         return chosen;
     }
@@ -921,10 +846,10 @@ public class DuelView {
 //            return getFromOpponentGY();
 //        }
         ArrayList<Card> graveyard = DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard();
-        toChoseFrom = new ArrayList<>();
+        toChooseFrom = new ArrayList<>();
         for (Card card : graveyard)
             if (card instanceof MonsterCard)
-                toChoseFrom.add(card);
+                toChooseFrom.add(card);
         chooseCard();
         return (MonsterCard) chosen;
     }
@@ -947,10 +872,10 @@ public class DuelView {
 //            return getFieldSpellFromDeck();
 //        }
         ArrayList<Card> deck = DuelController.getInstance().getGame().getCurrentPlayer().getField().getDeckZone();
-        toChoseFrom = new ArrayList<>();
+        toChooseFrom = new ArrayList<>();
         for (Card card : deck)
             if (card instanceof SpellAndTrapCard && ((SpellAndTrapCard) card).getProperty().equals("Field"))
-                toChoseFrom.add(card);
+                toChooseFrom.add(card);
         chooseCard();
         return (SpellAndTrapCard) chosen;
     }
@@ -965,7 +890,7 @@ public class DuelView {
 //        } catch (Exception e) {
 //            return getMonsterToEquip();
 //        }
-        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
+        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
         chooseCard();
         return (MonsterCard) chosen;
     }
@@ -980,7 +905,7 @@ public class DuelView {
 //        } catch (Exception e) {
 //            return getHijackedCard();
 //        }
-        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards());
+        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards());
         chooseCard();
         return (MonsterCard) chosen;
     }
@@ -1017,7 +942,7 @@ public class DuelView {
 //        } catch (Exception e) {
 //            return getCardFromHand();
 //        }
-        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand());
+        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand());
         chooseCard();
         return chosen;
     }
@@ -1032,7 +957,7 @@ public class DuelView {
 //        } catch (Exception e) {
 //            return getCardFromOpponentHand();
 //        }
-        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand());
+        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand());
         chooseCard();
         return chosen;
     }
@@ -1049,9 +974,9 @@ public class DuelView {
         IO.getInstance().barbaros();
         String summonMode = IO.getInstance().getInputMessage();
         return Integer.parseInt(summonMode);
-        // 1 summon with 2 tributes
-        // 2 summon normally
-        // 3 summon with 3 tributes
+        // 1 summonButtonClicked with 2 tributes
+        // 2 summonButtonClicked normally
+        // 3 summonButtonClicked with 3 tributes
     }
 
 
@@ -1070,7 +995,7 @@ public class DuelView {
 //        } catch (Exception e) {
 //            return getFromMyField();
 //        }
-        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getSpellAndTrapCards());
+        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getSpellAndTrapCards());
         chooseCard();
         return (SpellAndTrapCard) chosen;
     }
@@ -1084,7 +1009,7 @@ public class DuelView {
 //        } catch (Exception e) {
 //            return getFromOpponentField();
 //        }
-        toChoseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getSpellAndTrapCards());
+        toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getSpellAndTrapCards());
         chooseCard();
         return (SpellAndTrapCard) chosen;
     }
@@ -1141,10 +1066,10 @@ public class DuelView {
 //            return getMonsterCardFromHand(isOpponent);
 //        }
         ArrayList<Card> hand = DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand();
-        toChoseFrom = new ArrayList<>();
+        toChooseFrom = new ArrayList<>();
         for (Card card : hand)
             if (card instanceof MonsterCard)
-                toChoseFrom.add(card);
+                toChooseFrom.add(card);
         chooseCard();
         return (MonsterCard) chosen;
     }

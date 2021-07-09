@@ -96,9 +96,11 @@ public class DeckView {
     }
 
     private static void handleAnimation() {
+        if (MainController.getInstance().getLoggedIn().getAllPlayerDecks().isEmpty()) return;
         ImageView animation = (ImageView) LoginView.deckScene.lookup("#animation");
         var transition = new SequentialTransition(getNewTranslateTransition("#edit", "#activate"), getNewPauseAndChangeImageTransition(animation), new PauseTransition(Duration.seconds(0.25)), getNewTranslateTransition("#activate", "#edit"), getNewPauseAndChangeImageTransition(animation), new PauseTransition(Duration.seconds(0.25)));
         transition.setNode(animation);
+        transition.setDelay(Duration.ZERO);
         transition.setInterpolator(Interpolator.EASE_BOTH);
         transition.setCycleCount(Animation.INDEFINITE);
         transition.play();
