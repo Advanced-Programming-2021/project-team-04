@@ -318,20 +318,20 @@ public class DuelView {
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
     }
 
+    public static void activate() {
+        DuelController.getInstance().activateSpell();
+        MainView.playSpellSong();
+        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
+        setCardImages(player1, player2, LoginView.mainGameSceneOne);
+        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
+    }
+
     public static void set() {
         DuelController.getInstance().set();
         MainView.playSpellSong();
         setCardImages(player1, player2, LoginView.mainGameSceneOne);
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
     }
-
-    public static void activate() {
-        DuelController.getInstance().activateSpell();
-        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
-        setCardImages(player1, player2, LoginView.mainGameSceneOne);
-        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
-    }
-
 
     public void selectOpponentMonster(MouseEvent mouseEvent) {
         int number = Integer.parseInt(((Node) mouseEvent.getTarget()).getId().substring(15));
@@ -493,20 +493,6 @@ public class DuelView {
     public void attackButtonClicked() {
         DuelController.getInstance().directAttack();
         MainView.playAttackSong();
-    }
-
-    public void activate() {
-        DuelController.getInstance().activateSpell();
-        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
-        setCardImages(player1, player2, LoginView.mainGameSceneOne);
-        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
-    }
-
-    public void set() {
-        DuelController.getInstance().set();
-        MainView.playSpellSong();
-        setCardImages(player1, player2, LoginView.mainGameSceneOne);
-        setCardImages(player2, player1, LoginView.mainGameSceneTwo);
     }
 
     public void activateButtonClicked() {
