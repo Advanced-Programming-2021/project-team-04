@@ -30,7 +30,7 @@
     <ImageView GridPane.rowIndex="0" GridPane.columnIndex="7" fitHeight="120" fitWidth="90" fx:id="opponentField" id="opponentField" onMouseClicked="#selectOpponentField"/>
 
     <VBox GridPane.rowIndex="0" GridPane.columnIndex="8" prefWidth="90" prefHeight="120" alignment="CENTER">
-        <Button prefHeight="50" prefWidth="90" text="change&#10;background" onMouseClicked="#changeBackground"/>
+        <Button prefHeight="50" prefWidth="90" text="change&#10;background" onMouseClicked="#changeBackgroundButtonClicked"/>
     </VBox>
 
     <VBox GridPane.rowIndex="0" GridPane.columnIndex="9" prefWidth="90" prefHeight="120" alignment="CENTER">
@@ -68,18 +68,18 @@
     <ImageView GridPane.rowIndex="3" GridPane.columnIndex="6" fitHeight="120" fitWidth="90" fx:id="spell4" id="spell4" onMouseClicked="#selectSpell"/>
 
     <VBox GridPane.rowIndex="3" GridPane.columnIndex="7" prefHeight="120" prefWidth="90" spacing="6">
-        <Button text="direct attack" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#attack"/>
-        <Button text="set" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#set"/>
-        <Button text="activate" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#activate"/>
+        <Button text="direct attack" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#attackButtonClicked"/>
+        <Button text="set" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#setButtonClicked"/>
+        <Button text="activate" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#activateButtonClicked"/>
     </VBox>
     <VBox GridPane.rowIndex="3" GridPane.columnIndex="8" prefHeight="120" prefWidth="90" spacing="10" alignment="CENTER">
-        <Button text="flip&#10;summon" prefHeight="55" prefWidth="90" textAlignment="CENTER" onMouseClicked="#flipSummon"/>
-        <Button text="next&#10;phase" prefHeight="55" prefWidth="90" textAlignment="CENTER" onMouseClicked="#nextPhase"/>
+        <Button text="flip&#10;summon" prefHeight="55" prefWidth="90" textAlignment="CENTER" onMouseClicked="#flipSummonButtonClicked"/>
+        <Button text="next&#10;phase" prefHeight="55" prefWidth="90" textAlignment="CENTER" onMouseClicked="#nextPhaseButtonClicked"/>
     </VBox>
     <VBox GridPane.rowIndex="3" GridPane.columnIndex="9" prefHeight="120" prefWidth="90" spacing="6">
-        <Button text="summon" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#summon"/>
-        <Button text="deselect" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#deselect"/>
-        <Button text="settings" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#settings"/>
+        <Button text="summon" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#summonButtonClicked"/>
+        <Button text="deselect" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#deselectButtonClicked"/>
+        <Button text="settings" prefHeight="36" prefWidth="90" textAlignment="CENTER" onMouseClicked="#settingsButtonClicked"/>
     </VBox>
 
     <ImageView GridPane.rowIndex="4" GridPane.columnIndex="2" fitHeight="120" fitWidth="90" fx:id="hand1" id="hand1" onMouseClicked="#selectHand"/>
@@ -91,7 +91,7 @@
 
     <VBox GridPane.rowIndex="4" GridPane.columnIndex="8" prefHeight="120" prefWidth="90" spacing="10">
         <Button text="cheat" prefHeight="55" prefWidth="90" textAlignment="CENTER"/>
-        <Button text="graveyard" prefHeight="55" prefWidth="90" textAlignment="CENTER" onMouseClicked="#showGraveyard"/>
+        <Button text="graveyard" prefHeight="55" prefWidth="90" textAlignment="CENTER" onMouseClicked="#showGraveyardButtonClicked"/>
     </VBox>
 
     <ImageView GridPane.rowIndex="4" GridPane.columnIndex="9" fitHeight="120" fitWidth="90" fx:id="field" id="field" onMouseClicked="#selectField"/>

@@ -3,14 +3,10 @@ d
 4src/main/java/yugioh/controller/LoginController.java,5\5\55c80f04c0c4d7b2cdb08dceaabdbd1781d137dc
 X
 (src/main/java/yugioh/model/GameDeck.java,6\2\62bcd3749f36658e2b6102bac50cc5486fd8a05d
-Q
-!src/main/java/yugioh/view/IO.java,0\0\00e5ff8beb5d1f99d116a5e0161114ac0c636a47
 Z
 *src/main/java/yugioh/view/ProfileView.java,d\9\d938d2599cfa01f3b5e3b618f902e50d9c331d71
 ]
 -src/main/java/yugioh/view/ScoreboardView.java,8\b\8bde6d4d66649b6a640eb352eb2e803ad9f17a7b
-W
-'src/main/java/yugioh/view/MainView.java,f\b\fb857bf48a6929dda0fff3911260db0ef00c32c7
 W
 'src/main/java/yugioh/view/ShopView.java,1\9\1948fd56610ec47c1d821d91e997963a72fef2a7
 c
