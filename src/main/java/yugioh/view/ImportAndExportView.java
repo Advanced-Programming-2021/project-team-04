@@ -16,8 +16,10 @@ import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
 import java.io.File;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.Objects;
 
 public class ImportAndExportView {
 
@@ -26,7 +28,7 @@ public class ImportAndExportView {
     private static Card firstCard;
     private static Card secondCard;
     private static int navigate;
-    private static List<Card> ALL_CARDS = new ArrayList<>();
+    private static List<Card> allCards = new ArrayList<>();
     private static Card selectedCard = null;
 
     public static void run() {
@@ -37,7 +39,7 @@ public class ImportAndExportView {
 
     private static void setImage() {
         ImageView image = (ImageView) LoginView.importAndExportScene.lookup("#cardPicture");
-        image.setImage(new Image(ImportAndExportView.class.getResourceAsStream("cardimages/empty.jpg")));
+        image.setImage(new Image(Objects.requireNonNull(ImportAndExportView.class.getResourceAsStream("cardimages/empty.jpg"))));
     }
 
     private static void setFileAndDirectoryChooser() {
@@ -71,13 +73,10 @@ public class ImportAndExportView {
         LoginView.stage.centerOnScreen();
     }
 
-    public static void runImportPage(List<Card> cards) {
-    }
-
     private static void showCards() {
-        firstCard = ALL_CARDS.get(navigate * 2);
-        if ((navigate * 2 + 1) == ALL_CARDS.size()) secondCard = null;
-        else secondCard = ALL_CARDS.get(navigate * 2 + 1);
+        firstCard = allCards.get(navigate * 2);
+        if ((navigate * 2 + 1) == allCards.size()) secondCard = null;
+        else secondCard = allCards.get(navigate * 2 + 1);
         setImages();
     }
 
@@ -87,13 +86,13 @@ public class ImportAndExportView {
         Image secondImage;
         Image firstImage;
         if (secondCard == null)
-            secondImage = new Image(ImportAndExportView.class.getResourceAsStream("cardimages/empty.jpg"));
+            secondImage = new Image(Objects.requireNonNull(ImportAndExportView.class.getResourceAsStream("cardimages/empty.jpg")));
         else if (!secondCard.isOriginal() || secondCard.isConverted())
-            secondImage = new Image(ImportAndExportView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-        else secondImage = new Image(ImportAndExportView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+            secondImage = new Image(Objects.requireNonNull(ImportAndExportView.class.getResourceAsStream("cardimages/JonMartin.jpg")));
+        else secondImage = new Image(Objects.requireNonNull(ImportAndExportView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg")));
         if (!firstCard.isOriginal() || firstCard.isConverted())
-            firstImage = new Image(ImportAndExportView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-        else firstImage = new Image(ImportAndExportView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+            firstImage = new Image(Objects.requireNonNull(ImportAndExportView.class.getResourceAsStream("cardimages/JonMartin.jpg")));
+        else firstImage = new Image(Objects.requireNonNull(ImportAndExportView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg")));
         first.setImage(firstImage);
         second.setImage(secondImage);
         Tooltip.install(first, getToolTip(firstCard));
@@ -156,14 +155,14 @@ public class ImportAndExportView {
 
     public void exportButton() {
         LoginView.stage.setScene(LoginView.importScene);
-        ALL_CARDS = ShopController.getAllCards();
+        allCards = ShopController.getAllCards();
         navigate = 0;
         showCards();
         LoginView.importScene.lookup("#back").setDisable(true);
     }
 
     public void back() {
-        if (navigate == (ALL_CARDS.size() - 1) / 2) LoginView.importScene.lookup("#next").setDisable(false);
+        if (navigate == (allCards.size() - 1) / 2) LoginView.importScene.lookup("#next").setDisable(false);
         if (navigate == 1) LoginView.importScene.lookup("#back").setDisable(true);
         navigate--;
         showCards();
@@ -171,7 +170,7 @@ public class ImportAndExportView {
 
     public void next() {
         if (navigate == 0) LoginView.importScene.lookup("#back").setDisable(false);
-        if (navigate == ((ALL_CARDS.size() - 1) / 2) - 1) LoginView.importScene.lookup("#next").setDisable(true);
+        if (navigate == ((allCards.size() - 1) / 2) - 1) LoginView.importScene.lookup("#next").setDisable(true);
         navigate++;
         showCards();
     }

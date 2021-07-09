@@ -4,13 +4,9 @@ package yugioh.controller;
 import lombok.Getter;
 import lombok.Setter;
 import yugioh.model.cards.Card;
-import yugioh.model.cards.specialcards.*;
-import yugioh.view.IO;
-
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Objects;
 
 
 @Getter
@@ -23,9 +19,7 @@ public class ShopController {
 
 
     static {
-        allCards = new ArrayList<>();
-//        addSpecialCards();
-        allCards.addAll(ImportAndExport.getInstance().readAllCards());
+        allCards = new ArrayList<>(ImportAndExport.getInstance().readAllCards());
         sort();
     }
 
@@ -61,18 +55,6 @@ public class ShopController {
             MainController.getInstance().getLoggedIn().setMoney(MainController.getInstance().getLoggedIn().getMoney() - Card.getCardByName(cardName).getPrice());
         }
     }
-
-
-//    private static void addSpecialCards() {
-//        allCards.add(new ChangeOfHeart());
-//        allCards.add(new CommandKnight());
-//        allCards.add(new UnitedWeStand());
-//        allCards.add(new SwordsOfRevealingLight());
-//        allCards.add(new SwordOfDarkDestruction());
-//        allCards.add(new BlackPendant());
-//        allCards.add(new MagnumShield());
-//        allCards.add(new Scanner());
-//    }
 
 
     private static void sort() {

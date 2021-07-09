@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,18 +69,17 @@ public class ProfileController {
     }
 
     public void setProfilePhoto(File picture) throws IOException {
-        Pattern pattern = Pattern.compile("(\\d+)\\.(?:jpg|png|gif)");
+        var pattern = Pattern.compile("(\\d+)\\.(?:jpg|png|gif)");
         Matcher matcher;
-        int max = 0;
-        File folder = new File("src/main/resources/yugioh/view/profiles");
-        for (File photo : folder.listFiles()) {
+        var max = 0;
+        var folder = new File("src/main/resources/yugioh/view/profiles");
+        for (File photo : Objects.requireNonNull(folder.listFiles())) {
             matcher = pattern.matcher(photo.getName());
             if (matcher.find() && Integer.parseInt(matcher.group(1)) > max)
                 max = Integer.parseInt(matcher.group(1));
         }
         max++;
-        String name = picture.getName();
-        String extension = name.substring(name.length() - 4);
+        var extension = "." + ImportAndExport.getInstance().getFileExtension(picture.getName());
         Files.copy(picture.toPath(), Paths.get("src/main/resources/yugioh/view/profiles/" + max + extension));
         Files.copy(picture.toPath(), Paths.get("target/classes/yugioh/view/profiles/" + max + extension));
         MainController.getInstance().getLoggedIn().setProfilePictureNumber(max);

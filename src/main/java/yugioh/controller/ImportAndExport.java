@@ -2,20 +2,15 @@ package yugioh.controller;
 
 
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
-import com.fasterxml.jackson.databind.jsontype.BasicPolymorphicTypeValidator;
 import com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator;
 import com.fasterxml.jackson.dataformat.csv.CsvMapper;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import yugioh.model.Account;
 import yugioh.model.PlayerDeck;
 import yugioh.model.cards.Card;
-import yugioh.model.cards.MonsterCard;
-import yugioh.model.cards.SpellAndTrapCard;
-import yugioh.view.ImportAndExportView;
 
 import java.io.File;
 import java.util.*;
@@ -138,7 +133,6 @@ public class ImportAndExport {
 
     public void importFile(File file) {
         List<Card> cards = readCardsFromFile(file);
-        ImportAndExportView.runImportPage(cards);
         cards.stream().filter(Objects::nonNull).forEach(c -> writeObjectToJson(RESOURCES_CARDS + c.getName() + JSON, c));
     }
 
@@ -161,6 +155,11 @@ public class ImportAndExport {
 
     public String getFileExtension(File file) {
         String fileName = file.getName();
+        int dotIndex = fileName.lastIndexOf('.');
+        return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
+    }
+
+    public String getFileExtension(String fileName) {
         int dotIndex = fileName.lastIndexOf('.');
         return (dotIndex == -1) ? "" : fileName.substring(dotIndex + 1);
     }

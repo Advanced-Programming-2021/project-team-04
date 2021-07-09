@@ -4,19 +4,16 @@ package yugioh.model.cards;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-import yugioh.controller.ImportAndExport;
 import yugioh.model.AI;
 import yugioh.model.Account;
 import yugioh.model.Duelist;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 
 @Getter
 @Setter
 public class Card {
-
 
     protected static ArrayList<Card> allCards;
 

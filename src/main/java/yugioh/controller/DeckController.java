@@ -5,6 +5,7 @@ import yugioh.model.PlayerDeck;
 import yugioh.view.IO;
 
 import java.util.LinkedHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class DeckController {
 
@@ -50,20 +51,12 @@ public class DeckController {
     public String getDeckCards(PlayerDeck deck) {
         LinkedHashMap<String, Short> mainDeckCards = deck.getMainDeckCards();
         LinkedHashMap<String, Short> sideDeckCards = deck.getSideDeckCards();
-        StringBuilder stringBuilder = new StringBuilder(deck.getDeckName()).append(":\n").append("Main Deck:\n");
-        int counter = 0;
-        for (String cardName : mainDeckCards.keySet()) {
-            stringBuilder.append(cardName).append(":").append(mainDeckCards.get(cardName)).append(" - ");
-            counter++;
-            if (counter % 5 == 0) stringBuilder.append("\n");
-        }
+        var stringBuilder = new StringBuilder(deck.getDeckName()).append(":\n").append("Main Deck:\n");
+        var counter = new AtomicInteger(0);
+        mainDeckCards.keySet().forEach(name -> stringBuilder.append(name).append(":").append(mainDeckCards.get(name)).append(" - ").append(counter.incrementAndGet() % 5 == 0 ? "\n" : ""));
         stringBuilder.append("\nSide Deck:\n");
-        counter = 0;
-        for (String cardName : sideDeckCards.keySet()) {
-            stringBuilder.append(cardName).append(":").append(sideDeckCards.get(cardName)).append(" - ");
-            counter++;
-            if (counter % 5 == 0) stringBuilder.append("\n");
-        }
+        counter.set(0);
+        sideDeckCards.keySet().forEach(name -> stringBuilder.append(name).append(":").append(mainDeckCards.get(name)).append(" - ").append(counter.incrementAndGet() % 5 == 0 ? "\n" : ""));
         return stringBuilder.toString();
     }
 }

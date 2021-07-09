@@ -3,9 +3,8 @@ package yugioh.model.cards.specialcards;
 
 import yugioh.controller.DuelController;
 import yugioh.model.Account;
-import yugioh.model.cards.MonsterCardModeInField;
 import yugioh.model.cards.MonsterCard;
-
+import yugioh.model.cards.MonsterCardModeInField;
 
 import java.util.stream.Stream;
 

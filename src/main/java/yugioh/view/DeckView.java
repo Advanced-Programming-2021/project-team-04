@@ -264,8 +264,8 @@ public class DeckView {
         secondCard = Card.getCardByName(allCards.get(countForAdd + 1));
         ImageView first = (ImageView) sceneForAdding.lookup("#first");
         ImageView second = (ImageView) sceneForAdding.lookup("#second");
-        Image firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
-        Image secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+        Image firstImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg")));
+        Image secondImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg")));
         first.setImage(firstImage);
         second.setImage(secondImage);
     }
@@ -283,14 +283,14 @@ public class DeckView {
         if (sideCards.size() > countForDeck) {
             secondCard = Card.getCardByName(sideCards.get(countForDeck));
             if (!firstCard.isOriginal() || firstCard.isConverted())
-                secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+                secondImage = new Image(Objects.requireNonNull(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg")));
             else
-                secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+                secondImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg")));
             number.setText(String.valueOf(sideCardsHashMap.get(secondCard.getName())));
             sceneForOneDeck.lookup("#removeSide").setDisable(false);
         } else {
             secondCard = EMPTY_CARD;
-            secondImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+            secondImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg")));
             sceneForOneDeck.lookup("#removeSide").setDisable(true);
             number.setText("");
         }
@@ -303,14 +303,14 @@ public class DeckView {
             firstCard = Card.getCardByName(mainCards.get(countForDeck));
             number.setText(String.valueOf(mainCardsHashMap.get(firstCard.getName())));
             if (!firstCard.isOriginal() || firstCard.isConverted())
-                firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+                firstImage = new Image(Objects.requireNonNull(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg")));
             else
-                firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+                firstImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg")));
             sceneForOneDeck.lookup("#removeMain").setDisable(false);
         } else {
             firstCard = EMPTY_CARD;
             number.setText("");
-            firstImage = new Image(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+            firstImage = new Image(Objects.requireNonNull(DeckView.class.getResourceAsStream("cardimages/" + "empty.jpg")));
             sceneForOneDeck.lookup("#removeMain").setDisable(true);
         }
         return firstImage;

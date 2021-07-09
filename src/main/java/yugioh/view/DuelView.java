@@ -1,7 +1,6 @@
 package yugioh.view;
 
 
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -15,14 +14,9 @@ import javafx.scene.layout.*;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import lombok.extern.java.Log;
 import yugioh.controller.DuelController;
 import yugioh.model.Account;
-import yugioh.model.cards.CardStatusInField;
-import yugioh.model.cards.MonsterCardModeInField;
-import yugioh.model.cards.Card;
-import yugioh.model.cards.MonsterCard;
-import yugioh.model.cards.SpellAndTrapCard;
+import yugioh.model.cards.*;
 import yugioh.utils.DragUtils;
 import yugioh.utils.Triple;
 
@@ -44,7 +38,6 @@ public class DuelView {
     private static ArrayList<String> opponentGY;
     private static int count;
     private static Card firstCard;
-    private static Card secondCard;
     private static int counter;
     private static Account player1;
     private static Account player2;
@@ -74,14 +67,10 @@ public class DuelView {
     }
 
     private static void makeCardsDraggable(Scene scene) {
-        for (var i = 1; i <= 5; i++) {
+        for (var i = 1; i <= 5; i++)
             setMonsterDraggable(scene.lookup("#monster" + i));
-//            setMonsterDraggable(scene.lookup("#spell" + i));
-        }
-        for (var i = 1; i <= 6; i++) {
+        for (var i = 1; i <= 6; i++)
             setHandDraggable(scene.lookup("#hand" + i));
-        }
-//        setMonsterDraggable(scene.lookup("#field"));
     }
 
     private static void setMonsterDraggable(Node node) {
@@ -106,7 +95,11 @@ public class DuelView {
     private static void setHandDraggable(Node node) {
         if (Objects.isNull(node)) return;
         var dragHandler = new DragUtils.DragHandler(node);
-        dragHandler.addListener((listenerDragHandler, listenerDragEvent) -> dragHandler.getDragNodes().forEach((dragNode, coordination) -> {
+        dragHandler.addListener(getHandListener(node, dragHandler));
+    }
+
+    private static DragUtils.Listener getHandListener(Node node, DragUtils.DragHandler dragHandler) {
+        return (listenerDragHandler, listenerDragEvent) -> dragHandler.getDragNodes().forEach((dragNode, coordination) -> {
             if (listenerDragEvent == DragUtils.Event.DRAG_START)
                 DuelController.getInstance().selectCard(true, CardStatusInField.HAND, Integer.parseInt(dragNode.getId().substring(dragNode.getId().length() - 1)) - 1);
             if (listenerDragEvent == DragUtils.Event.DRAG_END) {
@@ -124,7 +117,7 @@ public class DuelView {
                     }
                 } else DragUtils.playGoingBackTransition(dragNode, coordination);
             }
-        }));
+        });
     }
 
     private static Triple<Boolean, CardStatusInField, Integer> getCardByCoordination(Point2D point, Scene scene) {
@@ -178,10 +171,10 @@ public class DuelView {
     private static void setProfiles(Account player, Account otherPlayer, Scene scene) {
         ImageView opponentProfile = (ImageView) scene.lookup("#opponentProfile");
         ImageView profile = (ImageView) scene.lookup("#profile");
-        Image playerImage = new Image(DuelView.class.getResourceAsStream("profiles/" +
-                player.getProfilePictureNumber() + player.getProfilePictureExtension()));
-        Image otherPlayerImage = new Image(DuelView.class.getResourceAsStream("profiles/" +
-                otherPlayer.getProfilePictureNumber() + otherPlayer.getProfilePictureExtension()));
+        Image playerImage = new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("profiles/" +
+                player.getProfilePictureNumber() + player.getProfilePictureExtension())));
+        Image otherPlayerImage = new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("profiles/" +
+                otherPlayer.getProfilePictureNumber() + otherPlayer.getProfilePictureExtension())));
         opponentProfile.setImage(otherPlayerImage);
         profile.setImage(playerImage);
         setToolTip(player.toString(), profile);
@@ -228,32 +221,42 @@ public class DuelView {
 
     private static void setCardImage(Card card, ImageView imageView, boolean isMine, String place) {
         if (card == null) {
-            imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/void.jpg")));
-            setToolTip(place + "\nempty", imageView);
-            return;
-        }
-        if (card instanceof MonsterCard) {
-            MonsterCard monsterCard = (MonsterCard) card;
-            if (monsterCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN
-                    && !place.equals("player hand") && !(isMine && place.equals("selected card"))) {
-                imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/hidden.jpg")));
-                if (isMine) setToolTip(place + "\n" + monsterCard.toString(), imageView);
-                else setToolTip(place + "\nhidden", imageView);
-            } else {
-                imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/" + monsterCard.getName() + ".jpg")));
-                setToolTip(place + "\n" + monsterCard.toString(), imageView);
-            }
+            setNullCardImage(imageView, place);
+        } else if (card instanceof MonsterCard) {
+            setMonsterCardImage((MonsterCard) card, imageView, isMine, place);
         } else {
-            SpellAndTrapCard spellAndTrapCard = (SpellAndTrapCard) card;
-            if (!spellAndTrapCard.isActive() && !place.equals("player hand") && !(isMine && place.equals("selected card"))) {
-                imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/hidden.jpg")));
-                if (isMine) setToolTip(place + "\n" + spellAndTrapCard.toString(), imageView);
-                else setToolTip(place + "\nhidden", imageView);
-            } else {
-                imageView.setImage(new Image(DuelView.class.getResourceAsStream("cardimages/" + spellAndTrapCard.getName() + ".jpg")));
-                setToolTip(place + "\n" + spellAndTrapCard.toString(), imageView);
-            }
+            setSpellAndTrapCardImage((SpellAndTrapCard) card, imageView, isMine, place);
         }
+    }
+
+    private static void setSpellAndTrapCardImage(SpellAndTrapCard card, ImageView imageView, boolean isMine, String place) {
+        SpellAndTrapCard spellAndTrapCard = card;
+        if (!spellAndTrapCard.isActive() && !place.equals("player hand") && !(isMine && place.equals("selected card"))) {
+            imageView.setImage(new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/hidden.jpg"))));
+            if (isMine) setToolTip(place + "\n" + spellAndTrapCard, imageView);
+            else setToolTip(place + "\nhidden", imageView);
+        } else {
+            imageView.setImage(new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/" + spellAndTrapCard.getName() + ".jpg"))));
+            setToolTip(place + "\n" + spellAndTrapCard, imageView);
+        }
+    }
+
+    private static void setMonsterCardImage(MonsterCard card, ImageView imageView, boolean isMine, String place) {
+        MonsterCard monsterCard = card;
+        if (monsterCard.getMonsterCardModeInField() == MonsterCardModeInField.DEFENSE_FACE_DOWN
+                && !place.equals("player hand") && !(isMine && place.equals("selected card"))) {
+            imageView.setImage(new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/hidden.jpg"))));
+            if (isMine) setToolTip(place + "\n" + monsterCard, imageView);
+            else setToolTip(place + "\nhidden", imageView);
+        } else {
+            imageView.setImage(new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/" + monsterCard.getName() + ".jpg"))));
+            setToolTip(place + "\n" + monsterCard, imageView);
+        }
+    }
+
+    private static void setNullCardImage(ImageView imageView, String place) {
+        imageView.setImage(new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/void.jpg"))));
+        setToolTip(place + "\nempty", imageView);
     }
 
     private static void setToolTip(String text, ImageView imageView) {
@@ -287,15 +290,15 @@ public class DuelView {
         Image imageOne;
         Image imageTwo;
         if (firstOption == null) {
-            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+            imageOne = new Image(Objects.requireNonNull(ShopView.class.getResourceAsStream("cardimages/empty.jpg")));
             LoginView.choosingScene.lookup("#selectOne").setDisable(true);
         } else
-            imageOne = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg"));
+            imageOne = new Image(Objects.requireNonNull(ShopView.class.getResourceAsStream("cardimages/" + firstOption.getName() + ".jpg")));
         if (secondOption == null) {
-            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+            imageTwo = new Image(Objects.requireNonNull(ShopView.class.getResourceAsStream("cardimages/empty.jpg")));
             LoginView.choosingScene.lookup("#selectTwo").setDisable(true);
         } else
-            imageTwo = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondOption.getName() + ".jpg"));
+            imageTwo = new Image(Objects.requireNonNull(ShopView.class.getResourceAsStream("cardimages/" + secondOption.getName() + ".jpg")));
         cardOne.setImage(imageOne);
         cardTwo.setImage(imageTwo);
     }
@@ -324,7 +327,6 @@ public class DuelView {
     public static void activate() {
         DuelController.getInstance().activateSpell();
         MainView.playSpellSong();
-        Account currentPlayer = (Account) DuelController.getInstance().getGame().getCurrentPlayer();
         setCardImages(player1, player2, LoginView.mainGameSceneOne);
         setCardImages(player2, player1, LoginView.mainGameSceneTwo);
     }
@@ -604,15 +606,16 @@ public class DuelView {
 
     private Image opponentGYImage() {
         Image secondImage;
+        Card secondCard;
         if (opponentGY.size() > count) {
             secondCard = Card.getCardByName(opponentGY.get(count));
             if (!firstCard.isOriginal() || firstCard.isConverted())
-                secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+                secondImage = new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/JonMartin.jpg")));
             else
-                secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+                secondImage = new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg")));
         } else {
             secondCard = EMPTY_CARD;
-            secondImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+            secondImage = new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/" + "empty.jpg")));
         }
         return secondImage;
     }
@@ -622,11 +625,11 @@ public class DuelView {
         if (myGY.size() > count) {
             firstCard = Card.getCardByName(myGY.get(count));
             if (!firstCard.isOriginal() || firstCard.isConverted())
-                firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
+                firstImage = new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/JonMartin.jpg")));
             else
-                firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+                firstImage = new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg")));
         } else {
-            firstImage = new Image(DuelView.class.getResourceAsStream("cardimages/" + "empty.jpg"));
+            firstImage = new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("cardimages/" + "empty.jpg")));
             firstCard = EMPTY_CARD;
         }
         return firstImage;
@@ -652,7 +655,7 @@ public class DuelView {
         GridPane content = (GridPane) scene.lookup("#gridpane");
         content.setBackground(new Background(
                 new BackgroundImage(
-                        new Image(DuelView.class.getResourceAsStream("stylesheets/" + counter + ".jpg")),
+                        new Image(Objects.requireNonNull(DuelView.class.getResourceAsStream("stylesheets/" + counter + ".jpg"))),
                         BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT,
                         new BackgroundPosition(Side.LEFT, 0, true, Side.BOTTOM, 0, true),
                         new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, true, true, false, true)
@@ -663,14 +666,6 @@ public class DuelView {
 
 
     public MonsterCard getRitualCard() {
-//        IO.getInstance().chooseRitualCard();
-//        String ritualCardNumber = IO.getInstance().getInputMessage();
-//        if (ritualCardNumber.equals("cancel")) return null;
-//        try {
-//            return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(ritualCardNumber) - 1);
-//        } catch (Exception e) {
-//            return getRitualCard();
-//        }
         ArrayList<Card> hand = DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand();
         toChooseFrom = new ArrayList<>();
         for (Card card : hand)
@@ -682,14 +677,6 @@ public class DuelView {
 
 
     public MonsterCard getOpponentMonster() {
-//        IO.getInstance().chooseMonster();
-//        String monsterCardNumber = IO.getInstance().getInputMessage();
-//        if (monsterCardNumber.equals("cancel")) return null;
-//        try {
-//            return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(Integer.parseInt(monsterCardNumber) - 1);
-//        } catch (Exception e) {
-//            return getOpponentMonster();
-//        }
         toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards());
         chooseCard();
         return (MonsterCard) chosen;
@@ -720,14 +707,6 @@ public class DuelView {
 
 
     public MonsterCard getMonsterCardFromHand() {
-//        IO.getInstance().chooseMonster();
-//        String number = IO.getInstance().getInputMessage();
-//        if (number.equals("cancel")) return null;
-//        try {
-//            return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(number) - 1);
-//        } catch (Exception e) {
-//            return getMonsterCardFromHand();
-//        }
         toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand());
         chooseCard();
         return (MonsterCard) chosen;
@@ -735,14 +714,6 @@ public class DuelView {
 
 
     public MonsterCard getFromMyGY() {
-//        IO.getInstance().chooseMonster();
-//        String number = IO.getInstance().getInputMessage();
-//        if (number.equals("cancel")) return null;
-//        try {
-//            return (MonsterCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
-//        } catch (Exception e) {
-//            return getFromMyGY();
-//        }
         ArrayList<Card> graveyard = DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard();
         toChooseFrom = new ArrayList<>();
         for (Card card : graveyard)
@@ -754,14 +725,6 @@ public class DuelView {
 
 
     public Card getCardFromMyGY() {
-//        IO.getInstance().chooseCard();
-//        String number = IO.getInstance().getInputMessage();
-//        if (number.equals("cancel")) return null;
-//        try {
-//            return DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
-//        } catch (Exception e) {
-//            return getCardFromMyGY();
-//        }
         toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getGraveyard());
         chooseCard();
         return chosen;
@@ -769,14 +732,6 @@ public class DuelView {
 
 
     public Card getCardFromOpponentGY() {
-//        IO.getInstance().chooseCard();
-//        String number = IO.getInstance().getInputMessage();
-//        if (number.equals("cancel")) return null;
-//        try {
-//            return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
-//        } catch (Exception e) {
-//            return getCardFromOpponentGY();
-//        }
         toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard());
         chooseCard();
         return chosen;
@@ -784,14 +739,6 @@ public class DuelView {
 
 
     public MonsterCard getFromOpponentGY() {
-//        IO.getInstance().chooseMonster();
-//        String number = IO.getInstance().getInputMessage();
-//        if (number.equals("cancel")) return null;
-//        try {
-//            return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
-//        } catch (Exception e) {
-//            return getFromOpponentGY();
-//        }
         ArrayList<Card> graveyard = DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard();
         toChooseFrom = new ArrayList<>();
         for (Card card : graveyard)
@@ -816,15 +763,6 @@ public class DuelView {
 
 
     public SpellAndTrapCard getFieldSpellFromDeck() {
-//        IO.getInstance().printString(DuelController.getInstance().sortFieldCards());
-//        IO.getInstance().chooseFieldSpell();
-//        String number = IO.getInstance().getInputMessage();
-//        if (number.equals("cancel")) return null;
-//        try {
-//            return (SpellAndTrapCard) DuelController.getInstance().getGame().getCurrentPlayer().getField().getDeckZone().get(Integer.parseInt(number) - 1);
-//        } catch (Exception e) {
-//            return getFieldSpellFromDeck();
-//        }
         ArrayList<Card> deck = DuelController.getInstance().getGame().getCurrentPlayer().getField().getDeckZone();
         toChooseFrom = new ArrayList<>();
         for (Card card : deck)
@@ -836,14 +774,6 @@ public class DuelView {
 
 
     public MonsterCard getMonsterToEquip() {
-//        IO.getInstance().chooseMonster();
-//        String monsterCardNumber = IO.getInstance().getInputMessage();
-//        if (monsterCardNumber.equals("cancel")) return null;
-//        try {
-//            return DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards().get(Integer.parseInt(monsterCardNumber) - 1);
-//        } catch (Exception e) {
-//            return getMonsterToEquip();
-//        }
         toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getMonsterCards());
         chooseCard();
         return (MonsterCard) chosen;
@@ -851,14 +781,6 @@ public class DuelView {
 
 
     public MonsterCard getHijackedCard() {
-//        IO.getInstance().chooseMonster();
-//        String monsterCardNumber = IO.getInstance().getInputMessage();
-//        if (monsterCardNumber.equals("cancel")) return null;
-//        try {
-//            return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards().get(Integer.parseInt(monsterCardNumber) - 1);
-//        } catch (Exception e) {
-//            return getHijackedCard();
-//        }
         toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getMonsterCards());
         chooseCard();
         return (MonsterCard) chosen;
@@ -907,14 +829,6 @@ public class DuelView {
 
 
     public Card getCardFromHand() {
-//        IO.getInstance().chooseCard();
-//        String cardNumber = IO.getInstance().getInputMessage();
-//        if (cardNumber.matches("cancel")) return null;
-//        try {
-//            return DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand().get(Integer.parseInt(cardNumber) - 1);
-//        } catch (Exception e) {
-//            return getCardFromHand();
-//        }
         toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getHand());
         chooseCard();
         return chosen;
@@ -922,14 +836,6 @@ public class DuelView {
 
 
     public Card getCardFromOpponentHand() {
-//        IO.getInstance().chooseCard();
-//        String cardNumber = IO.getInstance().getInputMessage();
-//        if (cardNumber.matches("cancel")) return null;
-//        try {
-//            return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(Integer.parseInt(cardNumber) - 1);
-//        } catch (Exception e) {
-//            return getCardFromOpponentHand();
-//        }
         toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand());
         chooseCard();
         return chosen;
@@ -952,7 +858,7 @@ public class DuelView {
     public int barbaros() {
         String[] numbers = new String[3];
         numbers[0] = "1: basic 2 tributes";
-        numbers[1] = "2: too coward to kill anyone, prefering attack reduction";
+        numbers[1] = "2: too coward to kill anyone, preferring attack reduction";
         numbers[2] = "3: three tributes full murder mood on";
         ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
         dialog.setHeaderText("The Corruption");
@@ -977,13 +883,6 @@ public class DuelView {
 
 
     public SpellAndTrapCard getFromMyField() {
-//        String spellNumber = IO.getInstance().getInputMessage();
-//        if (spellNumber.matches("cancel")) return null;
-//        try {
-//            return DuelController.getInstance().getGame().getCurrentPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber) - 1);
-//        } catch (Exception e) {
-//            return getFromMyField();
-//        }
         toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getCurrentPlayer().getField().getSpellAndTrapCards());
         chooseCard();
         return (SpellAndTrapCard) chosen;
@@ -991,13 +890,6 @@ public class DuelView {
 
 
     public SpellAndTrapCard getFromOpponentField() {
-//        String spellNumber = IO.getInstance().getInputMessage();
-//        if (spellNumber.matches("cancel")) return null;
-//        try {
-//            return DuelController.getInstance().getGame().getTheOtherPlayer().getField().getSpellAndTrapCards().get(Integer.parseInt(spellNumber) - 1);
-//        } catch (Exception e) {
-//            return getFromOpponentField();
-//        }
         toChooseFrom = new ArrayList<>(DuelController.getInstance().getGame().getTheOtherPlayer().getField().getSpellAndTrapCards());
         chooseCard();
         return (SpellAndTrapCard) chosen;
@@ -1008,7 +900,7 @@ public class DuelView {
         String[] numbers = new String[3];
         numbers[0] = "1 hand";
         numbers[1] = "2 deck";
-        numbers[3] = "3 graveyard";
+        numbers[2] = "3 graveyard";
         ChoiceDialog dialog = new ChoiceDialog(numbers[0], numbers);
         dialog.setHeaderText("The Buried");
         dialog.setContentText("summon the hell-hound from:");
@@ -1048,27 +940,11 @@ public class DuelView {
 
 
     public MonsterCard getFromMyGY(boolean isOpponent) {
-//        IO.getInstance().chooseMonster();
-//        String number = IO.getInstance().getInputMessage();
-//        if (number.equals("cancel")) return null;
-//        try {
-//            return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getGraveyard().get(Integer.parseInt(number) - 1);
-//        } catch (Exception e) {
-//            return getFromMyGY(isOpponent);
-//        }
         return getFromOpponentGY();
     }
 
 
     public MonsterCard getMonsterCardFromHand(boolean isOpponent) {
-//        IO.getInstance().chooseMonster();
-//        String number = IO.getInstance().getInputMessage();
-//        if (number.equals("cancel")) return null;
-//        try {
-//            return (MonsterCard) DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand().get(Integer.parseInt(number) - 1);
-//        } catch (Exception e) {
-//            return getMonsterCardFromHand(isOpponent);
-//        }
         ArrayList<Card> hand = DuelController.getInstance().getGame().getTheOtherPlayer().getField().getHand();
         toChooseFrom = new ArrayList<>();
         for (Card card : hand)

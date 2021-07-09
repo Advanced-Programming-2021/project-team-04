@@ -8,8 +8,6 @@ import yugioh.model.Account;
 import yugioh.model.Game;
 import yugioh.view.IO;
 
-import java.util.Random;
-
 
 @Getter
 @Setter
@@ -65,11 +63,11 @@ public class MainController {
             IO.getInstance().noActiveDeck(player2.getUsername());
             return false;
         }
-        if (!loggedIn.getActiveDeck().isDeckValid()) {
+        if (loggedIn.getActiveDeck().isDeckInvalid()) {
             IO.getInstance().invalidDeck(loggedIn.getUsername());
             return false;
         }
-        if (!player2.getActiveDeck().isDeckValid()) {
+        if (player2.getActiveDeck().isDeckInvalid()) {
             IO.getInstance().invalidDeck(player2.getUsername());
             return false;
         }
@@ -82,14 +80,11 @@ public class MainController {
             IO.getInstance().noActiveDeck(loggedIn.getUsername());
             return false;
         }
-        if (!loggedIn.getActiveDeck().isDeckValid()) {
+        if (loggedIn.getActiveDeck().isDeckInvalid()) {
             IO.getInstance().invalidDeck(loggedIn.getUsername());
             return false;
         }
-        if (rounds != 1 && rounds != 3) {
-            return false;
-        }
-        return true;
+        return rounds == 1 || rounds == 3;
     }
 
 

@@ -10,7 +10,6 @@ import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.MonsterCardModeInField;
 import yugioh.model.cards.SpellAndTrapCard;
 
-
 import java.security.SecureRandom;
 import java.util.Comparator;
 import java.util.Objects;
@@ -174,20 +173,8 @@ public final class AI extends Duelist {
 
     public enum AIDifficulty {
 
-        EASY, MEDIUM, HARD;
-
-        public static AIDifficulty getDifficulty(final String name) {
-            switch (String.valueOf(name.charAt(0))) {
-                case "m" -> {
-                    return MEDIUM;
-                }
-                case "h" -> {
-                    return HARD;
-                }
-                default -> {
-                    return EASY;
-                }
-            }
-        }
+        EASY,
+        MEDIUM,
+        HARD
     }
 }

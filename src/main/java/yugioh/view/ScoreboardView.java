@@ -1,17 +1,15 @@
 package yugioh.view;
 
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import yugioh.controller.MainController;
-import yugioh.controller.ScoreboardController;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
+import yugioh.controller.MainController;
+import yugioh.controller.ScoreboardController;
 
 import java.util.ArrayList;
 
 public class ScoreboardView{
 
-    private static ArrayList<String> congrats = new ArrayList<>();
+    private static final ArrayList<String> congrats = new ArrayList<>();
 
     static {
         congrats.add("Io vengo dalla luna");

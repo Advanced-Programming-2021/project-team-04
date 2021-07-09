@@ -1,6 +1,5 @@
 package yugioh.view;
 
-import yugioh.controller.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -13,8 +12,10 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import yugioh.controller.LoginController;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LoginView extends Application {
     public static Stage stage;
@@ -36,7 +37,7 @@ public class LoginView extends Application {
     public static Scene choosingScene;
     public static Scene console;
     public static Scene cheatScene;
-    public static MediaPlayer IntroMusic;
+    public static MediaPlayer introMusic;
     public static boolean isMute;
 
     public static void run(String[] args) {
@@ -103,13 +104,13 @@ public class LoginView extends Application {
         password.clear();
     }
 
-    public void loginScene() {
+    public void showLoginScene() {
        stage.setScene(loginScene);
        stage.centerOnScreen();
        if (isMute) ((ToggleButton) loginScene.lookup("#mute")).setSelected(true);
     }
 
-    public void signupScene() {
+    public void showSignupScene() {
         stage.setScene(signUpScene);
         stage.centerOnScreen();
         if (isMute) ((ToggleButton) signUpScene.lookup("#mute")).setSelected(true);
@@ -119,7 +120,7 @@ public class LoginView extends Application {
         String username = ((TextField) loginScene.lookup("#username")).getText();
         String password = ((PasswordField) loginScene.lookup("#password")).getText();
         if (LoginController.getInstance().loginUser(username, password)){
-            IntroMusic.pause();
+            introMusic.pause();
             if (!isMute) MainView.playMainMusic();
             ((ToggleButton) mainScene.lookup("#mute")).setSelected(isMute);
             MainView.isMute = isMute;
@@ -129,15 +130,15 @@ public class LoginView extends Application {
     }
 
     public static void playIntroMusic() {
-        Media main = new Media(LoginView.class.getResource("London-Grammar-Intro-320.mp3").toExternalForm());
-        IntroMusic = new MediaPlayer(main);
-        IntroMusic.setCycleCount(MediaPlayer.INDEFINITE);
-        IntroMusic.play();
+        Media main = new Media(Objects.requireNonNull(LoginView.class.getResource("London-Grammar-Intro-320.mp3")).toExternalForm());
+        introMusic = new MediaPlayer(main);
+        introMusic.setCycleCount(MediaPlayer.INDEFINITE);
+        introMusic.play();
     }
 
     public void mute(MouseEvent mouseEvent) {
         isMute = ((ToggleButton) mouseEvent.getTarget()).isSelected();
-        if (isMute) IntroMusic.pause();
-        else IntroMusic.play();
+        if (isMute) introMusic.pause();
+        else introMusic.play();
     }
 }

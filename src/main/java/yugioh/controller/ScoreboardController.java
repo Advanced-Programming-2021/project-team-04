@@ -17,9 +17,9 @@ private static ScoreboardController singleInstance = null;
     public ArrayList<String> getSortedUsers() {
         sortedAccounts();
         ArrayList<String> sortedUsers = new ArrayList<>();
-        int count = 0;
-        int countForEquals = 0;
-        int previousScore = -1;
+        var count = 0;
+        var countForEquals = 0;
+        var previousScore = -1;
         for (Account account : Account.getAllAccounts()) {
             count++;
             if (previousScore != account.getScore()) {

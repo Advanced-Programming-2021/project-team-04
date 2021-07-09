@@ -3,10 +3,8 @@ module YuGiOhGame {
     requires javafx.fxml;
     requires javafx.media;
     requires lombok;
-    requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.dataformat.csv;
-    requires java.desktop;
 
     opens yugioh.view to javafx.fxml;
     opens yugioh.model to com.fasterxml.jackson.databind;

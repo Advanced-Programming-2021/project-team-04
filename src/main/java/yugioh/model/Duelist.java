@@ -1,13 +1,14 @@
 package yugioh.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import yugioh.controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;
+import yugioh.controller.DuelController;
 import yugioh.model.cards.MonsterCard;
 import yugioh.view.DuelView;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
 @Getter
 @Setter
@@ -32,10 +33,6 @@ public abstract class Duelist {
 
     public void checkMaxLPofThreeRounds() {
         if (maxLPofThreeRounds < LP) maxLPofThreeRounds = LP;
-    }
-
-    public void increaseCountForRPS() {
-        this.countForRPS++;
     }
 
     public PlayerDeck getActiveDeck() {
@@ -65,14 +62,6 @@ public abstract class Duelist {
     public void addCard(String cardName) {
         if (allCardsHashMap.containsKey(cardName)) allCardsHashMap.replace(cardName, (short) (allCardsHashMap.get(cardName) + 1));
         else allCardsHashMap.put(cardName, (short) 1);
-    }
-
-    public boolean doesntHaveDeck(String deckName) {
-        return allPlayerDecks.stream().noneMatch(d -> d.getDeckName().equals(deckName));
-    }
-
-    public boolean hasCard(String cardName) {
-        return allCardsHashMap.containsKey(cardName);
     }
 
     public void deleteField() {

@@ -1,14 +1,14 @@
 package yugioh.model;
 
 
-import yugioh.controller.DuelController;
 import lombok.Getter;
 import lombok.Setter;
+import yugioh.controller.DuelController;
 import yugioh.model.cards.Card;
 import yugioh.view.DuelView;
 
-
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Objects;
 
 
 @Getter
@@ -17,8 +17,10 @@ public class Game {
 
 
     boolean isGameFinished = false;
-    private String currentPlayerUsername, theOtherPlayerUsername;
-    private Duelist currentPlayer = null, theOtherPlayer = null;
+    private String currentPlayerUsername;
+    private String theOtherPlayerUsername;
+    private Duelist currentPlayer = null;
+    private Duelist theOtherPlayer = null;
     private int rounds;
     private int currentRound = 0;
     private Phases currentPhase;
@@ -95,6 +97,18 @@ public class Game {
 
 
     public void finishWithThreeRounds(Duelist loser, Duelist winner) {
+        if (handleWinnerAndLoser(loser, winner)) return;
+        initializeGame();
+        DuelController.getInstance().chooseStarter(winner.getUsername());
+        if (winner instanceof Account) {
+            DuelController.getInstance().exchangeCardsWithSideDeck((Account) winner);
+        }
+        if (loser instanceof Account) {
+            DuelController.getInstance().exchangeCardsWithSideDeck((Account) loser);
+        }
+    }
+
+    private boolean handleWinnerAndLoser(Duelist loser, Duelist winner) {
         switch (currentRound) {
             case 1 -> {
                 winnerOfEachRound[0] = winner;
@@ -112,7 +126,7 @@ public class Game {
                     if (!(winner instanceof AI))
                         DuelController.getInstance().wonGame(true, false, (Account) winner, true);
                     else DuelController.getInstance().wonGame(false, true, (Account) loser, false);
-                    return;
+                    return true;
                 }
                 if (!(winner instanceof AI))
                     DuelController.getInstance().wonGame(false, false, (Account) winner, false);
@@ -126,17 +140,10 @@ public class Game {
                 if (!(winner instanceof AI))
                     DuelController.getInstance().wonGame(false, false, (Account) winner, true);
                 else DuelController.getInstance().wonGame(false, true, (Account) loser, true);
-                return;
+                return true;
             }
         }
-        initializeGame();
-        DuelController.getInstance().chooseStarter(winner.getUsername());
-        if (winner instanceof Account) {
-            DuelController.getInstance().exchangeCardsWithSideDeck((Account) winner);
-        }
-        if (loser instanceof Account) {
-            DuelController.getInstance().exchangeCardsWithSideDeck((Account) loser);
-        }
+        return false;
     }
 
 

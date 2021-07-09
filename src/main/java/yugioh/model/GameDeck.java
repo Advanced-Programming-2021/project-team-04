@@ -1,12 +1,10 @@
 package yugioh.model;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import yugioh.controller.ImportAndExport;
 import lombok.Getter;
 import lombok.Setter;
+import yugioh.controller.ImportAndExport;
 import yugioh.model.cards.Card;
-
 
 import java.util.ArrayList;
 import java.util.Collections;

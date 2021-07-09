@@ -1,14 +1,11 @@
 package yugioh.view;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
-
 
 import java.util.Scanner;
 
@@ -16,7 +13,7 @@ public class IO {
 
     private static IO singleInstance = null;
 
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
     private final Popup popup = new Popup();
     private final Label label = new Label();
 
@@ -134,11 +131,6 @@ public class IO {
         popup.show(LoginView.stage);
     }
 
-    public void cantSet() {
-        label.setText("you can’t set this card");
-        popup.show(LoginView.stage);
-    }
-
     public void notEnoughTribute() {
         label.setText("there are not enough cards for tribute");
         popup.show(LoginView.stage);
@@ -233,7 +225,7 @@ public class IO {
     }
 
     public void passwordDoesntMatch() {
-        label.setText("Username and password didn’t match!");
+        label.setText("Username and password did not match!");
         popup.show(LoginView.stage);
     }
 
@@ -244,11 +236,6 @@ public class IO {
 
     public void userWithUsernameExists(String username) {
         label.setText("user with username " + username + " already exists");
-        popup.show(LoginView.stage);
-    }
-
-    public void noCardSelected() {
-        label.setText("no card is selected yet");
         popup.show(LoginView.stage);
     }
 
@@ -282,12 +269,7 @@ public class IO {
         popup.show(LoginView.stage);
     }
     public void addFunctionButton(Button cancelButton, Popup popup) {
-        cancelButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                popup.hide();
-            }
-        });
+        cancelButton.setOnMouseClicked(mouseEvent -> popup.hide());
     }
 
     private void configureErrors(Popup popup, GridPane gridPane, Label label, HBox hBox, Button button) {

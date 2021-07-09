@@ -1,18 +1,19 @@
 package yugioh.view;
 
+import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 import yugioh.controller.MainController;
 import yugioh.controller.ShopController;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 
 public class ShopView {
 
@@ -44,13 +45,13 @@ public class ShopView {
         Image firstImage;
         Image secondImage;
         if (!firstCard.isOriginal() || firstCard.isConverted())
-            firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-        else firstImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg"));
+            firstImage = new Image(Objects.requireNonNull(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg")));
+        else firstImage = new Image(Objects.requireNonNull(ShopView.class.getResourceAsStream("cardimages/" + firstCard.getName() + ".jpg")));
         if (secondCard == null)
-            secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/empty.jpg"));
+            secondImage = new Image(Objects.requireNonNull(ShopView.class.getResourceAsStream("cardimages/empty.jpg")));
         else if (!secondCard.isOriginal() || secondCard.isConverted())
-            secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg"));
-        else secondImage = new Image(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg"));
+            secondImage = new Image(Objects.requireNonNull(ShopView.class.getResourceAsStream("cardimages/JonMartin.jpg")));
+        else secondImage = new Image(Objects.requireNonNull(ShopView.class.getResourceAsStream("cardimages/" + secondCard.getName() + ".jpg")));
         first.setImage(firstImage);
         second.setImage(secondImage);
         Tooltip.install(first, getToolTip(firstCard));

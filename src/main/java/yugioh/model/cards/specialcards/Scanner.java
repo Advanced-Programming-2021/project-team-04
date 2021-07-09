@@ -5,7 +5,6 @@ import yugioh.model.Duelist;
 import yugioh.model.Field;
 import yugioh.model.cards.MonsterCard;
 
-
 import java.util.Objects;
 
 

@@ -44,7 +44,7 @@ public abstract class DragUtils {
         private final Map<Node, List<Double>> dragNodes = new LinkedHashMap<>();
         private final List<Listener> dragListeners = new ArrayList<>();
         private double lastMouseX = 0;
-        private double lastMouseY = 0; // scene coords
+        private double lastMouseY = 0;
         private boolean dragging = false;
 
         public DragHandler(final Node node) {
@@ -57,16 +57,8 @@ public abstract class DragUtils {
             this.eventNode.addEventHandler(MouseEvent.ANY, this);
         }
 
-        public final void addDraggedNode(final Node node) {
-            this.dragNodes.computeIfAbsent(node, k -> List.of(k.getTranslateX(), k.getTranslateY()));
-        }
-
         public final void addListener(final Listener listener) {
             this.dragListeners.add(listener);
-        }
-
-        public final void detatch() {
-            this.eventNode.removeEventFilter(MouseEvent.ANY, this);
         }
 
         @Override
@@ -96,14 +88,6 @@ public abstract class DragUtils {
                 this.dragging = false;
                 this.dragListeners.forEach(l -> l.accept(this, Event.DRAG_END));
             }
-        }
-
-        public final void removeDraggedNode(final Node node) {
-            this.dragNodes.remove(node);
-        }
-
-        public final boolean removeListener(final Listener listener) {
-            return this.dragListeners.remove(listener);
         }
     }
 }

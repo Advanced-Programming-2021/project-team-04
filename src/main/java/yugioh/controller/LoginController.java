@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class LoginController {
 
-    private Random random = new Random();
+    private static final Random RANDOM = new Random();
     private static LoginController singleInstance = null;
 
 
@@ -40,7 +40,7 @@ public class LoginController {
         if (account.getProfilePictureExtension() == null)
             account.setProfilePictureExtension(".jpg");
         if (account.getProfilePictureNumber() != 0) return;
-        account.setProfilePictureNumber(random.nextInt(9) + 1);
+        account.setProfilePictureNumber(RANDOM.nextInt(11) + 1);
     }
 
 

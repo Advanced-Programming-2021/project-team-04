@@ -8,7 +8,6 @@ import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
 import yugioh.model.cards.specialcards.Scanner;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
@@ -37,7 +36,7 @@ public class Field {
 
     public ArrayList<Scanner> getActiveScanners() {
         return (ArrayList<Scanner>) monsterCards.stream().filter(m -> m.getName().contains("Scanner"))
-                .map(m -> (Scanner) m).collect(Collectors.toList());
+                .map(Scanner.class::cast).collect(Collectors.toList());
     }
 
 
@@ -50,13 +49,13 @@ public class Field {
 
 
     public ArrayList<MonsterCard> ritualMonsterCards() {
-        return (ArrayList<MonsterCard>) hand.stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
+        return (ArrayList<MonsterCard>) hand.stream().filter(MonsterCard.class::isInstance).map(MonsterCard.class::cast)
                 .filter(m -> m.getCardType().equals("Ritual")).collect(Collectors.toList());
     }
 
 
     public ArrayList<MonsterCard> ordinaryLowLevelCards() {
-        return (ArrayList<MonsterCard>) hand.stream().filter(c -> c instanceof MonsterCard).map(c -> (MonsterCard) c)
+        return (ArrayList<MonsterCard>) hand.stream().filter(MonsterCard.class::isInstance).map(MonsterCard.class::cast)
                 .filter(m -> m.getLevel() <= 4 && m.getCardType().equals("Normal")).collect(Collectors.toList());
     }
 

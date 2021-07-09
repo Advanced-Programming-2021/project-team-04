@@ -1,16 +1,13 @@
 package yugioh.view;
 
-import yugioh.controller.DuelController;
-import yugioh.controller.MainController;
 import javafx.fxml.FXML;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import yugioh.model.Game;
+import yugioh.controller.MainController;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Objects;
 
 import static yugioh.view.LoginView.sceneCreator;
 
@@ -49,6 +46,7 @@ public class MainView {
     @FXML
     public void enterDeckMenu() {
         LoginView.deckScene = sceneCreator("DeckView.fxml");
+        assert LoginView.deckScene != null;
         LoginView.setSize(LoginView.deckScene);
         LoginView.stage.setScene(LoginView.deckScene);
         LoginView.stage.centerOnScreen();
@@ -68,8 +66,6 @@ public class MainView {
         LoginView.stage.centerOnScreen();
         playGameMusic();
         DuelFirstPage.run();
-//        DuelView.getInstance().runForRPS();
-//        DuelView.getInstance().run();
     }
 
     @FXML
@@ -77,7 +73,7 @@ public class MainView {
         MainController.getInstance().setLoggedIn(null);
         try {
             if (!isMute) {
-                LoginView.IntroMusic.play();
+                LoginView.introMusic.play();
                 mainMusic.pause();
             }
             LoginView.isMute = isMute;
@@ -96,7 +92,7 @@ public class MainView {
 
 
     public static void playMainMusic() {
-        Media main = new Media(MainView.class.getResource("OurBoyJack.mp3").toExternalForm());
+        Media main = new Media(Objects.requireNonNull(MainView.class.getResource("OurBoyJack.mp3")).toExternalForm());
         mainMusic = new MediaPlayer(main);
         mainMusic.setCycleCount(MediaPlayer.INDEFINITE);
         mainMusic.play();
@@ -104,7 +100,7 @@ public class MainView {
 
     public static void playGameMusic() {
         if (mainMusic != null) mainMusic.pause();
-        Media main = new Media(MainView.class.getResource("TheAuroraStrikes.mp3").toExternalForm());
+        Media main = new Media(Objects.requireNonNull(MainView.class.getResource("TheAuroraStrikes.mp3")).toExternalForm());
         gameMusic = new MediaPlayer(main);
         gameMusic.setCycleCount(MediaPlayer.INDEFINITE);
         gameMusic.play();
@@ -118,28 +114,28 @@ public class MainView {
     }
 
     public static void playAttackSong() {
-        Media main = new Media(MainView.class.getResource("attack.mp3").toExternalForm());
+        Media main = new Media(Objects.requireNonNull(MainView.class.getResource("attack.mp3")).toExternalForm());
         attack = new MediaPlayer(main);
         attack.setCycleCount(1);
         attack.play();
     }
 
     public static void playSpellSong() {
-        Media main = new Media(MainView.class.getResource("SetSpell.mp3").toExternalForm());
+        Media main = new Media(Objects.requireNonNull(MainView.class.getResource("SetSpell.mp3")).toExternalForm());
         spell = new MediaPlayer(main);
         spell.setCycleCount(1);
         spell.play();
     }
 
     public static void gameFinishedSong() {
-        Media main = new Media(MainView.class.getResource("GameFinished.mp3").toExternalForm());
+        Media main = new Media(Objects.requireNonNull(MainView.class.getResource("GameFinished.mp3")).toExternalForm());
         gameFinished = new MediaPlayer(main);
         gameFinished.setCycleCount(1);
         gameFinished.play();
     }
 
     public static void monsterSong() {
-        Media main = new Media(MainView.class.getResource("monster.mp3").toExternalForm());
+        Media main = new Media(Objects.requireNonNull(MainView.class.getResource("monster.mp3")).toExternalForm());
         monster = new MediaPlayer(main);
         monster.setCycleCount(1);
         monster.play();

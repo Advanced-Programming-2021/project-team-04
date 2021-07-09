@@ -3,7 +3,6 @@ package yugioh.view;
 import yugioh.controller.ImportAndExport;
 import yugioh.controller.MainController;
 import yugioh.controller.ShopController;
-import yugioh.model.Account;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard;
 import yugioh.model.cards.SpellAndTrapCard;
@@ -19,6 +18,9 @@ public class CreatorView {
     static {
         ALL_MONSTER_EFFECTS = ImportAndExport.getInstance().readAllMonsterEffects();
         ALL_SPELLANDTRAP_EFFECTS = ImportAndExport.getInstance().readAllSpellAndTrapEffects();
+    }
+
+    private CreatorView() {
     }
 
     public static void start() {
@@ -58,17 +60,18 @@ public class CreatorView {
                 "if you want to add more than one effect, simply write the names of the effects with a space between");
         printMonsterEffects();
         var name = IO.getInstance().getInputMessage();
-        System.out.println("Restiamo un po' di tempo ancora, tanto non c'è fretta\n" +
-                "Ché c'ho una frase scritta in testa, ma non l'ho mai detta\n" +
-                "give me the description Marlena");
+        System.out.println("""
+                Restiamo un po' di tempo ancora, tanto non c'è fretta
+                Ché c'ho una frase scritta in testa, ma non l'ho mai detta
+                give me the description Marlena""");
         var description = IO.getInstance().getInputMessage();
-        var monsterCard = monsterPrice(attackPower, defencePower, monsterType, cardType, level, name, cardName, description);
+        var monsterCard = createNewMonster(attackPower, defencePower, monsterType, cardType, level, name, cardName, description);
         ShopController.getAllCards().add(monsterCard);
         ImportAndExport.getInstance().writeObjectToJson(ImportAndExport.RESOURCES_CARDS + monsterCard.getName(), monsterCard);
         System.out.println("Great! You’ll get used to the world we created. Or you'll try I guess...");
     }
 
-    private static MonsterCard monsterPrice(int attackPower, int defencePower, String monsterType, String cardType, int level, String name, String cardName, String description) {
+    private static MonsterCard createNewMonster(int attackPower, int defencePower, String monsterType, String cardType, int level, String name, String cardName, String description) {
         var monsterCard = (MonsterCard) Card.getCardByName(name);
         var price = 0;
         if (monsterCard.getClassAttackPower() < attackPower) price += 400;
@@ -106,9 +109,10 @@ public class CreatorView {
         var typesNegative = IO.getInstance().getInputMessage().split("\\*");
         System.out.println("The pounding in their heart drowns out the unease, makes it hard to taste and feel it out, but it is there. Choose a card property e.g. Continuous");
         var property = IO.getInstance().getInputMessage();
-        System.out.println("Restiamo un po' di tempo ancora, tanto non c'è fretta\n" +
-                "Ché c'ho una frase scritta in testa, ma non l'ho mai detta\n" +
-                "give me the description Marlena");
+        System.out.println("""
+                Restiamo un po' di tempo ancora, tanto non c'è fretta
+                Ché c'ho una frase scritta in testa, ma non l'ho mai detta
+                give me the description Marlena""");
         var description = IO.getInstance().getInputMessage();
         SpellAndTrapCard newCard = new SpellAndTrapCard();
         newCard.setName(name + " " + cardName);

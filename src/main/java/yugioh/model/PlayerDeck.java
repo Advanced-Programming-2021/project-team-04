@@ -7,7 +7,6 @@ import lombok.Setter;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.SpellAndTrapCard;
 
-
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
@@ -54,9 +53,9 @@ public class PlayerDeck {
     }
 
 
-    public boolean isDeckValid() {
+    public boolean isDeckInvalid() {
         var mainDeckSize = getMainDeckSize();
-        return mainDeckSize >= 40 && mainDeckSize <= 60 && getSideDeckSize() <= 15;
+        return mainDeckSize < 40 || mainDeckSize > 60 || getSideDeckSize() > 15;
     }
 
 
