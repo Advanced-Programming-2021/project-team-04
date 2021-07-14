@@ -1,3 +1,5 @@
+import lombok.Getter;
+
 import java.io.*;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
@@ -5,11 +7,15 @@ import java.net.Socket;
 
 public class Main {
 
+    @Getter
+    private static ServerSocket serverSocket;
+    @Getter
+    private static Socket socket;
     public static void main(String[] args) {
         try {
-            ServerSocket serverSocket = new ServerSocket(4444);
+            serverSocket = new ServerSocket(4444);
             while (true) {
-                Socket socket = serverSocket.accept();
+                socket = serverSocket.accept();
                 newThread(socket);
             }
         } catch (IOException e) {
@@ -39,7 +45,7 @@ public class Main {
     }
 
     private static Object processString(String command) {
-        String[] split = command.split(" ");
+        String[] split = command.split("@");
         try {
             Class<?> clazz = Class.forName(split[2]);
             Method method = clazz.getDeclaredMethod(split[3]);
