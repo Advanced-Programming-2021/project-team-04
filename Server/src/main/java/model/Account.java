@@ -75,4 +75,5 @@ public class Account extends Duelist {
     public void setProfilePictureNumber(int profilePicture) {
         this.profilePictureNumber = profilePicture;
     }
+
 }
