@@ -23,7 +23,7 @@ public class ChatView {
 
     private static Scene chatRoom;
     public static final TextFlow chat = new TextFlow();
-    private static final TextArea chatInput = new TextArea();
+    public static final TextArea chatInput = new TextArea();
     private static final Button sendButton = new Button("Send");
 
     public static void run() {
@@ -96,7 +96,7 @@ public class ChatView {
     }
 
     private static Label setNickname() {
-        Label usernameLabel = new Label("User: " + MainController.getInstance().getLoggedIn().getNickname());
+        Label usernameLabel = new Label("User: " + MainController.getInstance().getLoggedIn().getUsername());
         GridPane.setValignment(usernameLabel, VPos.TOP);
         GridPane.setHalignment(usernameLabel, HPos.LEFT);
         GridPane.setHgrow(usernameLabel, Priority.ALWAYS);

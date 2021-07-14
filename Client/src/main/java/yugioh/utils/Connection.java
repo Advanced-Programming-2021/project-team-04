@@ -34,7 +34,7 @@ public class Connection {
 
     public static String getResult(String input) {
         try {
-            dataOutputStream.writeUTF("string " + token + " " + input);
+            dataOutputStream.writeUTF("string@" + token + "@" + input);
             dataOutputStream.flush();
             return dataInputStream.readUTF();
         } catch (Exception e) {
@@ -45,7 +45,7 @@ public class Connection {
 
     public static Object getObject(String input) {
         try {
-            dataOutputStream.writeUTF("object " + token + " " + input);
+            dataOutputStream.writeUTF("object@" + token + "@" + input);
            dataOutputStream.flush();
             return objectInputStream.readObject();
         } catch (Exception e) {

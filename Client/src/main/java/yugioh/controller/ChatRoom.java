@@ -1,21 +1,21 @@
 package yugioh.controller;
 
-import javafx.scene.text.Text;
+import javafx.application.Platform;
+
 import yugioh.utils.Connection;
 import yugioh.view.ChatView;
 import yugioh.view.LoginView;
 
-import java.io.IOException;
 
 public class ChatRoom {
 
     public static void sendMyMessage() {
         Thread userInput = new Thread(() -> {
             String message = "";
-            while (!message.equals("terminate")) {
+            while (!message.equals("leave")) {
                 try {
                     message = MainController.getInstance().getLoggedIn().getMESSAGES_BY_CLIENT().take();
-                    Connection.getResult("ChatRoom@sendMyMessage@" + message);
+                    Connection.getResult("ChatRoom@sendMyMessage@" + MainController.getInstance().getLoggedIn().getUsername() + "@" + message);
                 } catch (InterruptedException e) {
                     System.out.println(e);
                 }
@@ -46,8 +46,7 @@ public class ChatRoom {
     }
 
     private static void addMessageToChat(String message) {
-        Text text = new Text(message);
-        ChatView.chat.getChildren().add(text);
+        Platform.runLater(() -> ChatView.chatInput.appendText(message));
     }
 
 }
