@@ -14,6 +14,6 @@ private static ScoreboardController singleInstance = null;
     }
 
     public ArrayList<String> getSortedUsers() {
-        return (ArrayList<String>) Connection.getObject("ScoreboardController getSortedUsers");
+        return (ArrayList<String>) Connection.getObject("ScoreboardController@getSortedUsers");
     }
 }

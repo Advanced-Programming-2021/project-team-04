@@ -24,19 +24,19 @@ public class MainController {
     }
 
     public Account getLoggedIn() {
-        return (Account) Connection.getObject("MainController getThisAccount");
+        return (Account) Connection.getObject("MainController@getThisAccount");
     }
 
 
     public boolean newDuel(String username, int rounds) {
-        String result = Connection.getResult("MainController newDuel" + " " + username + " " + rounds);
+        String result = Connection.getResult("MainController@newDuel" + "@" + username + "@" + rounds);
         if (result.equals("success")) return true;
         IO.getInstance().showMessage(result);
         return false;
     }
 
     public void logout() {
-        Connection.getResult("MainController logout");
+        Connection.getResult("MainController@logout");
         Connection.setToken("-");
     }
 

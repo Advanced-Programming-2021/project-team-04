@@ -16,7 +16,7 @@ public class LoginController {
     }
 
     public boolean loginUser(String username, String password) {
-        String result = Connection.getResult("LoginController loginUser " + username + " " + password);
+        String result = Connection.getResult("LoginController@loginUser@" + username + "@" + password);
         if (result.startsWith("success")) {
             Connection.setToken(result.split(" ")[1]);
             return true;
@@ -28,7 +28,7 @@ public class LoginController {
 
 
     public void createUser(String username, String password, String nickname) {
-        String result = Connection.getResult("LoginController createUser " + username + " " + password + " " + nickname);
+        String result = Connection.getResult("LoginController@createUser@" + username + "@" + password + "@" + nickname);
         if (!result.equals("success")) IO.getInstance().showMessage(result);
     }
 }

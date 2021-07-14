@@ -26,7 +26,7 @@ public class ProfileController {
 
 
     public void changeNickname(String name) {
-        String result = Connection.getResult("ProfileController changeNickname " + name);
+        String result = Connection.getResult("ProfileController@changeNickname@" + name);
         if (result.equals("success"))
             IO.getInstance().nicknameChanged();
         else
@@ -35,7 +35,7 @@ public class ProfileController {
 
 
     public void changePassword(String oldPassword, String newPassword) {
-        String result = Connection.getResult("ProfileController changePassword " + oldPassword + " " + newPassword);
+        String result = Connection.getResult("ProfileController@changePassword@" + oldPassword + "@" + newPassword);
         if (result.equals("success"))
             IO.getInstance().passwordChanged();
         else

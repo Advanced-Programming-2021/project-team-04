@@ -15,8 +15,8 @@ public class ChatRoom {
             while (!message.equals("terminate")) {
                 try {
                     message = MainController.getInstance().getLoggedIn().getMESSAGES_BY_CLIENT().take();
-                    Connection.getDataOutputStream().writeUTF(message);
-                } catch (IOException | InterruptedException e) {
+                    Connection.getResult("ChatRoom@sendMyMessage@" + message);
+                } catch (InterruptedException e) {
                     System.out.println(e);
                 }
             }
