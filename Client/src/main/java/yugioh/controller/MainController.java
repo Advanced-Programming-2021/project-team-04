@@ -40,26 +40,4 @@ public class MainController {
         Connection.setToken("-");
     }
 
-
-//    public boolean newAIDuel(int rounds, AI.AIDifficulty difficulty) {
-//        if (errorForNewAIGame(rounds)) {
-//            AI.getInstance().setActivePlayerDeck(difficulty.toString());
-//            DuelController.getInstance().setGame(new Game(loggedIn, AI.getInstance(), rounds, true));
-//            return true;
-//        }
-//        return false;
-//    }
-
-
-//    private boolean errorForNewAIGame(int rounds) {
-//        if (loggedIn.getActiveDeck() == null) {
-//            IO.getInstance().noActiveDeck(loggedIn.getUsername());
-//            return false;
-//        }
-//        if (loggedIn.getActiveDeck().isDeckInvalid()) {
-//            IO.getInstance().invalidDeck(loggedIn.getUsername());
-//            return false;
-//        }
-//        return rounds == 1 || rounds == 3;
-//    }
 }

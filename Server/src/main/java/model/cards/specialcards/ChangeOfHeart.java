@@ -1,9 +1,9 @@
-package yugioh.model.cards.specialcards;
+package model.cards.specialcards;
 
 
-import yugioh.model.Duelist;
-import yugioh.model.cards.MonsterCard;
-import yugioh.model.cards.SpellAndTrapCard;
+import model.Duelist;
+import model.cards.MonsterCard;
+import model.cards.SpellAndTrapCard;
 
 
 public class ChangeOfHeart extends SpellAndTrapCard {

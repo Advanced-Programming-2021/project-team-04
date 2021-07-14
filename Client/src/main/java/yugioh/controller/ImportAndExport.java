@@ -11,6 +11,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import yugioh.model.Account;
 import yugioh.model.PlayerDeck;
 import yugioh.model.cards.Card;
+import yugioh.utils.Connection;
 
 import java.io.File;
 import java.util.*;
@@ -167,6 +168,8 @@ public class ImportAndExport {
     public void writeObjectToJson(String address, Object object) {
         try {
             OBJECT_MAPPER.writeValue(new File(address), object);
+            String result = Connection.getResult("ImportAndExport writeObjectToJson " + address);
+
         } catch (Exception e) {
             e.printStackTrace();
         }

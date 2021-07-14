@@ -37,15 +37,4 @@ public class DuelFirstPage {
         button.setDisable(DuelController.getInstance().getGame() == null);
     }
 
-    public void easyAIDuel() {
-        MainController.getInstance().newAIDuel(((ToggleButton) LoginView.duelFirstScene.lookup("#oneRound")).isSelected() ? 1 : 3, AI.AIDifficulty.EASY);
-    }
-
-    public void mediumAIDuel() {
-        MainController.getInstance().newAIDuel(((ToggleButton) LoginView.duelFirstScene.lookup("#oneRound")).isSelected() ? 1 : 3, AI.AIDifficulty.MEDIUM);
-    }
-
-    public void hardAIDuel() {
-        MainController.getInstance().newAIDuel(((ToggleButton) LoginView.duelFirstScene.lookup("#oneRound")).isSelected() ? 1 : 3, AI.AIDifficulty.HARD);
-    }
 }

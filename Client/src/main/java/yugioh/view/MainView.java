@@ -61,6 +61,11 @@ public class MainView {
     }
 
     @FXML
+    public void enterChatRoom() {
+        ChatView.run();
+    }
+
+    @FXML
     public void startNewGame() {
         LoginView.stage.setScene(LoginView.duelFirstScene);
         LoginView.stage.centerOnScreen();

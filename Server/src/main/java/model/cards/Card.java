@@ -4,7 +4,6 @@ package model.cards;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
-import model.AI;
 import model.Account;
 import model.Duelist;
 
@@ -49,8 +48,7 @@ public class Card {
 
     public Duelist getOwner() {
         if (owner == null) {
-            if (ownerUsername.equals(AI.AI_USERNAME)) owner = AI.getInstance();
-            else owner = Account.getAccountByUsername(ownerUsername);
+            owner = Account.getAccountByUsername(ownerUsername);
         }
         return owner;
     }

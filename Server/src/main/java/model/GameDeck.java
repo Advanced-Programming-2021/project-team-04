@@ -26,7 +26,7 @@ public class GameDeck {
         playerDeck.getMainDeckCards().keySet().forEach(n -> {
             for (var i = 0; i < playerDeck.getMainDeckCards().get(n); i++) {
                 try {
-                    mainDeck.add(Objects.requireNonNull(ImportAndExport.getInstance().readCard(n)));
+                    mainDeck.add(Objects.requireNonNull(ImportAndExport.readCard(n)));
                 } catch (Exception ignored) { }
             }
         });
@@ -34,7 +34,7 @@ public class GameDeck {
         playerDeck.getSideDeckCards().keySet().forEach(n -> {
             for (var i = 0; i < playerDeck.getSideDeckCards().get(n); i++) {
                 try {
-                    sideDeck.add(Objects.requireNonNull(ImportAndExport.getInstance().readCard(n)));
+                    sideDeck.add(Objects.requireNonNull(ImportAndExport.readCard(n)));
                 } catch (Exception ignored) { }
             }
         });

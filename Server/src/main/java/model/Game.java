@@ -68,76 +68,9 @@ public class Game {
     }
 
 
-    public void changeTurn() {
-        Duelist temp = currentPlayer;
-        currentPlayer = theOtherPlayer;
-        theOtherPlayer = temp;
-        summonedInThisTurn = false;
-        DuelView.handleTurn((Account) currentPlayer);
-    }
 
 
-    public void finishWithOneRound(Duelist loser, Duelist winner) {
-        if (!isAI) {
-            ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
-            ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
-            DuelController.getInstance().wonGame(false, false, (Account) winner, true);
-        } else if (winner instanceof Account) {
-            ((Account) winner).setMoney(((Account) winner).getMoney() + 1000 + winner.getLP());
-            DuelController.getInstance().wonGame(false, false, (Account) winner, true);
-        } else if (loser instanceof Account) {
-            ((Account) loser).setMoney(((Account) loser).getMoney() + 100);
-            DuelController.getInstance().wonGame(false, true, (Account) loser, true);
-        }
-        isGameFinished = true;
-        loser.deleteField();
-        winner.deleteField();
-    }
 
-
-    public void finishWithThreeRounds(Duelist loser, Duelist winner) {
-        if (handleWinnerAndLoser(loser, winner)) return;
-        initializeGame();
-        DuelController.getInstance().chooseStarter(winner.getUsername());
-    }
-
-    private boolean handleWinnerAndLoser(Duelist loser, Duelist winner) {
-        switch (currentRound) {
-            case 1 -> {
-                winnerOfEachRound[0] = winner;
-                winner.setMaxLPofThreeRounds(winner.getLP());
-                loser.setMaxLPofThreeRounds(loser.getLP());
-                if (!(winner instanceof AI))
-                    DuelController.getInstance().wonGame(false, false, (Account) winner, false);
-                else DuelController.getInstance().wonGame(false, true, (Account) loser, false);
-            }
-            case 2 -> {
-                winner.checkMaxLPofThreeRounds();
-                loser.checkMaxLPofThreeRounds();
-                if (winnerOfEachRound[0] == winner) {
-                    finishMultipleRoundGame(loser, winner);
-                    if (!(winner instanceof AI))
-                        DuelController.getInstance().wonGame(true, false, (Account) winner, true);
-                    else DuelController.getInstance().wonGame(false, true, (Account) loser, false);
-                    return true;
-                }
-                if (!(winner instanceof AI))
-                    DuelController.getInstance().wonGame(false, false, (Account) winner, false);
-                else DuelController.getInstance().wonGame(false, true, (Account) loser, false);
-                winnerOfEachRound[1] = winner;
-            }
-            case 3 -> {
-                winner.checkMaxLPofThreeRounds();
-                loser.checkMaxLPofThreeRounds();
-                finishMultipleRoundGame(loser, winner);
-                if (!(winner instanceof AI))
-                    DuelController.getInstance().wonGame(false, false, (Account) winner, true);
-                else DuelController.getInstance().wonGame(false, true, (Account) loser, true);
-                return true;
-            }
-        }
-        return false;
-    }
 
 
     private void finishMultipleRoundGame(Duelist loser, Duelist winner) {
@@ -152,18 +85,6 @@ public class Game {
         loser.deleteField();
         winner.deleteField();
     }
-
-
-    public void finishGame(Duelist loser) {
-        Duelist winner;
-        if (currentPlayer.equals(loser)) winner = theOtherPlayer;
-        else winner = currentPlayer;
-        if (winner instanceof Account)
-            ((Account) winner).setScore(((Account) winner).getScore() + 1000);
-        if (rounds == 1) finishWithOneRound(loser, winner);
-        else finishWithThreeRounds(loser, winner);
-    }
-
 
     public Duelist getCurrentPlayer() {
         if (Objects.isNull(currentPlayer)) setCurrentPlayer(Account.getAccountByUsername(currentPlayerUsername));

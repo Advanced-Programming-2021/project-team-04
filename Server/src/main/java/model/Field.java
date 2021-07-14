@@ -6,8 +6,7 @@ import lombok.Setter;
 import model.cards.Card;
 import model.cards.MonsterCard;
 import model.cards.SpellAndTrapCard;
-import yugioh.model.cards.specialcards.Scanner;
-
+import model.cards.specialcards.Scanner;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;

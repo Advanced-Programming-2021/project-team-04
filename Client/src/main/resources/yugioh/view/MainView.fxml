@@ -42,11 +42,15 @@
     <HBox spacing="10" alignment="CENTER"
           GridPane.rowIndex="4" GridPane.columnSpan="2">
         <Button text="Create Card" onMouseClicked="#createCard"/>
+        <Button text="Chat" onMouseClicked="#enterChatRoom"/>
+    </HBox>
+    <HBox spacing="10" alignment="CENTER"
+          GridPane.rowIndex="5" GridPane.columnSpan="2">
         <Button text="Log Out" onMouseClicked="#logout"/>
     </HBox>
 
     <HBox spacing="10" alignment="CENTER"
-          GridPane.rowIndex="5" GridPane.columnSpan="2">
+          GridPane.rowIndex="6" GridPane.columnSpan="2">
         <ToggleButton fx:id="mute" onMouseClicked="#mute" prefWidth="100" prefHeight="100"/>
     </HBox>
 

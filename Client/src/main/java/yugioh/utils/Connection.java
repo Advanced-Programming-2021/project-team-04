@@ -7,11 +7,16 @@ import java.io.*;
 import java.net.Socket;
 
 public class Connection {
-
+    @Getter
     private static Socket socket;
+    @Getter
     private static DataInputStream dataInputStream;
+    @Getter
     private static DataOutputStream dataOutputStream;
+    @Getter
     private static ObjectInputStream objectInputStream;
+    @Getter
+    private static BufferedReader input;
     @Setter
     private static String token = "-";
 
@@ -21,6 +26,7 @@ public class Connection {
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             objectInputStream = new ObjectInputStream(socket.getInputStream());
+            input = new BufferedReader(new InputStreamReader(System.in));
         } catch (IOException e) {
             e.printStackTrace();
         }

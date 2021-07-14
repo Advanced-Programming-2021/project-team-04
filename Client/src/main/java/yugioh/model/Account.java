@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @Getter
 @Setter
@@ -17,6 +18,10 @@ public class Account extends Duelist {
     private static ArrayList<String> allUsernames;
     @Getter
     private static ArrayList<String> allNicknames;
+    @Getter
+    private final LinkedBlockingQueue<String> MESSAGES = new LinkedBlockingQueue<>();
+    @Getter
+    private final LinkedBlockingQueue<String> MESSAGES_BY_CLIENT = new LinkedBlockingQueue<>();
 
     static {
         allAccounts = new ArrayList<>();

@@ -44,7 +44,7 @@ public class LoginController {
 
 
     private static String errorsForCreatingUser(String username, String nickname) {
-        if (model.Account.getAllUsernames().contains(username) || username.equals(model.AI.AI_USERNAME)) {
+        if (model.Account.getAllUsernames().contains(username)) {
             return "user with username " + username + " already exists";
         } else if (model.Account.getAllNicknames().contains(nickname)) {
             return "user with nickname " + nickname + " already exists";
