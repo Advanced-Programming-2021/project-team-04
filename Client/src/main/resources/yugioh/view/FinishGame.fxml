@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="yugioh.view.DuelView"
+          prefHeight="763" prefWidth="1246" alignment="CENTER" hgap="10" vgap="10" styleClass="root">
+
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="3" spacing="10" alignment="CENTER" styleClass="box">
+        <Label fx:id="congrats" styleClass="congrats" alignment="CENTER" prefHeight="400" prefWidth="800"/>
+        <Button text="Back" fx:id="Back"  onMouseClicked="#backToMainPage" styleClass="Back"/>
+    </VBox>
+
+    <stylesheets>
+        <URL value="@stylesheets/FinishGame.css"/>
+    </stylesheets>
+</GridPane>

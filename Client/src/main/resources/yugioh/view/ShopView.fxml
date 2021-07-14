@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import java.net.URL?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="yugioh.view.ShopView"
+          prefHeight="763" prefWidth="1246" alignment="CENTER" hgap="10" vgap="10" styleClass="root">
+
+    <Button text="Main Menu" fx:id="mainMenu" GridPane.columnIndex="1" GridPane.rowIndex="0" onMouseClicked="#mainMenu"/>
+
+    <Button text="&#60;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="back" onMouseClicked="#back"/>
+
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="1" spacing="10" alignment="CENTER">
+        <ImageView fx:id="first" fitHeight="400" fitWidth="300"/>
+        <HBox spacing="10" alignment="CENTER">
+            <Label text="0" styleClass="address" fx:id="firstAmount"/>
+            <Button text="Buy" styleClass="buy" fx:id="firstBuy" onMouseClicked="#buyFirstCard"/>
+        </HBox>
+    </VBox>
+
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="2" spacing="10" alignment="CENTER">
+        <ImageView fx:id="second" fitHeight="400" fitWidth="300"/>
+        <HBox spacing="10" alignment="CENTER">
+            <Label text="0" styleClass="address" fx:id="secondAmount"/>
+            <Button text="Buy" styleClass="buy" fx:id="secondBuy" onMouseClicked="#buySecondCard"/>
+        </HBox>
+    </VBox>
+
+    <Button text="&#62;" styleClass="navi" GridPane.rowIndex="1" GridPane.columnIndex="3" fx:id="next" onMouseClicked="#next"/>
+    <Label GridPane.rowIndex="2" GridPane.columnIndex="4" prefWidth="150"/>
+
+    <stylesheets>
+        <URL value="@stylesheets/ShopView.css"/>
+    </stylesheets>
+</GridPane>
